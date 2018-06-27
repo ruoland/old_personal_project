@@ -62,7 +62,6 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "LoopGuard", EntityDummyGuardLoop.class);
         DebAPI.registerEntity(this, "BigBlockInvisible", EntityBigInvisibleBlock.class);
         DebAPI.registerEntity(this, "BigBlockMovejump", EntityBigBlockMove.class);
-        DebAPI.registerEntity(this, "DistanceBlock", EntityDisBlock.class);
         DebAPI.registerEntity(this, "SmallBlockJump", EntitySmallBlock.class);
         DebAPI.registerEntity(this, "BigBlockjump", EntityBigBlock.class);
         DebAPI.registerEntity(this, "KnockbackBlock", EntityKnockbackBlock.class);
