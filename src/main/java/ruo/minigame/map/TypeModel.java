@@ -1,0 +1,5 @@
+package ruo.minigame.map;
+
+public enum TypeModel {
+	NPC,BLOCK,CREEPER,ZOMBIE,VILLAGERZOMBIE,ENDERMAN,WITCH, SNOWMAN, SILVERFISH, COW, PIG, CHICKEN, NONE
+}
