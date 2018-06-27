@@ -25,6 +25,7 @@ public class EntitySpiderJockey extends EntitySpider {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (getAttackTarget() != null) {
+            System.out.println("aaa");
             EntityLivingBase target = getAttackTarget();
             if (getPassengers().size() > 0 && getDistanceToEntity(target) < 5) {
                 Entity entity = getPassengers().get(0);
