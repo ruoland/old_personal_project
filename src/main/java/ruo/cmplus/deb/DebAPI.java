@@ -296,7 +296,6 @@ public class DebAPI {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         ModelLoader.setCustomModelResourceLocation(itemBlock, 0, new ModelResourceLocation(modid+":"+itemName, "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
                 .register(itemBlock, 0, new ModelResourceLocation(modid+":"+itemName, "inventory"));
