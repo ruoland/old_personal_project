@@ -10,7 +10,6 @@ public class CommandMineRun extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		
 		return "minerun";
 	}
 

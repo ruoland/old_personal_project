@@ -1,5 +1,5 @@
 public class BlockPos {
-    String name = "cube";
+    ㅌString name = "cube";
 
     public int[] from = new int[3];
     public int[] to = new int[3];

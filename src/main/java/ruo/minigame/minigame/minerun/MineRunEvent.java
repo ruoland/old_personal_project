@@ -15,65 +15,36 @@ import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
 public class MineRunEvent {
+	private int line = 0;
+	public double lineX, lineZ;
+
 	
 	@SubscribeEvent
 	public void playerTick(PlayerTickEvent e){
 		if(!MiniGame.minerun.isStart())
 			return;
 		if(e.phase == Phase.END && MiniGame.minerun.isStart()){
-			double veloX = 0, veloZ = 0;
-			String index = e.player.getHorizontalFacing().getName();
-			if (index.equalsIgnoreCase("NORTH")) {
-				veloZ = -0.3;
-			}
-			if (index.equalsIgnoreCase("SOUTH")) {
-				veloZ = 0.3;
-			}
-			if (index.equalsIgnoreCase("WEST")) {
-				veloX = -0.3;
-			}
-			if (index.equalsIgnoreCase("EAST")) {
-				veloX = 0.3;
-			}
-			e.player.motionX = veloX;
-			e.player.motionZ = veloZ;
+			e.player.motionX = EntityAPI.lookX(e.player, 0.3);
+			e.player.motionZ = EntityAPI.lookZ(e.player, 0.3);
 		}
 	}
 	@SubscribeEvent
 	public void keyInput(KeyInputEvent e){
 		if(!MiniGame.minerun.isStart())
 			return;
-		double veloX = 0, veloZ = 0;
 		EntityPlayerMP player = WorldAPI.getPlayerMP();
-		String index = player.getHorizontalFacing().getName();
-		if(Keyboard.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()){
-			veloX = EntityAPI.getFacingX(player.rotationYaw - 90) * 5;
-			veloZ = EntityAPI.getFacingZ(player.rotationYaw - 90) * 5;
+		if(line < 1 && Keyboard.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()){
+			WorldAPI.teleport(player.posX + lineX+line, player.posY, player.posZ + lineZ+line);
+			line++;
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()){
-			veloX = EntityAPI.getFacingX(player.rotationYaw + 90) * 5;
-			veloZ = EntityAPI.getFacingZ(player.rotationYaw + 90) * 5;
+		if(line > -1 &&Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()){
+			WorldAPI.teleport(player.posX - (lineX+line), player.posY, player.posZ - (lineZ+line));
+			line--;
 		}
-		WorldAPI.teleport(player.posX + veloX, player.posY, player.posZ + veloZ);
 	}
 	
 	@SubscribeEvent
 	public void logout(WorldEvent.Unload e){
 		MiniGame.minerun.end();
-	}
-	public void run(){
-	
-		//player.connection.setPlayerLocation(WorldAPI.floor(posX)+0.5, posY, WorldAPI.floor(posZ)+0.5, player.rotationYaw, player.rotationPitch);
-	}
-	public boolean checkBlock(double posX, double posY, double posZ){
-		IBlockState bib = WorldAPI.getPlayer().worldObj.getBlockState(new BlockPos(posX, posY, posZ));
-		
-		if(bib.getBlock() == Blocks.AIR)
-			return true;
-		
-		if(bib.getBlock().getUnlocalizedName().equals("tile.ladder"))
-			return true;
-		
-		return false;
 	}
 }
