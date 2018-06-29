@@ -1,4 +1,4 @@
-package ruo.minigame.minigame;
+package ruo.minigame.minigame.minerun;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;

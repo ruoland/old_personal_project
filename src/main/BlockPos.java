@@ -1,10 +1,10 @@
 public class BlockPos {
     String name = "cube";
 
-    private int[] from = new int[3];
-    private int[] to = new int[3];
+    public int[] from = new int[3];
+    public int[] to = new int[3];
 
-    private BlockFaces faces = new BlockFaces();
+    public BlockFaces faces = new BlockFaces();
     public BlockPos(int x, int y, int z){
         from[0] = x;
         from[1] = y;
@@ -19,6 +19,9 @@ public class BlockPos {
     }
 
 
+    public void print(){
+        faces.print();
+    }
     public int getZ() {
         return from[2];
     }

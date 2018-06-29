@@ -11,7 +11,7 @@ import ruo.minigame.command.CommandElytra;
 import ruo.minigame.command.CommandMineRun;
 import ruo.minigame.command.CommandScroll;
 import ruo.minigame.effect.TickRegister;
-import ruo.minigame.minigame.MineRun;
+import ruo.minigame.minigame.minerun.MineRun;
 import ruo.minigame.minigame.bomber.BombEvent;
 import ruo.minigame.minigame.bomber.Bomber;
 import ruo.minigame.minigame.elytra.Elytra;

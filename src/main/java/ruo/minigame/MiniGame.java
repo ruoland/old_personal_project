@@ -28,7 +28,7 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.command.CommandMonologue;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
-import ruo.minigame.minigame.MineRun;
+import ruo.minigame.minigame.minerun.MineRun;
 import ruo.minigame.action.ActionData;
 import ruo.minigame.action.ActionEvent;
 import ruo.minigame.minigame.bomber.Bomber;
@@ -38,7 +38,6 @@ import ruo.minigame.minigame.elytra.EntityElytraItem;
 import ruo.minigame.minigame.elytra.EntityFlyingWeen;
 import ruo.minigame.minigame.elytra.miniween.*;
 import ruo.minigame.minigame.scroll.Scroll;
-import ruo.minigame.minigame.scrollmaker.EntityScrollMouse;
 
 
 @Mod(modid = "MiniGame", name = "MiniGame")

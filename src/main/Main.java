@@ -29,12 +29,19 @@ public class Main {
         JsonObject texture = new JsonObject();
         JsonObject object = new JsonObject();
         BlockPos[] blockPos = new BlockPos[]{
-                new BlockPos(1,1,1),new BlockPos(1,1,1)
+                new BlockPos(1,2,3),new BlockPos(4,5,6)
         };
         parent.add("elements", gson.toJsonTree(blockPos));
 
-        BlockPos blockPos1 = gson.fromJson(gson.toJson(parent), BlockPos.class);
-        System.out.println(blockPos1.getX());
+        JsonParser parser = new JsonParser();
+        JsonObject element = (JsonObject) parser.parse(new FileReader("./asdf.json"));
+        JsonElement elements = element.get("elements");
+        BlockPos[] blockPos1 = gson.fromJson(gson.toJson(elements), BlockPos[].class);
+        blockPos[0].print();
+        blockPos[1].print();
+
+        System.out.println(""+blockPos1[0].name +blockPos1[0].getX()+blockPos1[0].getY()+blockPos1[0].getZ());
+        System.out.println(""+blockPos1[1].name +blockPos1[1].getX()+blockPos1[1].getY()+blockPos1[1].getZ());
         try {
             BufferedWriter writerItem = Files.newWriter(new File("./asdfff.json"), Charset.forName("UTF-8"));
             writerItem.write(gson.toJson(parent));

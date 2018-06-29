@@ -1,4 +1,4 @@
-package ruo.minigame.minigame;
+package ruo.minigame.minigame.minerun;
 
 
 import net.minecraft.client.Minecraft;
@@ -7,8 +7,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
+import ruo.minigame.minigame.AbstractMiniGame;
 
-public class MineRun extends AbstractMiniGame{
+public class MineRun extends AbstractMiniGame {
 
 	public MineRun() {
 		this.event = new MineRunEvent();

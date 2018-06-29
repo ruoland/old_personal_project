@@ -8,7 +8,18 @@ public class BlockFace {
         uv[1] = y;
         uv[2] = z;
         uv[3] = z2;
+    }
 
+    public String getTexture() {
+        return texture;
+    }
+
+    public void print(String name){
+        System.out.println(name+"UV "+uv[0]+uv[1]+uv[2]+uv[3]);
+    }
+
+    public int getZ2() {
+        return uv[3];
     }
 
     public int getZ() {
