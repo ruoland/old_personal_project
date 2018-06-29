@@ -29,12 +29,13 @@ public class MineRun extends AbstractMiniGame {
 		Camera.getCamera().lockCamera(true);
 		Camera.getCamera().playerCamera(true);
 		Camera.getCamera().lockCamera(true, (float) yaw, 0);
-		Camera.getCamera().moveCamera(0, -1.9, 5);
-		String index = player.getHorizontalFacing().getName();
+		Camera.getCamera().moveCamera(EntityAPI.lookX(player, 4), -0.6, EntityAPI.lookZ(player, 4));
+		float roX = EntityAPI.lookX(player, 4) == 0 ? -20 : 0;
+		float roZ = EntityAPI.lookZ(player, 4) == 0 ? -20 : 0;
 		if(yaw < 0)
-			Camera.getCamera().rotateCamera(0, yaw - 90, 0);
+			Camera.getCamera().rotateCamera(roX, yaw - 180, roZ);
 		else
-			Camera.getCamera().rotateCamera(0, yaw + 90, 0);
+			Camera.getCamera().rotateCamera(roX, yaw + 180, roZ);
 		((MineRunEvent) event).lineX = EntityAPI.getFacingX(player.rotationYaw - 90) * 3;
 		((MineRunEvent) event).lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90) * 3;
 		return super.start();

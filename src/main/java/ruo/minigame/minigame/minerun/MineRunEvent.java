@@ -34,11 +34,11 @@ public class MineRunEvent {
 			return;
 		EntityPlayerMP player = WorldAPI.getPlayerMP();
 		if(line < 1 && Keyboard.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()){
-			WorldAPI.teleport(player.posX + lineX+line, player.posY, player.posZ + lineZ+line);
+			WorldAPI.teleport(player.posX + lineX, player.posY, player.posZ + lineZ);
 			line++;
 		}
 		if(line > -1 &&Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()){
-			WorldAPI.teleport(player.posX - (lineX+line), player.posY, player.posZ - (lineZ+line));
+			WorldAPI.teleport(player.posX - lineX, player.posY, player.posZ - lineZ);
 			line--;
 		}
 	}
