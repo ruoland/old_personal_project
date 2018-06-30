@@ -30,6 +30,7 @@ import ruo.cmplus.util.*;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -178,8 +179,10 @@ public class CMPlusEvent {
     @SubscribeEvent
     public void login(LoginEvent e) {
         if (!WorldAPI.getCurrentWorldName().equalsIgnoreCase("MpServer") && !WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
-            CMManager.waypoint = (HashMap<String, double[]>) DebAPI
-                    .readObject("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint", new HashMap<String, double[]>());
+            if(new File("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint").isFile()) {
+                CMManager.waypoint = (HashMap<String, double[]>) DebAPI
+                        .readObject("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint", new HashMap<String, double[]>());
+            }
     }
 
     @SubscribeEvent
@@ -278,7 +281,6 @@ public class CMPlusEvent {
                 if (event.getType() == ElementType.valueOf(s)) {
                     if (!CMManager.isUI(s)) {
                         event.setCanceled(true);
-                        System.out.println();
                     }
                 }
             }

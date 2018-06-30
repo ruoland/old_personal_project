@@ -26,7 +26,6 @@ public class ActionEvent {
     public static boolean forceJump;
     @SubscribeEvent
     public void login(LoginEvent e){
-        System.out.println(""+(!e.world.isRemote)+e.player+WorldAPI.getCurrentWorldName());
         if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
             ActionEffect.mapName = WorldAPI.getCurrentWorldName();
 

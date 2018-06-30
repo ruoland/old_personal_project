@@ -10,41 +10,70 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
 public class MineRunEvent {
-	private int line = 0;
-	public double lineX, lineZ;
+    private int lineLR = 0, lineFB;
+    public double lineX, lineZ, lineFBX, lineFBZ;
 
-	
-	@SubscribeEvent
-	public void playerTick(PlayerTickEvent e){
-		if(!MiniGame.minerun.isStart())
-			return;
-		if(e.phase == Phase.END && MiniGame.minerun.isStart()){
-			e.player.motionX = EntityAPI.lookX(e.player, 0.3);
-			e.player.motionZ = EntityAPI.lookZ(e.player, 0.3);
-		}
-	}
-	@SubscribeEvent
-	public void keyInput(KeyInputEvent e){
-		if(!MiniGame.minerun.isStart())
-			return;
-		EntityPlayerMP player = WorldAPI.getPlayerMP();
-		if(line < 1 && Keyboard.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()){
-			WorldAPI.teleport(player.posX + lineX, player.posY, player.posZ + lineZ);
-			line++;
-		}
-		if(line > -1 &&Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()){
-			WorldAPI.teleport(player.posX - lineX, player.posY, player.posZ - lineZ);
-			line--;
-		}
-	}
-	
-	@SubscribeEvent
-	public void logout(WorldEvent.Unload e){
-		MiniGame.minerun.end();
-	}
+    @SubscribeEvent
+    public void playerTick(PlayerTickEvent e) {
+        if (!MiniGame.minerun.isStart())
+            return;
+        if (e.phase == Phase.END && MiniGame.minerun.isStart()) {
+            if(MineRun.isElytraMode()){
+                e.player.motionY = 0.2;
+            }
+            else {
+                e.player.motionX = EntityAPI.lookX(e.player, 0.3);
+                e.player.motionZ = EntityAPI.lookZ(e.player, 0.3);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void keyInput(KeyInputEvent e) {
+        if (!MiniGame.minerun.isStart())
+            return;
+        EntityPlayerMP player = WorldAPI.getPlayerMP();
+        if(DebAPI.isKeyDown(Keyboard.KEY_V)){
+            MineRun.setElytraMode(!MineRun.isElytraMode());
+        }
+        if (MineRun.isElytraMode()) {
+            System.out.println(lineLR+""+lineFB);
+            if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
+                WorldAPI.teleport(player.posX + lineFBX, player.posY, player.posZ + lineFBZ);
+                lineFB++;
+            }
+            if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
+                WorldAPI.teleport(player.posX - lineFBX, player.posY, player.posZ - lineFBZ);
+                lineFB--;
+            }
+            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
+                WorldAPI.teleport(player.posX + lineX, player.posY, player.posZ + lineZ);
+                lineLR++;
+            }
+            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
+                WorldAPI.teleport(player.posX - lineX, player.posY, player.posZ - lineZ);
+                lineLR--;
+            }
+        } else {
+            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
+                WorldAPI.teleport(player.posX +  (lineX * 3), player.posY, player.posZ +  (lineZ * 3));
+                lineLR++;
+            }
+            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
+                WorldAPI.teleport(player.posX -  (lineX * 3), player.posY, player.posZ -  (lineZ * 3));
+                lineLR--;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void logout(WorldEvent.Unload e) {
+        MiniGame.minerun.end();
+    }
 }

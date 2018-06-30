@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ruo.cmplus.camera.Camera;
+import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
 public class CMPlusCameraEvent {
@@ -120,25 +121,27 @@ public class CMPlusCameraEvent {
     @SubscribeEvent
     public void renderUI(RenderGameOverlayEvent.Post event) {
         if (event.getType() == ElementType.ALL && Camera.isDebug && !Minecraft.getMinecraft().gameSettings.showDebugInfo) {
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE X" + Camera.getCamera().rotateX, 0, 10,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE X" + Camera.getCamera().rotateX, 0, 20,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Y" + Camera.getCamera().rotateY, 0, 20,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Y" + Camera.getCamera().rotateY, 0, 30,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Z" + Camera.getCamera().rotateZ, 0, 30,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Z" + Camera.getCamera().rotateZ, 0, 40,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA X" + Camera.getCamera().traX, 0, 40, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Y" + Camera.getCamera().traY, 0, 50, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Z" + Camera.getCamera().traZ, 0, 60, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YAW" + Camera.getCamera().yaw, 0, 70, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 PITCH" + Camera.getCamera().pitch, 0, 80,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA X" + Camera.getCamera().traX, 0, 50, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Y" + Camera.getCamera().traY, 0, 60, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Z" + Camera.getCamera().traZ, 0, 70, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YAW" + Camera.getCamera().yaw, 0, 80, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 PITCH" + Camera.getCamera().pitch, 0, 90,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 락" + Camera.getCamera().lockCamera, 0, 90,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 락" + Camera.getCamera().lockCamera, 0, 100,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YP" + Camera.getCamera().yp, 0, 100, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("플레이어 YAW" + WorldAPI.getPlayer().rotationYaw, 0, 110,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YP" + Camera.getCamera().yp, 0, 110, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("플레이어 YAW" + WorldAPI.getPlayer().rotationYaw, 0, 120,
                     0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("플레이어 PITCH" + WorldAPI.getPlayer().rotationPitch, 0,
-                    120, 0xFFFFFF);
+                    130, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("보고있는 XZ" + EntityAPI.lookX(WorldAPI.getPlayer(), 1)+", "+EntityAPI.lookZ(WorldAPI.getPlayer(), 1), 0,
+                    140, 0xFFFFFF);
         }
     }
 }
