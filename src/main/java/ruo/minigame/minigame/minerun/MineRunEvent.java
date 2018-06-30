@@ -18,9 +18,10 @@ public class MineRunEvent {
 	
 	@SubscribeEvent
 	public void playerTick(PlayerTickEvent e){
-		if(!MiniGame.minerun.isStart())
+		if(!MineRun.isStart())
 			return;
-		if(e.phase == Phase.END && MiniGame.minerun.isStart()){
+		System.out.println();
+		if(e.phase == Phase.END && MineRun.isStart()){
 			double veloX = 0, veloZ = 0;
 			String index = e.player.getHorizontalFacing().getName();
 			if (index.equalsIgnoreCase("NORTH")) {
@@ -41,7 +42,7 @@ public class MineRunEvent {
 	}
 	@SubscribeEvent
 	public void keyInput(KeyInputEvent e){
-		if(!MiniGame.minerun.isStart())
+		if(!MineRun.isStart())
 			return;
 		double veloX = 0, veloZ = 0;
 		EntityPlayerMP player = WorldAPI.getPlayerMP();
