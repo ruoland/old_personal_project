@@ -140,7 +140,7 @@ public class CMPlusCameraEvent {
                     0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("플레이어 PITCH" + WorldAPI.getPlayer().rotationPitch, 0,
                     130, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("보고있는 XZ" + EntityAPI.lookX(WorldAPI.getPlayer(), 1)+", "+EntityAPI.lookZ(WorldAPI.getPlayer(), 1), 0,
+            Minecraft.getMinecraft().fontRendererObj.drawString("보고있는 X:" + EntityAPI.lookX(WorldAPI.getPlayer(), 1)+" Z:"+EntityAPI.lookZ(WorldAPI.getPlayer(), 1), 0,
                     140, 0xFFFFFF);
         }
     }

@@ -34,8 +34,8 @@ public class MineRun extends AbstractMiniGame {
         if (isElytraMode()) {
             player.inventory.setInventorySlotContents(1, new ItemStack(Items.ELYTRA));
             Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), 3, EntityAPI.lookZ(player, 2));
-            float roX = EntityAPI.lookX(player, 1) == 0 ? -50 : 0;
-            float roZ = EntityAPI.lookZ(player, 1) == 0 ? -50 : 0;
+            float roX = EntityAPI.lookX(player, 1) == 0 ? 50 : 0;
+            float roZ = EntityAPI.lookZ(player, 1) == 0 ? 50 : 0;
             if (yaw < 0)
                 Camera.getCamera().rotateCamera(roX, yaw - 180, roZ);
             else
@@ -70,6 +70,8 @@ public class MineRun extends AbstractMiniGame {
         else {
             setElytraMode(true);
         }
+        ((MineRunEvent) event).lineLR = 0;
+        ((MineRunEvent) event).lineFB = 0;
         ((MineRunEvent) event).lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
         ((MineRunEvent) event).lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
         ((MineRunEvent) event).lineFBX = EntityAPI.lookX(player, 1);
@@ -79,12 +81,12 @@ public class MineRun extends AbstractMiniGame {
 
     public static void noElytra(EntityPlayer player, double yaw) {
         Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3), -0.9, EntityAPI.lookZ(player, 3));
-        float roX = EntityAPI.lookX(player, 4) == 0 ? 20 : 0;
-        float roZ = EntityAPI.lookZ(player, 4) == 0 ? 20 : 0;
+        float roX = EntityAPI.lookX(player, 4) == 0 ? -20 : 0;
+        float roZ = EntityAPI.lookZ(player, 4) == 0 ? -20 : 0;
         if (yaw < 0)
             Camera.getCamera().rotateCamera(roX, yaw - 180, roZ);
         else
-            Camera.getCamera().rotateCamera(roX, yaw + 180, roZ);
+            Camera.getCamera().rotateCamera(-roX, yaw + 180, -roZ);
     }
 
     @Override

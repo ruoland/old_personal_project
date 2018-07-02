@@ -105,10 +105,8 @@ public class CommandJB extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("3.못하겠으면 /gamemode 1"));
                 sender.addChatMessage(new TextComponentString("4.체력과 배고픔 회복은 /heal"));
                 sender.addChatMessage(new TextComponentString("5.스폰 포인트가 잘못 설정되어 계속 공중에서 떨어지는 경우 /fly true 를 입력하면 하늘을 날 수 있습니다"));
-                sender.addChatMessage(new TextComponentString("6."));
-                sender.addChatMessage(new TextComponentString("7.중간저장을 하려면 /spawnpoint"));
-                sender.addChatMessage(new TextComponentString("8.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
-                sender.addChatMessage(new TextComponentString("9."));
+                sender.addChatMessage(new TextComponentString("6.중간저장을 하려면 /spawnpoint"));
+                sender.addChatMessage(new TextComponentString("7달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
 
             }
             if (args[0].equalsIgnoreCase("apple")) {
@@ -136,7 +134,7 @@ public class CommandJB extends CommandPlusBase {
                 long second = sec - sec / 60 * 60;
                 System.out.println((endTime - startTime) / 1000 + "초.");
 
-                WorldAPI.addMessage(("클리어 시간:" + minute + "분 " + second + "초"));
+                WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
                 WorldAPI.addMessage("플레이 해주셔서 감사합니다.");
             }
 

@@ -73,7 +73,8 @@ public class CommandTool {
 	 * 
 	 * 이 메서드는 값을 설정할 때 쓰임
 	 */
-	public double math(String key, double defaultValue, double argValue){
+	public double math(String key, double defaultValue, String argValueStr){
+	    double argValue = argValueStr.equals("~") ? defaultValue : Double.valueOf(argValueStr);
 		if(key.equals("add"))
 		{
 			return defaultValue+ argValue;
@@ -82,20 +83,26 @@ public class CommandTool {
 		{
 			return defaultValue- argValue;
 		}
+		if(key.equals("~"))
+		{
+			return defaultValue;
+		}
 		if(key.equals("set") || key == null)
 		{
 			return defaultValue = argValue;
 		}
-		if(key.equalsIgnoreCase("~"))
-			return defaultValue;
 		return defaultValue;
 	}
-	public float math(String p_71515_2_, float defaultValue, float argValue){
-		return (float) math(p_71515_2_, (double) defaultValue, (double) argValue);
+    public float math(String p_71515_2_, double defaultValue, double argValue){
+        return (float) math(p_71515_2_, (double) defaultValue, ""+argValue);
+    }
+
+    public float math(String p_71515_2_, float defaultValue, float argValue){
+		return (float) math(p_71515_2_, (double) defaultValue, ""+argValue);
 	}
 
 	public int math(String p_71515_2_, int defaultValue, int argValue){
-		return (int) math(p_71515_2_, (double) defaultValue, (double) argValue);
+		return (int) math(p_71515_2_, (double) defaultValue, ""+argValue);
 	}
 
 	/*

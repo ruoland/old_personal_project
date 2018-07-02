@@ -16,7 +16,7 @@ import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
 public class MineRunEvent {
-    private int lineLR = 0, lineFB;
+    public int lineLR = 0, lineFB = 0;
     public double lineX, lineZ, lineFBX, lineFBZ;
 
     @SubscribeEvent
@@ -43,7 +43,6 @@ public class MineRunEvent {
             MineRun.setElytraMode(!MineRun.isElytraMode());
         }
         if (MineRun.isElytraMode()) {
-            System.out.println(lineLR+""+lineFB);
             if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                 WorldAPI.teleport(player.posX + lineFBX, player.posY, player.posZ + lineFBZ);
                 lineFB++;
@@ -62,13 +61,14 @@ public class MineRunEvent {
             }
         } else {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX +  (lineX * 3), player.posY, player.posZ +  (lineZ * 3));
+                WorldAPI.teleport(player.posX +  (lineX * 2), player.posY, player.posZ +  (lineZ * 2));
                 lineLR++;
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX -  (lineX * 3), player.posY, player.posZ -  (lineZ * 3));
+                WorldAPI.teleport(player.posX -  (lineX * 2), player.posY, player.posZ -  (lineZ * 2));
                 lineLR--;
             }
+            System.out.print(lineLR);
         }
     }
 
