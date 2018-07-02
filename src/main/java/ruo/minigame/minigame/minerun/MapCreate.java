@@ -11,8 +11,8 @@ public class MapCreate {
     public void create(){
         World world = WorldAPI.getWorld();
         EntityPlayer player = WorldAPI.getPlayer();
-        int lookX = (int) EntityAPI.lookX(WorldAPI.getPlayer().getHorizontalFacing(), 4);
-        int lookZ = (int) EntityAPI.lookZ(WorldAPI.getPlayer().getHorizontalFacing(), 4);
+        int lookX = (int) EntityAPI.lookX(WorldAPI.getPlayer().getHorizontalFacing(), 20);
+        int lookZ = (int) EntityAPI.lookZ(WorldAPI.getPlayer().getHorizontalFacing(), 20);
         System.out.println(lookX+" - "+lookZ);
         setBlockX(lookX);
         setBlockZ(lookZ);
@@ -22,8 +22,6 @@ public class MapCreate {
             double forwardLZ = EntityAPI.forwardLeftZ(player, i, true);
             double forwardRX = EntityAPI.forwardRightX(player, i, true);
             double forwardRZ = EntityAPI.forwardRightZ(player, i, true);
-            System.out.println("FLeftRightXZ"+i);
-
             world.setBlockState(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), Blocks.STONE.getDefaultState());
             world.setBlockState(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), Blocks.STONE.getDefaultState());
             setBlockX(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), lookX);

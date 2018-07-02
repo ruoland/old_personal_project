@@ -1,8 +1,14 @@
 package ruo.minigame.action;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBasePressurePlate;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import ruo.minigame.api.BlockAPI;
+import ruo.minigame.api.WorldAPI;
+import ruo.minigame.minigame.minerun.MineRun;
 
 public class ActionEffect {
 	public static String mapName;
@@ -32,7 +38,7 @@ public class ActionEffect {
 
 		}
 	}
-	
+
 	public static boolean canCrawl() {
 		return ActionData.crawlMapList.contains(mapName);
 	}
@@ -48,6 +54,20 @@ public class ActionEffect {
 		return ActionData.doubleJumpList.contains(mapName);
 	}
 
+	public static void teleportSpawnPoint(EntityPlayer player){
+		Block block = player.worldObj.getBlockState(player.getBedLocation().add(0, -1, 0)).getBlock();
+		if(block instanceof BlockLiquid || player.worldObj.isAirBlock(player.getBedLocation().add(0, -1, 0))){
+			BlockAPI blockAPI = WorldAPI.getBlock(player.worldObj, player.getBedLocation(), 4D);
+			for(int i=0;i<blockAPI.size();i++){
+				if(blockAPI.getBlock(i) instanceof BlockBasePressurePlate){
+					MineRun.deadCount++;
+					player.setSpawnPoint(blockAPI.getPos(i), true);
+					WorldAPI.teleport(player.getBedLocation().add(0, 1, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
+					break;
+				}
+			}
+		}
+	}
 	public static void setYTP(double tpy, float pitch, float yaw){
 		ActionData.tpYMap.put(mapName, tpy);
 		ActionData.tpPitchMap.put(mapName, pitch);

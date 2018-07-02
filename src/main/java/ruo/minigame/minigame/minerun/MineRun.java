@@ -18,6 +18,7 @@ import ruo.minigame.minigame.AbstractMiniGame;
 
 public class MineRun extends AbstractMiniGame {
     private static boolean isElytraMode = false;
+    public static int deadCount = 0;
 
     public MineRun() {
         this.event = new MineRunEvent();

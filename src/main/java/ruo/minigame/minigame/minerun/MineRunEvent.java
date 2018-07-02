@@ -1,5 +1,8 @@
 package ruo.minigame.minigame.minerun;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBasePressurePlate;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -12,6 +15,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
+import ruo.minigame.action.ActionEffect;
+import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
@@ -24,8 +29,13 @@ public class MineRunEvent {
         if (!MiniGame.minerun.isStart())
             return;
         if (e.phase == Phase.END && MiniGame.minerun.isStart()) {
+            if(e.player.fallDistance > 5){
+                e.player.fallDistance = 0;
+                ActionEffect.teleportSpawnPoint(e.player);
+            }
             if(MineRun.isElytraMode()){
                 e.player.motionY = 0.2;
+                e.player.fallDistance = 0;
             }
             else {
                 e.player.motionX = EntityAPI.lookX(e.player, 0.3);
