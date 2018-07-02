@@ -20,7 +20,8 @@ public class ActionData implements Serializable {
         String worldName = ActionEffect.mapName;
         if (!worldName.equalsIgnoreCase("noworld")) {
             MiniGame.instance.minigameConfig.get(worldName, "crawl", false).set(crawlMapList.contains(worldName));
-            MiniGame.instance.minigameConfig.get(worldName, "inWater", false).set(inWaterMap.containsKey(worldName));
+            if(inWaterMap.containsKey(worldName))
+            MiniGame.instance.minigameConfig.get(worldName, "inWater", false).set(inWaterMap.get(worldName));
             MiniGame.instance.minigameConfig.get(worldName, "doubleJump", false).set(doubleJumpList.contains(worldName));
             if (tpYMap.containsKey(worldName)) {
                 MiniGame.instance.minigameConfig.get(worldName, "tpY", 0).set(tpYMap.get(worldName));

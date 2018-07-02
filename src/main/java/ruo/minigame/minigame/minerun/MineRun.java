@@ -8,6 +8,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
@@ -34,8 +35,11 @@ public class MineRun extends AbstractMiniGame {
         if (isElytraMode()) {
             player.inventory.setInventorySlotContents(1, new ItemStack(Items.ELYTRA));
             Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), 3, EntityAPI.lookZ(player, 2));
-            float roX = EntityAPI.lookX(player, 1) == 0 ? 50 : 0;
-            float roZ = EntityAPI.lookZ(player, 1) == 0 ? 50 : 0;
+            float roX = EntityAPI.lookX(player, 1) == 0 ? -50 : 0;
+            float roZ = EntityAPI.lookZ(player, 1) == 0 ? -50 : 0;
+            if(player.getHorizontalFacing() == EnumFacing.WEST){
+                roZ = Math.abs(roZ);
+            }
             if (yaw < 0)
                 Camera.getCamera().rotateCamera(roX, yaw - 180, roZ);
             else
@@ -65,10 +69,17 @@ public class MineRun extends AbstractMiniGame {
         Camera.getCamera().lockCamera(true);
         Camera.getCamera().playerCamera(true);
         Camera.getCamera().lockCamera(true, (float) yaw, 0);
-        if (obj.length == 1 || !obj[1].equals("elytra"))
-            noElytra(player, yaw);
-        else {
-            setElytraMode(true);
+        noElytra(player, yaw);
+
+        if(obj.length > 1 && obj[1] instanceof String[]){
+            String[] str = (String[]) obj[1];
+            if(str.length > 0) {
+                if (str[0].equals("elytra"))
+                    setElytraMode(true);
+                if (str[0].equals("create")) {
+                    new MapCreate().create();
+                }
+            }
         }
         ((MineRunEvent) event).lineLR = 0;
         ((MineRunEvent) event).lineFB = 0;
@@ -83,10 +94,15 @@ public class MineRun extends AbstractMiniGame {
         Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3), -0.9, EntityAPI.lookZ(player, 3));
         float roX = EntityAPI.lookX(player, 4) == 0 ? -20 : 0;
         float roZ = EntityAPI.lookZ(player, 4) == 0 ? -20 : 0;
-        if (yaw < 0)
-            Camera.getCamera().rotateCamera(roX, yaw - 180, roZ);
-        else
-            Camera.getCamera().rotateCamera(-roX, yaw + 180, -roZ);
+        if(roX < 0){
+            roX = 20;
+        }
+        if(roZ < 0){
+            roZ = 20;
+        }
+        if(player.getHorizontalFacing() == EnumFacing.WEST)
+            roZ = -20;
+        Camera.getCamera().rotateCamera(roX, yaw + 180, roZ);
     }
 
     @Override
