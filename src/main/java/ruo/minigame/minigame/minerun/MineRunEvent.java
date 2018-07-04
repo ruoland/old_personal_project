@@ -38,8 +38,8 @@ public class MineRunEvent {
                 e.player.fallDistance = 0;
             }
             else {
-                e.player.motionX = EntityAPI.lookX(e.player, 0.3);
-                e.player.motionZ = EntityAPI.lookZ(e.player, 0.3);
+                e.player.motionX = EntityAPI.lookX(e.player, 0.5);
+                e.player.motionZ = EntityAPI.lookZ(e.player, 0.5);
             }
         }
     }
