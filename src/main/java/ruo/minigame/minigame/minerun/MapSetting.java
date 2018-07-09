@@ -6,8 +6,29 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.effect.AbstractTick;
 
-public class MapCreate {
+public class MapSetting {
+
+    public void firstSetting(){
+        WorldAPI.getWorld().setBlockState(new BlockPos(-188,64,567), Blocks.STONE.getDefaultState());
+        spawnCreeper(-187.5, 65.0, 567.5);
+        EntityAPI.position(-192.6, 58.0, 572.4,-187, 58, 572, 1, new AbstractTick.Position() {
+            @Override
+            public void runPosition() {
+                WorldAPI.getWorld().setBlockToAir(new BlockPos(-188,64,567));
+            }
+        });
+        spawnCreeper(-191.3, 60.0, 538.4);
+        spawnCreeper(-189.4, 60.0, 534.7);
+
+    }
+
+    public void spawnCreeper(double x, double y, double z){
+        EntityMineRunCreeper creeper = new EntityMineRunCreeper(WorldAPI.getWorld());
+        creeper.setPosition(-191.5, 60.0, 538.9);
+        WorldAPI.getWorld().spawnEntityInWorld(creeper);
+    }
     public void create(){
         World world = WorldAPI.getWorld();
         EntityPlayer player = WorldAPI.getPlayer();

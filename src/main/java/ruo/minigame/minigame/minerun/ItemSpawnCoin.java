@@ -10,6 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ruo.cmplus.cm.v17.CommandPosition;
 
 public class ItemSpawnCoin extends Item {
 
@@ -18,7 +19,6 @@ public class ItemSpawnCoin extends Item {
         EntityItem enderstar = new EntityItem(worldIn, hitX, hitY, hitZ, new ItemStack(Items.NETHER_STAR));
         enderstar.setInfinitePickupDelay();
         worldIn.spawnEntityInWorld(enderstar);
-
         return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 }
