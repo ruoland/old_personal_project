@@ -32,7 +32,7 @@ public class CMPlusCameraEvent {
     public void event2(EntityViewRenderEvent.FOVModifier e) {
         e.setFOV(Camera.getCamera().getZoom());
     }
-
+    //asdf
     @SubscribeEvent
     public void event2(EntityViewRenderEvent.CameraSetup e) {
         GL11.glTranslated(cm.traX, 0, 0);
