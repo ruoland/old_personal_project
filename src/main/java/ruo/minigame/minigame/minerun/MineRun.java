@@ -86,7 +86,7 @@ public class MineRun extends AbstractMiniGame {
                 if (str[0].equals("elytra"))
                     setElytra(1);
                 if (str[0].equals("create")) {
-                    new MapCreate().create();
+                    new MapSetting().create();
                 }
             }
         }
