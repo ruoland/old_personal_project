@@ -6,6 +6,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -17,24 +18,30 @@ import ruo.minigame.api.WorldAPI;
 import ruo.minigame.minigame.AbstractMiniGame;
 
 public class MineRun extends AbstractMiniGame {
-    private static boolean isElytraMode = false;
+    private static int elytra = 0;//1 = 위로 2 = 앞으로
     public static int deadCount = 0;
 
     public MineRun() {
         this.event = new MineRunEvent();
     }
 
-    public static boolean isElytraMode() {
-        return isElytraMode;
+    public static int elytraMode() {
+        return elytra;
     }
 
-    public static void setElytraMode(boolean elytraMode) {
-        isElytraMode = elytraMode;
+    public static void setElytra(int elytraMode) {
+        elytra = elytraMode;
         EntityPlayer player = WorldAPI.getPlayerMP();
         double yaw = player.getHorizontalFacing().getHorizontalAngle();
 
-        if (isElytraMode()) {
-            player.inventory.setInventorySlotContents(1, new ItemStack(Items.ELYTRA));
+        if(elytraMode == 1 || elytraMode == 2){
+            player.inventory.armorInventory[1] = new ItemStack(Items.ELYTRA);
+        }
+        if(elytraMode == 2) {
+            ((EntityPlayerMP) player).setElytraFlying();
+            noElytra(player, yaw);
+        }
+        else if (elytraMode == 1) {
             Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), 3, EntityAPI.lookZ(player, 2));
             float roX = EntityAPI.lookX(player, 1) == 0 ? -50 : 0;
             float roZ = EntityAPI.lookZ(player, 1) == 0 ? -50 : 0;
@@ -46,6 +53,7 @@ public class MineRun extends AbstractMiniGame {
             else
                 Camera.getCamera().rotateCamera(roX, yaw + 180, roZ);
         } else {
+            ((EntityPlayerMP) player).clearElytraFlying();
             noElytra(player, yaw);
         }
     }
@@ -76,7 +84,7 @@ public class MineRun extends AbstractMiniGame {
             String[] str = (String[]) obj[1];
             if(str.length > 0) {
                 if (str[0].equals("elytra"))
-                    setElytraMode(true);
+                    setElytra(1);
                 if (str[0].equals("create")) {
                     new MapCreate().create();
                 }
@@ -114,8 +122,15 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
         gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
         gs.keyBindUseItem.resetKeyBindingArrayAndHash();
-        setElytraMode(false);
+        setElytra(0);
         Camera.getCamera().reset();
         return super.end();
+    }
+
+    public void resetLine() {
+        MineRunEvent runEvent = (MineRunEvent) event;
+        runEvent.lineLR = 0;
+        runEvent.lineFB = 0;
+        runEvent.lineUD = 0;
     }
 }

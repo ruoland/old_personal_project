@@ -21,7 +21,9 @@ public class CommandMineRun extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		
+		if(args.length > 0){
+			MiniGame.minerun.resetLine();
+		}
 		if(args.length > 0 && (args[0].equalsIgnoreCase("end") || args[0].equalsIgnoreCase("stop")))
 			MiniGame.minerun.end();
 		else
