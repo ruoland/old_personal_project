@@ -51,8 +51,8 @@ public class MineRunEvent {
                     WorldAPI.teleport(fakePlayer.posX+EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY + 1, e.player.posZ, fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
 
                 if (MiniGame.minerun.elytraMode() == 2) {
-                    FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(e.player, 0.06);
-                    FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(e.player, 0.06);
+                    FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(e.player, 0.08);
+                    FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(e.player, 0.08);
                 }
                 if (FakePlayerHelper.fakePlayer.fallDistance > 5) {
                     FakePlayerHelper.fakePlayer.fallDistance = 0;
@@ -64,8 +64,8 @@ public class MineRunEvent {
                     FakePlayerHelper.fakePlayer.motionY = 0.2;
                     FakePlayerHelper.fakePlayer.fallDistance = 0;
                 } else {
-                    FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(FakePlayerHelper.fakePlayer, 0.06);
-                    FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(FakePlayerHelper.fakePlayer, 0.06);
+                    FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(FakePlayerHelper.fakePlayer, 0.1);
+                    FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(FakePlayerHelper.fakePlayer, 0.1);
                     //WorldAPI.teleport(MiniGame.minerun.getTeleportPos(), MiniGame.minerun.getYaw(), -70);
                 }
             }
@@ -94,6 +94,7 @@ public class MineRunEvent {
             }
         }
         if (MineRun.elytraMode() == 2) {
+
             if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                 fakePlayer.setPosition(fakePlayer.posX, fakePlayer.posY + 1, fakePlayer.posZ);
                 lineUD++;
@@ -144,6 +145,9 @@ public class MineRunEvent {
                 lineLR--;
             }
             System.out.println(lineLR);
+        }
+        if (DebAPI.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.getEventKeyState()) {
+            fakePlayer.jump();
         }
     }
 

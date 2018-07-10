@@ -72,31 +72,27 @@ public class MineRun extends AbstractMiniGame {
 
     @Override
     public boolean start(Object... obj) {
-        if(WorldAPI.equalsHeldItem(Items.APPLE)) {
-            GameSettings gs = Minecraft.getMinecraft().gameSettings;
-            //gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
-            //gs.keyBindRight.setKeyCode(Keyboard.KEY_SLEEP);
-            //gs.keyBindForward.setKeyCode(Keyboard.KEY_SLEEP);
-            //gs.keyBindBack.setKeyCode(Keyboard.KEY_SLEEP);
-            ICommandSender sender = (ICommandSender) obj[0];
-            player = FakePlayerHelper.spawnFakePlayer(false);
-            WorldAPI.teleport(player.posX + EntityAPI.lookX(player, -2), player.posY + 1, player.posZ + EntityAPI.lookZ(player, -2), player.rotationYaw, 70);
-            double yaw = player.getHorizontalFacing().getHorizontalAngle();
-            //Camera.getCamera().reset();
-            //Camera.getCamera().lockCamera(true);
-            //Camera.getCamera().playerCamera(true);
-            //Camera.getCamera().lockCamera(true, (float) yaw, 0);
-            MiniGame.mineRunEvent.lineLR = 0;
-            MiniGame.mineRunEvent.lineFB = 0;
-            MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
-            MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
-            MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
-            MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
-            MiniGame.mineRunEvent.spawnX = player.posX;
-            MiniGame.mineRunEvent.spawnY = player.posY;
-            MiniGame.mineRunEvent.spawnZ = player.posZ;
-
-        }
+        GameSettings gs = Minecraft.getMinecraft().gameSettings;
+        gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
+        gs.keyBindRight.setKeyCode(Keyboard.KEY_SLEEP);
+        gs.keyBindForward.setKeyCode(Keyboard.KEY_SLEEP);
+        gs.keyBindBack.setKeyCode(Keyboard.KEY_SLEEP);
+        ICommandSender sender = (ICommandSender) obj[0];
+        player = FakePlayerHelper.spawnFakePlayer(false);
+        WorldAPI.teleport(player.posX + EntityAPI.lookX(player, -2), player.posY + 1, player.posZ + EntityAPI.lookZ(player, -2), player.rotationYaw, 70);
+        double yaw = player.getHorizontalFacing().getHorizontalAngle();
+        Camera.getCamera().reset();
+        Camera.getCamera().lockCamera(true, (float) yaw, 0);
+        Camera.getCamera().rotateY = yaw - 180;
+        MiniGame.mineRunEvent.lineLR = 0;
+        MiniGame.mineRunEvent.lineFB = 0;
+        MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
+        MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
+        MiniGame.mineRunEvent.spawnX = player.posX;
+        MiniGame.mineRunEvent.spawnY = player.posY;
+        MiniGame.mineRunEvent.spawnZ = player.posZ;
         return super.start();
     }
 
