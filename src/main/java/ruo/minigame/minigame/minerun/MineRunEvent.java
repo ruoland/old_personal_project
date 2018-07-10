@@ -42,6 +42,8 @@ public class MineRunEvent {
             e.player.motionY = 0;
             e.player.onGround = false;
             if(!e.player.isElytraFlying()){
+                e.player.motionY -= 0.001;//안되면 이것
+
                 if(e.player instanceof EntityPlayerMP)
                 ((EntityPlayerMP) e.player).setElytraFlying();
                 if(WorldAPI.equalsHeldItem(Items.APPLE)) {
@@ -49,7 +51,6 @@ public class MineRunEvent {
                     e.player.capabilities.isFlying = true;
                     e.player.sendPlayerAbilities();
                 }
-                e.player.motionY += 0.01;
                 WorldAPI.getPlayerSP().connection.sendPacket(new CPacketEntityAction(WorldAPI.getPlayerSP(), CPacketEntityAction.Action.START_FALL_FLYING));
                 NBTTagCompound compound = new NBTTagCompound();
                 WorldAPI.getPlayerSP().writeEntityToNBT(compound);

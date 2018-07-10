@@ -1,6 +1,7 @@
 package ruo.minigame;
 
 import api.player.client.ClientPlayerAPI;
+import api.player.render.RenderPlayerAPI;
 import api.player.server.ServerPlayerAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -63,6 +64,7 @@ public class MiniGame {
             Class.forName("api.player.server.ServerPlayerAPI");
             ServerPlayerAPI.register("MiniGame", MiniGameServerPlayer.class);
             ClientPlayerAPI.register("MiniGame", MiniGameClientPlayer.class);
+            RenderPlayerAPI.register("MiniGame", MiniGameRenderPlayer.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

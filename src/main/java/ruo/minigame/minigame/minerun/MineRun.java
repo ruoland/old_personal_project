@@ -110,7 +110,6 @@ public class MineRun extends AbstractMiniGame {
         ((MineRunEvent) event).lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
         ((MineRunEvent) event).lineFBX = EntityAPI.lookX(player, 1);
         ((MineRunEvent) event).lineFBZ = EntityAPI.lookZ(player, 1);
-        ((MineRunEvent) event).lineY = player.posY;
 
         return super.start();
     }
@@ -138,8 +137,9 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
         gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
         gs.keyBindUseItem.resetKeyBindingArrayAndHash();
-        Camera.getCamera().reset();
         setElytra(0);
+        Camera.getCamera().reset();
+
         return super.end();
     }
 
