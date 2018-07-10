@@ -98,7 +98,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
         this.hurtResistantTime = 0;
         this.maxHurtResistantTime = 0;
         this.maxHurtTime = 0;
-        if (WorldAPI.getPlayer() == null || FakePlayerHelper.fakePlayer == null || !Elytra.isStart()) {//플레이어가 없는 경우
+        if (WorldAPI.getPlayer() == null || FakePlayerHelper.fakePlayer == null || !MiniGame.elytra.isStart()) {//플레이어가 없는 경우
             this.setDead();
             return;
         }

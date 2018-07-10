@@ -1,19 +1,16 @@
 package ruo.minigame.minigame;
 
+import net.minecraft.init.Items;
 import net.minecraftforge.common.MinecraftForge;
+import ruo.cmplus.cm.CommandChat;
 import ruo.minigame.api.WorldAPI;
 
 public abstract class AbstractMiniGame {
-	public static long startTime, endTime;
+	public long startTime, endTime;
 
-	private static boolean isStart;
-	public Object event;
+	private boolean isStart;
 	public boolean start(Object... obj){
 		if(!isStart){
-			if(event != null)
-			{
-				MinecraftForge.EVENT_BUS.register(event);
-			}
 			isStart = true;
 			startTime = System.currentTimeMillis();
 
@@ -27,10 +24,7 @@ public abstract class AbstractMiniGame {
 		if(isStart){
 			isStart = false;
 
-			if(event != null)
-			{
-				MinecraftForge.EVENT_BUS.unregister(event);
-			}
+
 			endTime = System.currentTimeMillis();
 			long se = endTime - startTime;
 			long sec = se / (1000);
@@ -42,7 +36,7 @@ public abstract class AbstractMiniGame {
 		return isStart;
 	}
 	
-	public static boolean isStart(){
+	public boolean isStart(){
 		return isStart;
 	}
 }

@@ -5,9 +5,12 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderSkeleton;
+import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -145,7 +148,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         this.mainModel.isChild = entity.isChild();
         if (entity.getModel() == TypeModel.NPC && !(mainModel instanceof ModelDefaultNPC)) {
             mainModel = new ModelDefaultNPC();
-            DEFAULT_RES_LOC = new ResourceLocation("boss:textures/steve.png");
+            DEFAULT_RES_LOC = new ResourceLocation("textures/entity/steve.png");
         }
         if ((entity.getModel() == TypeModel.ZOMBIE && !(mainModel instanceof ModelZombie))) {
             mainModel = new ModelZombie();

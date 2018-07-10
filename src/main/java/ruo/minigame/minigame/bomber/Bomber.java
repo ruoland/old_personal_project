@@ -13,7 +13,6 @@ public class Bomber extends AbstractMiniGame{
 	public static Item bombItem = new ItemBomber();
 	
 	public Bomber() {
-		this.event = new BombEvent();
 	}
 	
 	@Override

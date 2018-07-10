@@ -34,7 +34,7 @@ public class EntityElytraWeenTNT extends EntityElytraWeenCore {
     @Override
     public void onDeath(DamageSource cause) {
         super.onDeath(cause);
-        ElytraEvent a = (ElytraEvent) MiniGame.elytra.event;
+        ElytraEvent a = MiniGame.elytraEvent;
         if (!MiniGame.elytra.isStart() || a == null)
             return;
         a.killCount++;

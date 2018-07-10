@@ -35,7 +35,7 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void login(LivingDeathEvent event) {
-        if (MiniGame.elytra.isStart() && event.getEntityLiving() instanceof EntityFakePlayer) {
+        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getEntityLiving() instanceof EntityFakePlayer) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiElytraGameOver(killCount));
             Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();;
         }
@@ -43,16 +43,15 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void login(RenderGameOverlayEvent.Post event) {
-        if (MiniGame.elytra.isStart() && event.getType() == ElementType.ALL) {
+        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getType() == ElementType.ALL) {
             Minecraft.getMinecraft().fontRendererObj.drawString("적 죽인 횟수:" + killCount, 0, 0, 0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("폭탄 갯수:" + Elytra.bombCount, 0, 10, 0xFFFFFF);
-
         }
     }
 
     @SubscribeEvent
     public void event(MouseEvent event) {
-        if (!MiniGame.elytra.isStart())
+        if (!MiniGame.elytra.isStart()|| FakePlayerHelper.fakePlayer != null)
             return;
         if (event.getDwheel() == 120 && WorldAPI.y() > FakePlayerHelper.fakePlayer.posY) {
             WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() - 0.5, WorldAPI.z());
@@ -64,8 +63,9 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void login(PlayerInteractEvent event) {
-        if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
+        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null&& (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
+            System.out.println(MiniGame.elytra.isStart()+"엘리트라 실행됨");
             EntityFakePlayer player = FakePlayerHelper.fakePlayer;
             spawnArrow(player.posX, player.posY, player.posZ);
             String index = WorldAPI.getPlayer().getHorizontalFacing().getName();

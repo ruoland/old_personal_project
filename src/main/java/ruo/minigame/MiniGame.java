@@ -26,9 +26,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.CommandClassLoader;
 import ruo.cmplus.deb.DebAPI;
-import ruo.minigame.command.CommandMonologue;
+import ruo.minigame.android.CommandCall;
+import ruo.minigame.android.CommandNotification;
+import ruo.minigame.command.*;
+import ruo.minigame.effect.TickRegister;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
+import ruo.minigame.minigame.bomber.BomberEvent;
+import ruo.minigame.minigame.elytra.ElytraEvent;
 import ruo.minigame.minigame.minerun.MineRun;
 import ruo.minigame.action.ActionData;
 import ruo.minigame.action.ActionEvent;
@@ -38,7 +43,11 @@ import ruo.minigame.minigame.elytra.Elytra;
 import ruo.minigame.minigame.elytra.EntityElytraItem;
 import ruo.minigame.minigame.elytra.EntityFlyingWeen;
 import ruo.minigame.minigame.elytra.miniween.*;
+import ruo.minigame.minigame.minerun.MineRunEvent;
 import ruo.minigame.minigame.scroll.Scroll;
+import ruo.minigame.minigame.scroll.ScrollEvent;
+
+import java.awt.event.PaintEvent;
 
 
 @Mod(modid = "MiniGame", name = "MiniGame")
@@ -54,10 +63,16 @@ public class MiniGame {
     public static MiniGame instance;
 
     public static MineRun minerun;
-    public static Scroll scroll;
-    public static Bomber bomber;
-    public static Elytra elytra;
+    public static MineRunEvent mineRunEvent;
 
+    public static Scroll scroll;
+    public static ScrollEvent scrollEvent;
+
+    public static Bomber bomber;
+    public static BomberEvent bomberEvent;
+
+    public static Elytra elytra;
+    public static ElytraEvent elytraEvent;
     public Configuration minigameConfig;
     public MiniGame() {
         try {
@@ -80,6 +95,10 @@ public class MiniGame {
         proxy.pre(e);
         network();
         ActionData.load();
+        MiniGame.minerun = new MineRun();
+        MiniGame.scroll = new Scroll();
+        MiniGame.bomber = new Bomber();
+        MiniGame.elytra = new Elytra();
         //ClientPlayerAPI.register("MiniGame", LoopPlayer.class);
     }
 
@@ -105,6 +124,12 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultNPC", EntityDefaultNPC.class);
         DebAPI.registerEvent(new ActionEvent());
+        DebAPI.registerEvent(new TickRegister());
+        DebAPI.registerEvent(new MiniGameEvent());
+        DebAPI.registerEvent(mineRunEvent = new MineRunEvent());
+        DebAPI.registerEvent(scrollEvent = new ScrollEvent());
+        DebAPI.registerEvent(bomberEvent = new BomberEvent());
+        DebAPI.registerEvent(elytraEvent = new ElytraEvent());
         ClientRegistry.registerKeyBinding(grab);
 
         ClientCommandHandler.instance.registerCommand(new CommandMg());
@@ -115,6 +140,15 @@ public class MiniGame {
         e.registerServerCommand(new CommandMonologue());
         e.registerServerCommand(new CommandClassLoader());
         e.registerServerCommand(new CommandMgs());
+
+        e.registerServerCommand(new CommandScroll());
+        e.registerServerCommand(new CommandBomber());
+        e.registerServerCommand(new CommandElytra());
+        //e.registerCommand(new CommandMonologue());
+        e.registerServerCommand(new CommandMineRun());
+        e.registerServerCommand(new CommandNotification());
+        e.registerServerCommand(new CommandCall());
+
     }
 
     @EventHandler

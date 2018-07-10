@@ -18,6 +18,12 @@ public class CommandMg extends CommandPlusBase {
         super.execute(server, sender, args);
         EntityPlayer player = (EntityPlayer) sender;
         Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
+        if(args[0].equalsIgnoreCase("aa")){
+            System.out.println(MiniGame.elytra.isStart());
+            System.out.println(MiniGame.bomber.isStart());
+            System.out.println(MiniGame.minerun.isStart());
+            System.out.println(MiniGame.scroll.isStart());
+        }
         if(entity != null){
             EntityDefaultNPC entitydefServer = EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
             EntityDefaultNPC entitydefClient = (EntityDefaultNPC) entity;

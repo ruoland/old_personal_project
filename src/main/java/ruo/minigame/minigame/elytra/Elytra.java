@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.camera.Camera;
+import ruo.minigame.MiniGame;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
@@ -27,6 +28,7 @@ public class Elytra extends AbstractMiniGame {
 
     @Override
     public boolean start(Object... obj) {
+        System.out.println("엘리트라 실행ㅚㅁ");
         width = Minecraft.getMinecraft().displayWidth;
         height = Minecraft.getMinecraft().displayHeight;
 
@@ -43,7 +45,6 @@ public class Elytra extends AbstractMiniGame {
             WorldAPI.command("/display size 700 950");
 
         if (obj[0].equals("0")) {// 0번이 위에서 아래를 보는 시점임
-            event = new ElytraEvent();
             if (FakePlayerHelper.fakePlayer != null)
                 FakePlayerHelper.fakePlayer.setDead();
             WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 55, WorldAPI.z());//60 위로 이동
@@ -56,7 +57,7 @@ public class Elytra extends AbstractMiniGame {
             cameraSetting(index);
             //firstPattern();
             first();
-            ((ElytraEvent) event).elytraMode = true;
+            ((ElytraEvent) MiniGame.elytraEvent).elytraMode = true;
         }
         if (obj[0].equals("1")) {
             WorldAPI.getPlayer().inventory.armorInventory[2] = new ItemStack(Items.ELYTRA);
@@ -86,7 +87,7 @@ public class Elytra extends AbstractMiniGame {
                 Camera.getCamera().rotateCamera(0, 0, 50);
                 Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
             }
-            ((ElytraEvent) event).elytraMode = false;
+            ((ElytraEvent) MiniGame.elytraEvent).elytraMode = false;
 
         }
         return super.start();
@@ -187,13 +188,12 @@ public class Elytra extends AbstractMiniGame {
     @Override
     public boolean end(Object... obj) {
         Camera.getCamera().reset();
-        if (event != null && event instanceof ElytraEvent) {
-            ElytraEvent eve = (ElytraEvent) event;
+        if (MiniGame.elytraEvent != null && MiniGame.elytraEvent instanceof ElytraEvent) {
+            ElytraEvent eve = (ElytraEvent) MiniGame.elytraEvent;
             eve.spawnY = 0;
             WorldAPI.command("/display size 854 480");
             WorldAPI.command("/ui reset");
             bossEnd = true;
-
             WorldAPI.teleport(playerSpawnX,playerSpawnY-45,playerSpawnZ);
         }
 

@@ -24,6 +24,8 @@ import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.fakeplayer.EntityFakePlayer;
+import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class MineRunEvent {
     //elytra 1
@@ -32,124 +34,116 @@ public class MineRunEvent {
     //elytra 2
     public int lineUD = 0;
 
-    public double lineX, lineY, lineZ, lineFBX, lineFBZ;
-
+    //line은 왼쪽라인 오른쪽라인으로 갈 수 있는 값을 담고 있음
+    //
+    public double lineX, lineZ, lineFBX, lineFBZ;
+    public double spawnX, spawnY, spawnZ;
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
-        if (!MiniGame.minerun.isStart())
+        if (!MiniGame.minerun.isStart() || FakePlayerHelper.fakePlayer == null)
             return;
-        if(e.player.isElytraFlying() || MiniGame.minerun.elytraMode() == 2) {
-            e.player.motionY = 0;
-            e.player.onGround = false;
-            if(!e.player.isElytraFlying()){
-                e.player.motionY -= 0.001;//안되면 이것
 
-                if(e.player instanceof EntityPlayerMP)
-                ((EntityPlayerMP) e.player).setElytraFlying();
-                if(WorldAPI.equalsHeldItem(Items.APPLE)) {
-                    e.player.onGround = false;
-                    e.player.capabilities.isFlying = true;
-                    e.player.sendPlayerAbilities();
+            if (e.phase == Phase.END) {
+                EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
+                if(lineZ == 0)
+                    WorldAPI.teleport(e.player.posX, fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -4), fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
+                else
+                    WorldAPI.teleport(fakePlayer.posX+EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY + 1, e.player.posZ, fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
+
+                if (MiniGame.minerun.elytraMode() == 2) {
+                    FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(e.player, 0.06);
+                    FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(e.player, 0.06);
                 }
-                WorldAPI.getPlayerSP().connection.sendPacket(new CPacketEntityAction(WorldAPI.getPlayerSP(), CPacketEntityAction.Action.START_FALL_FLYING));
-                NBTTagCompound compound = new NBTTagCompound();
-                WorldAPI.getPlayerSP().writeEntityToNBT(compound);
-                compound.setBoolean("FallFlying" , true);
-                WorldAPI.getPlayerSP().readEntityFromNBT(compound);
-                System.out.println("MP인가?" +(e.player instanceof EntityPlayerMP)+ "땅? "+e.player.onGround + "모션? "+e.player.motionY+"SP 플라잉"+WorldAPI.getPlayerSP().isElytraFlying() + WorldAPI.getPlayerMP().isElytraFlying());
+                if (FakePlayerHelper.fakePlayer.fallDistance > 5) {
+                    FakePlayerHelper.fakePlayer.fallDistance = 0;
+                    FakePlayerHelper.fakePlayer.setPosition(e.player.getBedLocation());
+                    ActionEffect.teleportSpawnPoint(e.player);
+                    //WorldAPI.teleport(MiniGame.minerun.getTeleportPos(), MiniGame.minerun.getYaw(), -70);
+                }
+                if (MineRun.elytraMode() == 1) {
+                    FakePlayerHelper.fakePlayer.motionY = 0.2;
+                    FakePlayerHelper.fakePlayer.fallDistance = 0;
+                } else {
+                    FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(FakePlayerHelper.fakePlayer, 0.06);
+                    FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(FakePlayerHelper.fakePlayer, 0.06);
+                    //WorldAPI.teleport(MiniGame.minerun.getTeleportPos(), MiniGame.minerun.getYaw(), -70);
+                }
             }
-        }
-        if (e.phase == Phase.END) {
-
-            if (e.player.fallDistance > 5) {
-                e.player.fallDistance = 0;
-                ActionEffect.teleportSpawnPoint(e.player);
-            }
-            if (MineRun.elytraMode() == 1) {
-                e.player.motionY = 0.2;
-                e.player.fallDistance = 0;
-            } else {
-                e.player.motionX = EntityAPI.lookX(e.player, 0.2);
-                e.player.motionZ = EntityAPI.lookZ(e.player, 0.2);
-            }
-        }
     }
 
     @SubscribeEvent
     public void keyInput(KeyInputEvent e) {
-        if (!MiniGame.minerun.isStart())
+        if (!MiniGame.minerun.isStart()|| FakePlayerHelper.fakePlayer == null)
             return;
-        EntityPlayerMP player = WorldAPI.getPlayerMP();
+        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
-            System.out.println("aaa " + MineRun.elytraMode());
             if (MineRun.elytraMode() == 2) {
-                MineRun.setElytra(1);
+                MiniGame.minerun.setElytra(1);
                 System.out.println(MineRun.elytraMode());
                 return;
             }
             if (MineRun.elytraMode() == 1) {
-                MineRun.setElytra(0);
+                MiniGame.minerun.setElytra(0);
                 System.out.println(MineRun.elytraMode());
                 return;
             }
             if (MineRun.elytraMode() == 0) {
-                MineRun.setElytra(2);
+                MiniGame.minerun.setElytra(2);
                 System.out.println(MineRun.elytraMode());
                 return;
             }
         }
         if (MineRun.elytraMode() == 2) {
             if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX, player.posY + 1, player.posZ);
+                fakePlayer.setPosition(fakePlayer.posX, fakePlayer.posY + 1, fakePlayer.posZ);
                 lineUD++;
                 System.out.println(lineUD);
             }
             if (lineUD > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX, player.posY - 1, player.posZ);
+                fakePlayer.setPosition(fakePlayer.posX, fakePlayer.posY - 1, fakePlayer.posZ);
                 lineUD--;
                 System.out.println(lineUD);
             }
             if(DebAPI.isKeyDown(Keyboard.KEY_W) || DebAPI.isKeyDown(Keyboard.KEY_S)){
                 if(lineUD == 0)
-                WorldAPI.teleport(player.posX, player.posY + lineUD, player.posZ);
-
+                fakePlayer.setPosition(fakePlayer.posX, fakePlayer.posY + lineUD, fakePlayer.posZ);
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX + lineX, player.posY, player.posZ + lineZ);
+                fakePlayer.setPosition(fakePlayer.posX + lineX, fakePlayer.posY, fakePlayer.posZ + lineZ);
                 lineLR++;
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX - lineX, player.posY, player.posZ - lineZ);
+                fakePlayer.setPosition(fakePlayer.posX - lineX, fakePlayer.posY, fakePlayer.posZ - lineZ);
                 lineLR--;
             }
         }
         if (MineRun.elytraMode() == 1) {
             if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX + lineFBX, player.posY, player.posZ + lineFBZ);
+                fakePlayer.setPosition(fakePlayer.posX + lineFBX, fakePlayer.posY, fakePlayer.posZ + lineFBZ);
                 lineFB++;
             }
             if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX - lineFBX, player.posY, player.posZ - lineFBZ);
+                fakePlayer.setPosition(fakePlayer.posX - lineFBX, fakePlayer.posY, fakePlayer.posZ - lineFBZ);
                 lineFB--;
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX + lineX, player.posY, player.posZ + lineZ);
+                fakePlayer.setPosition(fakePlayer.posX + lineX, fakePlayer.posY, fakePlayer.posZ + lineZ);
                 lineLR++;
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX - lineX, player.posY, player.posZ - lineZ);
+                fakePlayer.setPosition(fakePlayer.posX - lineX, fakePlayer.posY, fakePlayer.posZ - lineZ);
                 lineLR--;
             }
         } else if(MineRun.elytraMode() == 0){
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX +  (lineX * 2), player.posY, player.posZ +  (lineZ * 2));
+                fakePlayer.setPosition(fakePlayer.posX +  (lineX * 2), fakePlayer.posY, fakePlayer.posZ +  (lineZ * 2));
                 lineLR++;
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
-                WorldAPI.teleport(player.posX -  (lineX * 2), player.posY, player.posZ -  (lineZ * 2));
+                fakePlayer.setPosition(fakePlayer.posX -  (lineX * 2), fakePlayer.posY, fakePlayer.posZ -  (lineZ * 2));
                 lineLR--;
             }
-            System.out.print(lineLR);
+            System.out.println(lineLR);
         }
     }
 

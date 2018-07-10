@@ -86,7 +86,7 @@ public class EntityElytraWeenCore extends EntityDefaultNPC {
     @Override
     public void onDeath(DamageSource cause) {
         super.onDeath(cause);
-        ElytraEvent a = (ElytraEvent) MiniGame.elytra.event;
+        ElytraEvent a = MiniGame.elytraEvent;
         if (canDropItem() && rand.nextInt(20) == 0 && isServerWorld()) {
             EntityElytraItem elytraItem = new EntityElytraItem(worldObj, posX, posY, posZ);
             worldObj.spawnEntityInWorld(elytraItem);

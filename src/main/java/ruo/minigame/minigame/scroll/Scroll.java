@@ -17,7 +17,6 @@ public class Scroll extends AbstractMiniGame {
 	public boolean x, z, xR, zR;
 
 	public Scroll() {
-		event = new ScrollEvent();
 		mc = Minecraft.getMinecraft();
 		s = mc.gameSettings;
 	}

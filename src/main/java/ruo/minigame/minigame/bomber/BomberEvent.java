@@ -10,14 +10,15 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.minigame.MiniGame;
 
-public class BombEvent {
+public class BomberEvent {
 	@SubscribeEvent
 	public void login(WorldEvent.Unload event) {
 		MiniGame.bomber.end();
 	}
 	@SubscribeEvent
 	public void explode(ExplosionEvent event) {
-
+		if (!MiniGame.bomber.isStart())
+			return;
 		if(!(event.getExplosion().getExplosivePlacedBy() instanceof EntityPlayer))
 			return;
 		for(int z = 0; z < 3;z++){ 

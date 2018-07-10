@@ -10,22 +10,16 @@ public class FakePlayerHelper {
 
     public static EntityFakePlayer fakePlayer;
     public static double forwardLeftX(double plus, boolean pos) {
-        EnumFacing left = EnumFacing.fromAngle(fakePlayer.getHorizontalFacing().getHorizontalAngle() - 91);
-        return EntityAPI.forwardX(fakePlayer, left, plus, pos);
+        return EntityAPI.forwardLeftX(fakePlayer, plus, pos);
     }
     public static double forwardLeftZ(double plus, boolean pos) {
-        EnumFacing left = EnumFacing.fromAngle(fakePlayer.getHorizontalFacing().getHorizontalAngle() - 91);
-        return EntityAPI.forwardZ(fakePlayer, left, plus, pos);
-
+        return EntityAPI.forwardLeftZ(fakePlayer, plus, pos);
     }
     public static double forwardRightX(double plus, boolean pos) {
-        EnumFacing right = EnumFacing.fromAngle(fakePlayer.getHorizontalFacing().getHorizontalAngle() + 91);
-        return EntityAPI.forwardX(fakePlayer, right, plus, pos);
+        return EntityAPI.forwardRightX(fakePlayer, plus, pos);
     }
     public static double forwardRightZ(double plus, boolean pos) {
-        EnumFacing right = EnumFacing.fromAngle(fakePlayer.getHorizontalFacing().getHorizontalAngle() + 91);
-
-        return EntityAPI.forwardZ(fakePlayer, right, plus, pos);
+        return EntityAPI.forwardRightZ(fakePlayer, plus, pos);
     }
 
     public static double forwardX(double plus, boolean pos) {
@@ -57,7 +51,7 @@ public class FakePlayerHelper {
         fake.setPosition(WorldAPI.x(), WorldAPI.y(), WorldAPI.z());
         fake.setElytra(isElytra);
         WorldAPI.getWorld().spawnEntityInWorld(fake);
-        fake.setPositionAndUpdate(WorldAPI.x(), WorldAPI.y(), WorldAPI.z());
+        fake.setPositionAndRotation(WorldAPI.x(), WorldAPI.y(), WorldAPI.z(), WorldAPI.getPlayer().rotationYaw, WorldAPI.getPlayer().rotationPitch);
         return fakePlayer = fake;
     }
 
