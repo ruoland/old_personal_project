@@ -52,7 +52,7 @@ public class MineRun extends AbstractMiniGame {
             WorldAPI.getPlayerSP().writeEntityToNBT(compound);
             compound.setBoolean("FallFlying" , true);
             WorldAPI.getPlayerSP().readEntityFromNBT(compound);
-            System.out.println("" + player.onGround + player.motionY+WorldAPI.getPlayerSP().isElytraFlying() + WorldAPI.getPlayerMP().isElytraFlying());
+            System.out.println("12345 " + player.onGround + player.motionY+WorldAPI.getPlayerSP().isElytraFlying() + WorldAPI.getPlayerMP().isElytraFlying());
             noElytra(player, yaw);
         } else if (elytraMode == 1) {
             Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), 3, EntityAPI.lookZ(player, 2));
