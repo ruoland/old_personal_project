@@ -48,22 +48,15 @@ public class MineRun extends AbstractMiniGame {
         double yaw = player.getHorizontalFacing().getHorizontalAngle();
 
         if (elytraMode == 1 || elytraMode == 2) {
-            ItemStack itemstack = new ItemStack(Items.ELYTRA);
-            player.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemstack);
+            if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) == null) {
+                ItemStack itemstack = new ItemStack(Items.ELYTRA);
+                player.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemstack);
+            }
         }
         if (elytraMode == 2) {
 
         } else if (elytraMode == 1) {
-            Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), 3, EntityAPI.lookZ(player, 2));
-            float roX = EntityAPI.lookX(player, 1) == 0 ? -50 : 0;
-            float roZ = EntityAPI.lookZ(player, 1) == 0 ? -50 : 0;
-            if (player.getHorizontalFacing() == EnumFacing.WEST) {
-                roZ = Math.abs(roZ);
-            }
-            if (yaw < 0)
-                Camera.getCamera().rotateCamera(roX, yaw - 180, roZ);
-            else
-                Camera.getCamera().rotateCamera(roX, yaw + 180, roZ);
+
         } else {
             System.out.println("엘리트라 취소됨");
             player.setElytra(false);
@@ -114,6 +107,7 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
         gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
         gs.keyBindUseItem.resetKeyBindingArrayAndHash();
+
         setElytra(0);
         Camera.getCamera().reset();
 

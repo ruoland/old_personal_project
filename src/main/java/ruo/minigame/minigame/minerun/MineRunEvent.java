@@ -45,11 +45,17 @@ public class MineRunEvent {
 
             if (e.phase == Phase.END) {
                 EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-                if(lineZ == 0)
-                    WorldAPI.teleport(e.player.posX, fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -4), fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
-                else
-                    WorldAPI.teleport(fakePlayer.posX+EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY + 1, e.player.posZ, fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
-
+                if(MineRun.elytraMode() == 0 || MineRun.elytraMode() == 2) {
+                    if (lineZ == 0)
+                        WorldAPI.teleport(e.player.posX, fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -4), fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
+                    else
+                        WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY + 1, e.player.posZ, fakePlayer.getHorizontalFacing().getHorizontalAngle(), 30);
+                }else {
+                    if (lineZ == 0)
+                        WorldAPI.teleport(e.player.posX, fakePlayer.posY - 3, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -4), fakePlayer.getHorizontalFacing().getHorizontalAngle(), 70);
+                    else
+                        WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY - 3, e.player.posZ, fakePlayer.getHorizontalFacing().getHorizontalAngle(), 70);
+                }
                 if (MiniGame.minerun.elytraMode() == 2) {
                     FakePlayerHelper.fakePlayer.motionX = EntityAPI.lookX(e.player, 0.08);
                     FakePlayerHelper.fakePlayer.motionZ = EntityAPI.lookZ(e.player, 0.08);
@@ -94,7 +100,6 @@ public class MineRunEvent {
             }
         }
         if (MineRun.elytraMode() == 2) {
-
             if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                 fakePlayer.setPosition(fakePlayer.posX, fakePlayer.posY + 1, fakePlayer.posZ);
                 lineUD++;
