@@ -68,10 +68,10 @@ public class Camera {
 		yaw = player.prevRotationYaw;
 	}
 
-	public void lockCamera(boolean b, float prevRotationYaw, float prevRotationPitch) {
-		lockCamera = b;
-		pitch = prevRotationPitch;
-		yaw = prevRotationYaw;
+	public void lockCamera(boolean lock, float yaw, float pitch) {
+		lockCamera = lock;
+		this.pitch = yaw;
+		this.yaw = pitch;
 	}
 
 	public boolean isLock() {

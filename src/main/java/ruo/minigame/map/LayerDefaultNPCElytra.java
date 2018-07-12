@@ -4,9 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelElytra;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ruo.minigame.api.WorldAPI;
 
 @SideOnly(Side.CLIENT)
 public class LayerDefaultNPCElytra implements LayerRenderer<EntityDefaultNPC>
@@ -25,7 +28,7 @@ public class LayerDefaultNPCElytra implements LayerRenderer<EntityDefaultNPC>
 
     public void doRenderLayer(EntityDefaultNPC entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        if(entitylivingbaseIn.isElytra() || entitylivingbaseIn.isElytraFlying()){
+        if(WorldAPI.equalsItem(entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Items.ELYTRA) || entitylivingbaseIn.isElytra() || entitylivingbaseIn.isElytraFlying()){
             GlStateManager.pushMatrix();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableBlend();
