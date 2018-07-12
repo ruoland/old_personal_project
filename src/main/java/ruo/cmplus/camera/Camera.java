@@ -70,8 +70,8 @@ public class Camera {
 
 	public void lockCamera(boolean lock, float yaw, float pitch) {
 		lockCamera = lock;
-		this.pitch = yaw;
-		this.yaw = pitch;
+		this.pitch = pitch;
+		this.yaw = yaw;
 	}
 
 	public boolean isLock() {

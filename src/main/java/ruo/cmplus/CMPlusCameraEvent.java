@@ -47,7 +47,6 @@ public class CMPlusCameraEvent {
         GL11.glRotated(cm.rotateZ, 0, 0, 1);
 
         if (cm.lockCamera) {
-            System.out.println(e.getPitch()+" - "+e.getYaw()+" - "+ e.getRoll());
             e.setPitch(0);
             e.setYaw(0);
             lockCamera(Minecraft.getMinecraft().thePlayer);
