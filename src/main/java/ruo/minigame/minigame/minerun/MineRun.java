@@ -83,11 +83,8 @@ public class MineRun extends AbstractMiniGame {
 
         ICommandSender sender = (ICommandSender) obj[0];
         EntityPlayer player = (EntityPlayer) sender;
-        curY = player.posY;
         WorldAPI.teleport(player.posX, player.posY, player.posZ,player.getHorizontalFacing().getHorizontalAngle(), 70);
         fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
-        curX = fakePlayer.posX;
-        curZ = fakePlayer.posZ;
         WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -2), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
         Camera.getCamera().reset();
         Camera.getCamera().lockCamera(true, (float) player.getHorizontalFacing().getHorizontalAngle(), 70);

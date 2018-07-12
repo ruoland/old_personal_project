@@ -567,11 +567,6 @@ public class WorldAPI {
 
     public static void teleport(double x, double y, double z, float yaw, float pitch) {
         ((EntityPlayerMP) getPlayer()).connection.setPlayerLocation(x, y, z, yaw, pitch);
-        try {
-            throw new NullPointerException("");
-        }catch (Exception e){
-            e.printStackTrace();;
-        }
     }
 
     public static EntityPlayerMP getPlayerByName(String username) {

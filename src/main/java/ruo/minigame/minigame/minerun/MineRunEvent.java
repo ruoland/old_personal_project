@@ -169,7 +169,8 @@ public class MineRunEvent {
                 MiniGame.minerun.setPosition(0 - lineX, 0, 0 - lineZ);
                 lineLR--;
             }
-        } else if (MineRun.elytraMode() == 0) {
+        }
+        if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 MiniGame.minerun.setPosition(0 + (lineX * 2), 0, 0 + (lineZ * 2));
                 lineLR++;
