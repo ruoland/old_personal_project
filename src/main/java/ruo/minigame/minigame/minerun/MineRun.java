@@ -56,6 +56,7 @@ public class MineRun extends AbstractMiniGame {
         }
         if (elytraMode == 2) {
             fakePlayer.setElytra(true);
+            curY++;
         } else if (elytraMode == 1) {
             fakePlayer.setElytra(false);
         } else {
@@ -65,7 +66,7 @@ public class MineRun extends AbstractMiniGame {
     }
     public Vec3d moveVec3d;
     private double xCoord, zCoord;
-    public double curX, curY, curZ, playerStartY;
+    public double curX, curY, curZ, playerStartY, elytraY;
 
     public void setPosition(double x, double y, double z){
         curX = x;
@@ -87,7 +88,9 @@ public class MineRun extends AbstractMiniGame {
         EntityPlayer player = (EntityPlayer) sender;
         WorldAPI.teleport(player.posX, player.posY, player.posZ,player.getHorizontalFacing().getHorizontalAngle(), 70);
         fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
+        player.noClip = !player.noClip;
         player.capabilities.isFlying = true;
+
         player.sendPlayerAbilities();
         WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -2), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
         playerStartY = player.posY;
