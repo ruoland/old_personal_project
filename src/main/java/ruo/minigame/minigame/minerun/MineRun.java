@@ -65,27 +65,33 @@ public class MineRun extends AbstractMiniGame {
     }
     public Vec3d moveVec3d;
     private double xCoord, zCoord;
-    public double curX, curY, curZ;
+    public double curX, curY, curZ, playerStartY;
 
     public void setPosition(double x, double y, double z){
         curX = x;
         curY = y;
         curZ = z;
+        System.out.println(MiniGame.minerun.curX+ " - "+MiniGame.minerun.curY+" - "+MiniGame.minerun.curZ);
+
     }
     @Override
     public boolean start(Object... obj) {
         GameSettings gs = Minecraft.getMinecraft().gameSettings;
         gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
-        gs.keyBindRight.setKeyCode(Keyboard.KEY_SLEEP);
-        gs.keyBindForward.setKeyCode(Keyboard.KEY_SLEEP);
-        gs.keyBindBack.setKeyCode(Keyboard.KEY_SLEEP);
-        gs.keyBindJump.setKeyCode(Keyboard.KEY_SLEEP);
-
+        gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
+        gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
+        gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
+        gs.keyBindJump.setKeyCode(Keyboard.KEY_POWER);
+        KeyBinding.resetKeyBindingArrayAndHash();
         ICommandSender sender = (ICommandSender) obj[0];
         EntityPlayer player = (EntityPlayer) sender;
         WorldAPI.teleport(player.posX, player.posY, player.posZ,player.getHorizontalFacing().getHorizontalAngle(), 70);
         fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
+        player.capabilities.isFlying = true;
+        player.sendPlayerAbilities();
         WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -2), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
+        playerStartY = player.posY;
+
         Camera.getCamera().reset();
         Camera.getCamera().lockCamera(true, (float) player.getHorizontalFacing().getHorizontalAngle(), 70);
         Camera.getCamera().rotateX = -EntityAPI.lookZ(fakePlayer, 1) * 30;
@@ -100,14 +106,9 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.spawnX = fakePlayer.posX;
         MiniGame.mineRunEvent.spawnY = fakePlayer.posY;
         MiniGame.mineRunEvent.spawnZ = fakePlayer.posZ;
-        player.rotationYaw = 0;
-        player.rotationPitch = 70;
-        moveVec3d = fakePlayer.getPositionVector().subtract(sender.getPositionVector()).normalize();
-        xCoord =Math.floor(moveVec3d.xCoord);
-        zCoord =Math.floor(moveVec3d.zCoord);
-
+        xCoord =  EntityAPI.lookX(player, 0.3);
+        zCoord =  EntityAPI.lookZ(player, 0.3);
         System.out.println(xCoord+" - "+zCoord);
-
         return super.start();
     }
 

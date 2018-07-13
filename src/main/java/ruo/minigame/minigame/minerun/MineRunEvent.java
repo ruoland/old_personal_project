@@ -53,14 +53,10 @@ public class MineRunEvent {
                 if(e.player.getDistanceToEntity(FakePlayerHelper.fakePlayer) > 6){
                     //WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -4), e.player.getHorizontalFacing().getHorizontalAngle(), 70);
                 }
-                if(FakePlayerHelper.fakePlayer.isNotColliding() && !FakePlayerHelper.fakePlayer.isCollidedHorizontally && e.player.getDistanceToEntity(FakePlayerHelper.fakePlayer) > 3) {
-                    e.player.motionX = MiniGame.minerun.xCoord() * pspeed;
-                    e.player.motionY = (MiniGame.minerun.curY + 3) - e.player.posY;
-                    e.player.motionZ = MiniGame.minerun.zCoord() * pspeed;
-                }else {
-                    e.player.motionX = 0;
-                    e.player.motionZ = 0;
-                    e.player.motionY = (fakePlayer.posY + 3) - e.player.posY;
+                if(FakePlayerHelper.fakePlayer.isNotColliding() && !FakePlayerHelper.fakePlayer.isCollidedHorizontally) {
+                    e.player.motionX = MiniGame.minerun.xCoord();
+                    e.player.motionY = (MiniGame.minerun.playerStartY+MiniGame.minerun.curY) - e.player.posY;
+                    e.player.motionZ = MiniGame.minerun.zCoord();
                 }
                 FakePlayerHelper.fakePlayer.setPosition(e.player.posX+MiniGame.minerun.curX+EntityAPI.lookX(e.player, 3), fakePlayer.posY+MiniGame.minerun.curY, e.player.posZ+MiniGame.minerun.curZ+EntityAPI.lookZ(e.player, 3));
                 FakePlayerHelper.fakePlayer.motionX = MiniGame.minerun.xCoord() * speed;
@@ -183,7 +179,6 @@ public class MineRunEvent {
         }
         if (DebAPI.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.getEventKeyState()) {
             fakePlayer.jump();
-            MiniGame.minerun.curY++;
         }
     }
 
