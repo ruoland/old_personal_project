@@ -140,9 +140,26 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
         gs.keyBindJump.setKeyCode(Keyboard.KEY_SPACE);
         gs.keyBindUseItem.resetKeyBindingArrayAndHash();
-
         setElytra(0);
         Camera.getCamera().reset();
+        curX = 0;
+        curY = 0;
+        curZ = 0;
+        deadCount = 0;
+        xCoord = 0;
+        zCoord = 0;
+        playerStartY = 0;
+        MiniGame.mineRunEvent.lineFB = 0;
+        MiniGame.mineRunEvent.lineX = 0;
+        MiniGame.mineRunEvent.lineZ = 0;
+        MiniGame.mineRunEvent.lineLR = 0;
+        MiniGame.mineRunEvent.lineUD = 0;
+        MiniGame.mineRunEvent.lineFBX = 0;
+        MiniGame.mineRunEvent.lineFBZ = 0;
+        MiniGame.mineRunEvent.spawnX = 0;
+        MiniGame.mineRunEvent.spawnY = 0;
+        MiniGame.mineRunEvent.spawnZ = 0;
+
 
         return super.end();
     }

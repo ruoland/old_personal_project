@@ -61,6 +61,10 @@ public class MineRunEvent {
                     e.player.motionX = MiniGame.minerun.xCoord();
                     e.player.motionY = (fakePlayer.posY + 3) - e.player.posY;
                     e.player.motionZ = MiniGame.minerun.zCoord();
+                    if(MineRun.elytraMode() == 2)//엘리트라 모드 2에서 위 아래로 움직이면 카메라도 같이 움직여서
+                    {
+                        e.player.motionY = (fakePlayer.posY + 3 - MiniGame.minerun.curY) - e.player.posY;
+                    }
                 }
                 fakePlayer.setPosition(e.player.posX + MiniGame.minerun.curX + EntityAPI.lookX(e.player, 3), fakePlayer.posY + MiniGame.minerun.curY, e.player.posZ + MiniGame.minerun.curZ + EntityAPI.lookZ(e.player, 3));
                 if (MiniGame.minerun.curY != 0) {
@@ -136,23 +140,21 @@ public class MineRunEvent {
             speed = Double.valueOf(CommandChat.getLastChat());
         }
         if (MineRun.elytraMode() == 2) {
-
             if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
-                MiniGame.minerun.setPosition(0, 1, 0);
+                MiniGame.minerun.setPosition(MiniGame.minerun.curX, 1, MiniGame.minerun.curZ);
                 lineUD++;
                 System.out.println(lineUD);
             }
             if (lineUD > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
-                MiniGame.minerun.setPosition(0, -1, 0);
+                MiniGame.minerun.setPosition(MiniGame.minerun.curX, -1, MiniGame.minerun.curZ);
                 lineUD--;
                 System.out.println(lineUD);
             }
             if (lineUD == 0) {
                 if (DebAPI.isKeyDown(Keyboard.KEY_W))
-                    MiniGame.minerun.setPosition(0, 1, 0);
+                    MiniGame.minerun.setPosition(MiniGame.minerun.curX, 1, MiniGame.minerun.curZ);
                 if(DebAPI.isKeyDown(Keyboard.KEY_S))
-                    MiniGame.minerun.setPosition(0, -1, 0);
-                return;
+                    MiniGame.minerun.setPosition(MiniGame.minerun.curX, -1, MiniGame.minerun.curZ);
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
@@ -166,11 +168,11 @@ public class MineRunEvent {
         if (MineRun.elytraMode() == 1) {
             if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                 lineFB++;
-                MiniGame.minerun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                MiniGame.minerun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
             }
             if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
                 lineFB--;
-                MiniGame.minerun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                MiniGame.minerun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
