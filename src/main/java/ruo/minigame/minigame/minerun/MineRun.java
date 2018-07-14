@@ -33,9 +33,6 @@ public class MineRun extends AbstractMiniGame {
 
     private static EntityFakePlayer fakePlayer;
 
-    public MineRun() {
-    }
-
     public static int elytraMode() {
         return elytra;
     }

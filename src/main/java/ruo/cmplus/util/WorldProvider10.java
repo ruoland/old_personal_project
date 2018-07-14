@@ -14,7 +14,7 @@ public class WorldProvider10 extends WorldProvider {
 
 	@Override
 	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
-		if (Sky.skyR == 0 && Sky.skyG == 0 && Sky.skyB == 0) {
+		if (cameraEntity != null && Sky.skyR == 0 && Sky.skyG == 0 && Sky.skyB == 0) {
 			return super.getSkyColor(cameraEntity, partialTicks);
 		} else if (vec3d.xCoord == Sky.skyR && vec3d.yCoord == Sky.skyG && vec3d.zCoord == Sky.skyB) {
 			return vec3d;
