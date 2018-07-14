@@ -12,6 +12,7 @@ public class CommandMineRun extends CommandBase {
 	@Override
 	public String getCommandName() {
 		return "minerun";
+
 	}
 
 	@Override
@@ -23,8 +24,6 @@ public class CommandMineRun extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length > 0){
-			if(args[0].equals("resetline"))
-			MiniGame.minerun.resetLine();
 			if(args[0].equals("fake")){
 				FakePlayerHelper.spawnFakePlayer(false);
 				return;

@@ -81,7 +81,7 @@ public class Scroll extends AbstractMiniGame {
 			System.out.println(s.keyBindForward.getKeyCode()+" - 키 코드 - "+Keyboard.KEY_D);
 			s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);
 			s.setOptionKeyBinding(s.keyBindBack, Keyboard.KEY_A);
-			s.setOptionKeyBinding(s.keyBindRight, Keyboard.KEY_RWIN);
+			s.setOptionKeyBinding(s.keyBindRight, Keyboard.KEY_SLEEP);
 			s.setOptionKeyBinding(s.keyBindLeft, Keyboard.KEY_SECTION);
 			KeyBinding.resetKeyBindingArrayAndHash();
 			KeyBinding.unPressAllKeys();
@@ -137,7 +137,7 @@ public class Scroll extends AbstractMiniGame {
 			System.out.println(s.keyBindForward.getKeyCode()+" - 키 코드 - "+Keyboard.KEY_A);
 			s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_A);
 			s.setOptionKeyBinding(s.keyBindBack, Keyboard.KEY_D);
-			s.setOptionKeyBinding(s.keyBindRight, Keyboard.KEY_RWIN);
+			s.setOptionKeyBinding(s.keyBindRight, Keyboard.KEY_SLEEP);
 			s.setOptionKeyBinding(s.keyBindLeft, Keyboard.KEY_SECTION);
 			KeyBinding.resetKeyBindingArrayAndHash();
 			KeyBinding.unPressAllKeys();

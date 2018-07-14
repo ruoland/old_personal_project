@@ -9,6 +9,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -47,8 +48,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
             .createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
 
-    protected static HashMap<String, EntityDefaultNPC> npcHash = new HashMap<>();
-    protected static HashMap<String, EntityDefaultNPC> uuidHash = new HashMap<>();
+    private static HashMap<String, EntityDefaultNPC> npcHash = new HashMap<>();
+    private static HashMap<String, EntityDefaultNPC> uuidHash = new HashMap<>();
 
     public boolean isFly;
     public TextEffect eft;
@@ -109,15 +110,15 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
         if(isServerWorld()) {
             if (!npcHash.containsKey(this.getCustomNameTag())) {
-                this.npcHash.put(this.getCustomNameTag(), this);
+                npcHash.put(this.getCustomNameTag(), this);
             }
             if (!uuidHash.containsKey(this.getUniqueID().toString())) {
-                this.uuidHash.put(this.getUniqueID().toString(), this);
+                uuidHash.put(this.getUniqueID().toString(), this);
             }
 
         }
-        if(getDataManager().get(ON_DEATH_TIMER).booleanValue()) {
-            int deathTime = getDataManager().get(DEATH_TIMER).intValue();
+        if(getDataManager().get(ON_DEATH_TIMER)) {
+            int deathTime = getDataManager().get(DEATH_TIMER);
             if (isServerWorld() && deathTime > 0) {
                 getDataManager().set(DEATH_TIMER, deathTime - 1);
             }
@@ -138,8 +139,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
         compound.setFloat("LOCKYAW", getDataManager().get(LOCK_YAW));
         compound.setBoolean("canCollision", canCollision());
         compound.setBoolean("ISSTURN", isSturn());
-        if(TickRegister.getAbsTick(getUniqueID().toString()+"-STURN") != null) {
-            int sturnTick =TickRegister.getAbsTick(getUniqueID().toString()+"-STURN").getCurrentTick();
+        AbstractTick absTick = TickRegister.getAbsTick(getUniqueID().toString()+"-STURN");
+        if(absTick != null) {
+            int sturnTick =absTick.getCurrentTick();
             compound.setInteger("STURN_TICK", sturnTick);
         }
         super.writeEntityToNBT(compound);
@@ -216,7 +218,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public boolean canCollision() {
-        return dataManager.get(COLLISION).booleanValue();
+        return dataManager.get(COLLISION);
     }
 
     public void setCollision(boolean is) {
@@ -228,7 +230,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public boolean isSturn() {
-        return dataManager.get(IS_STURN).booleanValue();
+        return dataManager.get(IS_STURN);
     }
 
     public void setSturn(int tick) {
@@ -304,7 +306,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void setUniqueId(UUID uniqueIdIn) {
         if(!worldObj.isRemote) {
-            uuidHash.remove(this.getUniqueID());
+            uuidHash.remove(this.getUniqueID().toString());
             uuidHash.put(uniqueIdIn.toString(), this);
         }
         super.setUniqueId(uniqueIdIn);
@@ -321,8 +323,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
 
-    public void setPosition(BlockPos spawn) {
-        this.setPosition(spawn.getX(), spawn.getY(), spawn.getZ());
+    public void setPosition(BlockPos position) {
+        if(position != null)
+        this.setPosition(position.getX(), position.getY(), position.getZ());
     }
 
 
@@ -341,6 +344,96 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public void cancel() {
         if (eft != null)
             eft.cancel();
+    }
+
+
+    public double lookPosX(float plusYaw, double plus) {
+        return EntityAPI.lookPosX(this, plusYaw, plus);
+    }
+
+    public double lookPosZ(float plusYaw, double plus) {
+        return EntityAPI.lookPosZ(this, plusYaw, plus);
+    }
+
+    public double lookX(float plusYaw, double plus) {
+        return EntityAPI.lookX(this, plusYaw, plus);
+    }
+
+    public double lookZ(float plusYaw, double plus) {
+        return EntityAPI.lookZ(this, plusYaw, plus);
+    }
+    public double lookX(double plus) {
+        return EntityAPI.lookX(this, plus);
+    }
+    public double lookZ(double plus) {
+        return EntityAPI.lookZ(this, plus);
+    }
+    public double forwardLeftX(double plus, boolean pos) {
+        return EntityAPI.forwardLeftX(this, plus, pos);
+    }
+    public double forwardLeftZ(double plus, boolean pos) {
+        return EntityAPI.forwardLeftZ(this, plus, pos);
+
+    }
+    public double forwardRightX(double plus, boolean pos) {
+        return EntityAPI.forwardRightX(this,plus, pos);
+    }
+    public double forwardRightZ(double plus, boolean pos) {
+        return EntityAPI.forwardRightZ(this,plus, pos);
+    }
+
+    public double forwardX(double plus, boolean pos) {
+        return forwardX(this,this.getHorizontalFacing(), plus, pos);
+    }
+
+    public double forwardZ(double plus, boolean pos) {
+        return forwardZ(this,this.getHorizontalFacing(), plus, pos);
+    }
+
+    public double backX(double minus, boolean pos)
+    {
+        return EntityAPI.backX(this, minus, pos);
+    }
+    public double backZ(EntityLivingBase base,double minus, boolean pos) {
+        return EntityAPI.backX(this, minus, pos);
+    }
+
+    public double forwardX(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
+        double position = base.posX;
+        if(!pos)
+            position = 0;
+        if (facing.getName().equalsIgnoreCase("NORTH")) {
+            return position;
+        }
+        if (facing.getName().equalsIgnoreCase("SOUTH")) {
+            return position;
+        }
+        if (facing.getName().equalsIgnoreCase("EAST")) {
+            return position + plus;
+        }
+        if (facing.getName().equalsIgnoreCase("WEST")) {
+            return position - plus;
+        }
+        return position;
+    }
+
+    public double forwardZ(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
+        double position = base.posZ;
+        if(!pos)
+            position = 0;
+        if (facing.getName().equalsIgnoreCase("NORTH")) {
+            return position - plus;
+        }
+        if (facing.getName().equalsIgnoreCase("SOUTH")) {
+            return position + plus;
+        }
+        if (facing.getName().equalsIgnoreCase("EAST")) {
+            return position;
+        }
+        if (facing.getName().equalsIgnoreCase("WEST")) {
+            return position;
+        }
+        return position;
     }
 
     public void look(EntityLivingBase mob2) {

@@ -19,7 +19,7 @@ public class Bomber extends AbstractMiniGame{
 	public boolean start(Object... obj) {
 		String type = String.valueOf(obj[0]);
 		ItemStack item = new ItemStack(bombItem);
-		EntityPlayer player = (EntityPlayer) WorldAPI.getPlayer();
+		EntityPlayer player = WorldAPI.getPlayer();
 		player.inventory.setInventorySlotContents(1, item);
 		Camera.getCamera().reset();
 		Camera.getCamera().playerCamera(true);

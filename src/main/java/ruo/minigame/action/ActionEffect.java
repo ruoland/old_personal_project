@@ -6,24 +6,30 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.ConfigCategory;
+import ruo.minigame.MiniGame;
 import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.minigame.minerun.MineRun;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ActionEffect {
-	public static String mapName;
+	static String mapName;
 	public static void inWaterRemove() {
-		ActionData.inWaterMap.remove(mapName);
+		inWaterMap.remove(mapName);
 	}
 	public static void inWater(boolean inWater) {
-		ActionData.inWaterMap.put(mapName, inWater);
+		inWaterMap.put(mapName, inWater);
 	}
 	//CommandJB , MiniGameClientPlayer 에 있음
 	public static boolean isInWater() {
-		return ActionData.inWaterMap.containsKey(mapName);
+		return inWaterMap.containsKey(mapName);
 	}
 	public static boolean getInWater() {
-		return ActionData.inWaterMap.containsKey(mapName) && ActionData.inWaterMap.get(mapName);
+		return inWaterMap.containsKey(mapName) && inWaterMap.get(mapName);
 	}
 
 	public static boolean isUseShield(EntityPlayer player) {
@@ -31,27 +37,27 @@ public class ActionEffect {
 	}
 
 	public static void crawl(boolean onoff) {
-		if(onoff && !ActionData.crawlMapList.contains(mapName)) {
-			ActionData.crawlMapList.add(mapName);
-		}else if(!onoff && ActionData.crawlMapList.indexOf(mapName) != -1) {
-			ActionData.crawlMapList.remove(ActionData.crawlMapList.indexOf(mapName));
+		if(onoff && !crawlMapList.contains(mapName)) {
+			crawlMapList.add(mapName);
+		}else if(!onoff && crawlMapList.indexOf(mapName) != -1) {
+			crawlMapList.remove(crawlMapList.get(crawlMapList.indexOf(mapName)));
 
 		}
 	}
 
 	public static boolean canCrawl() {
-		return ActionData.crawlMapList.contains(mapName);
+		return crawlMapList.contains(mapName);
 	}
 
 	public static void doubleJump(boolean onoff) {
-		if(onoff && !ActionData.doubleJumpList.contains(mapName)) {
-			ActionData.doubleJumpList.add(mapName);
-		}else if(!onoff && ActionData.doubleJumpList.indexOf(mapName) != -1)
-			ActionData.doubleJumpList.remove(ActionData.doubleJumpList.indexOf(mapName));
+		if(onoff && !djList.contains(mapName)) {
+			djList.add(mapName);
+		}else if(!onoff && djList.indexOf(mapName) != -1)
+			djList.remove(djList.get(djList.indexOf(mapName)));
 	}
 
 	public static boolean canDoubleJump() {
-		return ActionData.doubleJumpList.contains(mapName);
+		return djList.contains(mapName);
 	}
 
 	public static void teleportSpawnPoint(EntityPlayer player){
@@ -60,7 +66,6 @@ public class ActionEffect {
 			BlockAPI blockAPI = WorldAPI.getBlock(player.worldObj, player.getBedLocation(), 4D);
 			for(int i=0;i<blockAPI.size();i++){
 				if(blockAPI.getBlock(i) instanceof BlockBasePressurePlate){
-					MineRun.deadCount++;
 					player.setSpawnPoint(blockAPI.getPos(i), true);
 					WorldAPI.teleport(player.getBedLocation().add(0, 1, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
 					break;
@@ -69,24 +74,64 @@ public class ActionEffect {
 		}
 	}
 	public static void setYTP(double tpy, float pitch, float yaw){
-		ActionData.tpYMap.put(mapName, tpy);
-		ActionData.tpPitchMap.put(mapName, pitch);
-		ActionData.tpYawMap.put(mapName, yaw);
+		tpYMap.put(mapName, tpy);
+		tpPitchMap.put(mapName, pitch);
+		tpYawMap.put(mapName, yaw);
 	}
 	public static void setYP(float yaw, float pitch){
-		ActionData.tpPitchMap.put(mapName, pitch);
-		ActionData.tpYawMap.put(mapName, yaw);
+		tpPitchMap.put(mapName, pitch);
+		tpYawMap.put(mapName, yaw);
 	}
 	public static double getYTP() {
-		return ActionData.tpYMap.containsKey(mapName) ? ActionData.tpYMap.get(mapName) : 0;
+		return tpYMap.containsKey(mapName) ? tpYMap.get(mapName) : 0;
 	}
 
 	public static float getYaw() {
-		return ActionData.tpYawMap.get(mapName);
+		return tpYawMap.get(mapName);
 	}
 
 	public static float getPitch() {
-		return ActionData.tpPitchMap.get(mapName);
+		return tpPitchMap.get(mapName);
+	}
+
+
+	private static ArrayList<String> crawlMapList = new ArrayList<>();
+	private static HashMap<String, Boolean> inWaterMap = new HashMap<>();//물 속에 있는 효과를 내거나 물 속에 없는 효과를 냄
+	private static ArrayList<String> djList = new ArrayList<>();
+	private static HashMap<String, Double> tpYMap = new HashMap<>();
+	private static HashMap<String, Float> tpYawMap = new HashMap<>();
+	private static HashMap<String, Float> tpPitchMap = new HashMap<>();
+
+	public static void save() {
+		String worldName = ActionEffect.mapName;
+		if (!worldName.equalsIgnoreCase("noworld")) {
+			MiniGame.instance.minigameConfig.get(worldName, "crawl", false).set(crawlMapList.contains(worldName));
+			if(inWaterMap.containsKey(worldName))
+				MiniGame.instance.minigameConfig.get(worldName, "inWater", false).set(inWaterMap.get(worldName));
+			MiniGame.instance.minigameConfig.get(worldName, "doubleJump", false).set(djList.contains(worldName));
+			if (tpYMap.containsKey(worldName)) {
+				MiniGame.instance.minigameConfig.get(worldName, "tpY", 0).set(tpYMap.get(worldName));
+				MiniGame.instance.minigameConfig.get(worldName, "tpYaw", 0).set(tpYawMap.get(worldName));
+				MiniGame.instance.minigameConfig.get(worldName, "tpPitch", 0).set(tpPitchMap.get(worldName));
+			}
+		}
+	}
+
+	public static void load() {
+		for (String category : MiniGame.instance.minigameConfig.getCategoryNames()) {
+			ConfigCategory action = MiniGame.instance.minigameConfig.getCategory(category);
+			if (action.containsKey("crawl") && action.get("crawl").getBoolean())
+				crawlMapList.add(category);
+			if (action.containsKey("inWater") )
+				inWaterMap.put(category, action.get("inWater").getBoolean());
+			if (action.containsKey("doubleJump")&& action.get("doubleJump").getBoolean())
+				djList.add(category);
+			if (action.containsKey("tpY")) {
+				tpYMap.put(category, action.get("tpY").getDouble());
+				tpYawMap.put(category, (float) action.get("tpYaw").getDouble());
+				tpPitchMap.put(category, (float) action.get("tpPitch").getDouble());
+			}
+		}
 	}
 }
 

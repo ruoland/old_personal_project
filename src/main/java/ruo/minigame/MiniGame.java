@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.CommandClassLoader;
 import ruo.cmplus.deb.DebAPI;
+import ruo.minigame.action.ActionEffect;
 import ruo.minigame.android.CommandCall;
 import ruo.minigame.android.CommandNotification;
 import ruo.minigame.command.*;
@@ -94,7 +95,7 @@ public class MiniGame {
 
         proxy.pre(e);
         network();
-        ActionData.load();
+        ActionEffect.load();
         MiniGame.minerun = new MineRun();
         MiniGame.scroll = new Scroll();
         MiniGame.bomber = new Bomber();
@@ -153,7 +154,7 @@ public class MiniGame {
 
     @EventHandler
     public void init(FMLServerStoppedEvent e) {
-        ActionData.save();
+        ActionEffect.save();
         minigameConfig.save();
     }
 

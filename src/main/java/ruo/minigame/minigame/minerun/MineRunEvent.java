@@ -1,44 +1,30 @@
 package ruo.minigame.minigame.minerun;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBasePressurePlate;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
-import ruo.cmplus.cm.CommandChat;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
-import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class MineRunEvent {
-    //elytra 1
+    //엘리트라 모드1용 - 7월 14일
     public int lineLR = 0, lineFB = 0;
 
-    //elytra 2
+    //엘리트라 모드2용 - 7월 14일
     public int lineUD = 0;
 
-    //line은 왼쪽라인 오른쪽라인으로 갈 수 있는 값을 담고 있음, FB는 Forward Back 앞뒤 값 말함
-    public double lineX, lineZ, lineFBX, lineFBZ;
-    public double spawnX, spawnY, spawnZ;
+    //line은 왼쪽라인 오른쪽라인으로 갈 수 있는 값을 담고 있음, FB는 Forward Back 앞뒤 값 말함 - 7월 14일
+    protected double lineX, lineZ, lineFBX, lineFBZ;
 
     @SubscribeEvent
     public void playerTick(LivingEvent.LivingUpdateEvent e) {
@@ -47,152 +33,120 @@ public class MineRunEvent {
 
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
-        if (!MiniGame.minerun.isStart() || FakePlayerHelper.fakePlayer == null)
+        if (!MiniGame.minerun.isStart())
             return;
         if (e.phase == Phase.END) {
             EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-            if (MineRun.elytraMode() == 0 || MineRun.elytraMode() == 2) {//플레이어를 페이크 위에 갖다 놓음
-                if (MineRun.elytraMode() == 2)
-                    fakePlayer.motionY = 0;
-                if (e.player.getDistanceToEntity(FakePlayerHelper.fakePlayer) > 6) {
-                    //WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -4), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -4), e.player.getHorizontalFacing().getHorizontalAngle(), 70);
+            if (MineRun.elytraMode() == 0 || MineRun.elytraMode() == 2) {//플레이어를 페이크 위에 갖다 놓음 - 7월 14일
+                if (MineRun.elytraMode() == 2) {
+                    fakePlayer.motionY = 0;//모드2 는 앞을 향해 날라가기 때문에 공중에 띄워줘야 함 - 7월 14일
+                    //엘리트라 모드 2에서 위 아래로 움직이면 카메라도 같이 움직여서 고쳐야하는데 아직 안고침 - 7월 14일
+                    //e.player.motionY = (fakePlayer.posY + 3 - MiniGame.minerun.curY) - e.player.posY; - 이거 안됨 움직일 때 어긋남 - 7월 14일
                 }
-                if (fakePlayer.isNotColliding() && !FakePlayerHelper.fakePlayer.isCollidedHorizontally) {
-                    e.player.motionX = MiniGame.minerun.xCoord();
+                if (fakePlayer.isNotColliding() && !fakePlayer.isCollidedHorizontally) {//페이크 플레이어가 어딘가에 막힌 상태가 아닌 경우에만 - 7월 14일
+                    e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                     e.player.motionY = (fakePlayer.posY + 3) - e.player.posY;
-                    e.player.motionZ = MiniGame.minerun.zCoord();
-                    if(MineRun.elytraMode() == 2)//엘리트라 모드 2에서 위 아래로 움직이면 카메라도 같이 움직여서
-                    {
-                        e.player.motionY = (fakePlayer.posY + 3 - MiniGame.minerun.curY) - e.player.posY;
+                    e.player.motionZ = MineRun.zCoord();
+                    MineRun.setPosition();
+                    if (WorldAPI.equalsHeldItem(Items.APPLE)) {
+                        System.out.println("Y  " + (fakePlayer.posY) + " - " + MineRun.curY);
+                        //System.out.println("X  " + (e.player.posX + MineRun.curX + EntityAPI.lookX(e.player, 3)) + " - " + MineRun.curX + " - " + EntityAPI.lookX(e.player, 3));
+                        //System.out.println("Z " + (e.player.posZ + MineRun.curZ + EntityAPI.lookZ(e.player, 3)) + " - " + MineRun.curZ + " - " + EntityAPI.lookZ(e.player, 3));
                     }
+                    fakePlayer.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
+                    fakePlayer.motionZ = MineRun.zCoord();
                 }
-                fakePlayer.setPosition(e.player.posX + MiniGame.minerun.curX + EntityAPI.lookX(e.player, 3), fakePlayer.posY + MiniGame.minerun.curY, e.player.posZ + MiniGame.minerun.curZ + EntityAPI.lookZ(e.player, 3));
-                if (MiniGame.minerun.curY != 0) {
-                    fakePlayer.setPosition(e.player.posX + MiniGame.minerun.curX + EntityAPI.lookX(e.player, 3), fakePlayer.posY + MiniGame.minerun.curY, e.player.posZ + MiniGame.minerun.curZ + EntityAPI.lookZ(e.player, 3));
-                    MiniGame.minerun.curY = 0;
-                }
-                if (WorldAPI.equalsHeldItem(Items.APPLE)) {
-                    System.out.println("Y  " + (fakePlayer.posY) + " - " + MiniGame.minerun.curY);
-                    //System.out.println("X  " + (e.player.posX + MiniGame.minerun.curX + EntityAPI.lookX(e.player, 3)) + " - " + MiniGame.minerun.curX + " - " + EntityAPI.lookX(e.player, 3));
-                    //System.out.println("Z " + (e.player.posZ + MiniGame.minerun.curZ + EntityAPI.lookZ(e.player, 3)) + " - " + MiniGame.minerun.curZ + " - " + EntityAPI.lookZ(e.player, 3));
-                }
-                fakePlayer.motionX = MiniGame.minerun.xCoord() * speed;
-                fakePlayer.motionZ = MiniGame.minerun.zCoord() * speed;
             }
             if (MineRun.elytraMode() == 1) {
+                //엘리트라 모드1은 아래에서 위를 봄 따라서 플레이어를 페이크 아래에 배치함
                 e.player.motionY = 0.2;
-                e.player.rotationPitch = 70;
-                fakePlayer.setPosition(e.player.posX + EntityAPI.lookX(fakePlayer, -4), e.player.posY + 3, e.player.posZ + EntityAPI.lookZ(fakePlayer, -4));
-                FakePlayerHelper.fakePlayer.fallDistance = 0;
+                fakePlayer.setPosition(e.player.posX + EntityAPI.lookX(e.player, 3), e.player.posY + 3, e.player.posZ + EntityAPI.lookZ(e.player, 3));
+                fakePlayer.fallDistance = 0;
             }
-            if (FakePlayerHelper.fakePlayer.fallDistance > 1242345 && e.player.getBedLocation() != null) {//추락시 스폰지점으로
+            if (fakePlayer.fallDistance > 1242345 && e.player.getBedLocation(0) != null) {//추락시 스폰지점으로 - 7월 14일
                 fakePlayer.fallDistance = 0;
                 ActionEffect.teleportSpawnPoint(WorldAPI.getPlayer());
-                fakePlayer.setPosition(e.player.posX + MiniGame.minerun.curX + EntityAPI.lookX(e.player, 3), fakePlayer.posY + MiniGame.minerun.curY, e.player.posZ + MiniGame.minerun.curZ + EntityAPI.lookZ(e.player, 3));
+                MineRun.setPosition();
             }
         }
     }
 
-    private double speed = 0.15, pspeed = 0.3;
-
     @SubscribeEvent
     public void keyInput(KeyInputEvent e) {
-        if (!MiniGame.minerun.isStart() || FakePlayerHelper.fakePlayer == null)
+        if (!MiniGame.minerun.isStart())
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
             if (MineRun.elytraMode() == 2) {
-                MiniGame.minerun.setElytra(1);
+                MineRun.setElytra(1);
                 System.out.println(MineRun.elytraMode());
                 return;
             }
             if (MineRun.elytraMode() == 1) {
-                MiniGame.minerun.setElytra(0);
+                MineRun.setElytra(0);
                 System.out.println(MineRun.elytraMode());
                 return;
             }
             if (MineRun.elytraMode() == 0) {
-                MiniGame.minerun.setElytra(2);
+                MineRun.setElytra(2);
                 System.out.println(MineRun.elytraMode());
                 return;
             }
         }
-        if (DebAPI.isKeyDown(Keyboard.KEY_O)) {
-            speed += 0.01;
-            System.out.println(speed);
-        }
-        if (DebAPI.isKeyDown(Keyboard.KEY_P)) {
-            speed -= 0.01;
-            System.out.println(speed);
-        }
-        if (DebAPI.isKeyDown(Keyboard.KEY_K)) {
-            pspeed += 0.01;
-            System.out.println(pspeed);
-        }
-        if (DebAPI.isKeyDown(Keyboard.KEY_L)) {
-            pspeed -= 0.01;
-            System.out.println(pspeed);
-        }
-        if (DebAPI.isKeyDown(Keyboard.KEY_N)) {
-            pspeed = Double.valueOf(CommandChat.getLastChat());
-        }
-        if (DebAPI.isKeyDown(Keyboard.KEY_M)) {
-            speed = Double.valueOf(CommandChat.getLastChat());
-        }
         if (MineRun.elytraMode() == 2) {
             if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
-                MiniGame.minerun.setPosition(MiniGame.minerun.curX, 1, MiniGame.minerun.curZ);
+                MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
                 lineUD++;
                 System.out.println(lineUD);
             }
             if (lineUD > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
-                MiniGame.minerun.setPosition(MiniGame.minerun.curX, -1, MiniGame.minerun.curZ);
+                MineRun.setPosition(MineRun.curX, -1, MineRun.curZ);
                 lineUD--;
                 System.out.println(lineUD);
             }
             if (lineUD == 0) {
                 if (DebAPI.isKeyDown(Keyboard.KEY_W))
-                    MiniGame.minerun.setPosition(MiniGame.minerun.curX, 1, MiniGame.minerun.curZ);
-                if(DebAPI.isKeyDown(Keyboard.KEY_S))
-                    MiniGame.minerun.setPosition(MiniGame.minerun.curX, -1, MiniGame.minerun.curZ);
+                    MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
+                if (DebAPI.isKeyDown(Keyboard.KEY_S))
+                    MineRun.setPosition(MineRun.curX, -1, MineRun.curZ);
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MiniGame.minerun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
+                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MiniGame.minerun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
+                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
             }
         }
         if (MineRun.elytraMode() == 1) {
             if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                 lineFB++;
-                MiniGame.minerun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
             }
             if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
                 lineFB--;
-                MiniGame.minerun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MiniGame.minerun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
+                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MiniGame.minerun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
+                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
             }
         }
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MiniGame.minerun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 3, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 3, false));
+                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 3, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 3, false));
                 System.out.println(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 3, false) + " - " + EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 3, false));
 
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MiniGame.minerun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false));
+                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false));
                 System.out.println(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false) + " - " + EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false));
 
             }
@@ -200,12 +154,11 @@ public class MineRunEvent {
         }
         if (DebAPI.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.getEventKeyState()) {
             fakePlayer.jump();
-
         }
     }
 
     @SubscribeEvent
-    public void logout(WorldEvent.Unload e) {
+    public void logout(PlayerEvent.PlayerLoggedOutEvent e) {
         MiniGame.minerun.end();
     }
 }
