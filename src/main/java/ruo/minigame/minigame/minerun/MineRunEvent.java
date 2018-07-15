@@ -47,7 +47,7 @@ public class MineRunEvent {
                     e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                     e.player.motionY = (fakePlayer.posY + 3) - e.player.posY;
                     e.player.motionZ = MineRun.zCoord();
-                    MineRun.setPosition();
+                    MineRun.setFakePositionUpdate();
                     if (WorldAPI.equalsHeldItem(Items.APPLE)) {
                         System.out.println("Y  " + (fakePlayer.posY) + " - " + MineRun.curY);
                         //System.out.println("X  " + (e.player.posX + MineRun.curX + EntityAPI.lookX(e.player, 3)) + " - " + MineRun.curX + " - " + EntityAPI.lookX(e.player, 3));
@@ -58,15 +58,17 @@ public class MineRunEvent {
                 }
             }
             if (MineRun.elytraMode() == 1) {
-                //엘리트라 모드1은 아래에서 위를 봄 따라서 플레이어를 페이크 아래에 배치함
-                e.player.motionY = 0.2;
-                fakePlayer.setPosition(e.player.posX + EntityAPI.lookX(e.player, 3), e.player.posY + 3, e.player.posZ + EntityAPI.lookZ(e.player, 3));
+                //엘리트라 모드1은 아래에서 위를 봄
+                //플레이어를 페이크 아래에 배치함
+                e.player.motionY = 0.1;
+                MineRun.setFakePositionUpdate();
+
                 fakePlayer.fallDistance = 0;
             }
             if (fakePlayer.fallDistance > 1242345 && e.player.getBedLocation(0) != null) {//추락시 스폰지점으로 - 7월 14일
                 fakePlayer.fallDistance = 0;
                 ActionEffect.teleportSpawnPoint(WorldAPI.getPlayer());
-                MineRun.setPosition();
+                MineRun.setFakePositionUpdate();
             }
         }
     }
@@ -123,32 +125,65 @@ public class MineRunEvent {
             if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                 lineFB++;
                 MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                if(lineLR == 1){
+                    MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0,
+                            EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
+                }
+                if(lineLR == -1){
+                    MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0,
+                            EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
+                }
             }
             if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
                 lineFB--;
                 MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false), 0, EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                if(lineLR == 1){
+                    MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0,
+                            EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
+                }
+                if(lineLR == -1){
+                    MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0,
+                            EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false)+EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
+                }
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
                 MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
+                if(lineFB == 1){
+                    MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false)+EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false),
+                            0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false)+ EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                }
+                if(lineFB == -1){
+                    MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false)+EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false),
+                            0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false)+ EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                }
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
                 MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR), false));
+
+                if(lineFB == 1){
+                    MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), lineLR, false)+EntityAPI.forwardX(WorldAPI.getPlayer(), Math.abs(lineFB), false),
+                            0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), lineLR, false)+ EntityAPI.forwardZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                }
+                if(lineFB == -1){
+                    MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), lineLR, false)+EntityAPI.backX(WorldAPI.getPlayer(), Math.abs(lineFB), false),
+                            0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), lineLR, false)+ EntityAPI.backZ(WorldAPI.getPlayer(), Math.abs(lineFB), false));
+                }
             }
+
         }
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 3, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 3, false));
-                System.out.println(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 3, false) + " - " + EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 3, false));
+                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 1.5, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 1.5, false));
+                System.out.println(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 1.5, false) + " - " + EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 1.5, false));
 
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false));
-                System.out.println(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false) + " - " + EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 3, false));
-
+                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 1.5, false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 1.5, false));
+                System.out.println(EntityAPI.forwardRightX(WorldAPI.getPlayer(), Math.abs(lineLR) * 1.5, false) + " - " + EntityAPI.forwardRightZ(WorldAPI.getPlayer(), Math.abs(lineLR) * 1.5, false));
             }
             System.out.println(lineLR);
         }

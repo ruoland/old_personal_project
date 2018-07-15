@@ -1,16 +1,22 @@
 package ruo.map.lopre2;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
+import ruo.minigame.action.ActionEvent;
+import ruo.minigame.action.GrabHelper;
 import ruo.minigame.api.WorldAPI;
+
+import java.util.List;
 
 //물에 흘러가는 블럭
 public class EntityWaterFlowBlock extends EntityPreBlock {
@@ -53,6 +59,9 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 		return lavaBlock;
 
 	}
+	boolean isPlayer;//플레이어가 처음 들어가면 초기화함, isPlayer는 플레이어가 있을 때
+	public static double playerSpeed =0.001D, playerYSpeed  = 0.1;
+
 	@Override
 	public void onLivingUpdate() {
 		if(isServerWorld() && delay > 0){
@@ -60,17 +69,57 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 			waterDelay--;
 		}
 		if(WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getDistance(posX, posY, posZ) < 30) {
-			if(!inWater && waterDelay == 0) {
+			if (!inWater && waterDelay == 0) {
 				waterDelay = 40;
 			}
 			if ((!inWater && waterDelay == 1) || (posX == prevX && posZ == prevZ))
 				this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-			if(!isTeleport() && delay == 0){
+			if (!isTeleport() && delay == 0) {
 				prevX = posX;
 				prevZ = posZ;
 				delay = 20;
 			}
-			this.motionY = -0.008;
+			List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
+					this.posX - 1D, this.posY, this.posZ - 1D, this.posX + 1D, this.posY + 1.8, this.posZ + 1D));
+			if (!list.isEmpty()) {
+				for (Entity entity : list) {
+					if ((entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
+						if (GrabHelper.wallGrab || entity.onGround) {
+							double px = motionX, py = motionY, pz = motionZ;
+							if (!GrabHelper.wallGrab && !isPlayer) {
+								entity.setVelocity(0, 0, 0);
+								WorldAPI.getPlayerSP().setVelocity(0, 0, 0);
+							}
+							if (WorldAPI.getPlayerSP().isSprinting() || WorldAPI.getPlayer().isSprinting()) {
+								px *= 1.3;
+								pz *= 1.3;
+							}
+							if (px > 0)
+								px += playerSpeed;
+							if (px < 0)
+								px -= playerSpeed;
+							if (pz > 0)
+								pz += playerSpeed;
+							if (pz < 0)
+								pz -= playerSpeed;
+							if (py > 0) {
+								py += playerYSpeed;
+							}
+							if (WorldAPI.getPlayerSP().movementInput.jump) {
+								WorldAPI.getPlayerSP().jump();
+								WorldAPI.getPlayerMP().jump();
+								ActionEvent.forceJump = true;
+							}
+							WorldAPI.getPlayerSP().moveEntity(px, py, pz);
+							WorldAPI.getPlayerMP().moveEntity(px, py, pz);
+							isPlayer = true;
+							break;
+						}
+					} else
+						isPlayer = false;
+				}
+				this.motionY = -0.008;
+			}
 		}
 		super.onLivingUpdate();
 	}

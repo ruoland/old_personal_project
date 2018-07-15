@@ -55,6 +55,10 @@ public class MineRun extends AbstractMiniGame {
             curY++;
         } else if (elytraMode == 1) {
             fakePlayer.setElytra(false);
+            Camera.getCamera().rotateX = -Camera.getCamera().rotateX;
+
+            Camera.getCamera().rotateZ = -Camera.getCamera().rotateZ;
+            System.out.println("엘리트라 모드 해제");
         } else {
             System.out.println("엘리트라 취소됨");
             fakePlayer.setElytra(false);
@@ -115,9 +119,12 @@ public class MineRun extends AbstractMiniGame {
         return zCoord;
     }
 
-    public static void setPosition(){
+    public static void setFakePositionUpdate(){
         EntityPlayer player = WorldAPI.getPlayer();
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
+        if(elytraMode() == 1){
+            fakePlayer.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), player.posY + 8, player.posZ + curZ + EntityAPI.lookZ(player, 3));
+        }else
         fakePlayer.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), fakePlayer.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
         if (curY != 0) {
             curY = 0;

@@ -387,6 +387,10 @@ class EntityModelNPC extends EntityMob {
     public void setElytra(boolean ely) {
         this.setFlag(7, ely);
         this.dataManager.set(IS_ELYTRA, ely);
+        if(!ely) {
+            this.setFlag(7, true);
+            this.setFlag(7, false);
+        }
     }
 
     public void setChild(boolean is) {

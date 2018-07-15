@@ -44,7 +44,8 @@ public abstract class AbstractMiniGame {
 	}
 
 	public boolean isStart(){
-		System.out.println(""+isStart+(useFake ? FakePlayerHelper.fakePlayer != null : true));
-		return isStart && useFake ? FakePlayerHelper.fakePlayer != null : true;
+		boolean isFake = useFake ? FakePlayerHelper.fakePlayer != null : true;
+
+		return (isStart && isFake);
 	}
 }

@@ -197,6 +197,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
             GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(0, 0.3, 0);
         } else if (entityLiving2.isElytra() || entityLiving2.isElytraFlying()) {
+            if(entityLiving2.isElytra())
             entityLiving2.setElytra(true);
             super.rotateCorpse(entityLiving2, p_77043_2_, p_77043_3_, partialTicks);
             float f = (float) entityLiving2.getTicksElytraFlying() + partialTicks;
