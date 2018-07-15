@@ -268,10 +268,6 @@ public class EntityMoveBlock extends EntityPreBlock {
                                         entity.setVelocity(0, 0, 0);
                                         WorldAPI.getPlayerSP().setVelocity(0, 0, 0);
                                     }
-                                    if (WorldAPI.getPlayerSP().isSprinting() || WorldAPI.getPlayer().isSprinting()) {
-                                        px *= 1.3;
-                                        pz *= 1.3;
-                                    }
                                     if (px > 0)
                                         px += playerSpeed;
                                     if (px < 0)

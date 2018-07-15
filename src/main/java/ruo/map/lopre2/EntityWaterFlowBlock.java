@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
@@ -14,14 +15,14 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import ruo.minigame.action.ActionEvent;
 import ruo.minigame.action.GrabHelper;
+import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
 import java.util.List;
 
 //물에 흘러가는 블럭
 public class EntityWaterFlowBlock extends EntityPreBlock {
-	public static double ax = EntityLavaBlock.ax;
-
+	private EnumFacing facing;//물에 흘러가는 방향. 수동으로 설정해야 함
 	public EntityWaterFlowBlock(World worldIn) {
 		super(worldIn);
 		this.setCollision(true);
@@ -40,6 +41,7 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 		if (Keyboard.isKeyDown(Keyboard.KEY_L) && hand == EnumHand.MAIN_HAND && isServerWorld()) {//우클릭시 원래 위치로 되돌림 6월 21일자
 			this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
 		}
+		facing = player.getHorizontalFacing();
 		return super.processInteract(player, hand, stack);
 	}
 	private double prevX, prevZ;
@@ -60,7 +62,6 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 
 	}
 	boolean isPlayer;//플레이어가 처음 들어가면 초기화함, isPlayer는 플레이어가 있을 때
-	public static double playerSpeed =0.001D, playerYSpeed  = 0.1;
 
 	@Override
 	public void onLivingUpdate() {
@@ -83,27 +84,12 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 					this.posX - 1D, this.posY, this.posZ - 1D, this.posX + 1D, this.posY + 1.8, this.posZ + 1D));
 			if (!list.isEmpty()) {
 				for (Entity entity : list) {
-					if ((entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
+					if (facing != null && (entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
 						if (GrabHelper.wallGrab || entity.onGround) {
-							double px = motionX, py = motionY, pz = motionZ;
+							double px = EntityAPI.lookX(facing, 0.051), py = motionY / 10, pz =EntityAPI.lookZ(facing, 0.051);
 							if (!GrabHelper.wallGrab && !isPlayer) {
 								entity.setVelocity(0, 0, 0);
 								WorldAPI.getPlayerSP().setVelocity(0, 0, 0);
-							}
-							if (WorldAPI.getPlayerSP().isSprinting() || WorldAPI.getPlayer().isSprinting()) {
-								px *= 1.3;
-								pz *= 1.3;
-							}
-							if (px > 0)
-								px += playerSpeed;
-							if (px < 0)
-								px -= playerSpeed;
-							if (pz > 0)
-								pz += playerSpeed;
-							if (pz < 0)
-								pz -= playerSpeed;
-							if (py > 0) {
-								py += playerYSpeed;
 							}
 							if (WorldAPI.getPlayerSP().movementInput.jump) {
 								WorldAPI.getPlayerSP().jump();
@@ -118,8 +104,9 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 					} else
 						isPlayer = false;
 				}
-				this.motionY = -0.008;
 			}
+			this.motionY = -0.008;
+
 		}
 		super.onLivingUpdate();
 	}
@@ -135,13 +122,15 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 		compound.setDouble("spawnX", getSpawnX());
 		compound.setDouble("spawnY", getSpawnY());
 		compound.setDouble("spawnZ", getSpawnZ());
-
+		compound.setString("facing", facing.getName());
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setSpawnXYZ(compound.getDouble("spawnX"), compound.getDouble("spawnY"), compound.getDouble("spawnZ"));
+		facing = EnumFacing.byName(compound.getString("facing"));
+
 	}
 
 
