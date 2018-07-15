@@ -204,12 +204,6 @@ public class EntityAPI {
 	}
 
 
-	public static EnumFacing getFacing(Entity entity){
-		return entity.getHorizontalFacing();
-	}
-	public static String getPlayerFacing(){
-		return WorldAPI.getPlayer().getHorizontalFacing().getName();
-	}
 	public static EntityDefaultNPC spawn(double x, double y, double z) {
 		EntityDefaultNPC defPlayer = new EntityDefaultNPC(WorldAPI.getWorld());
 		defPlayer.setPosition(x,y,z);
