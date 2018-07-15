@@ -15,12 +15,6 @@ public abstract class AbstractMiniGame {
 			isStart = true;
 			startTime = System.currentTimeMillis();
 		}
-		try{
-			throw new NullPointerException(""+useFake+" - "+FakePlayerHelper.fakePlayer+" - "+(useFake ? FakePlayerHelper.fakePlayer != null : true));
-		}
-		catch (NullPointerException e){
-			e.printStackTrace();;
-		}
 		return isStart;
 
 	}
@@ -45,7 +39,6 @@ public abstract class AbstractMiniGame {
 
 	public boolean isStart(){
 		boolean isFake = useFake ? FakePlayerHelper.fakePlayer != null : true;
-
 		return (isStart && isFake);
 	}
 }

@@ -152,6 +152,12 @@ public class EntityAPI {
 		return forwardZ(base,base.getHorizontalFacing(), plus, pos);
 	}
 
+	public static double backX(EntityLivingBase base,EnumFacing facing, double minus, boolean pos){
+		return forwardX(base,facing,-minus, pos);
+	}
+	public static double backZ(EntityLivingBase base,EnumFacing facing, double minus, boolean pos) {
+		return forwardZ(base,facing,-minus, pos);
+	}
 	public static double backX(EntityLivingBase base,double minus, boolean pos)
 	{
 		return forwardX(base,-minus, pos);
@@ -159,7 +165,6 @@ public class EntityAPI {
 	public static double backZ(EntityLivingBase base,double minus, boolean pos) {
 		return forwardZ(base,-minus, pos);
 	}
-
 	public static double forwardX(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
 		double position = base.posX;
 		if(!pos)
