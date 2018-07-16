@@ -68,11 +68,6 @@ public class MineRun extends AbstractMiniGame {
     protected static double curX, curY, curZ, playerStartY;
 
     public static void setPosition(double x, double y, double z){
-        try{
-            throw new NullPointerException("");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         curX = x;
         curY = y;
         curZ = z;

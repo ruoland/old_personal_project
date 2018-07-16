@@ -122,6 +122,7 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 		compound.setDouble("spawnX", getSpawnX());
 		compound.setDouble("spawnY", getSpawnY());
 		compound.setDouble("spawnZ", getSpawnZ());
+		if(facing != null)
 		compound.setString("facing", facing.getName());
 	}
 
