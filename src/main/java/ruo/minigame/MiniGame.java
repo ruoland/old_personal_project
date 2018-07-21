@@ -35,6 +35,7 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.elytra.ElytraEvent;
+import ruo.minigame.minigame.minerun.EntityMineRunCreeper;
 import ruo.minigame.minigame.minerun.MineRun;
 import ruo.minigame.action.ActionData;
 import ruo.minigame.action.ActionEvent;
@@ -107,6 +108,9 @@ public class MiniGame {
     public void init(FMLInitializationEvent e) {
         //스크롤 메이커용
         //DebAPI.registerEntity(this, "ScrollMouse", EntityScrollMouse.class);
+        //마인런 게임용
+        DebAPI.registerEntity(this, "MRCreeper", EntityMineRunCreeper.class);
+        DebAPI.registerEntity(this, "Test", EntityElytraTest.class);
 
         //엘리트라 슈팅 게임용
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeen", EntityElytraWeenCore.class);

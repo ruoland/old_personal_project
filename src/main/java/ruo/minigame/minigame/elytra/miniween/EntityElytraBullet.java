@@ -55,6 +55,7 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(targetVec!= null)
-        this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
+            this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
+        motionY = 0;
     }
 }

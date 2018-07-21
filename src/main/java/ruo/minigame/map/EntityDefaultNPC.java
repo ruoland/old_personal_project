@@ -395,7 +395,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     {
         return EntityAPI.backX(this, minus, pos);
     }
-    public double backZ(EntityLivingBase base,double minus, boolean pos) {
+    public double backZ(double minus, boolean pos) {
         return EntityAPI.backX(this, minus, pos);
     }
 

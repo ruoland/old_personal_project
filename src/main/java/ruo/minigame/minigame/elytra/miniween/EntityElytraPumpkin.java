@@ -20,12 +20,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20);
-    }
-
-    public void setting() {
-        getLookHelper().setLookPosition(FakePlayerHelper.fakePlayer.posX, FakePlayerHelper.fakePlayer.posY, FakePlayerHelper.fakePlayer.posZ
-                , getHorizontalFaceSpeed(), getVerticalFaceSpeed());
-        faceEntity(FakePlayerHelper.fakePlayer, getHorizontalFaceSpeed(), getVerticalFaceSpeed());
+        getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(2000000000);
     }
 
     int cooldown = 40;
@@ -35,31 +30,25 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         super.onLivingUpdate();
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (fakePlayer != null) {
-            if (fakePlayer.getDistanceToEntity(this) > 15) {
-                rotationYaw = -fakePlayer.rotationYaw;
-                rotationPitch = -fakePlayer.rotationPitch;
-                this.setVelocity(EntityAPI.forwardX(this, 5, true) - posX, 0, EntityAPI.forwardZ(this, 5, true) - posZ);
-            }
+            faceEntity(fakePlayer, getHorizontalFaceSpeed(), getVerticalFaceSpeed());
             if (cooldown > 0)
                 cooldown--;
             this.motionY = 0;
             if (cooldown == 0) {
+                if(isServerWorld())
                 spawnBullet();
                 cooldown = 40;
             }
         }
     }
 
-    public EntityElytraBullet spawnBullet(float pitch, float yaw) {
-        double[] lookXZ = WorldAPI.getVecXZ(pitch, yaw, 5);
+    public EntityElytraBullet spawnBullet() {
+        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;;
         EntityElytraBullet elytraBullet = new EntityElytraBullet(worldObj);
         elytraBullet.setPosition(posX, posY, posZ);
+        elytraBullet.setTarget( fakePlayer.posX, posY, fakePlayer.posZ);
         worldObj.spawnEntityInWorld(elytraBullet);
-        elytraBullet.setTarget(posX + lookXZ[0], posY, posZ + lookXZ[1]);
         return elytraBullet;
     }
 
-    public EntityElytraBullet spawnBullet() {
-        return spawnBullet(rotationPitch, rotationYaw);
-    }
 }

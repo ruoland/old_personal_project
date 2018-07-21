@@ -51,9 +51,9 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void event(MouseEvent event) {
-        if (!MiniGame.elytra.isStart()|| FakePlayerHelper.fakePlayer != null)
+        if (!MiniGame.elytra.isStart())
             return;
-        if (event.getDwheel() == 120 && WorldAPI.y() > FakePlayerHelper.fakePlayer.posY) {
+        if (event.getDwheel() == 120) {
             WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() - 0.5, WorldAPI.z());
         }
         if (event.getDwheel() == -120) {

@@ -21,8 +21,9 @@ public class Elytra extends AbstractMiniGame {
     public static boolean bossEnd, arrowUpgrade;
     public static int arrowDistance, bombCount;
     private EnumFacing facing;
-    public double playerSpawnX, playerSpawnY, playerSpawnZ,weenSpawnX, weenSpawnY, weenSpawnZ, targetX, targetY, targetZ;
+    public double playerSpawnX, playerSpawnY, playerSpawnZ, weenSpawnX, weenSpawnY, weenSpawnZ, targetX, targetY, targetZ;
     private int width, height;
+
     public Elytra() {
     }
 
@@ -129,19 +130,47 @@ public class Elytra extends AbstractMiniGame {
         }
     }
 
-    public void first(){
+    public void first() {
+        spawnElytraPumpkinForward();
+        spawnElytraPumpkinRight();
+        spawnElytraPumpkinLeft();
+    }
+
+    public void second(){
+
+    }
+    public void spawnElytraPumpkinForward() {
         EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
         setForwardPosition(pumpkin, 10);
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
-        EntityElytraPumpkin pumpkin2 = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardPosition(pumpkin2, 20);
-        WorldAPI.getWorld().spawnEntityInWorld(pumpkin2);
+    }
+    public void spawnElytraPumpkinRight() {
+        EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
+        setForwardRightPosition(pumpkin, 3, 10);
+        WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
+    }
+    public void spawnElytraPumpkinLeft() {
+        EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
+        setForwardLeftPosition(pumpkin, 3, 10);
+        WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
     }
 
-    public void setForwardPosition(EntityLivingBase base, double distance){
+
+    public void setForwardPosition(EntityLivingBase base, double distance) {
         base.setPosition(FakePlayerHelper.forwardX(distance, true), FakePlayerHelper.fakePlayer.posY,
                 FakePlayerHelper.forwardZ(distance, true));
     }
+
+    public void setForwardRightPosition(EntityLivingBase base, double right, double distance) {
+        base.setPosition(FakePlayerHelper.forwardX(distance, true) + FakePlayerHelper.forwardRightX(right, false), FakePlayerHelper.fakePlayer.posY,
+                FakePlayerHelper.forwardZ(distance, true) + FakePlayerHelper.forwardRightZ(right, false));
+    }
+
+    public void setForwardLeftPosition(EntityLivingBase base, double left, double distance) {
+        base.setPosition(FakePlayerHelper.forwardX(distance, true) + FakePlayerHelper.forwardLeftX(left, false), FakePlayerHelper.fakePlayer.posY,
+                FakePlayerHelper.forwardZ(distance, true) + FakePlayerHelper.forwardLeftZ(left, false));
+    }
+
     public void spawnWeen() {
         weenSpawnX = FakePlayerHelper.forwardX(20, true);
         weenSpawnY = FakePlayerHelper.fakePlayer.posY;
@@ -153,15 +182,17 @@ public class Elytra extends AbstractMiniGame {
         flyingWeen.setPosition(weenSpawnX, weenSpawnY - 5, weenSpawnZ);
         WorldAPI.getWorld().spawnEntityInWorld(flyingWeen);
     }
+
     public void firstPattern() {
         TickRegister.register(new AbstractTick(60, true) {
             @Override
             public boolean stopCondition() {
                 return !flyingWeen.isEntityAlive() || !isStart() || flyingWeen.deadFalling;
             }
+
             @Override
             public void run(Type type) {
-                if(!facing.getName().equalsIgnoreCase(WorldAPI.getPlayer().getHorizontalFacing().getName())){
+                if (!facing.getName().equalsIgnoreCase(WorldAPI.getPlayer().getHorizontalFacing().getName())) {
                     facing = WorldAPI.getPlayer().getHorizontalFacing();
                     cameraSetting(facing.getName());
                 }
@@ -194,7 +225,7 @@ public class Elytra extends AbstractMiniGame {
             WorldAPI.command("/display size 854 480");
             WorldAPI.command("/ui reset");
             bossEnd = true;
-            WorldAPI.teleport(playerSpawnX,playerSpawnY-45,playerSpawnZ);
+            WorldAPI.teleport(playerSpawnX, playerSpawnY - 45, playerSpawnZ);
         }
 
         return super.end();
