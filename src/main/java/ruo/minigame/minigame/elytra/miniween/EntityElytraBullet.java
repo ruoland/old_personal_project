@@ -30,18 +30,21 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     }
 
     public void setTarget(double x, double y, double z){
-        targetVec = new Vec3d(x - posX, y - posY, z - posZ).normalize();
+        targetVec = new Vec3d(x - posX, y - posY, z - posZ).normalize().scale(0.5);
     }
 
     public void setDamage(float damage){
         dataManager.set(DAMAGE, damage);
     }
 
+    public float getDamage(){
+        return dataManager.get(DAMAGE);
+    }
     @Override
     protected void collideWithEntity(Entity entityIn) {
         super.collideWithEntity(entityIn);
         if(entityIn instanceof EntityFakePlayer){
-            entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 5);
+            entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
             this.setDead();
         }
     }

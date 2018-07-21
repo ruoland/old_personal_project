@@ -1,6 +1,8 @@
 package ruo.minigame.minigame.elytra.miniween;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import ruo.minigame.MiniGame;
@@ -17,6 +19,16 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
     }
 
     @Override
+    public void onCollideWithPlayer(EntityPlayer entityIn) {
+        //super.onCollideWithPlayer(entityIn);
+    }
+
+    @Override
+    protected void collideWithEntity(Entity entityIn) {
+        //super.collideWithEntity(entityIn);
+    }
+
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20);
@@ -30,7 +42,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         super.onLivingUpdate();
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (fakePlayer != null) {
-            faceEntity(fakePlayer, getHorizontalFaceSpeed(), getVerticalFaceSpeed());
+            faceEntity(fakePlayer, 360,360);
             if (cooldown > 0)
                 cooldown--;
             this.motionY = 0;
@@ -48,6 +60,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         elytraBullet.setPosition(posX, posY, posZ);
         elytraBullet.setTarget( fakePlayer.posX, posY, fakePlayer.posZ);
         worldObj.spawnEntityInWorld(elytraBullet);
+        elytraBullet.setDamage(5);
         return elytraBullet;
     }
 

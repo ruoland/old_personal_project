@@ -234,7 +234,7 @@ class EntityModelNPC extends EntityMob {
 
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
         if (getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
-            setRotate(90, 90, 90);
+            setRotate(0, 0, 180);
     }
 
     public void setBlock(Block block) {
