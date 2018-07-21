@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -460,4 +461,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         EntityAPI.move(move);
     }
 
+    public boolean isAttackTargetPlayer(){
+        return getAttackTarget() != null && getAttackTarget() instanceof EntityPlayer;
+    }
 }
