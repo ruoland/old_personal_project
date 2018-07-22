@@ -81,8 +81,8 @@ public class Elytra extends AbstractMiniGame {
             @Override
             public void run(Type type) {
                 spawnPumpkin(SpawnDirection.FORWARD);
-                spawnPumpkin(SpawnDirection.RIGHT);
-                spawnPumpkin(SpawnDirection.LEFT);
+                spawnPumpkin(SpawnDirection.FORWARD_RIGHT);
+                spawnPumpkin(SpawnDirection.FORWARD_LEFT);
             }
         });
 
@@ -107,6 +107,7 @@ public class Elytra extends AbstractMiniGame {
             case FORWARD_RIGHT:
                 pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD_RIGHT, 16, 3, true));
         }
+        System.out.println(pumpkin.getPositionVector());
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
         pumpkin.setDirection(SpawnDirection.FORWARD);
     }
