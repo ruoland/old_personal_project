@@ -38,6 +38,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
 import ruo.awild.EntityWildHorse;
 import ruo.cmplus.util.Sky;
 import ruo.minigame.MiniGame;
@@ -67,13 +68,15 @@ public class SUAKGEEvent {
     }
     @SubscribeEvent
     public void event(LivingSpawnEvent e) {
-        if(e.getEntityLiving() instanceof EntityMob && e.getWorld().rand.nextInt(100) == 0){
+        if(e.getEntityLiving() instanceof EntityMob && e.getWorld().rand.nextInt(200) == 0 && WorldAPI.getPlayer() != null){
             NBTTagCompound compound = new NBTTagCompound();
             e.getEntityLiving().writeEntityToNBT(compound);
-            Entity entity = EntityList.createEntityFromNBT(compound, e.getWorld());
-            entity.setPosition(e.getX(),e.getY(),e.getZ());
-            e.getWorld().spawnEntityInWorld(entity);
-            System.out.println("몬스터 소환됨"+e.getX()+" - "+e.getY()+" - "+e.getZ());
+            if(compound.hasKey("id")) {
+                Entity entity = EntityList.createEntityFromNBT(compound, e.getWorld());
+                entity.setPosition(e.getX(), e.getY(), e.getZ());
+                e.getWorld().spawnEntityInWorld(entity);
+                System.out.println("몬스터 추가 소환됨" + e.getX() + " - " + e.getY() + " - " + e.getZ());
+            }
         }
     }
     @SubscribeEvent
@@ -233,9 +236,9 @@ public class SUAKGEEvent {
     }
     @SubscribeEvent
     public void skeletonTeamKill(LivingHurtEvent event) {
-        System.out.println(""+event.getEntityLiving() + event.getSource().getEntity());
         if(event.getEntityLiving() instanceof EntitySkeleton && event.getSource().getEntity() instanceof EntitySkeleton){
             event.setCanceled(true);
+
         }
     }
 

@@ -37,7 +37,8 @@ public class ElytraEvent {
     public void login(LivingDeathEvent event) {
         if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getEntityLiving() instanceof EntityFakePlayer) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiElytraGameOver(killCount));
-            Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();;
+            Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();
+            ;
         }
     }
 
@@ -63,9 +64,9 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void login(PlayerInteractEvent event) {
-        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null&& (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
+        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
-            System.out.println(MiniGame.elytra.isStart()+"엘리트라 실행됨");
+            System.out.println(MiniGame.elytra.isStart() + "엘리트라 실행됨");
             EntityFakePlayer player = FakePlayerHelper.fakePlayer;
             spawnArrow(player.posX, player.posY, player.posZ);
             String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
@@ -124,20 +125,21 @@ public class ElytraEvent {
         }
         if (elytraMode) {
             EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-            String index = player.getHorizontalFacing().getName();
             fakePlayer.rotationPitch = player.rotationPitch;
             fakePlayer.rotationYaw = player.rotationYaw;
             fakePlayer.rotationYawHead = player.rotationYawHead;
-            double veloX = 0, veloZ = 0, speed = 0.2;
-             if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-                 if(Elytra.bombCount > 0) {
-                     Elytra.bombCount--;
-                     for (int i = 0; i < 360; i += 30) {
-                         spawnArrow(player.posX, player.posY, player.posZ, player.rotationYaw + i);
-                     }
-                 }
+            FakePlayerHelper.fakePlayer.rotationYaw = WorldAPI.getPlayer().getHorizontalFacing().getHorizontalAngle();
 
+            double veloX = 0, veloZ = 0, speed = 0.2;
+            if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+                if (Elytra.bombCount > 0) {
+                    Elytra.bombCount--;
+                    for (int i = 0; i < 360; i += 30) {
+                        spawnArrow(player.posX, player.posY, player.posZ, player.rotationYaw + i);
+                    }
+                }
             }
+
             if (gamesettings.keyBindLeft.isKeyDown()) {
                 veloX += EntityAPI.lookX(fakePlayer, -90, speed);
                 veloZ += EntityAPI.lookZ(fakePlayer, -90, speed);

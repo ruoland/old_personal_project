@@ -1,11 +1,14 @@
 package ruo.asdf;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.ai.*;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -23,19 +26,26 @@ import ruo.minigame.map.TypeModel;
 
 import javax.annotation.Nullable;
 
-public class EntityFlyingSkeleton extends EntityDefaultNPC {
+public class EntityFlyingZombie extends EntityDefaultNPC {
 
-    public EntityFlyingSkeleton(World worldIn) {
+    public EntityFlyingZombie(World worldIn) {
         super(worldIn);
         this.setElytra(true);
-        this.setModel(TypeModel.SKELETON);
+        this.setModel(TypeModel.ZOMBIE);
         experienceValue = 30;
+    }
+
+    protected void initEntityAI()
+    {
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityPigZombie.class}));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50);
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
     }
 
     @Nullable
@@ -51,6 +61,14 @@ public class EntityFlyingSkeleton extends EntityDefaultNPC {
         motionX+=this.lookX(0.01);
         motionZ+=this.lookZ(0.01);
         motionY = 0;
-
+        if(isAttackTargetPlayer()){
+            if(getAttackTarget().getDistance(posX,getAttackTarget().posY, posZ) > 5) {
+                motionX = getAttackTarget().posX - posX;
+                motionZ = getAttackTarget().posZ - posZ;
+            }else{
+                motionZ = 0;
+                motionX = 0;
+            }
+        }
     }
 }

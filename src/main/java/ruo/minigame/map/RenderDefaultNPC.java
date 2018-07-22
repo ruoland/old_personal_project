@@ -166,10 +166,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
             mainModel = new ModelWitch(0);
             DEFAULT_RES_LOC = new ResourceLocation("textures/entity/witch.png");
         }
-        if (entity.getModel() == TypeModel.SKELETON && !(mainModel instanceof ModelSkeleton)) {
-            mainModel = new ModelSkeleton();
-            DEFAULT_RES_LOC = new ResourceLocation("textures/entity/skeleton/skeleton.png");
-        }
         if (entity.getModel() == TypeModel.SNOWMAN && !(mainModel instanceof ModelSnowMan)) {
             mainModel = new ModelSnowMan();
             DEFAULT_RES_LOC = new ResourceLocation("textures/entity/snowman.png");

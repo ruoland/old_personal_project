@@ -390,6 +390,13 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public double forwardZ(double plus, boolean pos) {
         return forwardZ(this,this.getHorizontalFacing(), plus, pos);
     }
+    public double backX(double minus)
+    {
+        return EntityAPI.backX(this, minus, false);
+    }
+    public double backZ(double minus) {
+        return EntityAPI.backX(this, minus,false);
+    }
 
     public double backX(double minus, boolean pos)
     {

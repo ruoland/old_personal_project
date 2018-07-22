@@ -15,6 +15,7 @@ import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.AbstractMiniGame;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenCore;
+import ruo.minigame.minigame.elytra.miniween.SpawnDirection;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
@@ -33,7 +34,7 @@ public class Elytra extends AbstractMiniGame {
         width = Minecraft.getMinecraft().displayWidth;
         height = Minecraft.getMinecraft().displayHeight;
 
-        String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
+        String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
         facing = WorldAPI.getPlayer().getHorizontalFacing();
         String type;
 
@@ -53,9 +54,10 @@ public class Elytra extends AbstractMiniGame {
             playerSpawnX = FakePlayerHelper.fakePlayer.posX;
             playerSpawnY = FakePlayerHelper.fakePlayer.posY;
             playerSpawnZ = FakePlayerHelper.fakePlayer.posZ;
+            FakePlayerHelper.fakePlayer.rotationYaw = WorldAPI.getPlayer().getHorizontalFacing().getHorizontalAngle();
             WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());//카메라를 위해 더 이동
             //spawnWeen();
-            cameraSetting(index);
+            cameraSetting(facingName);
             //firstPattern();
             first();
             ((ElytraEvent) MiniGame.elytraEvent).elytraMode = true;
@@ -63,25 +65,25 @@ public class Elytra extends AbstractMiniGame {
         if (obj[0].equals("1")) {
             WorldAPI.getPlayer().inventory.armorInventory[2] = new ItemStack(Items.ELYTRA);
             Camera.getCamera().reset();
-            if (index.equalsIgnoreCase("NORTH")) {
+            if (facingName.equalsIgnoreCase("NORTH")) {
                 Camera.getCamera().lockCamera(true, 0, 180);
                 Camera.getCamera().playerCamera(true);
                 Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
                 Camera.getCamera().rotateCamera(0, -60, 0);
             }
-            if (index.equalsIgnoreCase("WEST")) {
+            if (facingName.equalsIgnoreCase("WEST")) {
                 Camera.getCamera().lockCamera(true, 0, 0);
                 Camera.getCamera().playerCamera(true);
                 Camera.getCamera().moveCamera(0, -5, 0);
                 Camera.getCamera().rotateCamera(0, 0, -50);
             }
-            if (index.equalsIgnoreCase("SOUTH")) {
+            if (facingName.equalsIgnoreCase("SOUTH")) {
                 Camera.getCamera().lockCamera(true, 0, 0);
                 Camera.getCamera().playerCamera(true);
                 Camera.getCamera().moveCamera(0, -5, 0);
                 Camera.getCamera().rotateCamera(-50, 0, 0);
             }
-            if (index.equalsIgnoreCase("EAST")) {
+            if (facingName.equalsIgnoreCase("EAST")) {
                 Camera.getCamera().lockCamera(true, 0, 0);
                 Camera.getCamera().playerCamera(true);
                 Camera.getCamera().moveCamera(0, -5, 0);
@@ -94,34 +96,34 @@ public class Elytra extends AbstractMiniGame {
         return super.start();
     }
 
-    public void cameraSetting(String index) {
+    public void cameraSetting(String facingName) {
         WorldAPI.command("/gamemode " + " 1");//게임모드 설정
         WorldAPI.command("/ui hotbar false");//핫바 끔
         WorldAPI.command("/ui hand false");//핸드 끔
         Camera.getCamera().reset();
         Camera.getCamera().setYP(true);
-        if (index.equalsIgnoreCase("NORTH")) {
+        if (facingName.equalsIgnoreCase("NORTH")) {
             Camera.getCamera().lockCamera(true, 0, 0);
             Camera.getCamera().moveCamera(0, -10, -5);
             Camera.getCamera().rotateCamera(90, 180, 0);
             targetX = FakePlayerHelper.forwardX(20, true);
             targetZ = FakePlayerHelper.forwardZ(20, true);
         }
-        if (index.equalsIgnoreCase("SOUTH")) {
+        if (facingName.equalsIgnoreCase("SOUTH")) {
             Camera.getCamera().lockCamera(true, 0, 0);
             Camera.getCamera().moveCamera(0, -10, -5);
             Camera.getCamera().rotateCamera(90, 180, 0);
             targetX = FakePlayerHelper.backX(20, true);
             targetZ = FakePlayerHelper.backZ(20, true);
         }
-        if (index.equalsIgnoreCase("WEST")) {
+        if (facingName.equalsIgnoreCase("WEST")) {
             Camera.getCamera().lockCamera(true, 0, 0);
             Camera.getCamera().moveCamera(0, -10, -5);
             Camera.getCamera().rotateCamera(90, 180, 0);
             targetX = FakePlayerHelper.backX(20, true);
             targetZ = FakePlayerHelper.backZ(20, true);
         }
-        if (index.equalsIgnoreCase("EAST")) {
+        if (facingName.equalsIgnoreCase("EAST")) {
             Camera.getCamera().lockCamera(true, 0, 0);
             Camera.getCamera().moveCamera(0, -10, -5);
             Camera.getCamera().rotateCamera(90, 180, 0);
@@ -131,9 +133,17 @@ public class Elytra extends AbstractMiniGame {
     }
 
     public void first() {
-        spawnElytraPumpkinForward();
-        spawnElytraPumpkinRight();
-        spawnElytraPumpkinLeft();
+        FakePlayerHelper.fakePlayer.rotationYaw = WorldAPI.getPlayer().getHorizontalFacing().getHorizontalAngle();
+
+        TickRegister.register(new AbstractTick(60, false) {
+            @Override
+            public void run(Type type) {
+                spawnElytraPumpkinForward();
+                spawnElytraPumpkinForwardRight();
+                spawnElytraPumpkinForwardLeft();
+            }
+        });
+
     }
 
     public void second(){
@@ -141,20 +151,22 @@ public class Elytra extends AbstractMiniGame {
     }
     public void spawnElytraPumpkinForward() {
         EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardPosition(pumpkin, 10);
+        setForwardPosition(pumpkin, 20);
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
+        pumpkin.setDirection(SpawnDirection.FORWARD);
     }
-    public void spawnElytraPumpkinRight() {
+    public void spawnElytraPumpkinForwardRight() {
         EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardRightPosition(pumpkin, 3, 10);
+        setForwardRightPosition(pumpkin, 3, 20);
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
+        pumpkin.setDirection(SpawnDirection.FORWARD);
     }
-    public void spawnElytraPumpkinLeft() {
+    public void spawnElytraPumpkinForwardLeft() {
         EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardLeftPosition(pumpkin, 3, 10);
+        setForwardLeftPosition(pumpkin, 3, 20);
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
+        pumpkin.setDirection(SpawnDirection.FORWARD);
     }
-
 
     public void setForwardPosition(EntityLivingBase base, double distance) {
         base.setPosition(FakePlayerHelper.forwardX(distance, true), FakePlayerHelper.fakePlayer.posY,
