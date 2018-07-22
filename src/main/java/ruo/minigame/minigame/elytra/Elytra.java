@@ -8,190 +8,112 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.camera.Camera;
 import ruo.minigame.MiniGame;
+import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
+import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.AbstractMiniGame;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenCore;
-import ruo.minigame.minigame.elytra.miniween.SpawnDirection;
+import ruo.minigame.api.SpawnDirection;
+import scala.xml.dtd.EntityDef;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
     public static boolean bossEnd, arrowUpgrade;
     public static int arrowDistance, bombCount;
     private EnumFacing facing;
-    public double playerSpawnX, playerSpawnY, playerSpawnZ, weenSpawnX, weenSpawnY, weenSpawnZ, targetX, targetY, targetZ;
-    private int width, height;
+    public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
+    private EntityFakePlayer fakePlayer;
 
     public Elytra() {
     }
 
     @Override
     public boolean start(Object... obj) {
-        System.out.println("엘리트라 실행ㅚㅁ");
-        width = Minecraft.getMinecraft().displayWidth;
-        height = Minecraft.getMinecraft().displayHeight;
-
-        String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
         facing = WorldAPI.getPlayer().getHorizontalFacing();
-        String type;
+        WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 55, WorldAPI.z());
+        fakePlayer = FakePlayerHelper.spawnFakePlayer(true);
+        playerSpawnX = fakePlayer.posX;
+        playerSpawnY = fakePlayer.posY - 45;
+        playerSpawnZ = fakePlayer.posZ;
+        WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());
+        cameraSetting();
+        first();
+        MiniGame.elytraEvent.elytraMode = true;
 
-        if (obj.length > 0)
-            type = (String) obj[0];
-        else
-            type = "없음";
-
-        if (!type.equalsIgnoreCase("없음"))
-            WorldAPI.command("/display size 700 950");
-
-        if (obj[0].equals("0")) {// 0번이 위에서 아래를 보는 시점임
-            if (FakePlayerHelper.fakePlayer != null)
-                FakePlayerHelper.fakePlayer.setDead();
-            WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 55, WorldAPI.z());//60 위로 이동
-            FakePlayerHelper.spawnFakePlayer(true);
-            playerSpawnX = FakePlayerHelper.fakePlayer.posX;
-            playerSpawnY = FakePlayerHelper.fakePlayer.posY;
-            playerSpawnZ = FakePlayerHelper.fakePlayer.posZ;
-            FakePlayerHelper.fakePlayer.rotationYaw = WorldAPI.getPlayer().getHorizontalFacing().getHorizontalAngle();
-            WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());//카메라를 위해 더 이동
-            //spawnWeen();
-            cameraSetting(facingName);
-            //firstPattern();
-            first();
-            ((ElytraEvent) MiniGame.elytraEvent).elytraMode = true;
-        }
-        if (obj[0].equals("1")) {
-            WorldAPI.getPlayer().inventory.armorInventory[2] = new ItemStack(Items.ELYTRA);
-            Camera.getCamera().reset();
-            if (facingName.equalsIgnoreCase("NORTH")) {
-                Camera.getCamera().lockCamera(true, 0, 180);
-                Camera.getCamera().playerCamera(true);
-                Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
-                Camera.getCamera().rotateCamera(0, -60, 0);
-            }
-            if (facingName.equalsIgnoreCase("WEST")) {
-                Camera.getCamera().lockCamera(true, 0, 0);
-                Camera.getCamera().playerCamera(true);
-                Camera.getCamera().moveCamera(0, -5, 0);
-                Camera.getCamera().rotateCamera(0, 0, -50);
-            }
-            if (facingName.equalsIgnoreCase("SOUTH")) {
-                Camera.getCamera().lockCamera(true, 0, 0);
-                Camera.getCamera().playerCamera(true);
-                Camera.getCamera().moveCamera(0, -5, 0);
-                Camera.getCamera().rotateCamera(-50, 0, 0);
-            }
-            if (facingName.equalsIgnoreCase("EAST")) {
-                Camera.getCamera().lockCamera(true, 0, 0);
-                Camera.getCamera().playerCamera(true);
-                Camera.getCamera().moveCamera(0, -5, 0);
-                Camera.getCamera().rotateCamera(0, 0, 50);
-                Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
-            }
-            ((ElytraEvent) MiniGame.elytraEvent).elytraMode = false;
-
-        }
         return super.start();
     }
 
-    public void cameraSetting(String facingName) {
+    public void cameraSetting() {
+        String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
         WorldAPI.command("/gamemode " + " 1");//게임모드 설정
         WorldAPI.command("/ui hotbar false");//핫바 끔
         WorldAPI.command("/ui hand false");//핸드 끔
         Camera.getCamera().reset();
         Camera.getCamera().setYP(true);
+        Camera.getCamera().lockCamera(true, 0, 0);
+        Camera.getCamera().moveCamera(0, -10, -5);
+        Camera.getCamera().rotateCamera(90, 180, 0);
         if (facingName.equalsIgnoreCase("NORTH")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().moveCamera(0, -10, -5);
-            Camera.getCamera().rotateCamera(90, 180, 0);
-            targetX = FakePlayerHelper.forwardX(20, true);
-            targetZ = FakePlayerHelper.forwardZ(20, true);
+            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
         }
         if (facingName.equalsIgnoreCase("SOUTH")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().moveCamera(0, -10, -5);
-            Camera.getCamera().rotateCamera(90, 180, 0);
-            targetX = FakePlayerHelper.backX(20, true);
-            targetZ = FakePlayerHelper.backZ(20, true);
+            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
         }
         if (facingName.equalsIgnoreCase("WEST")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().moveCamera(0, -10, -5);
-            Camera.getCamera().rotateCamera(90, 180, 0);
-            targetX = FakePlayerHelper.backX(20, true);
-            targetZ = FakePlayerHelper.backZ(20, true);
+            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
         }
         if (facingName.equalsIgnoreCase("EAST")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().moveCamera(0, -10, -5);
-            Camera.getCamera().rotateCamera(90, 180, 0);
-            targetX = FakePlayerHelper.forwardX(20, true);
-            targetZ = FakePlayerHelper.forwardZ(20, true);
+            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
         }
     }
 
     public void first() {
-        FakePlayerHelper.fakePlayer.rotationYaw = WorldAPI.getPlayer().getHorizontalFacing().getHorizontalAngle();
-
-        TickRegister.register(new AbstractTick(60, false) {
+        TickRegister.register(new AbstractTick(30, false) {
             @Override
             public void run(Type type) {
-                spawnElytraPumpkinForward();
-                spawnElytraPumpkinForwardRight();
-                spawnElytraPumpkinForwardLeft();
+                spawnPumpkin(SpawnDirection.FORWARD);
+                spawnPumpkin(SpawnDirection.RIGHT);
+                spawnPumpkin(SpawnDirection.LEFT);
             }
         });
 
+        TickRegister.register(new AbstractTick(180, false) {
+            @Override
+            public void run(Type type) {
+            }
+        });
     }
 
-    public void second(){
+    public void second() {
 
     }
-    public void spawnElytraPumpkinForward() {
+
+    public void spawnPumpkin(SpawnDirection direction) {
         EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardPosition(pumpkin, 20);
+        switch (direction) {
+            case FORWARD:
+                pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 16, true));
+            case FORWARD_LEFT:
+                pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD_LEFT, 16, 3, true));
+            case FORWARD_RIGHT:
+                pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD_RIGHT, 16, 3, true));
+        }
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
         pumpkin.setDirection(SpawnDirection.FORWARD);
-    }
-    public void spawnElytraPumpkinForwardRight() {
-        EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardRightPosition(pumpkin, 3, 20);
-        WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
-        pumpkin.setDirection(SpawnDirection.FORWARD);
-    }
-    public void spawnElytraPumpkinForwardLeft() {
-        EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
-        setForwardLeftPosition(pumpkin, 3, 20);
-        WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
-        pumpkin.setDirection(SpawnDirection.FORWARD);
-    }
-
-    public void setForwardPosition(EntityLivingBase base, double distance) {
-        base.setPosition(FakePlayerHelper.forwardX(distance, true), FakePlayerHelper.fakePlayer.posY,
-                FakePlayerHelper.forwardZ(distance, true));
-    }
-
-    public void setForwardRightPosition(EntityLivingBase base, double right, double distance) {
-        base.setPosition(FakePlayerHelper.forwardX(distance, true) + FakePlayerHelper.forwardRightX(right, false), FakePlayerHelper.fakePlayer.posY,
-                FakePlayerHelper.forwardZ(distance, true) + FakePlayerHelper.forwardRightZ(right, false));
-    }
-
-    public void setForwardLeftPosition(EntityLivingBase base, double left, double distance) {
-        base.setPosition(FakePlayerHelper.forwardX(distance, true) + FakePlayerHelper.forwardLeftX(left, false), FakePlayerHelper.fakePlayer.posY,
-                FakePlayerHelper.forwardZ(distance, true) + FakePlayerHelper.forwardLeftZ(left, false));
     }
 
     public void spawnWeen() {
-        weenSpawnX = FakePlayerHelper.forwardX(20, true);
-        weenSpawnY = FakePlayerHelper.fakePlayer.posY;
-        weenSpawnZ = FakePlayerHelper.forwardZ(20, true);
-        targetX = weenSpawnX;
-        targetY = weenSpawnY;
-        targetZ = weenSpawnZ;
         flyingWeen = new EntityFlyingWeen(WorldAPI.getWorld());
-        flyingWeen.setPosition(weenSpawnX, weenSpawnY - 5, weenSpawnZ);
+        flyingWeen.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 20, true).add(0, -5, 0));
         WorldAPI.getWorld().spawnEntityInWorld(flyingWeen);
     }
 
@@ -206,11 +128,11 @@ public class Elytra extends AbstractMiniGame {
             public void run(Type type) {
                 if (!facing.getName().equalsIgnoreCase(WorldAPI.getPlayer().getHorizontalFacing().getName())) {
                     facing = WorldAPI.getPlayer().getHorizontalFacing();
-                    cameraSetting(facing.getName());
+                    cameraSetting();
                 }
-                double spawnPosX = FakePlayerHelper.forwardX(20, true);
-                double spawnPosY = FakePlayerHelper.fakePlayer.posY;
-                double spawnPosZ = FakePlayerHelper.forwardZ(20, true);
+                double spawnPosX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
+                double spawnPosY = fakePlayer.posY;
+                double spawnPosZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
 
                 if (absRunCount == 0)
                     absDefTick = 20;
@@ -220,8 +142,8 @@ public class Elytra extends AbstractMiniGame {
                     return;
                 }
                 for (int i = 0; i < 5; i++) {
-                    double rightX = FakePlayerHelper.forwardRightX(WorldAPI.rand(5), false);
-                    double rightZ = FakePlayerHelper.forwardRightZ(WorldAPI.rand(5), false);
+                    double rightX = fakePlayer.getX(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
+                    double rightZ = fakePlayer.getZ(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
                     spawnWeenElytra(spawnPosX + rightX, spawnPosY, spawnPosZ + rightZ, targetX + rightX, targetY, targetZ + rightZ);
                 }
             }
@@ -231,13 +153,13 @@ public class Elytra extends AbstractMiniGame {
     @Override
     public boolean end(Object... obj) {
         Camera.getCamera().reset();
-        if (MiniGame.elytraEvent != null && MiniGame.elytraEvent instanceof ElytraEvent) {
+        if (MiniGame.elytraEvent instanceof ElytraEvent) {
             ElytraEvent eve = (ElytraEvent) MiniGame.elytraEvent;
             eve.spawnY = 0;
             WorldAPI.command("/display size 854 480");
             WorldAPI.command("/ui reset");
             bossEnd = true;
-            WorldAPI.teleport(playerSpawnX, playerSpawnY - 45, playerSpawnZ);
+            WorldAPI.teleport(playerSpawnX, playerSpawnY, playerSpawnZ);
         }
 
         return super.end();
@@ -253,4 +175,36 @@ public class Elytra extends AbstractMiniGame {
         return ween;
     }
 
+    public void a() {
+        String facingName = null;
+        WorldAPI.getPlayer().inventory.armorInventory[2] = new ItemStack(Items.ELYTRA);
+        Camera.getCamera().reset();
+        if (facingName.equalsIgnoreCase("NORTH")) {
+            Camera.getCamera().lockCamera(true, 0, 180);
+            Camera.getCamera().playerCamera(true);
+            Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
+            Camera.getCamera().rotateCamera(0, -60, 0);
+        }
+        if (facingName.equalsIgnoreCase("WEST")) {
+            Camera.getCamera().lockCamera(true, 0, 0);
+            Camera.getCamera().playerCamera(true);
+            Camera.getCamera().moveCamera(0, -5, 0);
+            Camera.getCamera().rotateCamera(0, 0, -50);
+        }
+        if (facingName.equalsIgnoreCase("SOUTH")) {
+            Camera.getCamera().lockCamera(true, 0, 0);
+            Camera.getCamera().playerCamera(true);
+            Camera.getCamera().moveCamera(0, -5, 0);
+            Camera.getCamera().rotateCamera(-50, 0, 0);
+        }
+        if (facingName.equalsIgnoreCase("EAST")) {
+            Camera.getCamera().lockCamera(true, 0, 0);
+            Camera.getCamera().playerCamera(true);
+            Camera.getCamera().moveCamera(0, -5, 0);
+            Camera.getCamera().rotateCamera(0, 0, 50);
+            Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
+        }
+        ((ElytraEvent) MiniGame.elytraEvent).elytraMode = false;
+
+    }
 }

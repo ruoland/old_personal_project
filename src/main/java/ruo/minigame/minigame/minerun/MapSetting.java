@@ -5,6 +5,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.PosHelper;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 
@@ -32,6 +34,7 @@ public class MapSetting {
     public void create(){
         World world = WorldAPI.getWorld();
         EntityPlayer player = WorldAPI.getPlayer();
+        PosHelper posHelper = new PosHelper(player);
         int lookX = (int) EntityAPI.lookX(WorldAPI.getPlayer().getHorizontalFacing(), 20);
         int lookZ = (int) EntityAPI.lookZ(WorldAPI.getPlayer().getHorizontalFacing(), 20);
         System.out.println(lookX+" - "+lookZ);
@@ -39,20 +42,20 @@ public class MapSetting {
         setBlockZ(lookZ);
 
         for(int i = 0;i<3;i++){
-            double forwardLX = EntityAPI.forwardLeftX(player, i, true);
-            double forwardLZ = EntityAPI.forwardLeftZ(player, i, true);
-            double forwardRX = EntityAPI.forwardRightX(player, i, true);
-            double forwardRZ = EntityAPI.forwardRightZ(player, i, true);
+            double forwardLX = posHelper.getX(SpawnDirection.LEFT, i, true);
+            double forwardLZ = posHelper.getZ(SpawnDirection.LEFT, i, true);
+            double forwardRX = posHelper.getX(SpawnDirection.RIGHT, i, true);
+            double forwardRZ = posHelper.getZ(SpawnDirection.RIGHT, i, true);
             world.setBlockState(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), Blocks.STONE.getDefaultState());
             world.setBlockState(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), Blocks.STONE.getDefaultState());
             setBlockX(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), lookX);
             setBlockZ(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), lookZ);
         }
         for(int i = -2;i<0;i++){
-            double forwardLX = EntityAPI.forwardLeftX(player, i, true);
-            double forwardLZ = EntityAPI.forwardLeftZ(player, i, true);
-            double forwardRX = EntityAPI.forwardRightX(player, i, true);
-            double forwardRZ = EntityAPI.forwardRightZ(player, i, true);
+            double forwardLX = posHelper.getX(SpawnDirection.LEFT, i, true);
+            double forwardLZ = posHelper.getZ(SpawnDirection.LEFT, i, true);
+            double forwardRX = posHelper.getX(SpawnDirection.RIGHT, i, true);
+            double forwardRZ = posHelper.getZ(SpawnDirection.RIGHT, i, true);
             world.setBlockState(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), Blocks.STONE.getDefaultState());
             world.setBlockState(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), Blocks.STONE.getDefaultState());
             setBlockX(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), lookX);

@@ -4,14 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.input.Keyboard;
-import ruo.minigame.MiniGame;
-import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.WorldAPI;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
@@ -34,7 +29,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         spawnDirection = spawn;
     }
 
-    int attackCooldown = 40, inputCooldown;
+    int attackCooldown = 40;
 
     @Override
     public void onLivingUpdate() {
@@ -50,36 +45,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
                 spawnBullet();
                 attackCooldown = 40;
             }
-            if(inputCooldown <= 0) {
-                if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
-                    System.out.println(getPositionVector() + " - " + fakePlayer.getDistance(this.getPositionVector()));
-                }
-                if (Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)) {
-                    this.setPosition(backX(1, true), posY, backZ(1, true));
-                }
-                if (Keyboard.isKeyDown(Keyboard.KEY_ADD)) {
-                    this.setPosition(forwardX(1, true), posY, forwardZ(1, true));
-                }
-                inputCooldown = 20;
-            }
-            inputCooldown--;
-            double speed = 0.03;
-            if(fakePlayer.getDistance(this.getPositionVector()) > 8){
-                if(spawnDirection == SpawnDirection.FORWARD) {
-                    this.setVelocity(fakePlayer.backX(speed), 0, fakePlayer.backZ(speed));
-                }
-            }
-            if(fakePlayer.getDistance(this.getPositionVector()) > 3){
-                if(spawnDirection == SpawnDirection.BACK) {
-                    this.setVelocity(fakePlayer.lookX(speed), 0, fakePlayer.lookZ(speed));
-                }
-                if(spawnDirection == SpawnDirection.RIGHT) {
-                    this.setVelocity(fakePlayer.forwardRightX(speed, false), 0, fakePlayer.forwardRightZ(speed, false));
-                }
-                if(spawnDirection == SpawnDirection.LEFT) {
-                    this.setVelocity(fakePlayer.forwardLeftX(speed, false), 0, fakePlayer.forwardLeftZ(speed, false));
-                }
-            }
+
         }
     }
 

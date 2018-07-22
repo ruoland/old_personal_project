@@ -6,11 +6,13 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import ruo.minigame.api.PosHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 
 import javax.annotation.Nullable;
 
 public class EntityFakePlayer extends EntityDefaultNPC {
+    private PosHelper posHelper;
     private int respawnTime;//무적 타임
     public EntityFakePlayer(World worldIn) {
         super(worldIn);

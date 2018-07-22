@@ -72,8 +72,11 @@ public class MineRun extends AbstractMiniGame {
         curY = y;
         curZ = z;
         System.out.println(curX+ " - "+curY+" - "+curZ);
-
     }
+    public static void setPosition(BlockPos pos){
+        setPosition(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     @Override
     public boolean start(Object... obj) {
         this.setFakePlayerUse();

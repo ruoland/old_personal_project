@@ -7,6 +7,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.elytra.Elytra;
@@ -28,7 +29,7 @@ public class EntityElytraWeenUP extends EntityElytraWeenCore {
 
     public EntityElytraWeenUP(World worldIn, double x, double y, double z) {
         this(worldIn);
-        this.setTarget(x + FakePlayerHelper.backX(15, false), y, z + FakePlayerHelper.backZ(15, false));
+        this.setTarget(x + getX(SpawnDirection.BACK, 15, false), y, z +getZ(SpawnDirection.BACK, 15, false));
         this.setDeathTimer(500);
         String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
         if (index.equalsIgnoreCase("NORTH") || index.equalsIgnoreCase("SOUTH")) {

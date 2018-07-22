@@ -4,6 +4,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.TypeModel;
 
@@ -34,8 +35,8 @@ public class EntityFlyingCreeper extends EntityDefaultNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        motionX+=this.lookX(0.01);
-        motionZ+=this.lookZ(0.01);
+        motionX+=this.getX(SpawnDirection.FORWARD, 0.01, false);
+        motionZ+=this.getZ(SpawnDirection.FORWARD, 0.01, false);
         motionY = 0;
         
     }

@@ -13,9 +13,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
+import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.TypeModel;
@@ -31,6 +33,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
     private final BossInfoServer playerHealth = (BossInfoServer) (new BossInfoServer(new TextComponentString("플레이어 체력"),
             BossInfo.Color.RED, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
     public boolean forceStageSkip, deadFalling;
+    private EntityFakePlayer fakePlayer;
 
     public EntityFlyingWeen(World worldIn) {
         super(worldIn);
@@ -39,6 +42,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
         setModel(TypeModel.BLOCK);
         setTra(0, -4, 0);
         addScale(7);
+        fakePlayer = FakePlayerHelper.fakePlayer;
     }
 
     protected void applyEntityAttributes() {
@@ -188,10 +192,10 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
                 System.out.println("[세번째 패턴] "+absDefTick+"틱이 지나감");
                 int distance = 10;
                 String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
-                double leftX = FakePlayerHelper.forwardLeftX(distance, true);
-                double leftZ = FakePlayerHelper.forwardLeftZ(distance, true);
-                double rightX = FakePlayerHelper.forwardRightX(distance, true);
-                double rightZ = FakePlayerHelper.forwardRightZ(distance, true);
+                double leftX = fakePlayer.getX(SpawnDirection.LEFT, distance, true);
+                double leftZ =  fakePlayer.getZ(SpawnDirection.LEFT, distance, true);
+                double rightX = fakePlayer.getX(SpawnDirection.RIGHT, distance, true);
+                double rightZ = fakePlayer.getZ(SpawnDirection.RIGHT, distance, true);
 
                 if (index.equalsIgnoreCase("NORTH") || index.equalsIgnoreCase("SOUTH")) {
                     for (int i = 0; i < absRunCount; i++) {//미니윈을 좌우에도 소환함
@@ -229,7 +233,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
     }
 
     private double[] forwardRandomXZ(int bound) {
-        return new double[]{FakePlayerHelper.forwardX(worldObj.rand.nextInt(bound), false), FakePlayerHelper.forwardZ(worldObj.rand.nextInt(5), false)};
+        return new double[]{FakePlayerHelper.fakePlayer.getX(SpawnDirection.FORWARD, worldObj.rand.nextInt(bound), false), FakePlayerHelper.fakePlayer.getZ(SpawnDirection.FORWARD, worldObj.rand.nextInt(5), false)};
     }
 
     public void fourPattern() {
@@ -250,14 +254,14 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
                 String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
                 if (index.equalsIgnoreCase("NORTH") || index.equalsIgnoreCase("SOUTH")) {
                     for (int i = 0; i < 5; i++) {
-                        spawnWeenTNT(posX + WorldAPI.rand(5), FakePlayerHelper.backZ(20, true));
-                        spawnWeenTNT(posX - WorldAPI.rand(5), FakePlayerHelper.backZ(20, true));
+                        spawnWeenTNT(posX + WorldAPI.rand(5),fakePlayer.getZ(SpawnDirection.BACK,20, true));
+                        spawnWeenTNT(posX - WorldAPI.rand(5), fakePlayer.getZ(SpawnDirection.BACK, 20, true));
                     }
                 }
                 if (index.equalsIgnoreCase("WEST") || index.equalsIgnoreCase("EAST")) {
                     for (int i = 0; i < 5; i++) {
-                        spawnWeenTNT(FakePlayerHelper.backX(20, true), posZ + WorldAPI.rand(5));
-                        spawnWeenTNT(FakePlayerHelper.backX(20, true), posZ - WorldAPI.rand(5));
+                        spawnWeenTNT(fakePlayer.getX(SpawnDirection.BACK,20, true), posZ + WorldAPI.rand(5));
+                        spawnWeenTNT(fakePlayer.getX(SpawnDirection.BACK,20, true), posZ - WorldAPI.rand(5));
                     }
                 }
                 if (absRunCount > 2 || forceStageSkip) {
@@ -330,9 +334,9 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
                         System.out.println("[여섯번째 패턴] 앞 왼쪽 오른쪽"+i+(posX + vec3d[0])+ " - "+ (posZ+vec3d[1]));
                     }
                 } else {
-                    spawnWeen(posX, posZ, FakePlayerHelper.forwardRightX(15, true), FakePlayerHelper.forwardRightZ(15, true));
-                    spawnWeen(FakePlayerHelper.backX(15, true), FakePlayerHelper.backZ(15, true));
-                    spawnWeen(posX, posZ, FakePlayerHelper.forwardLeftX(15, true), FakePlayerHelper.forwardLeftZ(15, true));
+                    spawnWeen(posX, posZ, fakePlayer.getX(SpawnDirection.RIGHT, 15, true), fakePlayer.getZ(SpawnDirection.RIGHT,15, true));
+                    spawnWeen(fakePlayer.getX(SpawnDirection.BACK, 15, true), fakePlayer.getZ(SpawnDirection.BACK, 15, true));
+                    spawnWeen(posX, posZ, fakePlayer.getX(SpawnDirection.LEFT, 15, true), fakePlayer.getZ(SpawnDirection.LEFT, 15, true));
                     System.out.println("[여섯번째 패턴] 앞 왼쪽 오른쪽이 아님");
 
                 }

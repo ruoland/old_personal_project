@@ -20,6 +20,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.PosHelper;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.Move;
@@ -51,13 +53,14 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     private static HashMap<String, EntityDefaultNPC> npcHash = new HashMap<>();
     private static HashMap<String, EntityDefaultNPC> uuidHash = new HashMap<>();
-
+    private PosHelper posHelper;
     public boolean isFly;
     public TextEffect eft;
 
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
         this.eft = TextEffect.getHelper(this);
+        posHelper = new PosHelper(this);
         this.setSize(0.6F, 1.95F);
         PathNavigateGround path = (PathNavigateGround) this.getNavigator();
         path.setEnterDoors(true);
@@ -346,104 +349,24 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (eft != null)
             eft.cancel();
     }
-
-
-    public double lookPosX(float plusYaw, double plus) {
-        return EntityAPI.lookPosX(this, plusYaw, plus);
+    public BlockPos getXZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+        return posHelper.getXZ(spawnDirection, plus, pos);
     }
-
-    public double lookPosZ(float plusYaw, double plus) {
-        return EntityAPI.lookPosZ(this, plusYaw, plus);
+    public BlockPos getXZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+        return posHelper.getXZ(spawnDirection, plus, rlplus, pos);
     }
-
-    public double lookX(float plusYaw, double plus) {
-        return EntityAPI.lookX(this, plusYaw, plus);
+    public double getX(SpawnDirection spawnDirection, double plus, boolean pos) {
+        return posHelper.getX(spawnDirection, plus, pos);
     }
-
-    public double lookZ(float plusYaw, double plus) {
-        return EntityAPI.lookZ(this, plusYaw, plus);
+    public double getX(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+        return posHelper.getX(spawnDirection, plus, rlplus, pos);
     }
-    public double lookX(double plus) {
-        return EntityAPI.lookX(this, plus);
+    public double getZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+        return posHelper.getZ(spawnDirection, plus, pos);
     }
-    public double lookZ(double plus) {
-        return EntityAPI.lookZ(this, plus);
+    public double getZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+        return posHelper.getZ(spawnDirection, plus, rlplus, pos);
     }
-    public double forwardLeftX(double plus, boolean pos) {
-        return EntityAPI.forwardLeftX(this, plus, pos);
-    }
-    public double forwardLeftZ(double plus, boolean pos) {
-        return EntityAPI.forwardLeftZ(this, plus, pos);
-
-    }
-    public double forwardRightX(double plus, boolean pos) {
-        return EntityAPI.forwardRightX(this,plus, pos);
-    }
-    public double forwardRightZ(double plus, boolean pos) {
-        return EntityAPI.forwardRightZ(this,plus, pos);
-    }
-
-    public double forwardX(double plus, boolean pos) {
-        return forwardX(this,this.getHorizontalFacing(), plus, pos);
-    }
-
-    public double forwardZ(double plus, boolean pos) {
-        return forwardZ(this,this.getHorizontalFacing(), plus, pos);
-    }
-    public double backX(double minus)
-    {
-        return EntityAPI.backX(this, minus, false);
-    }
-    public double backZ(double minus) {
-        return EntityAPI.backX(this, minus,false);
-    }
-
-    public double backX(double minus, boolean pos)
-    {
-        return EntityAPI.backX(this, minus, pos);
-    }
-    public double backZ(double minus, boolean pos) {
-        return EntityAPI.backX(this, minus, pos);
-    }
-
-    public double forwardX(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
-        double position = base.posX;
-        if(!pos)
-            position = 0;
-        if (facing.getName().equalsIgnoreCase("NORTH")) {
-            return position;
-        }
-        if (facing.getName().equalsIgnoreCase("SOUTH")) {
-            return position;
-        }
-        if (facing.getName().equalsIgnoreCase("EAST")) {
-            return position + plus;
-        }
-        if (facing.getName().equalsIgnoreCase("WEST")) {
-            return position - plus;
-        }
-        return position;
-    }
-
-    public double forwardZ(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
-        double position = base.posZ;
-        if(!pos)
-            position = 0;
-        if (facing.getName().equalsIgnoreCase("NORTH")) {
-            return position - plus;
-        }
-        if (facing.getName().equalsIgnoreCase("SOUTH")) {
-            return position + plus;
-        }
-        if (facing.getName().equalsIgnoreCase("EAST")) {
-            return position;
-        }
-        if (facing.getName().equalsIgnoreCase("WEST")) {
-            return position;
-        }
-        return position;
-    }
-
     public void look(EntityLivingBase mob2) {
         EntityAPI.look(this, mob2);
     }

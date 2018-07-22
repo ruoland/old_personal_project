@@ -12,6 +12,8 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.PosHelper;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -78,6 +80,7 @@ public class MineRunEvent {
         if (!MiniGame.minerun.isStart())
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
+        PosHelper posHelper = new PosHelper(WorldAPI.getPlayer());
         if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
             if (MineRun.elytraMode() == 2) {
                 MineRun.setElytra(1);
@@ -114,11 +117,12 @@ public class MineRunEvent {
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR, false));
+
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, lineLR, false));
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR(), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR(), false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR(), false));
             }
         }
         if (MineRun.elytraMode() == 1) {
@@ -127,49 +131,41 @@ public class MineRunEvent {
                 //abs는 앞으로만 이동하게 하기 위해서 함
                 MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), absFB(), false), 0, EntityAPI.forwardZ(WorldAPI.getPlayer(), absFB(), false));
                 if(lineLR == 1){
-                    MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardLeftX(WorldAPI.getPlayer(), absLR(), false), 0,
-                            EntityAPI.forwardZ(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), absLR(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.FORWARD_LEFT, absLR(), false));
                 }
                 if(lineLR == -1){
-                    MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR(), false), 0,
-                            EntityAPI.forwardZ(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.FORWARD_RIGHT, absLR(), false));
                 }
             }
             if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
                 lineFB--;
                 MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), absFB(), false), 0, EntityAPI.backZ(WorldAPI.getPlayer(), absFB(), false));
                 if(lineLR == 1){
-                    MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardLeftX(WorldAPI.getPlayer(), absLR(), false), 0,
-                            EntityAPI.backZ(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), absLR(),false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.BACK_LEFT, absLR(), false));
                 }
                 if(lineLR == -1){
-                    MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR(), false), 0,
-                            EntityAPI.backZ(WorldAPI.getPlayer(), absFB(), false)+EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.BACK_RIGHT, absLR(), false));
                 }
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), absLR(), false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), absLR(), false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR(), false));
                 if(lineFB == 1){
-                    MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), absLR(), false)+EntityAPI.forwardX(WorldAPI.getPlayer(), absFB(), false),
-                            0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), absLR(), false)+ EntityAPI.forwardZ(WorldAPI.getPlayer(), absFB(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.FORWARD_LEFT, absLR(), false));
                 }
                 if(lineFB == -1){
-                    MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), absLR(), false)+EntityAPI.backX(WorldAPI.getPlayer(), absFB(), false),
-                            0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), absLR(), false)+ EntityAPI.backZ(WorldAPI.getPlayer(), absFB(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.BACK_LEFT, absLR(), false));
                 }
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR(), false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR(), false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR(), false));
 
                 if(lineFB == 1){
-                    MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR(), false)+EntityAPI.forwardX(WorldAPI.getPlayer(), absFB(), false),
-                            0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR(), false)+ EntityAPI.forwardZ(WorldAPI.getPlayer(), absFB(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.FORWARD_LEFT, absLR(), false));
                 }
                 if(lineFB == -1){
-                    MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR(), false)+EntityAPI.backX(WorldAPI.getPlayer(), absFB(), false),
-                            0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR(), false)+ EntityAPI.backZ(WorldAPI.getPlayer(), absFB(), false));
+                    MineRun.setPosition(posHelper.getXZ(SpawnDirection.FORWARD_RIGHT, absLR(), false));
                 }
             }
             System.out.println(lineLR+" - "+lineFB);
@@ -178,14 +174,14 @@ public class MineRunEvent {
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MineRun.setPosition(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 1.5, false), 0, EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 1.5, false));
-                System.out.println(EntityAPI.forwardLeftX(WorldAPI.getPlayer(), lineLR * 1.5, false) + " - " + EntityAPI.forwardLeftZ(WorldAPI.getPlayer(), lineLR * 1.5, false));
+
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, lineLR * 1.5, false));
+                System.out.println(posHelper.getX(SpawnDirection.LEFT, lineLR * 1.5, false) + " - " + posHelper.getZ(SpawnDirection.LEFT, lineLR * 1.5, false));
 
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MineRun.setPosition(EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR() * 1.5, false), 0, EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR() * 1.5, false));
-                System.out.println(EntityAPI.forwardRightX(WorldAPI.getPlayer(), absLR() * 1.5, false) + " - " + EntityAPI.forwardRightZ(WorldAPI.getPlayer(), absLR() * 1.5, false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, lineLR * 1.5, false));
             }
             System.out.println(lineLR+lineFB);
         }

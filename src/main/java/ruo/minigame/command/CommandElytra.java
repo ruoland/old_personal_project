@@ -44,7 +44,7 @@ public class CommandElytra extends CommandBase{
             WorldAPI.teleport(MiniGame.elytra.playerSpawnX, MiniGame.elytra.playerSpawnY+5, MiniGame.elytra.playerSpawnZ);
         }
 		else if(args[0].equals("start"))
-			MiniGame.elytra.start(args[1]);
+			MiniGame.elytra.start();
 		else
 			MiniGame.elytra.end();
 		

@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 
@@ -27,7 +28,7 @@ public class EntityElytraTest extends EntityDefaultNPC {
         if (WorldAPI.equalsItem(stack, Items.GOLDEN_APPLE)) {
         }
         if (WorldAPI.equalsItem(stack, Items.WHEAT)) {
-            worldObj.setBlockState(getPosition().add(lookX(3), 0, lookZ(3)), Blocks.STONE.getDefaultState());
+            worldObj.setBlockState(getPosition().add(getX(SpawnDirection.FORWARD, 3, false), 0, getZ(SpawnDirection.FORWARD, 3, false)), Blocks.STONE.getDefaultState());
         }
         if (WorldAPI.equalsItem(stack, Items.ARROW)) {
             if (player.isSneaking())

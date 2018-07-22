@@ -6,6 +6,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ruo.minigame.MiniGame;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -20,7 +21,7 @@ public class EntityElytraItem extends EntityDefaultNPC {
         this.addRotate(180, 0, 0);
         this.setPosition(x, y, z);
         this.setSize(1, 5);
-        vec3d = new Vec3d(FakePlayerHelper.backX(20, true) - x, y, FakePlayerHelper.backZ(20, true) - z).normalize();
+        vec3d = new Vec3d(FakePlayerHelper.fakePlayer.getXZ(SpawnDirection.BACK, 20, false)).normalize();
         this.setDeathTimer(500);
     }
 
@@ -32,9 +33,6 @@ public class EntityElytraItem extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(FakePlayerHelper.fakePlayer != null) {
-            if (FakePlayerHelper.fakePlayer.getDistance(posX, posY, posZ) < 15) {
-                setPosition(FakePlayerHelper.forwardX(10, true), posY, FakePlayerHelper.forwardZ(10, true));
-            }
             if (vec3d != null) {
                 System.out.println("플레이어 뒤로 이동하는 중" + vec3d.xCoord + " - " + vec3d.zCoord);
                 this.setVelocity(vec3d.xCoord, 0, vec3d.zCoord);
