@@ -21,7 +21,7 @@ public class EntityElytraItem extends EntityDefaultNPC {
         this.addRotate(180, 0, 0);
         this.setPosition(x, y, z);
         this.setSize(1, 5);
-        vec3d = new Vec3d(FakePlayerHelper.fakePlayer.getXZ(SpawnDirection.BACK, 20, false)).normalize();
+        vec3d = FakePlayerHelper.fakePlayer.getXZ(SpawnDirection.BACK, 20, false).normalize();
         this.setDeathTimer(500);
     }
 

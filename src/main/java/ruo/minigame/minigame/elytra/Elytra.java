@@ -17,6 +17,8 @@ import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.AbstractMiniGame;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
+import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
+import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenCore;
 import ruo.minigame.api.SpawnDirection;
 import scala.xml.dtd.EntityDef;
@@ -28,6 +30,7 @@ public class Elytra extends AbstractMiniGame {
     private EnumFacing facing;
     public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
     private EntityFakePlayer fakePlayer;
+    private PosHelper spawnPosHelper;
 
     public Elytra() {
     }
@@ -41,6 +44,8 @@ public class Elytra extends AbstractMiniGame {
         playerSpawnY = fakePlayer.posY - 45;
         playerSpawnZ = fakePlayer.posZ;
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());
+        spawnPosHelper = new PosHelper(fakePlayer.getPositionVector(), fakePlayer.getHorizontalFacing());
+
         cameraSetting();
         first();
         MiniGame.elytraEvent.elytraMode = true;
@@ -80,15 +85,16 @@ public class Elytra extends AbstractMiniGame {
         TickRegister.register(new AbstractTick(30, false) {
             @Override
             public void run(Type type) {
-                spawnPumpkin(SpawnDirection.FORWARD);
-                spawnPumpkin(SpawnDirection.FORWARD_RIGHT);
-                spawnPumpkin(SpawnDirection.FORWARD_LEFT);
+                //spawnPumpkinAttack(SpawnDirection.FORWARD);
+                test();
             }
         });
 
         TickRegister.register(new AbstractTick(180, false) {
             @Override
             public void run(Type type) {
+                spawnPumpkinAttack(SpawnDirection.LEFT);
+                spawnPumpkinAttack(SpawnDirection.RIGHT);
             }
         });
     }
@@ -97,24 +103,52 @@ public class Elytra extends AbstractMiniGame {
 
     }
 
-    public void spawnPumpkin(SpawnDirection direction) {
-        EntityElytraPumpkin pumpkin = new EntityElytraPumpkin(WorldAPI.getWorld());
+    public void test() {
+        for (int i = 1; i < 3; i++) {
+            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+            setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i);
+        }
+        for (int i = 1; i < 3; i++) {
+            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+            setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i);
+        }
+        spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
+
+    }
+
+
+    public EntityElytraPumpkinAttack spawnPumpkinAttack(SpawnDirection direction) {
+        EntityElytraPumpkinAttack pumpkin = new EntityElytraPumpkinAttack(WorldAPI.getWorld());
+        setPositionAndSpawn(direction, pumpkin, 3);
+        return pumpkin;
+    }
+
+    private void setPositionAndSpawn(SpawnDirection direction, EntityElytraPumpkin pumpkin, double rlplus) {
         switch (direction) {
             case FORWARD:
-                pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 16, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD, 16, true));
+                break;
             case FORWARD_LEFT:
-                pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD_LEFT, 16, 3, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_LEFT, 16, rlplus, true));
+                break;
             case FORWARD_RIGHT:
-                pumpkin.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD_RIGHT, 16, 3, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_RIGHT, 16, rlplus, true));
+                break;
+            case LEFT:
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.LEFT, 6, true));
+                break;
+            case RIGHT:
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.RIGHT, 6, true));
+                break;
         }
-        System.out.println(pumpkin.getPositionVector());
+        pumpkin.setDirection(direction);
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
-        pumpkin.setDirection(SpawnDirection.FORWARD);
+
     }
 
     public void spawnWeen() {
         flyingWeen = new EntityFlyingWeen(WorldAPI.getWorld());
-        flyingWeen.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 20, true).add(0, -5, 0));
+        flyingWeen.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 20, true).addVector(0, -5, 0));
         WorldAPI.getWorld().spawnEntityInWorld(flyingWeen);
     }
 

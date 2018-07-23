@@ -51,8 +51,7 @@ public class EntityElytraTest extends EntityDefaultNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(WorldAPI.getPlayer() != null)
-        faceEntity(WorldAPI.getPlayer(), 360,360);
 
+        this.setFire(2);
     }
 }

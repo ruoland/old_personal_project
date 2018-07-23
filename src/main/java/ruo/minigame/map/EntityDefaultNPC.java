@@ -65,7 +65,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         PathNavigateGround path = (PathNavigateGround) this.getNavigator();
         path.setEnterDoors(true);
         path.setBreakDoors(true);
-        if(!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             TextEffect.lookMob.put(this.getName(), this);
             npcHash.put(getCustomNameTag(), this);
             uuidHash.put(getUniqueID().toString(), this);
@@ -97,7 +97,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         super.setVelocity(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
-    public double getDistance(Vec3d vec3d){
+    public double getDistance(Vec3d vec3d) {
         return super.getDistance(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
@@ -112,7 +112,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (isFly) {
             motionY = 0;
         }
-        if(isServerWorld()) {
+        if (isServerWorld()) {
             if (!npcHash.containsKey(this.getCustomNameTag())) {
                 npcHash.put(this.getCustomNameTag(), this);
             }
@@ -121,7 +121,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
             }
 
         }
-        if(getDataManager().get(ON_DEATH_TIMER)) {
+        if (getDataManager().get(ON_DEATH_TIMER)) {
             int deathTime = getDataManager().get(DEATH_TIMER);
             if (isServerWorld() && deathTime > 0) {
                 getDataManager().set(DEATH_TIMER, deathTime - 1);
@@ -143,9 +143,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
         compound.setFloat("LOCKYAW", getDataManager().get(LOCK_YAW));
         compound.setBoolean("canCollision", canCollision());
         compound.setBoolean("ISSTURN", isSturn());
-        AbstractTick absTick = TickRegister.getAbsTick(getUniqueID().toString()+"-STURN");
-        if(absTick != null) {
-            int sturnTick =absTick.getCurrentTick();
+        AbstractTick absTick = TickRegister.getAbsTick(getUniqueID().toString() + "-STURN");
+        if (absTick != null) {
+            int sturnTick = absTick.getCurrentTick();
             compound.setInteger("STURN_TICK", sturnTick);
         }
         super.writeEntityToNBT(compound);
@@ -160,7 +160,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         getDataManager().set(LOCK_YAW, compound.getFloat("STURNYAW"));
         getDataManager().set(LOCK_PITCH, compound.getFloat("STURNPITCH"));
         setCollision(compound.getBoolean("canCollision"));
-        if(compound.getBoolean("ISSTURN"))
+        if (compound.getBoolean("ISSTURN"))
             setSturn(compound.getInteger("STURN_TICK"));
     }
 
@@ -169,9 +169,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return !super.canDespawn();
     }
 
-    public void setSpawnPosition(){
-        setPosition(getSpawnX(),getSpawnY(),getSpawnZ());
+    public void setSpawnPosition() {
+        setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
     }
+
     public Rotations getSpawnXYZ() {
         return dataManager.get(SPAWN_XYZ);
     }
@@ -195,18 +196,19 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        setSpawnXYZ(posX,posY,posZ);
+        setSpawnXYZ(posX, posY, posZ);
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
-    public void setDeathTimer(int deathTimer){
-        if(deathTimer > 0) {
+    public void setDeathTimer(int deathTimer) {
+        if (deathTimer > 0) {
             dataManager.set(DEATH_TIMER, deathTimer);
             dataManager.set(ON_DEATH_TIMER, true);
-        }else
+        } else
             dataManager.set(ON_DEATH_TIMER, false);
 
     }
+
     public BlockPos getSpawnPos() {
         return new BlockPos(getSpawnX(), getSpawnY(), getSpawnZ());
     }
@@ -270,8 +272,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     public void moveEntityWithHeading(float strafe, float forward) {
-        if(!(isSturn() && onGround))
-        super.moveEntityWithHeading(strafe, forward);
+        if (!(isSturn() && onGround))
+            super.moveEntityWithHeading(strafe, forward);
     }
 
     public void command(String command) {
@@ -286,9 +288,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
         super.swingArm(EnumHand.MAIN_HAND);
     }
 
-    public static Collection<EntityDefaultNPC> getAllNPC(){
+    public static Collection<EntityDefaultNPC> getAllNPC() {
         return npcHash.values();
     }
+
     public static EntityDefaultNPC getNPC(String name) {
         return npcHash.get(name);
     }
@@ -309,7 +312,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     public void setUniqueId(UUID uniqueIdIn) {
-        if(!worldObj.isRemote) {
+        if (!worldObj.isRemote) {
             uuidHash.remove(this.getUniqueID().toString());
             uuidHash.put(uniqueIdIn.toString(), this);
         }
@@ -318,7 +321,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     public void setCustomNameTag(String name) {
-        if(!worldObj.isRemote) {
+        if (!worldObj.isRemote) {
 
             npcHash.remove(this.getCustomNameTag());
             npcHash.put(this.getCustomNameTag(), this);
@@ -328,8 +331,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
 
     public void setPosition(BlockPos position) {
-        if(position != null)
         this.setPosition(position.getX(), position.getY(), position.getZ());
+    }
+
+    public void setPosition(Vec3d vec3d) {
+        this.setPosition(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
 
@@ -349,24 +355,31 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (eft != null)
             eft.cancel();
     }
-    public BlockPos getXZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+
+    public Vec3d getXZ(SpawnDirection spawnDirection, double plus, boolean pos) {
         return posHelper.getXZ(spawnDirection, plus, pos);
     }
-    public BlockPos getXZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+
+    public Vec3d getXZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getXZ(spawnDirection, plus, rlplus, pos);
     }
+
     public double getX(SpawnDirection spawnDirection, double plus, boolean pos) {
         return posHelper.getX(spawnDirection, plus, pos);
     }
+
     public double getX(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getX(spawnDirection, plus, rlplus, pos);
     }
+
     public double getZ(SpawnDirection spawnDirection, double plus, boolean pos) {
         return posHelper.getZ(spawnDirection, plus, pos);
     }
+
     public double getZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getZ(spawnDirection, plus, rlplus, pos);
     }
+
     public void look(EntityLivingBase mob2) {
         EntityAPI.look(this, mob2);
     }
@@ -391,7 +404,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         EntityAPI.move(move);
     }
 
-    public boolean isAttackTargetPlayer(){
+    public boolean isAttackTargetPlayer() {
         return getAttackTarget() != null && getAttackTarget() instanceof EntityPlayer;
     }
 }

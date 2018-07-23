@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import ruo.minigame.map.EntityDefaultNPC;
 
-public class EntityElytraPumpkinFire extends EntityDefaultNPC {
+public class EntityElytraPumpkinFire extends EntityElytraPumpkin {
     public EntityElytraPumpkinFire(World worldIn) {
         super(worldIn);
         setBlockMode(Blocks.PUMPKIN);
@@ -17,33 +17,13 @@ public class EntityElytraPumpkinFire extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         this.setFire(10);
-    }
-
-    @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20);
-        getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(2000000000);
-    }
-
-    @Override
-    public void onCollideWithPlayer(EntityPlayer entityIn) {
-        //super.onCollideWithPlayer(entityIn);
+        if(getSpawnDirection() != null)
+        this.setVelocity(getXZ(getSpawnDirection().reverse(), 0.03, false));
     }
 
     @Override
     protected void collideWithEntity(Entity entityIn) {
-        //super.collideWithEntity(entityIn);
+        super.collideWithEntity(entityIn);
+        entityIn.setFire(2);
     }
-
-    @Override
-    protected void collideWithNearbyEntities() {
-        //super.collideWithNearbyEntities();
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-
 }

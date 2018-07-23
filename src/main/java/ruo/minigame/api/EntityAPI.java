@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,6 +47,13 @@ public class EntityAPI {
         Vec3d vec3d = getVectorForRotation(base.rotationPitch, base.rotationYaw + plusYaw);
         return base.posZ + vec3d.zCoord * plus;
     }
+    public static double lookX(EntityLivingBase base, double plus) {
+        return lookX(base.getHorizontalFacing(), plus);
+    }
+
+    public static double lookZ(EntityLivingBase base, double plus) {
+        return lookZ(base.getHorizontalFacing(), plus);
+    }
 
     public static double lookX(EntityLivingBase base, float plusYaw, double plus) {
         return lookPosX(base, plusYaw, plus) - base.posX;
@@ -53,14 +61,6 @@ public class EntityAPI {
 
     public static double lookZ(EntityLivingBase base, float plusYaw, double plus) {
         return lookPosZ(base, plusYaw, plus) - base.posZ;
-    }
-
-    public static double lookX(EntityLivingBase base, double plus) {
-        return lookX(base.getHorizontalFacing(), plus);
-    }
-
-    public static double lookZ(EntityLivingBase base, double plus) {
-        return lookZ(base.getHorizontalFacing(), plus);
     }
 
     public static double lookX(EnumFacing base, double plus) {
@@ -91,45 +91,44 @@ public class EntityAPI {
         return 0;
     }
 
-
     public static double lookPlayerX(double plus) {
-        if (index().equalsIgnoreCase("NORTH")) {
+        EntityPlayer player = WorldAPI.getPlayer();
+        EnumFacing facing = ((EntityPlayer) player).getHorizontalFacing();
+        if (facing == EnumFacing.NORTH) {
             return WorldAPI.getPlayer().posX;
         }
-        if (index().equalsIgnoreCase("SOUTH")) {
+        if (facing == EnumFacing.SOUTH) {
             return WorldAPI.getPlayer().posX;
         }
-        if (index().equalsIgnoreCase("EAST")) {
+        if (facing == EnumFacing.EAST) {
             return WorldAPI.getPlayer().posX + plus;
         }
-        if (index().equalsIgnoreCase("WEST")) {
+        if (facing == EnumFacing.WEST) {
             return WorldAPI.getPlayer().posX - plus;
         }
         return WorldAPI.getPlayer().posX;
     }
 
     public static double lookPlayerZ(double plus) {
-        if (index().equalsIgnoreCase("NORTH")) {
+        EntityPlayer player = WorldAPI.getPlayer();
+        EnumFacing facing = ((EntityPlayer) player).getHorizontalFacing();
+        if (facing == EnumFacing.NORTH) {
             return WorldAPI.getPlayer().posZ - plus;
         }
-        if (index().equalsIgnoreCase("SOUTH")) {
+        if (facing == EnumFacing.SOUTH) {
             return WorldAPI.getPlayer().posZ + plus;
         }
-        if (index().equalsIgnoreCase("EAST")) {
+        if (facing == EnumFacing.EAST) {
             return WorldAPI.getPlayer().posZ;
         }
-        if (index().equalsIgnoreCase("WEST")) {
+        if (facing == EnumFacing.WEST) {
             return WorldAPI.getPlayer().posZ;
         }
         return WorldAPI.getPlayer().posZ;
     }
 
-    public static String index() {
-        return WorldAPI.getPlayer().getHorizontalFacing().getName();
-    }
-
     public static double getX(EntityLivingBase base, SpawnDirection spawnDirection, double plus, boolean pos) {
-        assert spawnDirection != SpawnDirection.BACK_LEFT || spawnDirection != SpawnDirection.BACK_RIGHT || spawnDirection != SpawnDirection.FORWARD_RIGHT || spawnDirection != SpawnDirection.FORWARD_LEFT;
+        assert spawnDirection == SpawnDirection.FORWARD || spawnDirection == SpawnDirection.BACK || spawnDirection == SpawnDirection.RIGHT || spawnDirection == SpawnDirection.LEFT;
         switch (spawnDirection) {
             case FORWARD:
                 return forwardX(base, plus, pos);
@@ -146,19 +145,19 @@ public class EntityAPI {
     public static double getX(EntityLivingBase base, SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD_LEFT:
-                return forwardX(base, plus, pos)+leftX(base, rlplus, pos);
+                return forwardX(base, plus, pos)+leftX(base, rlplus, false);
             case FORWARD_RIGHT:
-                return forwardX(base, plus, pos)+rightX(base, rlplus, pos);
+                return forwardX(base, plus, pos)+rightX(base, rlplus, false);
             case BACK_LEFT:
-                return backX(base, plus, pos)+leftX(base, rlplus, pos);
+                return backX(base, plus, pos)+leftX(base, rlplus, false);
             case BACK_RIGHT:
-                return backX(base, plus, pos)+rightX(base, rlplus, pos);
+                return backX(base, plus, pos)+rightX(base, rlplus, false);
         }
         return 0;
     }
 
     public static double getZ(EntityLivingBase base, SpawnDirection spawnDirection, double plus, boolean pos) {
-        assert spawnDirection != SpawnDirection.BACK_LEFT || spawnDirection != SpawnDirection.BACK_RIGHT || spawnDirection != SpawnDirection.FORWARD_RIGHT || spawnDirection != SpawnDirection.FORWARD_LEFT;
+        assert spawnDirection == SpawnDirection.FORWARD || spawnDirection == SpawnDirection.BACK || spawnDirection == SpawnDirection.RIGHT || spawnDirection == SpawnDirection.LEFT;
         switch (spawnDirection) {
             case FORWARD:
                 return forwardZ(base, plus, pos);
@@ -175,34 +174,34 @@ public class EntityAPI {
     public static double getZ(EntityLivingBase base, SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD_LEFT:
-                return forwardZ(base, plus, pos)+leftZ(base, rlplus, pos);
+                return forwardZ(base, plus, pos)+leftZ(base, rlplus, false);
             case FORWARD_RIGHT:
-                return forwardZ(base, plus, pos)+rightZ(base, rlplus, pos);
+                return forwardZ(base, plus, pos)+rightZ(base, rlplus, false);
             case BACK_LEFT:
-                return backZ(base, plus, pos)+leftZ(base, rlplus, pos);
+                return backZ(base, plus, pos)+leftZ(base, rlplus, false);
             case BACK_RIGHT:
-                return backZ(base, plus, pos)+rightZ(base, rlplus, pos);
+                return backZ(base, plus, pos)+rightZ(base, rlplus, false);
         }
         return 0;
     }
 
-    public static double leftX(EntityLivingBase base, double plus, boolean pos) {
+    private static double leftX(EntityLivingBase base, double plus, boolean pos) {
         EnumFacing left = EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() - 90);
         return forwardX(base, left, plus, pos);
     }
 
-    public static double leftZ(EntityLivingBase base, double plus, boolean pos) {
+    private static double leftZ(EntityLivingBase base, double plus, boolean pos) {
         EnumFacing left = EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() - 90);
         return forwardZ(base, left, plus, pos);
 
     }
 
-    public static double rightX(EntityLivingBase base, double plus, boolean pos) {
+    private static double rightX(EntityLivingBase base, double plus, boolean pos) {
         EnumFacing right = EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() + 90);
         return forwardX(base, right, plus, pos);
     }
 
-    public static double rightZ(EntityLivingBase base, double plus, boolean pos) {
+    private static double rightZ(EntityLivingBase base, double plus, boolean pos) {
         EnumFacing right = EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() + 90);
         return forwardZ(base, right, plus, pos);
     }
@@ -215,14 +214,6 @@ public class EntityAPI {
         return forwardZ(base, base.getHorizontalFacing(), plus, pos);
     }
 
-    public static double backX(EntityLivingBase base, EnumFacing facing, double minus, boolean pos) {
-        return forwardX(base, facing, -minus, pos);
-    }
-
-    public static double backZ(EntityLivingBase base, EnumFacing facing, double minus, boolean pos) {
-        return forwardZ(base, facing, -minus, pos);
-    }
-
     public static double backX(EntityLivingBase base, double minus, boolean pos) {
         return forwardX(base, -minus, pos);
     }
@@ -231,7 +222,7 @@ public class EntityAPI {
         return forwardZ(base, -minus, pos);
     }
 
-    public static double forwardX(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
+    private static double forwardX(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
         double position = base.posX;
         if (!pos)
             position = 0;
@@ -250,7 +241,7 @@ public class EntityAPI {
         return position;
     }
 
-    public static double forwardZ(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
+    private static double forwardZ(EntityLivingBase base, EnumFacing facing, double plus, boolean pos) {
         double position = base.posZ;
         if (!pos)
             position = 0;
@@ -268,7 +259,6 @@ public class EntityAPI {
         }
         return position;
     }
-
 
     public static EntityDefaultNPC spawn(double x, double y, double z) {
         EntityDefaultNPC defPlayer = new EntityDefaultNPC(WorldAPI.getWorld());

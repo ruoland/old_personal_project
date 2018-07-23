@@ -76,6 +76,9 @@ public class MineRun extends AbstractMiniGame {
     public static void setPosition(BlockPos pos){
         setPosition(pos.getX(), pos.getY(), pos.getZ());
     }
+    public static void setPosition(Vec3d pos){
+        setPosition(pos.xCoord, pos.yCoord, pos.zCoord);
+    }
 
     @Override
     public boolean start(Object... obj) {

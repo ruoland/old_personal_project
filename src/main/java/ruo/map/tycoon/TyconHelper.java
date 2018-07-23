@@ -123,13 +123,4 @@ public class TyconHelper {
         return money;
     }
 
-    public static void spawnConsumer() {
-        World world = WorldAPI.getWorld();
-        EntityConsumer con = new EntityConsumer(world);
-        con.setPosition(null);
-        world.spawnEntityInWorld(con);
-        return;
-    }
-
-
 }
