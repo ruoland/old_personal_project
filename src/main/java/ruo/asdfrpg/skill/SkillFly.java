@@ -22,6 +22,6 @@ public class SkillFly extends Skill {
 
     @Override
     public void onEffect() {
-        WorldAPI.getPlayer().addPotionEffect(new PotionEffect(AsdfRPG.flyPotion));
+        WorldAPI.getPlayer().addPotionEffect(new PotionEffect(AsdfRPG.flyPotion, 30));
     }
 }

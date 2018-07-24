@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import ruo.minigame.map.EntityDefaultNPC;
 
@@ -19,6 +20,13 @@ public class EntityElytraPumpkinFire extends EntityElytraPumpkin {
         this.setFire(10);
         if(getSpawnDirection() != null)
         this.setVelocity(getXZ(getSpawnDirection().reverse(), 0.03, false));
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(source == DamageSource.onFire)
+            return false;
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override

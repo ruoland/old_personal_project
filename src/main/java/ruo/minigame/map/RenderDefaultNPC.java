@@ -17,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ruo.map.lopre2.EntityBuildBlock;
 import ruo.minigame.api.RenderAPI;
@@ -136,11 +137,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
 
-    }
-
-    @Override
-    public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {
-        //super.doRenderShadowAndFire(entityIn, x, y, z, yaw, partialTicks);
     }
 
     @Override

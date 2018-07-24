@@ -22,4 +22,14 @@ public class SkillDoubleJump extends Skill {
     public void onEffect() {
         ActionEffect.doubleJump(true);
     }
+
+    @Override
+    public int lineX() {
+        return super.lineX();
+    }
+
+    @Override
+    public int lineY() {
+        return super.lineY();
+    }
 }
