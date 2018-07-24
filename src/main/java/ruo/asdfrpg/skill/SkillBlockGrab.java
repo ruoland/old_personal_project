@@ -1,5 +1,7 @@
 package ruo.asdfrpg.skill;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 public class SkillBlockGrab extends Skill {
 
     public SkillBlockGrab() {
@@ -17,7 +19,7 @@ public class SkillBlockGrab extends Skill {
     }
 
     @Override
-    public void onEffect() {
+    public void onEffect(EntityPlayer player) {
 
     }
 }

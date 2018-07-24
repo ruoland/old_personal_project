@@ -1,6 +1,11 @@
 package ruo.asdfrpg.skill;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityTippedArrow;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
 import ruo.asdfrpg.AsdfRPG;
 import ruo.minigame.api.WorldAPI;
 
@@ -21,7 +26,7 @@ public class SkillFly extends Skill {
     }
 
     @Override
-    public void onEffect() {
-        WorldAPI.getPlayer().addPotionEffect(new PotionEffect(AsdfRPG.flyPotion, 30));
+    public void onEffect(EntityPlayer player) {
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), 3000));
     }
 }

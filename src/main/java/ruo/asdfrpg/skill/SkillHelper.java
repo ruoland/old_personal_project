@@ -1,6 +1,7 @@
 package ruo.asdfrpg.skill;
 
 import ibxm.Player;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +13,9 @@ public class SkillHelper {
 
     public static PlayerSkill getPlayerSkill(String username){
         return playerSkill.get(username);
+    }
+    public static void init(EntityPlayer player){
+        playerSkill.put(player.getCustomNameTag(), new PlayerSkill(player.getCustomNameTag()));
     }
     public static void registerSkill(Skill skill){
         registerSkills.put(skill.getUnlocalizedName(), skill);

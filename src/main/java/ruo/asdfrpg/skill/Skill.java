@@ -1,5 +1,7 @@
 package ruo.asdfrpg.skill;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 public abstract class Skill {
     private int level;
     private String localizedName;
@@ -30,7 +32,7 @@ public abstract class Skill {
     }
     public abstract int maxLevel();
     public abstract int minLevel();
-    public abstract void onEffect();
+    public abstract void onEffect(EntityPlayer player);
 
     //값이 낮으면 스킬 창에서 스킬이 왼쪽으로 이동함
     public int lineX(){

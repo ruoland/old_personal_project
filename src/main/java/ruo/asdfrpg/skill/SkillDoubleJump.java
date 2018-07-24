@@ -1,5 +1,6 @@
 package ruo.asdfrpg.skill;
 
+import net.minecraft.entity.player.EntityPlayer;
 import ruo.minigame.action.ActionEffect;
 
 public class SkillDoubleJump extends Skill {
@@ -19,7 +20,7 @@ public class SkillDoubleJump extends Skill {
     }
 
     @Override
-    public void onEffect() {
+    public void onEffect(EntityPlayer player) {
         ActionEffect.doubleJump(true);
     }
 
