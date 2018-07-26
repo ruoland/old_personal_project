@@ -10,5 +10,5 @@ public class EntityFarmer extends EntityDefaultNPC {
         super(worldIn);
     }
 
-    
+
 }

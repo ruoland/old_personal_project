@@ -29,10 +29,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.util.Sky;
-import ruo.halloween.miniween.EntityAttackMiniWeen;
-import ruo.halloween.miniween.EntityDefenceMiniWeen;
-import ruo.halloween.miniween.EntityMiniWeen;
-import ruo.halloween.miniween.EntityNightMiniWeen;
+import ruo.halloween.miniween.*;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
@@ -55,18 +52,10 @@ public class EntityWeen extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ISCOMPLETEY = EntityDataManager.<Boolean>createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PATTERNONE = EntityDataManager.<Boolean>createKey(EntityWeen.class,
-            DataSerializers.BOOLEAN);// 점프 후 다운
-    private static final DataParameter<Boolean> PATTERNTWO = EntityDataManager.<Boolean>createKey(EntityWeen.class,
-            DataSerializers.BOOLEAN);// 미니윈
-    private static final DataParameter<Boolean> PATTERNTHREE = EntityDataManager.<Boolean>createKey(EntityWeen.class,
-            DataSerializers.BOOLEAN);// 빅윈
-    private static final DataParameter<Boolean> PATTERNFOUR = EntityDataManager.<Boolean>createKey(EntityWeen.class,
-            DataSerializers.BOOLEAN);// 밤모드 텔레포트 상태
-    private static final DataParameter<Boolean> PATTERNFIVE = EntityDataManager.<Boolean>createKey(EntityWeen.class,
-            DataSerializers.BOOLEAN);// 밤모드 다음 빅윈 소환후 계단
-    private static final DataParameter<Boolean> PATTERNSIX = EntityDataManager.<Boolean>createKey(EntityWeen.class,
-            DataSerializers.BOOLEAN);// 마지막 점프
+    private static final DataParameter<Boolean> LOOK_PLAYER = EntityDataManager.<Boolean>createKey(EntityWeen.class,
+            DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> PATTERN = EntityDataManager.createKey(EntityWeen.class, DataSerializers.VARINT);
+    //1 = 점프 후 추락, 2 = 미니윈, 3 = 빅윈, 4 = 밤모드 텔레포트 상태, 5 = 밤모드 다음 빅윈 소환후 계단, 6 = 마지막 점프
 
     private final BossInfoServer bossHealth = (BossInfoServer) (new BossInfoServer(new TextComponentString("윈의 체력"),
             BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
@@ -77,9 +66,9 @@ public class EntityWeen extends EntityDefaultNPC {
         this.setModel(TypeModel.BLOCK);
         this.setTra(0, -5F, 0);
         this.addScale(12);
-        this.addRotate(0, 0.1F, 0);
-        this.addRotate(0, 0, 180);
         setCollision(true);
+        setRotate(0, 0, 180);
+
         this.setBlock(Blocks.LIT_PUMPKIN);
     }
 
@@ -91,23 +80,17 @@ public class EntityWeen extends EntityDefaultNPC {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (source.getEntity() instanceof EntityMiniWeen) {
-            if (isFivePatternComplete())
-                return false;
-            EntityMiniWeen ween = (EntityMiniWeen) source.getEntity();
-            if (ween.isAttackMiniWeen()) {// 두번째 패턴의 미니윈에 해당함
-                System.out.println("반사된 미니윈에게 공격받음");
-                return super.attackEntityFrom(source, amount + (isThreePatternComplete() ? 6 : 0));
-            }
+        if (source.getEntity() instanceof EntityAttackMiniWeen && pattern() <= 5) {//패턴6 상태에서 미니윈 폭발에 윈이 죽는 경우가 있음
+            return super.attackEntityFrom(source, amount);
         }
         if (source.getEntity() instanceof EntityBigWeen) {
             EntityBigWeen ween = (EntityBigWeen) source.getEntity();
-            // "빅윈이 지나치게 강해 윈이 죽어버리는 버그가 발생해서 존재하는 코드" 무조건 고정 데미지를 받음
             if (ween.isFivePattern) {
-                TickRegister.register(new AbstractTick(120, false) {
+                TickRegister.register(new AbstractTick(100, false) {
                     public void run(Type type) {
                         jumpStartSixWeen();
                     }
+
                     @Override
                     public boolean stopCondition() {
                         return isDead;
@@ -130,26 +113,24 @@ public class EntityWeen extends EntityDefaultNPC {
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
-    private int delay = 40;
 
     public void onLivingUpdate() {
-        worldObj.setRainStrength(0);
         if (isServerWorld()) {
-            if (!isSturn() && !isJumpWeen() && !isFivePatternComplete() && !isOnePatternComplete()) {
-                jumpStartWeen();
+            if (!isSturn() && pattern() == 1) {
+                if (!isJumpWeen())
+                    jumpStartWeen();
+                if (isJumpWeen() && isServerWorld() && isRotateComplete() && onGround && isCompleteY())
+                    jumpWeenFall();//하늘에 올라갔다가 땅에 떨어진 경우
             }
-            if (!isFivePatternComplete())
-                jumpWeenUpdate();
-            else
+            if (pattern() == 6)
                 jumpWeenUpgrade();
         }
-        delay--;
-        if (delay == 0) {
-            System.out.println("rotate " + getRotateX() + " - " + getRotateY() + " - " + getRotateZ());
-            delay = 40;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_V)){
+        if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
             forceSkip = true;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+            patternHold = !patternHold;
+            System.out.println(patternHold);
         }
         super.onLivingUpdate();
     }
@@ -158,86 +139,76 @@ public class EntityWeen extends EntityDefaultNPC {
      * 첫번째 패턴
      */
     public void jumpStartWeen() {
-        if (!isJumpWeen()) {
-            EntityWeen ween = this;
-            System.out.println("[첫패턴]점프를 시작해 스턴을 해제함");
-            setSturn(false);
-            getDataManager().set(ISJUMP, true);
-            WeenEffect.entityRotateX(this, -90, new AbstractTick() {
-                @Override
-                public void run(Type type) {
-                    dataManager.set(ISROTATE, true);
-                    WeenEffect.entityJump(ween, 60, new AbstractTick() {
-                        @Override
-                        public void run(Type type) {
-                            setRotate(90, 0, 0);
-                            dataManager.set(ISCOMPLETEY, true);
-                        }
-                    });
-                }
-            });
-        }
+        EntityWeen ween = this;
+        System.out.println("[첫패턴]점프를 시작해 스턴을 해제함");
+        setSturn(false);
+        getDataManager().set(ISJUMP, true);
+        WeenEffect.entityRotateX(this, -90, new AbstractTick() {
+            @Override
+            public void run(Type type) {
+                dataManager.set(ISROTATE, true);
+                WeenEffect.entityJump(ween, 60, new AbstractTick() {
+                    @Override
+                    public void run(Type type) {
+                        setRotate(90, 0, 0);
+                        dataManager.set(ISCOMPLETEY, true);
+                    }
+                });
+            }
+        });
     }
 
-    private static ArrayList<EntityAttackMiniWeen> blockList = new ArrayList<EntityAttackMiniWeen>();
+    private static ArrayList<EntityAttackMiniWeen> blockList = new ArrayList<>();
     private int firstEndHP = 220, secondEndHP = 160, fourEndHP = 110;
-    private boolean forceSkip;
-    public void jumpWeenUpdate() {
-        if (isJumpWeen() && isRotateComplete()) {
-            if (onGround && isCompleteY()) {
-                System.out.println("땅에 떨어져서 파티클 소환");
-                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX, posY, posZ, 2.0, 3.0D, 2.0D,
-                        new int[0]);
-                this.worldObj.playSound((EntityPlayer) null, posX, posY, posZ, SoundEvents.ENTITY_GENERIC_EXPLODE,
-                        SoundCategory.BLOCKS, 4.0F,
-                        (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-            }
-        }
-        if (isJumpWeen() && isServerWorld() && isRotateComplete()) {
-            if (onGround && isCompleteY()) {
-                WorldAPI.blockTick(worldObj, posX - 5, posX + 5, posY, posY + 1, posZ - 5, posZ + 5,
-                        new AbstractTick.BlockXYZ() {
-                            @Override
-                            public void run(Type type) {
-                                if (rand.nextInt(3) == 0) {
-                                    if (blockList.size() < 30) {
-                                        EntityAttackMiniWeen attackMiniWeen = attackMiniween();
-                                        attackMiniWeen.setFlyXYZ(0,0,0);
-                                        attackMiniWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
-                                        attackMiniWeen.addVelocity(WorldAPI.rand2(9), rand.nextInt(3), WorldAPI.rand2(9));
-                                        blockList.add(attackMiniWeen);
-                                        System.out.println("소환됨"+attackMiniWeen);
-                                    }
-                                }
-                            }
-                        });
-                for (EntityLivingBase base : worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                        getEntityBoundingBox())) {
-                    if (base == this) {
-                        continue;
-                    }
-                    base.attackEntityFrom(DamageSource.inWall, 10000);
-                }
-                WeenEffect.entityKnockBackDamage(this, 30, 5, 30, 3.5F, true, DamageSource.fall, 5);
-                getDataManager().set(ISJUMP, false);
-                CMEffect.setCameraEarthquake2(15, 60);
-                WeenEffect.fallParticle(this, Blocks.GRASS, 50);
-                this.attackEntityFrom(DamageSource.fall, 5);
-                if (getHealth() > firstEndHP) {
-                    System.out.println("[첫패턴]체력이 " + firstEndHP + " 넘은채 추락해 스턴걸림");
-                    setSturn(170);
-                }
-                if(forceSkip || getHealth() < firstEndHP){
-                    System.out.println("[첫패턴]첫번째 패턴 완료함");
-                    dataManager.set(PATTERNONE, true);
-                    setSturn(170);
-                    forceSkip = false;
-                }
-                dataManager.set(ISCOMPLETEY, false);
-                dataManager.set(ISROTATE, false);
+    private boolean forceSkip, patternHold;
 
+    public void jumpWeenFall() {
+        WorldAPI.blockTick(worldObj, posX - 5, posX + 5, posY, posY + 1, posZ - 5, posZ + 5,//나중에 이 블럭들을 플레이어에게 던짐
+                new AbstractTick.BlockXYZ() {
+                    @Override
+                    public void run(Type type) {
+                        if (rand.nextInt(3) == 0) {
+                            if (blockList.size() < 30) {
+                                EntityAttackMiniWeen blockWeen = new EntityAttackMiniWeen(worldObj);
+                                blockWeen.setPosition(posX + WorldAPI.rand(5), posY, posZ + WorldAPI.rand(5));
+                                worldObj.spawnEntityInWorld(blockWeen);
+                                blockWeen.setFlyXYZ(0, 0, 0);
+                                blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
+                                blockWeen.addVelocity(WorldAPI.rand2(8), rand.nextInt(3), WorldAPI.rand2(8));
+                                blockList.add(blockWeen);
+                                System.out.println("소환됨" + blockWeen);
+                            }
+                        }
+                    }
+                });
+        for (EntityLivingBase base : worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+                getEntityBoundingBox())) {
+            if (base == this) {
+                continue;
             }
+            base.attackEntityFrom(DamageSource.inWall, 10000);
         }
+        WeenEffect.entityKnockBackDamage(this, 30, 5, 30, 3.5F, true, DamageSource.fall, 5);
+        CMEffect.setCameraEarthquake2(15, 60);
+        WeenEffect.fallParticle(this, Blocks.GRASS, 50);
+
+        this.attackEntityFrom(DamageSource.fall, 5);
+
+        if (!patternHold && (forceSkip || getHealth() < firstEndHP)) {
+            System.out.println("[첫패턴]첫번째 패턴 완료함");
+            setPattern(2);
+            forceSkip = false;
+            twoPatternAttackMiniWeen();
+        } else {
+            System.out.println("" + !patternHold + forceSkip + (getHealth() < firstEndHP) + "[첫패턴]체력이 " + firstEndHP + " 넘은채 추락해 스턴걸림");
+
+        }
+        setSturn(200);
+
+        dataManager.set(ISJUMP, false);
+        dataManager.set(ISCOMPLETEY, false);
+        dataManager.set(ISROTATE, false);
+
     }
 
     @Override
@@ -246,66 +217,52 @@ public class EntityWeen extends EntityDefaultNPC {
         if (isSturn()) {
             System.out.println("스턴 걸림");
             this.bossHealth.setName(new TextComponentString("윈 (기절한 상태)"));
-            EntityAPI.removeLook(this);
         } else {
-            EntityAPI.look(this, WorldAPI.getPlayer());
             this.bossHealth.setName(new TextComponentString("윈"));
-
-        }
-        if (!isSturn() && isServerWorld()) {
-            twoPatternAttackMiniWeen();
         }
     }
 
     public void twoPatternAttackMiniWeen() {
-        if (isOnePatternComplete() && !isTwoPatternComplete()) {
-            TickRegister.register(new AbstractTick(130, true) {
-                @Override
-                public boolean stopCondition() {
-                    return isDead;
+        setRotate(0, 0, 180);
+        TickRegister.register(new AbstractTick(130, true) {
+            @Override
+            public boolean stopCondition() {
+                return isDead;
+            }
+
+            @Override
+            public void run(Type type) {
+
+                System.out.println(absDefTick + "틱" + absRunCount + " - " + blockList.size());
+                for (EntityAttackMiniWeen attackMiniWeen : blockList) {
+                    attackMiniWeen.setFlyXYZ(attackMiniWeen.posX, posY + 10,
+                            attackMiniWeen.posZ);
+                    attackMiniWeen.setTargetExplosion(false);
+                    TickRegister.register(new AbstractTick(40, false) {
+                        @Override
+                        public void run(Type type) {
+                            attackMiniWeen.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
+                                    WorldAPI.z() + WorldAPI.rand(3));
+                            attackMiniWeen.setTargetExplosion(true);
+                        }
+                    });
                 }
-
-                @Override
-                public void run(Type type) {
-                    setRotate(180, 0, 90);
-                    System.out.println(absDefTick + "틱" + absRunCount);
-                    for (EntityAttackMiniWeen attackMiniWeen : blockList) {
-                        attackMiniWeen.setFlyXYZ(posX, posY + 20,
-                                posZ);
-                        TickRegister.register(new AbstractTick(100, false) {
-                            @Override
-                            public void run(Type type) {
-                                attackMiniWeen.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
-                                        WorldAPI.z() + WorldAPI.rand(3));
-                            }
-                        });
-                    }
-                    if (absRunCount == 0) {
-                        absDefTick = 50;
-                    } else if (getHealth() < secondEndHP && absRunCount > 5) {
-                        threePattern();
-                        absLoop = false;
-                        return;
-                    }
+                if (absRunCount == 0) {
+                    absDefTick = 50;
+                } else if (!patternHold && (forceSkip || (getHealth() < secondEndHP && absRunCount > 5))) {
+                    threePattern();
+                    absLoop = false;
+                    return;
                 }
-            });
-        }
-
-    }
-
-    public EntityAttackMiniWeen attackMiniween() {
-        EntityAttackMiniWeen miniween = new EntityAttackMiniWeen(worldObj, this);
-        miniween.setPosition(posX + WorldAPI.rand(5), posY + 10, posZ + WorldAPI.rand(5));
-        worldObj.spawnEntityInWorld(miniween);
-        miniween.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
-                WorldAPI.z() + WorldAPI.rand(3));
-        return miniween;
+            }
+        });
     }
 
     public void threePattern() {
         System.out.println("[두번째 패턴]체력이 " + secondEndHP + " 넘어 다음 패턴으로 넘어감");
-        getDataManager().set(PATTERNTWO, true);
+        setPattern(3);
         summonBigWeen();
+
     }
 
     /**
@@ -317,7 +274,7 @@ public class EntityWeen extends EntityDefaultNPC {
         bigween.setPosition(posX, posY + 20, posZ);
         bigween.isFivePattern = false;
         worldObj.spawnEntityInWorld(bigween);
-        TickRegister.register(new AbstractTick(70, true) {
+        TickRegister.register(new AbstractTick(40, true) {
             @Override
             public boolean stopCondition() {
                 return isDead || bigween.isDead;
@@ -330,7 +287,7 @@ public class EntityWeen extends EntityDefaultNPC {
                     return;
                 }
                 EntityPlayer player = WorldAPI.getPlayer();
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 8; i++) {
                     Vec3d v = player.getLookVec();
                     EntityDefenceMiniWeen miniween = new EntityDefenceMiniWeen(worldObj, bigween.ween);
                     miniween.setPosition(posX + WorldAPI.rand(20), posY + 10 + rand.nextInt(4),
@@ -352,7 +309,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
     public void theNight() {
         EntityWeen ween = this;
-        dataManager.set(PATTERNTHREE, true);
+        setPattern(4);
         WeenEffect.fog(7, new AbstractTick() {
             @Override
             public void run(Type type) {
@@ -379,9 +336,9 @@ public class EntityWeen extends EntityDefaultNPC {
                                     WorldAPI.z());
                             System.out.println("미니윈 소환");
                         }
-                        if (getHealth() < fourEndHP && absRunCount > 7) {
+                        if (!patternHold && getHealth() < fourEndHP && absRunCount > 7) {
                             absLoop = false;
-                            dataManager.set(PATTERNFOUR, true);
+                            setPattern(5);
                             for (long i = worldObj.getWorldTime(); i <= 20000; i += 8) {
                                 worldObj.setWorldTime(i);
                                 if (i < 20000) {
@@ -497,7 +454,7 @@ public class EntityWeen extends EntityDefaultNPC {
      * 여섯번째 패턴
      */
     public void jumpStartSixWeen() {
-        getDataManager().set(PATTERNFIVE, true);
+        setPattern(6);
         if (!this.isServerWorld()) {
             System.out.println("서버 월드가 아니므로 캔슬됨");
             return;
@@ -630,35 +587,15 @@ public class EntityWeen extends EntityDefaultNPC {
     }
 
     public boolean isJumpWeen() {
-        return getDataManager().get(ISJUMP).booleanValue();
+        return getDataManager().get(ISJUMP);
     }
 
     public boolean isRotateComplete() {
-        return getDataManager().get(ISROTATE).booleanValue();
+        return getDataManager().get(ISROTATE);
     }
 
     public boolean isCompleteY() {
-        return getDataManager().get(ISCOMPLETEY).booleanValue();
-    }
-
-    public boolean isOnePatternComplete() {
-        return getDataManager().get(PATTERNONE).booleanValue();
-    }
-
-    public boolean isTwoPatternComplete() {
-        return getDataManager().get(PATTERNTWO).booleanValue();
-    }
-
-    public boolean isThreePatternComplete() {
-        return getDataManager().get(PATTERNTHREE).booleanValue();
-    }
-
-    public boolean isFourPatternComplete() {
-        return getDataManager().get(PATTERNFOUR).booleanValue();
-    }
-
-    public boolean isFivePatternComplete() {
-        return getDataManager().get(PATTERNFIVE).booleanValue();
+        return getDataManager().get(ISCOMPLETEY);
     }
 
     @Override
@@ -674,13 +611,16 @@ public class EntityWeen extends EntityDefaultNPC {
         this.dataManager.register(ISJUMP, false);
         this.dataManager.register(ISROTATE, false);
         this.dataManager.register(ISCOMPLETEY, false);
-        this.dataManager.register(PATTERNONE, false);
-        this.dataManager.register(PATTERNTWO, false);
-        this.dataManager.register(PATTERNTHREE, false);
-        this.dataManager.register(PATTERNFOUR, false);
-        this.dataManager.register(PATTERNFIVE, false);
-        this.dataManager.register(PATTERNSIX, false);
+        this.dataManager.register(PATTERN, 1);
+        this.dataManager.register(LOOK_PLAYER, true);
+    }
 
+    public int pattern() {
+        return dataManager.get(PATTERN);
+    }
+
+    public void setPattern(int pattern) {
+        dataManager.set(PATTERN, pattern);
     }
 
     /******************/

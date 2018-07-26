@@ -13,13 +13,12 @@ import ruo.minigame.api.WorldAPI;
 public class EntityAttackMiniWeen extends EntityMiniWeen {
     private boolean isAttackReverse;
     private float explosionStrength = 1.5F;
+    private boolean targetExplosion;
 
     public EntityAttackMiniWeen(World worldIn) {
         super(worldIn);
         this.setSize(1F, 1F);
-        this.setDeathTimer(1000);
-
-
+        this.setDeathTimer(500);
     }
 
     public EntityAttackMiniWeen(World worldIn, EntityWeen ween) {
@@ -34,6 +33,13 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
         this.setDead();
         targetVec = new Vec3d(0, 0, 0);
+    }
+
+    /**
+     * 목적지에 도달한 경우 폭발함
+     */
+    public void setTargetExplosion(boolean targetExplosion) {
+        this.targetExplosion = targetExplosion;
     }
 
     @Override
@@ -62,7 +68,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
                 System.out.println("반사된 미니윈이 윈 근처에 도달해 터짐");
                 ween.attackEntityFrom(DamageSource.causeExplosionDamage(this), 3);
             }
-            if (this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 0.5) {
+            if (targetExplosion && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 0.5) {
                 this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
                 this.setDead();
             }

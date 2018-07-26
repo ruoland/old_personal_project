@@ -1,6 +1,7 @@
 package ruo.halloween.miniween;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
@@ -21,8 +22,14 @@ public class EntityMiniWeen extends EntityDefaultNPC {
 	}
 
 	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(200000);
+	}
+
+	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if(source.isExplosion() || !isDefenceMiniWeen() && !isAttackMiniWeen())
+		if(source.isExplosion() || !isDefenceMiniWeen() && !(this instanceof EntityAttackMiniWeen))
 			return false;
 		return super.attackEntityFrom(source, amount);
 	}
@@ -52,9 +59,6 @@ public class EntityMiniWeen extends EntityDefaultNPC {
 		return this;
 	}
 
-	public boolean isAttackMiniWeen() {
-		return this instanceof EntityAttackMiniWeen;
-	}
 	public boolean isDefenceMiniWeen() {
 		return this instanceof EntityDefenceMiniWeen;
 	}

@@ -92,10 +92,10 @@ public class EntityMiniWeen2 extends EntityDefaultNPC {
 		super.onLivingUpdate();
 		if(WorldAPI.getPlayer() == null)
 			return;
-		if(ween != null && ween.isFivePatternComplete() && !isNightMode) {
+		if(ween != null && ween.pattern() == 5 && !isNightMode) {
 			this.setDead();
 		}
-		if(ween != null && ween.isFivePatternComplete() && isNightMode) {
+		if(ween != null && ween.pattern() == 5 && isNightMode) {
 			this.setPosition(posX, ween.posY, posZ);
 		}
 		if (aX != 0 && aY != 0 && aZ != 0) {

@@ -31,8 +31,8 @@ public class EntityDefenceMiniWeen extends EntityMiniWeen {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		if (target!=null) {
-			this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
+		if (target!=null && getDistance(target.xCoord, target.yCoord, target.zCoord) > 1) {
+			this.setVelocity(targetVec.xCoord / 2, targetVec.yCoord / 2, targetVec.zCoord / 2);
 		}
 		if (goWeen && getDistance(target.xCoord, target.yCoord, target.zCoord) <= 1) {
 			this.setDead();

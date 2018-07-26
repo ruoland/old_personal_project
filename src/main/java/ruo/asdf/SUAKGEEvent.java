@@ -96,7 +96,6 @@ public class SUAKGEEvent {
 
     @SubscribeEvent
     public void event(ArrowLooseEvent e) {
-        System.out.println(e.getCharge());
         if (EnchantmentHelper.getEnchantmentLevel(SUAKGEMod.chageEnchant, e.getBow()) != 0) {
             e.setCharge(34);
         }
@@ -230,10 +229,6 @@ public class SUAKGEEvent {
         }
     }
 
-    @SubscribeEvent
-    public void livingDrop(LivingDropsEvent event) {
-        System.out.println(event.getDrops());
-    }
     @SubscribeEvent
     public void skeletonTeamKill(LivingHurtEvent event) {
         if(event.getEntityLiving() instanceof EntitySkeleton && event.getSource().getEntity() instanceof EntitySkeleton){

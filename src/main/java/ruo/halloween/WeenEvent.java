@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import ruo.halloween.miniween.EntityAttackMiniWeen;
 import ruo.halloween.miniween.EntityMiniWeen;
 import ruo.minigame.MiniGame;
+import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 
@@ -48,7 +49,7 @@ public class WeenEvent {
 			}
 			if(e.getPlayer().worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
 				EntityWeen ween = new EntityWeen(e.getPlayer().worldObj);
-				ween.setPosition(e.getPlayer().posX, e.getPlayer().posY, e.getPlayer().posZ);
+				ween.setPosition(EntityAPI.lookPlayerX(5), e.getPlayer().posY, EntityAPI.lookPlayerZ(5));
 				e.getPlayer().worldObj.spawnEntityInWorld(ween);
 				e.getPlayer().setSpawnPoint(e.getPlayer().getPosition(), true);
 				ween.startTime = System.currentTimeMillis();//객체 생성으로 스폰하면 onInitialSpawn 메서드가 실행이 안되서 여기서 스타트 타임을 설정함
@@ -107,6 +108,7 @@ public class WeenEvent {
 
 	@SubscribeEvent
 	public void in(LivingUpdateEvent e) {
+
 		if (!isWeen) {
 			for (Entity ent : e.getEntityLiving().worldObj.loadedEntityList) {
 				if (ent instanceof EntityWeen || ent instanceof EntityMiniWeen || ent instanceof EntityBigWeen
@@ -123,6 +125,8 @@ public class WeenEvent {
 					|| e.getEntityLiving() instanceof EntityPeaceWitch || e.getEntityLiving() instanceof EntityFakePlayer) {
 				return;
 			}
+			e.getEntityLiving().worldObj.setRainStrength(0);
+
 			e.getEntityLiving().setDead();
 		}
 	}

@@ -7,14 +7,18 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.util.Sky;
+import ruo.halloween.miniween.EntityBlockWeen;
 import ruo.halloween.miniween.EntityMiniWeen;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 import ruo.minigame.map.EntityDefaultNPC;
+
+import java.util.Random;
 
 /**
  * ************************************************************************
@@ -26,6 +30,23 @@ import ruo.minigame.map.EntityDefaultNPC;
  * ************************************************************************
  */
 public class WeenEffect {
+
+	public static void spawnBlockWeen(World worldObj, double posX, double posY, double posZ, double distanceXZ, double distanceY){
+		Random rand = worldObj.rand;
+		WorldAPI.blockTick(worldObj, posX - distanceXZ, posX + distanceXZ, posY - distanceY, posY + distanceY, posZ - distanceXZ, posZ + distanceXZ,
+				new AbstractTick.BlockXYZ() {
+					@Override
+					public void run(Type type) {
+						if (rand.nextInt(3) == 0) {
+								EntityBlockWeen blockWeen = new EntityBlockWeen(worldObj);
+								blockWeen.setPosition(getPos());
+								blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
+								blockWeen.addVelocity(WorldAPI.rand2(9), rand.nextInt(3), WorldAPI.rand2(9));
+								System.out.println("소환됨"+blockWeen);
+							}
+						}
+					});
+	}
 	static double currentY, currentZ, currentX;
 	public static void entityJumpMap(int maxCount, double startX, double startY, double startZ, boolean minus, boolean isY) {
 		currentY = 0;
