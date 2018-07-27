@@ -49,7 +49,7 @@ public class WeenEvent {
 			}
 			if(e.getPlayer().worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
 				EntityWeen ween = new EntityWeen(e.getPlayer().worldObj);
-				ween.setPosition(EntityAPI.lookPlayerX(5), e.getPlayer().posY, EntityAPI.lookPlayerZ(5));
+				ween.setPosition(EntityAPI.lookPlayerX(15), e.getPlayer().posY, EntityAPI.lookPlayerZ(15));
 				e.getPlayer().worldObj.spawnEntityInWorld(ween);
 				e.getPlayer().setSpawnPoint(e.getPlayer().getPosition(), true);
 				ween.startTime = System.currentTimeMillis();//객체 생성으로 스폰하면 onInitialSpawn 메서드가 실행이 안되서 여기서 스타트 타임을 설정함

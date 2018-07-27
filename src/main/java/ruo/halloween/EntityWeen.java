@@ -168,9 +168,9 @@ public class EntityWeen extends EntityDefaultNPC {
                     @Override
                     public void run(Type type) {
                         if (rand.nextInt(3) == 0) {
-                            if (blockList.size() < 30) {
+                            if (blockList.size() < 20) {
                                 EntityAttackMiniWeen blockWeen = new EntityAttackMiniWeen(worldObj);
-                                blockWeen.setPosition(posX + WorldAPI.rand(5), posY, posZ + WorldAPI.rand(5));
+                                blockWeen.setPosition(posX + WorldAPI.minRand(10, 20), posY, posZ + WorldAPI.minRand(10,20));
                                 worldObj.spawnEntityInWorld(blockWeen);
                                 blockWeen.setFlyXYZ(0, 0, 0);
                                 blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
@@ -183,7 +183,7 @@ public class EntityWeen extends EntityDefaultNPC {
                 });
         for (EntityLivingBase base : worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
                 getEntityBoundingBox())) {
-            if (base == this) {
+            if (base == this || base instanceof EntityMiniWeen) {
                 continue;
             }
             base.attackEntityFrom(DamageSource.inWall, 10000);
@@ -364,7 +364,7 @@ public class EntityWeen extends EntityDefaultNPC {
     public void fivePattern() {
         float f1 = 5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F)
                 * (1.0F - (float) 0 / 20.0F);
-        TickRegister.register(new AbstractTick(Type.RENDER, 5, true) {
+        TickRegister.register(new AbstractTick(Type.RENDER, 1, true) {
             @Override
             public boolean stopCondition() {
                 return isDead;
