@@ -1,38 +1,45 @@
 package ruo.asdfrpg.skill;
 
-import net.minecraft.entity.player.EntityPlayer;
-
-public abstract class Skill {
-    private int level;
-    private String localizedName;
+public class Skill {
+    private String localizedName, unlocalizedName;
+    private int maxLevel = 5, maxExp = 10;
     public Skill(){
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLocalizedName(String localizedName) {
-        this.localizedName = localizedName;
-    }
-
     public String getUnlocalizedName() {
-        return getClass().getSimpleName().replaceFirst("Skill", "");
+        return unlocalizedName;
     }
 
     public String getLocalizedName() {
         return localizedName;
     }
-    public void addLevel(){
-        level++;
+
+    public int maxExp() {
+        return maxExp;
+    }
+    public int maxLevel(){
+        return maxLevel;
+    }
+    public void onEffect(SkillStack playerSkill){
+
+    }
+    public Skill setUnlocalizedName(String name){
+        this.unlocalizedName = name;
+        return this;
+    }
+    public Skill setLocalizedName(String name){
+        this.localizedName = name;
+        return this;
+    }
+    public Skill setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+        return this;
     }
 
-    public boolean isUnlock(){
-        return getLevel() > 0;
+    public Skill setMaxExp(int maxExp) {
+        this.maxExp = maxExp;
+        return this;
     }
-    public abstract int maxLevel();
-    public abstract int minLevel();
-    public abstract void onEffect(EntityPlayer player);
 
     //값이 낮으면 스킬 창에서 스킬이 왼쪽으로 이동함
     public int lineX(){

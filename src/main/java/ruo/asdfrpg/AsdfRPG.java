@@ -1,13 +1,19 @@
 package ruo.asdfrpg;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import ruo.asdfrpg.camp.BlockCampFire;
+import ruo.asdfrpg.camp.TileCampFire;
+import ruo.asdfrpg.camp.TileCampFireRenderer;
 import ruo.asdfrpg.skill.*;
 import ruo.cmplus.deb.DebAPI;
 
@@ -15,14 +21,18 @@ import ruo.cmplus.deb.DebAPI;
 public class AsdfRPG {
     public static final PotionFly flyPotion = new PotionFly(false, 0);
     public static final Item respawn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn");
-
+    public static final Block campFire = new BlockCampFire().setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("campfire").setRegistryName("asdfrpg:campfire");
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
+        DebAPI.registerTileEntity(campFire, TileCampFire.class, new TileCampFireRenderer());
         GameRegistry.register(respawn);
         DebAPI.registerEvent(new AsdfEvent());
-        SkillHelper.registerSkill(new SkillBlockGrab());
-        SkillHelper.registerSkill(new SkillDoubleJump());
-        SkillHelper.registerSkill(new SkillFly());
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_BEEF), new ItemStack(Items.BEEF)));
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT), new ItemStack(Items.BEEF), new ItemStack(Items.PORKCHOP)));
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT),  new ItemStack(Items.PORKCHOP), new ItemStack(Items.BEEF)));
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_PORKCHOP),  new ItemStack(Items.PORKCHOP)));
+
+        Skills.register();
     }
     @Mod.EventHandler
     public void init(FMLServerStartingEvent e) {

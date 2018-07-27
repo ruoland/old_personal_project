@@ -3,6 +3,7 @@ package ruo.asdfrpg.camp;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -15,6 +16,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import ruo.asdfrpg.skill.CookedRecipe;
+import ruo.asdfrpg.skill.CookedRecipeHelper;
+import ruo.asdfrpg.skill.SkillHelper;
+import ruo.asdfrpg.skill.Skills;
 import ruo.minigame.api.EntityAPI;
 
 import java.util.ArrayList;
@@ -22,41 +27,18 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockCampFire extends BlockContainer{
-    protected static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+    protected static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1D, 1.0D);
 
 	public BlockCampFire() {
 		super(Material.ROCK);
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		super.updateTick(worldIn, pos, state, rand);
-		List<EntityItem> entityList = EntityAPI.getEntity(worldIn, new AxisAlignedBB(pos.getX(), pos.getY()-1, pos.getZ(), pos.getX(), pos.getY()+2, pos.getZ()), EntityItem.class);
-		for(EntityItem item : entityList){
-			ItemStack stack = item.getEntityItem();
-			int metadata = stack.getMetadata();
-			int amount = stack.stackSize;
-			if(stack.getItem() == Items.BEEF){
-				item.setEntityItemStack(new ItemStack(Items.COOKED_BEEF, amount, metadata));
-			}
-			if(stack.getItem() == Items.CHICKEN){
-				item.setEntityItemStack(new ItemStack(Items.COOKED_CHICKEN, amount, metadata));
-			}
-			if(stack.getItem() == Items.POTATO){
-				item.setEntityItemStack(new ItemStack(Items.BAKED_POTATO, amount, metadata));
-			}
-			if(stack.getItem() == Items.FISH){
-				item.setEntityItemStack(new ItemStack(Items.COOKED_FISH, amount, metadata));
-			}
-			if(stack.getItem() == Items.MUTTON){
-				item.setEntityItemStack(new ItemStack(Items.COOKED_MUTTON, amount, metadata));
-			}
-			if(stack.getItem() == Items.RABBIT){
-				item.setEntityItemStack(new ItemStack(Items.COOKED_RABBIT, amount, metadata));
-			}
-			if(stack.getItem() == Items.MUTTON){
-				item.setEntityItemStack(new ItemStack(Items.COOKED_MUTTON, amount, metadata));
-			}
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		if(placer instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer) placer;
+			SkillHelper.getPlayerSkill(player).useSkill(Skills.CAMP_FIRE);
 		}
 	}
 
@@ -72,6 +54,17 @@ public class BlockCampFire extends BlockContainer{
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(!worldIn.isRemote) {
+			List<EntityItem> entityList = EntityAPI.getEntity(worldIn, new AxisAlignedBB(pos.getX() - 1, pos.getY() + 1, pos.getZ() - 1, pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1), EntityItem.class);
+			List<ItemStack> stackList = new ArrayList<>();
+			for (EntityItem item : entityList) {
+				ItemStack stack = item.getEntityItem();
+				stackList.add(stack);
+			}
+			System.out.println("1111 " + entityList + " - " + stackList + !worldIn.isRemote);
+
+			CookedRecipeHelper.cooking(playerIn, entityList, stackList);
+		}
 		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
 	}
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)

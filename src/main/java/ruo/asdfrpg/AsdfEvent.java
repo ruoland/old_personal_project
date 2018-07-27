@@ -21,7 +21,7 @@ public class AsdfEvent {
     }
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent e){
-        if(e.player.isCreative()) {
+        if(!e.player.isCreative()) {
             if (e.player.isPotionActive(AsdfRPG.flyPotion) && e.player.capabilities.isFlying) {
                 e.player.capabilities.isFlying = true;
                 e.player.sendPlayerAbilities();

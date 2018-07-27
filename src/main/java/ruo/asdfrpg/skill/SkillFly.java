@@ -21,12 +21,7 @@ public class SkillFly extends Skill {
     }
 
     @Override
-    public int minLevel() {
-        return 0;
-    }
-
-    @Override
-    public void onEffect(EntityPlayer player) {
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), 3000));
+    public void onEffect(SkillStack skillStack) {
+        skillStack.getPlayer().addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), 3000));
     }
 }

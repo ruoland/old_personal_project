@@ -5,9 +5,10 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import ruo.asdfrpg.skill.PlayerSkill;
 import ruo.asdfrpg.skill.Skill;
-import ruo.asdfrpg.skill.SkillBlockGrab;
 import ruo.asdfrpg.skill.SkillHelper;
+import ruo.asdfrpg.skill.SkillStack;
 
 public class CommandSkill extends CommandBase {
     @Override
@@ -23,11 +24,12 @@ public class CommandSkill extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         System.out.println(((EntityPlayer)sender).getDisplayNameString());
-        SkillHelper.PlayerSkill playerSkill = SkillHelper.getPlayerSkill(((EntityPlayer)sender).getCustomNameTag());
-        Skill skill = playerSkill.getSkill(args[0]);
-        if(skill != null)
-            skill.onEffect((EntityPlayer) sender);
+        Skill skill = SkillHelper.getSkill(args[0]);
+        PlayerSkill playerSkill = SkillHelper.getPlayerSkill(((EntityPlayer)sender));
+        SkillStack skillStack = playerSkill.getSkill(skill);
+        if(skillStack != null)
+            skillStack.onEffect();
         else
-            playerSkill.addSkill(SkillHelper.getSkill(args[0]));
+            playerSkill.registerSkill(skill);
     }
 }
