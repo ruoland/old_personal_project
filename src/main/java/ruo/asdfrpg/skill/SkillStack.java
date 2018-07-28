@@ -36,6 +36,9 @@ public class SkillStack {
     public int getExp() {
         return exp;
     }
+    public int getMaxExp() {
+        return skill.maxExp();
+    }
 
     public boolean isUnlock() {
         return getLevel() > 0;

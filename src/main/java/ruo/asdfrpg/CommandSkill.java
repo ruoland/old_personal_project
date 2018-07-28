@@ -23,13 +23,14 @@ public class CommandSkill extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        System.out.println(((EntityPlayer)sender).getDisplayNameString());
+        System.out.println(""+((EntityPlayer)sender).getUniqueID()+Minecraft.getMinecraft().thePlayer.getUniqueID());
         if(args[0].equalsIgnoreCase("open")){
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.BLOCK_GRAB);
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.FLY);
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.DOUBLE_JUMP);
             ActionEffect.doubleJump(true);
-            Minecraft.getMinecraft().currentScreen = new GuiAsdfSkill();
+            Minecraft.getMinecraft().displayGuiScreen(new GuiAsdfSkill((EntityPlayer) sender));
+
             return;
         }
         Skill skill = SkillHelper.getSkill(args[0]);

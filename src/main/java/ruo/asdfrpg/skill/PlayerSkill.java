@@ -1,6 +1,7 @@
 package ruo.asdfrpg.skill;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import ruo.minigame.api.WorldAPI;
 
 import java.util.ArrayList;
@@ -15,7 +16,10 @@ public class PlayerSkill {
     }
 
     public void registerSkill(Skill skill) {
-        skillList.add(new SkillStack(getPlayer(), skill));
+        SkillStack skillStack = new SkillStack(getPlayer(), skill);
+        skillStack.addLevel();
+        skillList.add(skillStack);
+
     }
 
     public SkillStack getSkill(Skill skill) {
@@ -47,5 +51,16 @@ public class PlayerSkill {
             getSkill(skill).addExp();
             getSkill(skill).onEffect();
         }
+    }
+
+    public NBTTagCompound writeToNBT(){
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        for(SkillStack skillStack : skillList) {
+            NBTTagCompound stackCompound = new NBTTagCompound();
+            stackCompound.setInteger("EXP",skillStack.getExp());
+            stackCompound.setInteger("LEVEL",skillStack.getLevel());
+            tagCompound.setTag(skillStack.getSkill().getUnlocalizedName(), stackCompound);
+        }
+        return tagCompound;
     }
 }
