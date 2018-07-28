@@ -37,9 +37,9 @@ public class GuiAsdfSkill extends GuiScreen {
                 SkillStack stack = playerSkill.getSkill(skill);
                 mc.fontRendererObj.drawString("레벨" + stack.getLevel(), (int) skill.lineX(), (int) skill.lineY() - 10, 0xFFFFFF);
                 if(revese)
-                    RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), stack.getMaxExp() / (stack.getExp()+1), 8);
+                    RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), (stack.getMaxExp()+30) / (stack.getExp()+1), 8);
                 else
-                    RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), (stack.getExp()+1) / stack.getMaxExp(), 8);
+                    RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), (stack.getExp()+1) / (stack.getMaxExp()+30), 8);
             }
         }
 
@@ -70,6 +70,10 @@ public class GuiAsdfSkill extends GuiScreen {
             if (skillClick(skill, mouseX, mouseY)) {
                 stack.addExp();
                 System.out.println(stack.getSkill().getLocalizedName());
+                System.out.println("aa "+(stack.getMaxExp()+30) / (stack.getExp()+1));
+                System.out.println("bb "+(stack.getExp()+1) / (stack.getMaxExp()+30));
+                System.out.println("CC "+(stack.getMaxExp()) / (stack.getExp()+1));
+                System.out.println("DD "+(stack.getExp()+1) / (stack.getMaxExp()));
             }
         }
     }
