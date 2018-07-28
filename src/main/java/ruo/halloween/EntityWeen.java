@@ -116,7 +116,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
     public void onLivingUpdate() {
         if (isServerWorld()) {
-            if(!isSturn() && WorldAPI.getPlayer() != null)
+            if (!isSturn() && WorldAPI.getPlayer() != null)
                 faceEntity(WorldAPI.getPlayer(), 360, 360);
             if (!isSturn() && pattern() == 1) {
                 if (!isJumpWeen())
@@ -165,24 +165,23 @@ public class EntityWeen extends EntityDefaultNPC {
     private boolean forceSkip, patternHold;
 
     public void jumpWeenFall() {
-        WorldAPI.blockTick(worldObj, posX - 5, posX + 5, posY, posY + 1, posZ - 5, posZ + 5,//나중에 이 블럭들을 플레이어에게 던짐
-                new AbstractTick.BlockXYZ() {
-                    @Override
-                    public void run(Type type) {
-                        if (rand.nextInt(3) == 0) {
-                            if (blockList.size() < 20) {
-                                EntityAttackMiniWeen blockWeen = new EntityAttackMiniWeen(worldObj);
-                                blockWeen.setPosition(posX + WorldAPI.minRand(10, 20), posY, posZ + WorldAPI.minRand(10, 20));
-                                worldObj.spawnEntityInWorld(blockWeen);
-                                blockWeen.setFlyXYZ(0, 0, 0);
-                                blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
-                                blockWeen.addVelocity(WorldAPI.rand2(8), rand.nextInt(3), WorldAPI.rand2(8));
-                                blockList.add(blockWeen);
-                                System.out.println("소환됨" + blockWeen);
-                            }
-                        }
-                    }
-                });
+        TickRegister.register(new AbstractTick(Type.SERVER, 3, true) {
+            @Override
+            public void run(Type type) {
+                if(absRunCount == 10)
+                    absLoop = false;
+                for(int i = 0; i < 2;i++) {
+                    EntityAttackMiniWeen blockWeen = new EntityAttackMiniWeen(worldObj);
+                    blockWeen.setPosition(posX + WorldAPI.minRand(10, 20), posY, posZ + WorldAPI.minRand(10, 20));
+                    worldObj.spawnEntityInWorld(blockWeen);
+                    blockWeen.setFlyXYZ(0, 0, 0);
+                    blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
+                    blockWeen.addVelocity(WorldAPI.rand2(8), rand.nextInt(3), WorldAPI.rand2(8));
+                    blockList.add(blockWeen);
+                    System.out.println("소환됨" + blockWeen);
+                }
+            }
+        });
         for (EntityLivingBase base : worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
                 getEntityBoundingBox())) {
             if (base == this || base instanceof EntityMiniWeen) {
@@ -226,7 +225,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
     public void twoPatternAttackMiniWeen() {
         setRotate(0, 0, 180);
-        TickRegister.register(new AbstractTick(130, true) {
+        TickRegister.register(new AbstractTick(130, false) {
             @Override
             public boolean stopCondition() {
                 return isDead;
@@ -234,30 +233,42 @@ public class EntityWeen extends EntityDefaultNPC {
 
             @Override
             public void run(Type type) {
-
                 System.out.println(absDefTick + "틱" + absRunCount + " - " + blockList.size());
-                for (EntityAttackMiniWeen attackMiniWeen : blockList) {
-                    attackMiniWeen.setFlyXYZ(attackMiniWeen.posX, posY + 10,
-                            attackMiniWeen.posZ);
-                    attackMiniWeen.setTargetExplosion(false);
-                    TickRegister.register(new AbstractTick(40, false) {
+                    TickRegister.register(new AbstractTick(30, true) {
+                        @Override
+                        public boolean stopCondition() {
+                            return blockList.size() <= absRunCount;
+                        }
                         @Override
                         public void run(Type type) {
-                            attackMiniWeen.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
-                                    WorldAPI.z() + WorldAPI.rand(3));
-                            attackMiniWeen.setTargetExplosion(true);
+                            EntityAttackMiniWeen attackMiniWeen = blockList.get(absRunCount);
+                            attackMiniWeen.setFlyXYZ(attackMiniWeen.posX, posY + 10,
+                                    attackMiniWeen.posZ);
+                            attackMiniWeen.setTargetExplosion(false);
+                            TickRegister.register(new AbstractTick(40, false) {
+                                @Override
+                                public void run(Type type) {
+                                    attackMiniWeen.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
+                                            WorldAPI.z() + WorldAPI.rand(3));
+                                    attackMiniWeen.setTargetExplosion(true);
+                                }
+                            });
+                            if( absRunCount > blockList.size() - 1) {
+                                blockList.clear();
+                                blockList = null;
+                                twoPattern2();
+                            }
                         }
                     });
-                }
-                if (absRunCount == 0) {
-                    absDefTick = 50;
-                } else if (!patternHold && (forceSkip || (getHealth() < secondEndHP && absRunCount > 5))) {
-                    threePattern();
-                    absLoop = false;
-                    return;
-                }
             }
         });
+    }
+    public void twoPattern2() {
+
+        if (!patternHold && (forceSkip || (getHealth() < secondEndHP))) {
+            threePattern();
+            return;
+        }
     }
 
     public void threePattern() {
@@ -386,7 +397,7 @@ public class EntityWeen extends EntityDefaultNPC {
                         @Override
                         public void run(Type type) {
                             System.out.println("[다섯번째 패턴]미니윈과 빅윈 소환함");
-                            if(absRunCount == 0)
+                            if (absRunCount == 0)
                                 summonPlayerWeenAndBigWeen();
                             if (absRunCount == 10) {
                                 absLoop = false;
@@ -467,8 +478,8 @@ public class EntityWeen extends EntityDefaultNPC {
                         setRotate(90, 0, 0);
                         setVelocity(0, 0, 0);
                         for (int i = 0; i < 30; i++) {
-                            double x = WorldAPI.minRand(10,15);
-                            double z = WorldAPI.minRand(10,15);
+                            double x = WorldAPI.minRand(10, 15);
+                            double z = WorldAPI.minRand(10, 15);
                             EntityMiniWeen miniween = new EntityNightMiniWeen(WorldAPI.getWorld(), ween)
                                     .setFlyXYZ(posX + x, posY - 60, posZ + z);
                             miniween.setPosition(posX + x, posY, posZ + z);

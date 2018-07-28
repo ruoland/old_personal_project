@@ -68,30 +68,27 @@ public class ElytraEvent {
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
             System.out.println(MiniGame.elytra.isStart() + "엘리트라 실행됨");
             EntityFakePlayer player = FakePlayerHelper.fakePlayer;
-            spawnArrow(player.posX, player.posY, player.posZ);
-            String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
-            if (MiniGame.elytra.arrowUpgrade && (index.equalsIgnoreCase("NORTH") || index.equalsIgnoreCase("SOUTH"))) {
-                spawnArrow(player.posX + 1, player.posY, player.posZ);
-                spawnArrow(player.posX - 1, player.posY, player.posZ);
-            }
-            if (MiniGame.elytra.arrowUpgrade && (index.equalsIgnoreCase("WEST") || index.equalsIgnoreCase("EAST"))) {
-                spawnArrow(player.posX, player.posY, player.posZ + 1);
-                spawnArrow(player.posX, player.posY, player.posZ - 1);
+            float yaw = player.getHorizontalFacing().getHorizontalAngle();
+            System.out.println("화살 YAW "+yaw);
+            spawnArrow();
+            if (MiniGame.elytra.arrowUpgrade) {
+                spawnArrow(yaw + 30);
+                spawnArrow(yaw - 30);
             }
         }
     }
 
-    public void spawnArrow(double posX, double posY, double posZ) {
+    public void spawnArrow() {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
-        spawnArrow(posX, posY, posZ, player.getHorizontalFacing().getHorizontalAngle());
+        spawnArrow(player.getHorizontalFacing().getHorizontalAngle());
     }
 
-    public void spawnArrow(double posX, double posY, double posZ, float yaw) {
+    public void spawnArrow(float yaw) {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
         World world = player.worldObj;
         EntityElytraArrow arrow = new EntityElytraArrow(world, player);
         arrow.setAim(player, player.rotationPitch, yaw, 0, 1.6F, 1F);
-        arrow.setPosition(posX, posY + 1, posZ);
+        arrow.setPosition(player.posX, player.posY, player.posZ);
         arrow.setDamage(10);
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);
@@ -135,7 +132,7 @@ public class ElytraEvent {
                 if (Elytra.bombCount > 0) {
                     Elytra.bombCount--;
                     for (int i = 0; i < 360; i += 30) {
-                        spawnArrow(player.posX, player.posY, player.posZ, player.rotationYaw + i);
+                        spawnArrow(player.rotationYaw + i);
                     }
                 }
             }

@@ -2,6 +2,8 @@ package ruo.minigame.minigame.elytra.miniween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -9,6 +11,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import ruo.halloween.miniween.EntityMiniWeen;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 
@@ -42,20 +45,13 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     public float getDamage() {
         return dataManager.get(DAMAGE);
     }
-    @Override
-    protected void collideWithEntity(Entity entityIn) {
-        super.collideWithEntity(entityIn);
-        if (entityIn instanceof EntityFakePlayer) {
-            if(isBurning()){
-                entityIn.setFire(2);
-            }
-            entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
-            this.setDead();
-        }
-    }
+
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(source.getEntity() instanceof EntityArrow || source.isProjectile() || source.getDamageType().equalsIgnoreCase("arrow"))
+            this.setDead();
+
         return false;
     }
 
@@ -66,4 +62,29 @@ public class EntityElytraBullet extends EntityDefaultNPC {
             this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
         motionY = 0;
     }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return super.canBeCollidedWith();
+    }
+
+    @Override
+    protected void collideWithNearbyEntities() {
+        super.collideWithNearbyEntities();
+    }
+    @Override
+    protected void collideWithEntity(Entity entityIn) {
+        if(!(entityIn instanceof EntityElytraPumpkin)){
+            super.collideWithEntity(entityIn);
+        }
+
+        if (entityIn instanceof EntityFakePlayer) {
+            if(isBurning()){
+                entityIn.setFire(2);
+            }
+            entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
+            this.setDead();
+        }
+    }
+
 }

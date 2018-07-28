@@ -31,6 +31,9 @@ public class AsdfRPG {
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT), new ItemStack(Items.BEEF), new ItemStack(Items.PORKCHOP)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT),  new ItemStack(Items.PORKCHOP), new ItemStack(Items.BEEF)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_PORKCHOP),  new ItemStack(Items.PORKCHOP)));
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT),  new ItemStack(Items.RABBIT)));
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_FISH),  new ItemStack(Items.FISH)));
+        CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_CHICKEN),  new ItemStack(Items.CHICKEN)));
 
         Skills.register();
     }

@@ -18,7 +18,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
     public EntityAttackMiniWeen(World worldIn) {
         super(worldIn);
         this.setSize(1F, 1F);
-        this.setDeathTimer(500);
+        this.setDeathTimer(1000);
     }
 
     public EntityAttackMiniWeen(World worldIn, EntityWeen ween) {

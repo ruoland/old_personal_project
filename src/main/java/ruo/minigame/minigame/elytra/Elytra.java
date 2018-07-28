@@ -1,7 +1,5 @@
 package ruo.minigame.minigame.elytra;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -14,14 +12,12 @@ import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
-import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.AbstractMiniGame;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenCore;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
 import ruo.minigame.api.SpawnDirection;
-import scala.xml.dtd.EntityDef;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
@@ -126,13 +122,13 @@ public class Elytra extends AbstractMiniGame {
     private void setPositionAndSpawn(SpawnDirection direction, EntityElytraPumpkin pumpkin, double rlplus) {
         switch (direction) {
             case FORWARD:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD, 16, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD, 8, true));
                 break;
             case FORWARD_LEFT:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_LEFT, 16, rlplus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_LEFT, 8, rlplus, true));
                 break;
             case FORWARD_RIGHT:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_RIGHT, 16, rlplus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_RIGHT, 8, rlplus, true));
                 break;
             case LEFT:
                 pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.LEFT, 6, true));
@@ -143,7 +139,6 @@ public class Elytra extends AbstractMiniGame {
         }
         pumpkin.setDirection(direction);
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
-
     }
 
     public void spawnWeen() {

@@ -23,22 +23,14 @@ public class CookedRecipeHelper {
         for (CookedRecipe cookedRecipe : cookedRecipes) {
             System.out.println("2222 레시피 "+cookedRecipe.getValue()+" - "+cookedRecipe.getItemList());
             if (cookedRecipe.checkRecipe(itemList)) {
-                System.out.println("5555 레시피 일치");
+                System.out.println("5555 레시피 일치"+entityItems+itemList);
                 SkillHelper.getPlayerSkill(player).useSkill(Skills.COOKED);
                 for (int i = 0; i < itemList.size(); i++) {
-                    if (i == 0) {
-                        System.out.println("6666 레시피 일치"+!player.worldObj.isRemote);
-                        EntityItem cooking = entityItems.get(0);
-                        cooking.setDead();
-                        cookedRecipe.getValue().stackSize = itemList.size();
-                        EntityItem item = new EntityItem(WorldAPI.getWorld(), cooking.posX, cooking.posY, cooking.posZ, cookedRecipe.getValue());
-
-                        WorldAPI.getWorld().spawnEntityInWorld(item);
-
-                    }else if(entityItems.get(i).worldObj.isRemote) {
-                        System.out.println("6666 아이템 삭제"+ entityItems.get(i));
-                        entityItems.get(i).setDead();
-                    }
+                    EntityItem cooking = entityItems.get(i);
+                    ItemStack cooked = cookedRecipe.getValue();
+                    System.out.println("6666 "+cooked.stackSize+" - "+cooking.getEntityItem().stackSize);
+                    cooked.stackSize = cooking.getEntityItem().stackSize;
+                    cooking.setEntityItemStack(cooked);
                 }
             }
         }

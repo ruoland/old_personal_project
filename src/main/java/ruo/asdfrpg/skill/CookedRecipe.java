@@ -39,6 +39,6 @@ public class CookedRecipe {
     }
 
     public ItemStack getValue() {
-        return value;
+        return value.copy();
     }
 }

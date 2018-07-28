@@ -1,4 +1,4 @@
-package ruo.minigame.minigame.elytra.miniween;
+package ruo.minigame.minigame.elytra.miniween.old;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;

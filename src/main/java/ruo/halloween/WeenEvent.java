@@ -78,27 +78,6 @@ public class WeenEvent {
 			}
 		}
 	}
-	/*
-	 * 점프한 후 공격하는 메서드
-	 */
-	public void attackMiniween(World worldObj) {
-		EntityAttackMiniWeen miniween = new EntityAttackMiniWeen(worldObj, null);
-		miniween.setPosition(WorldAPI.x() + WorldAPI.rand(15), WorldAPI.y() +10, WorldAPI.z() + WorldAPI.rand(15));
-		worldObj.spawnEntityInWorld(miniween);
-		miniween.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y(), WorldAPI.z() + WorldAPI.rand(3));
-		System.out.println("어택 미니윈 실행됨");
-
-	}
-
-	public void summonPlayerWeen(World worldObj, double x, double z,  double x2, double z2) {
-		EntityPlayerWeen ween = new EntityPlayerWeen(worldObj);
-		ween.setPosition(WorldAPI.x()-x, WorldAPI.y()+5, WorldAPI.z()-z);
-		if(!worldObj.isRemote)
-		worldObj.spawnEntityInWorld(ween);
-		ween.setTexture(ween.getPlayerSkin(true));
-		ween.setElytra(true);
-		ween.setTarget(WorldAPI.x()+x2, WorldAPI.y()+5, WorldAPI.z()+z2);
-	}
 	@SubscribeEvent
 	public void in(PlayerLoggedOutEvent e) {
 		isWeen = false;
@@ -108,7 +87,6 @@ public class WeenEvent {
 
 	@SubscribeEvent
 	public void in(LivingUpdateEvent e) {
-
 		if (!isWeen) {
 			for (Entity ent : e.getEntityLiving().worldObj.loadedEntityList) {
 				if (ent instanceof EntityWeen || ent instanceof EntityMiniWeen || ent instanceof EntityBigWeen

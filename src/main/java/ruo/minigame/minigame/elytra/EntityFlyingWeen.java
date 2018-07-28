@@ -21,11 +21,9 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.TypeModel;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenCore;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenTNT;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraWeenUP;
-
-import static ruo.minigame.fakeplayer.FakePlayerHelper.fakePlayer;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenTNT;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenUP;
 
 public class EntityFlyingWeen extends EntityDefaultNPC {
     private final BossInfoServer bossHealth = (BossInfoServer) (new BossInfoServer(new TextComponentString("호박"),

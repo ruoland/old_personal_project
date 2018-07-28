@@ -12,6 +12,7 @@ public class EntityElytraPumpkinFire extends EntityElytraPumpkin {
     public EntityElytraPumpkinFire(World worldIn) {
         super(worldIn);
         setBlockMode(Blocks.PUMPKIN);
+        this.setSize(1F,1.5F);
     }
 
     @Override
@@ -32,6 +33,8 @@ public class EntityElytraPumpkinFire extends EntityElytraPumpkin {
     @Override
     protected void collideWithEntity(Entity entityIn) {
         super.collideWithEntity(entityIn);
+        System.out.println(entityIn);
         entityIn.setFire(2);
     }
+
 }

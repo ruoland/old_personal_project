@@ -35,9 +35,11 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.elytra.ElytraEvent;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenTNT;
+import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenUP;
 import ruo.minigame.minigame.minerun.EntityMineRunCreeper;
 import ruo.minigame.minigame.minerun.MineRun;
-import ruo.minigame.action.ActionData;
 import ruo.minigame.action.ActionEvent;
 import ruo.minigame.minigame.bomber.Bomber;
 import ruo.minigame.minigame.bomber.EntityBomb;
@@ -48,8 +50,6 @@ import ruo.minigame.minigame.elytra.miniween.*;
 import ruo.minigame.minigame.minerun.MineRunEvent;
 import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
-
-import java.awt.event.PaintEvent;
 
 
 @Mod(modid = "MiniGame", name = "MiniGame")
@@ -116,12 +116,12 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeen", EntityElytraWeenCore.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityFlyingWeen.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraItem", EntityElytraItem.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraBullet", EntityElytraBullet.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraPumpkin", EntityElytraPumpkin.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraWeenAttack", EntityElytraPumpkinAttack.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraWeenFire", EntityElytraPumpkinFire.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraTNT", EntityElytraWeenTNT.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraFallingWeen", EntityElytraWeenUP.class);
-        DebAPI.registerEntity(this, "NO-EGG-ElytraPumpkin", EntityElytraPumpkin.class);
-        DebAPI.registerEntity(this, "NO-EGG-ElytraBullet", EntityElytraBullet.class);
-        DebAPI.registerEntity(this, "NO-EGG-ElytraWeenFire", EntityElytraPumpkinFire.class);
-
         //폭탄게임용
         EntityRegistry.registerModEntity(EntityBomb.class, "bomb", 174, this, 80, 3, false);
         GameRegistry.register(bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
