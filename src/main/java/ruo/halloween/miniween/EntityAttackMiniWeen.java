@@ -44,13 +44,15 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getEntity() instanceof EntityPlayer) {
+        if (source.getEntity() instanceof EntityPlayer) {
             System.out.println("미니윈이 반사됨" + source.damageType);
             if (ween != null) {
                 targetVec = new Vec3d(ween.posX, ween.posY + 5, ween.posZ);
                 isAttackReverse = true;
             }
         }
+        if (source.getEntity() instanceof EntityWeen || source == DamageSource.fall)
+            return false;
         return super.attackEntityFrom(source, amount);
     }
 
@@ -68,10 +70,11 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
                 System.out.println("반사된 미니윈이 윈 근처에 도달해 터짐");
                 ween.attackEntityFrom(DamageSource.causeExplosionDamage(this), 3);
             }
-            if (targetExplosion && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 0.5) {
+            if (targetExplosion && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 1.5) {
                 this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
                 this.setDead();
             }
+
         }
     }
 }

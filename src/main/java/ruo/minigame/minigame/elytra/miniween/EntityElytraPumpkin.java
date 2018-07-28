@@ -87,16 +87,6 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         }
     }
 
-    @Override
-    public void setDead() {
-        super.setDead();
-        try{
-            throw new NullPointerException();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     public EntityElytraBullet spawnBullet() {
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         EntityElytraBullet elytraBullet = new EntityElytraBullet(worldObj);
