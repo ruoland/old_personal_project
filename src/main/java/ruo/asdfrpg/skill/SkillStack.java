@@ -26,7 +26,7 @@ public class SkillStack {
     }
 
     public void addExp() {
-        exp++;
+        exp+=3;
         if (exp >= skill.maxExp()) {
             addLevel();
             exp = 0;

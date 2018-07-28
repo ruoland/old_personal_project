@@ -18,7 +18,7 @@ public class GuiAsdfSkill extends GuiScreen {
     private EntityPlayer player;
     private PlayerSkill playerSkill;
     private double max = 20, cur = 20;
-    private boolean revese;
+
     public GuiAsdfSkill(EntityPlayer player) {
         mc = Minecraft.getMinecraft();
         fontRendererObj = mc.fontRendererObj;
@@ -36,10 +36,7 @@ public class GuiAsdfSkill extends GuiScreen {
             } else {
                 SkillStack stack = playerSkill.getSkill(skill);
                 mc.fontRendererObj.drawString("레벨" + stack.getLevel(), (int) skill.lineX(), (int) skill.lineY() - 10, 0xFFFFFF);
-                if(revese)
-                    RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), (stack.getMaxExp()+30) / (stack.getExp()+1), 8);
-                else
-                    RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), (stack.getExp()+1) / (stack.getMaxExp()+30), 8);
+                RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), 32 / (stack.getMaxExp() - stack.getExp()), 8);
             }
         }
 
@@ -48,10 +45,6 @@ public class GuiAsdfSkill extends GuiScreen {
     @Override
     public void handleKeyboardInput() throws IOException {
         super.handleKeyboardInput();
-        if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
-            revese = !revese;
-            System.out.println(revese);
-        }
         if (Keyboard.isKeyDown(Keyboard.KEY_H))
             max++;
         if (Keyboard.isKeyDown(Keyboard.KEY_N))
@@ -70,10 +63,8 @@ public class GuiAsdfSkill extends GuiScreen {
             if (skillClick(skill, mouseX, mouseY)) {
                 stack.addExp();
                 System.out.println(stack.getSkill().getLocalizedName());
-                System.out.println("aa "+(stack.getMaxExp()+30) / (stack.getExp()+1));
-                System.out.println("bb "+(stack.getExp()+1) / (stack.getMaxExp()+30));
-                System.out.println("CC "+(stack.getMaxExp()) / (stack.getExp()+1));
-                System.out.println("DD "+(stack.getExp()+1) / (stack.getMaxExp()));
+                System.out.println("aa " + (32 / (stack.getMaxExp() - stack.getExp())));
+                System.out.println(stack.getMaxExp()+" - "+stack.getExp());
             }
         }
     }

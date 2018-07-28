@@ -2,7 +2,7 @@ package ruo.asdfrpg.skill;
 
 public class Skill {
     private String localizedName, unlocalizedName;
-    private int maxLevel = 5, maxExp = 10;
+    private int maxLevel = 5, maxExp = 30;
     private double lineX = 30, lineY = 30;
     public Skill(){
     }
