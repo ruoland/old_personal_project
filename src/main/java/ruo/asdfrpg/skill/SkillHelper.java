@@ -21,6 +21,9 @@ public class SkillHelper {
         return getPlayerSkill(player.getUniqueID());
     }
 
+    public static void registerSkill(EntityPlayer player, Skill skill){
+        getPlayerSkill(player).registerSkill(skill);
+    }
     public static void init(EntityPlayer player) {
         playerSkill.put(player.getUniqueID(), new PlayerSkill(player.getUniqueID()));
     }

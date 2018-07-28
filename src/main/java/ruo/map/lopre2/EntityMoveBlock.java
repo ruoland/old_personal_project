@@ -50,6 +50,12 @@ public class EntityMoveBlock extends EntityPreBlock {
     }
 
     @Override
+    public String getCustomNameTag() {
+        return "MoveBlock" + getFacing().getName();
+    }
+
+
+    @Override
     protected void entityInit() {
         super.entityInit();
         dataManager.register(IS_BLOCK_MOVE, true);

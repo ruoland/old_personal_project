@@ -45,7 +45,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
 
     public EntityPreBlock(World worldObj) {
         super(worldObj);
-        this.setCustomNameTag(this.getClass().getSimpleName().replace("Entity", ""));
+        //this.setCustomNameTag(this.getClass().getSimpleName().replace("Entity", ""));
         this.setDeathTimer(-1);
     }
 
@@ -198,7 +198,6 @@ public class EntityPreBlock extends EntityDefaultNPC {
         if (canTeleportLock() && !isTeleport() && getSpawnX() != 0 && getSpawnZ() != 0) {
             if (MathHelper.floor_double(posX) != MathHelper.floor_double(getSpawnX()) || MathHelper.floor_double(posZ) != MathHelper.floor_double(getSpawnZ())) {
                 this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-                System.out.println("텔레포트됨" + posX + " - " + posY + " - " + posZ);
                 //this.setPositionAndRotationDirect(getSpawnX(), getSpawnY(), getSpawnZ(), 90, 90, 1, true);
             }
         }

@@ -18,6 +18,11 @@ public class EntityBigBlockMove extends EntityMoveBlock {
         this.speed = 0.08;
         this.setBlockMove(true);
     }
+    @Override
+    public String getCustomNameTag() {
+        return "BigBlockMove " +getFacing().getName();
+    }
+
 
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {

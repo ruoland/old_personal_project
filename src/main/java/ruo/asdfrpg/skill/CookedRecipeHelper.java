@@ -3,11 +3,6 @@ package ruo.asdfrpg.skill;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import ruo.minigame.api.WorldAPI;
-import ruo.minigame.effect.AbstractTick;
-import ruo.minigame.effect.TickRegister;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +16,18 @@ public class CookedRecipeHelper {
 
     public static void cooking(EntityPlayer player, List<EntityItem> entityItems, List<ItemStack> itemList) {
         for (CookedRecipe cookedRecipe : cookedRecipes) {
-            System.out.println("2222 레시피 "+cookedRecipe.getValue()+" - "+cookedRecipe.getItemList());
+            System.out.println("2222 레시피 " + cookedRecipe.getValue() + " - " + cookedRecipe.getItemList());
             if (cookedRecipe.checkRecipe(itemList)) {
-                System.out.println("5555 레시피 일치"+entityItems+itemList);
+                System.out.println("5555 레시피 일치" + entityItems + itemList);
                 SkillHelper.getPlayerSkill(player).useSkill(Skills.COOKED);
-                for (int i = 0; i < itemList.size(); i++) {
-                    EntityItem cooking = entityItems.get(i);
-                    ItemStack cooked = cookedRecipe.getValue();
-                    System.out.println("6666 "+cooked.stackSize+" - "+cooking.getEntityItem().stackSize);
-                    cooked.stackSize = cooking.getEntityItem().stackSize;
-                    cooking.setEntityItemStack(cooked);
+                EntityItem entityItem = entityItems.get(0);
+                ItemStack cookedStack = cookedRecipe.getValue();
+                System.out.println("6666 " + cookedStack.stackSize + " - " + entityItem.getEntityItem().stackSize);
+                cookedStack.stackSize = entityItem.getEntityItem().stackSize;
+                entityItem.setEntityItemStack(cookedStack);
+                for (int i = 1; i < itemList.size(); i++) {
+                    entityItems.get(i).setDead();
+                    ;
                 }
             }
         }

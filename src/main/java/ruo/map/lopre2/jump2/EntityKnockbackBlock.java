@@ -24,7 +24,7 @@ public class EntityKnockbackBlock extends EntityMoveBlock {
 
     @Override
     public String getCustomNameTag() {
-        return getClass().getSimpleName().replace("Entity", "")+" 넉백 "+knockbackSize;
+        return "KnockbackBlock "+" 넉백 "+knockbackSize;
     }
 
     @Override

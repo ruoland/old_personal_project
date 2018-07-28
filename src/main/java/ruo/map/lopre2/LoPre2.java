@@ -57,7 +57,7 @@ public class LoPre2 {
         ClientRegistry.registerKeyBinding(blockSetKey);
         ClientRegistry.registerKeyBinding(grab);
         DebAPI.registerEvent(new JumpEvent2());
-
+        DebAPI.registerEntity(this, "FastBlock", EntityFastBlock.class);
         DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
         DebAPI.registerEntity(this, "LoopGuard", EntityDummyGuardLoop.class);
         DebAPI.registerEntity(this, "BigBlockInvisible", EntityBigInvisibleBlock.class);

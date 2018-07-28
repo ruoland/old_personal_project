@@ -79,7 +79,7 @@ public class EntityBigBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return this.getClass().getSimpleName().replace("Entity", "") + " 떨어지는가:" + canFalling()+ " 딜레이:"+getDefaultDelay();
+        return "BigBlock " + " 떨어지는가:" + canFalling()+ " 딜레이:"+getDefaultDelay();
     }
 
     @Override
