@@ -105,13 +105,6 @@ public class EntityWeen extends EntityDefaultNPC {
         return super.attackEntityFrom(source, 10);
     }
 
-    @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-        // sevenPattern();
-        twoPattern2();
-        return super.onInitialSpawn(difficulty, livingdata);
-    }
-
 
     public void onLivingUpdate() {
         if (isServerWorld()) {
@@ -244,20 +237,23 @@ public class EntityWeen extends EntityDefaultNPC {
             @Override
             public void run(Type type) {
                 System.out.println(absDefTick + "틱" + absRunCount + " - " + blockList.size());
-                TickRegister.register(new AbstractTick(30, true) {
+                TickRegister.register(new AbstractTick(15, true) {
 
                     @Override
                     public void run(Type type) {
-                        EntityAttackMiniWeen attackMiniWeen = blockList.get(absRunCount);
-                        if(attackMiniWeen.isDead)
-                            return;
                         if (absRunCount >= blockList.size() - 1) {
                             blockList.clear();
                             blockList = null;
                             System.out.println("2.5 패턴으로 넘어감");
                             twoPattern2();
+                            stopTick();
+                            return;
                         }
-                        attackMiniWeen.setFlyXYZ(attackMiniWeen.posX, posY + 10,
+                        EntityAttackMiniWeen attackMiniWeen = blockList.get(absRunCount);
+                        if(attackMiniWeen.isDead)
+                            return;
+
+                        attackMiniWeen.setFlyXYZ(attackMiniWeen.posX, posY + 8,
                                 attackMiniWeen.posZ);
                         attackMiniWeen.setTargetExplosion(false);
                         TickRegister.register(new AbstractTick(40, false) {

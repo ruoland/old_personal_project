@@ -62,7 +62,10 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         this.worldObj.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
         if (targetVec != null && target != null) {
             addRotate(rand.nextInt(10), rand.nextInt(10), rand.nextInt(10));
-            this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
+            if(this.getDistance(target.xCoord, target.yCoord, target.zCoord) > 1){
+                this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
+            }else
+                setFlyXYZ(0,0,0);
             if (isAttackReverse && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 10) {
                 this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
                 this.setDead();
@@ -70,7 +73,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
                 System.out.println("반사된 미니윈이 윈 근처에 도달해 터짐");
                 ween.attackEntityFrom(DamageSource.causeExplosionDamage(this), 3);
             }
-            if (targetExplosion && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 1.5) {
+            if (targetExplosion && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 0.8) {
                 this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
                 this.setDead();
             }
