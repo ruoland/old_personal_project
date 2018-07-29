@@ -40,6 +40,7 @@ public class SUAKGEMod {
         DebAPI.registerEntity(this, "MissileCreeper", EntityMissileCreeper.class);
         DebAPI.registerEntity(this, "Skelereeper", EntitySkelereeper.class, new RenderSkeleton(Minecraft.getMinecraft().getRenderManager()));
         DebAPI.registerEntity(this, "FlyingSkeleton", EntityFlyingZombie.class);
+        DebAPI.registerEntity(this, "FlyingCreeper", EntityFlyingCreeper.class);
 
         DebAPI.registerEntity(this, "WildZombie", EntityWildZombie.class, new RenderZombie(Minecraft.getMinecraft().getRenderManager()));
         ForgeRegistries.ENCHANTMENTS.register(levitationEnchant);

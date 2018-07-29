@@ -19,6 +19,7 @@ public class AsdfEvent {
 
     @SubscribeEvent
     public void keyEvent(InputEvent.KeyInputEvent e){
+
     }
     @SubscribeEvent
     public void playerTick(GuiOpenEvent e){

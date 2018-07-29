@@ -80,7 +80,7 @@ public class EntityWeen extends EntityDefaultNPC {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source.getEntity() instanceof EntityAttackMiniWeen && pattern() <= 5) {//패턴6 상태에서 미니윈 폭발에 윈이 죽는 경우가 있음
-            return super.attackEntityFrom(source, 10);
+            return super.attackEntityFrom(source, 5);
         }
         if (source.getEntity() instanceof EntityBigWeen) {
             EntityBigWeen ween = (EntityBigWeen) source.getEntity();
@@ -169,6 +169,12 @@ public class EntityWeen extends EntityDefaultNPC {
 
     public void jumpWeenFall() {
         TickRegister.register(new AbstractTick(Type.SERVER, 3, true) {
+
+            @Override
+            public boolean stopCondition() {
+                return isDead;
+            }
+
             @Override
             public void run(Type type) {
                 if (absRunCount == 10)
@@ -207,7 +213,7 @@ public class EntityWeen extends EntityDefaultNPC {
             System.out.println("" + !patternHold + forceSkip + (getHealth() < firstEndHP) + "[첫패턴]체력이 " + firstEndHP + " 넘은채 추락해 스턴걸림");
 
         }
-        setSturn(200);
+        setSturn(130);
 
         dataManager.set(ISJUMP, false);
         dataManager.set(ISCOMPLETEY, false);
@@ -227,7 +233,6 @@ public class EntityWeen extends EntityDefaultNPC {
     }
 
     public void twoPatternAttackMiniWeen() {
-        setRotate(0, 0, 180);
         TickRegister.register(new AbstractTick(130, false) {
             @Override
             public boolean stopCondition() {
@@ -236,12 +241,13 @@ public class EntityWeen extends EntityDefaultNPC {
 
             @Override
             public void run(Type type) {
+                setRotate(0, 0, 180);
                 System.out.println(absDefTick + "틱" + absRunCount + " - " + blockList.size());
                 TickRegister.register(new AbstractTick(15, true) {
 
                     @Override
                     public void run(Type type) {
-                        if (absRunCount >= blockList.size() - 1) {
+                        if (absRunCount >= blockList.size() - 1) {//블럭을 모두 전지면 날려보냄
                             blockList.clear();
                             blockList = null;
                             System.out.println("2.5 패턴으로 넘어감");
@@ -250,7 +256,7 @@ public class EntityWeen extends EntityDefaultNPC {
                             return;
                         }
                         EntityAttackMiniWeen attackMiniWeen = blockList.get(absRunCount);
-                        if(attackMiniWeen.isDead)
+                        if (attackMiniWeen.isDead)//만약 미니윈이 시간이 지나 죽거나 폭발해서 사라진 경우 다음으로 넘김
                             return;
 
                         attackMiniWeen.setFlyXYZ(attackMiniWeen.posX, posY + 8,
@@ -262,6 +268,7 @@ public class EntityWeen extends EntityDefaultNPC {
                                 attackMiniWeen.setFlyXYZ(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
                                         WorldAPI.z() + WorldAPI.rand(3));
                                 attackMiniWeen.setTargetExplosion(true);
+                                attackMiniWeen.setExplosionStrength(3F);
                             }
                         });
 
@@ -275,12 +282,18 @@ public class EntityWeen extends EntityDefaultNPC {
         setPattern(2.5F);
         PosHelper posHelper = new PosHelper(this);
         TickRegister.register(new AbstractTick(1, true) {
+
+            @Override
+            public boolean stopCondition() {
+                return isDead;
+            }
+
             @Override
             public void run(Type type) {
-                rotationYaw += 2;
-                EntityAttackMiniWeen attackMiniWeen = summonAttackWeen(posHelper.getXZ(SpawnDirection.FORWARD, 10, true));
-                attackMiniWeen.setFlyXYZ(WorldAPI.getPlayer().posX + WorldAPI.rand(5), WorldAPI.getPlayer().posY + 10, WorldAPI.getPlayer().posZ + WorldAPI.rand(5));
-                if (absRunCount == 5 && !patternHold && (forceSkip || (getHealth() < secondEndHP))) {
+                EntityAttackMiniWeen attackMiniWeen = summonAttackWeen(posHelper.getXZ(SpawnDirection.FORWARD, 10, true).addVector(0, 5, 0));
+                attackMiniWeen.setFlyXYZ(WorldAPI.getPlayer().posX + WorldAPI.rand(1), posY, WorldAPI.getPlayer().posZ + WorldAPI.rand(1));
+                attackMiniWeen.setExplosionStrength(1.5F);
+                if (absRunCount >= 5 && !patternHold && (forceSkip || (getHealth() < secondEndHP))) {
                     absLoop = false;
                     threePattern();
                     return;
@@ -294,7 +307,6 @@ public class EntityWeen extends EntityDefaultNPC {
         System.out.println("[두번째 패턴]체력이 " + secondEndHP + " 넘어 다음 패턴으로 넘어감");
         setPattern(3);
         summonBigWeen();
-
     }
 
     /**

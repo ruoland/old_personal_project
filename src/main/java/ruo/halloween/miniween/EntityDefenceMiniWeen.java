@@ -7,35 +7,40 @@ import net.minecraft.world.World;
 import ruo.halloween.EntityWeen;
 
 public class EntityDefenceMiniWeen extends EntityMiniWeen {
-	public boolean goWeen;
-	public EntityDefenceMiniWeen(World worldIn) {
-		super(worldIn);
-	}
-	public EntityDefenceMiniWeen(World worldIn, EntityWeen ween) {
-		this(worldIn);
-		this.ween = ween;
-		if(ween == null)
-			this.setDead();
-	}
+    public boolean goWeen;
 
-	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		return false;
-	}
-	@Override
-	public void onCollideWithPlayer(EntityPlayer entityIn) {
-		super.onCollideWithPlayer(entityIn);
-		((EntityLivingBase) this).knockBack(entityIn, 0.2F, entityIn.posX - this.posX, entityIn.posZ - this.posZ);
-	}
+    public EntityDefenceMiniWeen(World worldIn) {
+        super(worldIn);
+    }
 
-	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
-		if (target!=null && getDistance(target.xCoord, target.yCoord, target.zCoord) > 1) {
-			this.setVelocity(targetVec.xCoord / 2, targetVec.yCoord / 2, targetVec.zCoord / 2);
-		}
-		if (goWeen && getDistance(target.xCoord, target.yCoord, target.zCoord) <= 1) {
-			this.setDead();
-		}
-	}
+    public EntityDefenceMiniWeen(World worldIn, EntityWeen ween) {
+        this(worldIn);
+        this.ween = ween;
+        if (ween == null)
+            this.setDead();
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        return false;
+    }
+
+    @Override
+    public void onCollideWithPlayer(EntityPlayer entityIn) {
+        super.onCollideWithPlayer(entityIn);
+        ((EntityLivingBase) this).knockBack(entityIn, 0.2F, entityIn.posX - this.posX, entityIn.posZ - this.posZ);
+    }
+
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+        if (target != null && getDistance(target.xCoord, target.yCoord, target.zCoord) > 1) {
+            this.setVelocity(targetVec.xCoord / 2, targetVec.yCoord / 2, targetVec.zCoord / 2);
+        }else{
+            motionY = 0;
+        }
+        if (goWeen && getDistance(target.xCoord, target.yCoord, target.zCoord) <= 1) {
+            this.setDead();
+        }
+    }
 }

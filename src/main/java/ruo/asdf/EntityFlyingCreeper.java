@@ -1,17 +1,23 @@
 package ruo.asdf;
 
+import net.minecraft.block.BlockTNT;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.TypeModel;
 
 import javax.annotation.Nullable;
 
 public class EntityFlyingCreeper extends EntityDefaultNPC {
-
+    private int delay = 0, attackDelay = 0;
+    private Vec3d targetVelocity, targetXYZ;
     public EntityFlyingCreeper(World worldIn) {
         super(worldIn);
         this.setModel(TypeModel.CREEPER);
@@ -28,16 +34,53 @@ public class EntityFlyingCreeper extends EntityDefaultNPC {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        this.setPosition(getPosition().add(0,10,0));
+        this.setPosition(getPosition().add(0, 10, 0));
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        motionX+=this.getX(SpawnDirection.FORWARD, 0.01, false);
-        motionZ+=this.getZ(SpawnDirection.FORWARD, 0.01, false);
+        attackDelay++;
+        if (!noTarget() && getDistance(targetXYZ.xCoord, posY, targetXYZ.zCoord) > 1) {
+            setVelocity(targetVelocity);
+        }else{
+            setTarget(null);
+        }
+        if (attackDelay > 50 && getAttackTarget() instanceof EntityPlayer) {
+            EntityTNTPrimed tntPrimed = new EntityTNTPrimed(worldObj, posX, posY, posZ, this);
+            tntPrimed.setFuse(worldObj.rand.nextInt(tntPrimed.getFuse() / 4 + tntPrimed.getFuse() / 8));
+            worldObj.spawnEntityInWorld(tntPrimed);
+            tntPrimed.setVelocity(targetVelocity.xCoord, targetVelocity.yCoord, targetVelocity.zCoord);
+            attackDelay = 0;
+        }
+        randomPosition();
         motionY = 0;
-        
+    }
+
+    public void randomPosition() {
+        delay++;
+        if (isAttackTargetPlayer()) {
+            setTarget(getAttackTarget().getPositionVector());
+            return;
+        }
+        if (delay >= 200 && noTarget()) {
+            setTarget(new Vec3d(posX+ WorldAPI.rand(10), posY, posZ+ WorldAPI.rand(10)));
+            delay = 0;
+        }
+    }
+
+    public boolean noTarget(){
+        return targetVelocity == null;
+    }
+
+    public void setTarget(Vec3d vec3d){
+        if(vec3d == null){
+            targetVelocity = null;
+            targetXYZ = null;
+        }else {
+            targetVelocity = vec3d.subtract(this.getPositionVector());
+            targetXYZ = vec3d;
+        }
     }
 }

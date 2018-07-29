@@ -39,6 +39,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
+import org.lwjgl.Sys;
 import ruo.awild.EntityWildHorse;
 import ruo.cmplus.util.Sky;
 import ruo.minigame.MiniGame;
@@ -191,7 +192,6 @@ public class SUAKGEEvent {
 
     @SubscribeEvent
     public void event(ExplosionEvent e) {
-        System.out.println(e.getExplosion().getExplosivePlacedBy());
         if (e.getExplosion().getExplosivePlacedBy() instanceof EntityCreeper) {
             if (e.getWorld().rand.nextInt(30) == 0) {
                 Vec3d pos = e.getExplosion().getPosition();
