@@ -1,5 +1,7 @@
 package ruo.asdfrpg.skill;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public class Skill {
     private String localizedName, unlocalizedName;
     private int maxLevel = 5, maxExp = 30;
@@ -21,7 +23,7 @@ public class Skill {
     public int maxLevel(){
         return maxLevel;
     }
-    public void onEffect(SkillStack playerSkill){
+    public void onEffect(SkillStack playerSkill, int data){
 
     }
     public Skill setUnlocalizedName(String name){
@@ -60,5 +62,4 @@ public class Skill {
         this.lineY = 30 + (y * 40);
         return this;
     }
-
 }

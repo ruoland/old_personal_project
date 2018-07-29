@@ -39,9 +39,6 @@ public class WeenEvent {
 
     @SubscribeEvent
     public void r(PlayerInteractEvent event) {
-        List<EntityWeen> list = event.getWorld().getEntitiesWithinAABB(EntityWeen.class, event.getEntityPlayer().getEntityBoundingBox().expand(3, 3, 3));
-        if (!list.isEmpty())
-            System.out.println(list);
     }
 
     @SubscribeEvent
@@ -61,7 +58,7 @@ public class WeenEvent {
                 ween.setPosition(EntityAPI.lookPlayerX(15), e.getPlayer().posY, EntityAPI.lookPlayerZ(15));
                 e.getPlayer().worldObj.spawnEntityInWorld(ween);
                 e.getPlayer().setSpawnPoint(e.getPlayer().getPosition(), true);
-                ween.startTime = System.currentTimeMillis();//객체 생성으로 스폰하면 onInitialSpawn 메서드가 실행이 안되서 여기서 스타트 타임을 설정함
+                ween.startTime = System.currentTimeMillis();//스폰에그로 소환해햐 onInitialSpawn 메서드가 실행이 되서 여기서 스타트 타임을 설정함
 
                 //WorldAPI.command("/gamma set 100");
                 //WorldAPI.command("/distance set 7");

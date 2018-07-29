@@ -24,6 +24,11 @@ public class CommandSkill extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         System.out.println(""+((EntityPlayer)sender).getUniqueID()+Minecraft.getMinecraft().thePlayer.getUniqueID());
+        if(args[0].equalsIgnoreCase("return")){
+            SkillHelper.registerSkill((EntityPlayer)sender, Skills.VILLAGE_RETURN);
+            SkillHelper.getPlayerSkill((EntityPlayer)sender).useSkill(Skills.VILLAGE_RETURN, 1);
+            return;
+        }
         if(args[0].equalsIgnoreCase("open")){
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.BLOCK_GRAB);
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.FLY);
@@ -37,7 +42,7 @@ public class CommandSkill extends CommandBase {
         PlayerSkill playerSkill = SkillHelper.getPlayerSkill(((EntityPlayer)sender));
         SkillStack skillStack = playerSkill.getSkill(skill);
         if(skillStack != null)
-            skillStack.onEffect();
+            skillStack.onEffect(0);
         else
             playerSkill.registerSkill(skill);
     }

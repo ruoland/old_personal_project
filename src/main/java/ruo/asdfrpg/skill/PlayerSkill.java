@@ -38,6 +38,10 @@ public class PlayerSkill {
         return getSkill(skill).isUnlock();
     }
 
+    public ArrayList<SkillStack> getSkillList() {
+        return skillList;
+    }
+
     public EntityPlayer getPlayer() {
         return WorldAPI.getPlayerByUUID(uuid.toString());
     }
@@ -46,21 +50,32 @@ public class PlayerSkill {
         return uuid;
     }
 
-    public void useSkill(Skill skill) {
+    public void useSkill(Skill skill, int data) {
         if(isRegister(skill)) {
             getSkill(skill).addExp();
-            getSkill(skill).onEffect();
+            getSkill(skill).onEffect(data);
         }
+    }
+    public void useSkill(Skill skill) {
+        useSkill(skill, 0);
     }
 
     public NBTTagCompound writeToNBT(){
         NBTTagCompound tagCompound = new NBTTagCompound();
         for(SkillStack skillStack : skillList) {
-            NBTTagCompound stackCompound = new NBTTagCompound();
-            stackCompound.setInteger("EXP",skillStack.getExp());
-            stackCompound.setInteger("LEVEL",skillStack.getLevel());
-            tagCompound.setTag(skillStack.getSkill().getUnlocalizedName(), stackCompound);
+            tagCompound.setTag(skillStack.getSkill().getUnlocalizedName(), skillStack.serializeNBT());
         }
         return tagCompound;
     }
+
+    public void readToNBT(NBTTagCompound compound){
+        for(Skill skill : SkillHelper.getSkillList()){
+            if(compound.hasKey(skill.getUnlocalizedName())){
+                NBTTagCompound stackCompound = compound.getCompoundTag(skill.getUnlocalizedName());
+                registerSkill(skill);
+                getSkill(skill).readFromNBT(stackCompound);
+            }
+        }
+    }
+
 }

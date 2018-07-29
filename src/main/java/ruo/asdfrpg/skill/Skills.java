@@ -8,12 +8,15 @@ public class Skills {
     public static final Skill FLY = new SkillFly().setX(3).setUnlocalizedName("FLY");
     public static final Skill CAMP_FIRE = new Skill().setY(2).setX(1).setUnlocalizedName("CAMP_FIRE").setLocalizedName("캠프파이어");
     public static final Skill COOKED = new Skill().setY(2).setX(2).setUnlocalizedName("COOKED").setLocalizedName("요리");
+    public static final Skill VILLAGE_RETURN = new SkillVillageReturn().setY(2).setX(3).setUnlocalizedName("VILLAGE_RETURN").setLocalizedName("마을 귀환");
+
     public static void register(){
         SkillHelper.registerSkill(BLOCK_GRAB);
         SkillHelper.registerSkill(DOUBLE_JUMP);
         SkillHelper.registerSkill(FLY);
         SkillHelper.registerSkill(CAMP_FIRE);
         SkillHelper.registerSkill(COOKED);
+        SkillHelper.registerSkill(VILLAGE_RETURN);
     }
 
 }

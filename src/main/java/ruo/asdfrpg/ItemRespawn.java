@@ -13,4 +13,5 @@ public class ItemRespawn extends Item {
         super.addInformation(stack, playerIn, tooltip, advanced);
         tooltip.add("죽었을 때 이 아이템을 사용하면 제자리에서 다시 부활할 수 있다.");
     }
+
 }

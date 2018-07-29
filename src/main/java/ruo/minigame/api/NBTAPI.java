@@ -43,9 +43,11 @@ public class NBTAPI {
 
     public void readNBT() {
         try {
-            FileInputStream fileinputstream = new FileInputStream(file);
-            nbttagcompound = CompressedStreamTools.readCompressed(fileinputstream);
-            fileinputstream.close();
+            if(file.isFile()) {
+                FileInputStream fileinputstream = new FileInputStream(file);
+                nbttagcompound = CompressedStreamTools.readCompressed(fileinputstream);
+                fileinputstream.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

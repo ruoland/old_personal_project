@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketClientStatus;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -21,26 +22,35 @@ public class GuiAsdfGameOver extends GuiGameOver implements GuiYesNoCallback {
         super(new TextComponentString(""));
 
     }
+
     public void initGui() {
         super.initGui();
         buttonList.get(0).displayString = "여기서 부활(부활 아이템 소모)";
         buttonList.get(1).displayString = "마을에서 부활";
+        if (mc.thePlayer.inventory.hasItemStack(new ItemStack(AsdfRPG.respawn))) {
+            buttonList.get(0).enabled = true;
+        }else
+            buttonList.get(0).enabled = false;
     }
 
-    protected void actionPerformed(GuiButton button)  {
+    protected void actionPerformed(GuiButton button) {
         switch (button.id) {
             case 0:
+                BlockPos pos = mc.thePlayer.getPosition();
+                this.mc.thePlayer.respawnPlayer();
+                this.mc.displayGuiScreen((GuiScreen) null);
+                WorldAPI.teleport(pos);
+                break;
+            case 1:
+
                 BlockPos spawnPoint = mc.thePlayer.getPosition();
                 this.mc.thePlayer.respawnPlayer();
                 this.mc.displayGuiScreen((GuiScreen) null);
                 WorldAPI.teleport(spawnPoint);
                 break;
-            case 1:
-                this.mc.thePlayer.respawnPlayer();
-                this.mc.displayGuiScreen((GuiScreen) null);
-                break;
 
         }
+
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {

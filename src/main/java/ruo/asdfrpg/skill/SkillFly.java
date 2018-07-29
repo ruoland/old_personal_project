@@ -21,7 +21,7 @@ public class SkillFly extends Skill {
     }
 
     @Override
-    public void onEffect(SkillStack skillStack) {
+    public void onEffect(SkillStack skillStack, int data) {
         skillStack.getPlayer().addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), 3000));
     }
 }

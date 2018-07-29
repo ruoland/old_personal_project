@@ -20,7 +20,9 @@ import ruo.cmplus.deb.DebAPI;
 @Mod(modid = "asdfrpg")
 public class AsdfRPG {
     public static final PotionFly flyPotion = new PotionFly(false, 0);
-    public static final Item respawn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn");
+    public static final Item villageReturn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn").setMaxStackSize(1);
+
+    public static final Item respawn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn").setMaxStackSize(1);
     public static final Block campFire = new BlockCampFire().setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("campfire").setRegistryName("asdfrpg:campfire");
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {

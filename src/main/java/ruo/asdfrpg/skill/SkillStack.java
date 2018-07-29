@@ -3,8 +3,10 @@ package ruo.asdfrpg.skill;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class SkillStack {
+    private NBTTagCompound tagCompound = new NBTTagCompound();
     private EntityPlayer player;
     private Skill skill;
     private int level, exp;
@@ -33,6 +35,14 @@ public class SkillStack {
         }
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
     public int getExp() {
         return exp;
     }
@@ -44,11 +54,31 @@ public class SkillStack {
         return getLevel() > 0;
     }
 
-    public void onEffect(){
-        getSkill().onEffect(this);
+    public void onEffect(int data){
+        getSkill().onEffect(this, data);
     }
 
     public EntityPlayer getPlayer() {
         return player;
+    }
+
+    public NBTTagCompound serializeNBT()
+    {
+        this.writeToNBT();
+        return tagCompound;
+    }
+
+    public void writeToNBT(){
+        tagCompound.setInteger("EXP",getExp());
+        tagCompound.setInteger("LEVEL",getLevel());
+    }
+
+    public NBTTagCompound getTagCompound() {
+        return tagCompound;
+    }
+
+    public void readFromNBT(NBTTagCompound tagCompound){
+        setExp(tagCompound.getInteger("EXP"));
+        setLevel(tagCompound.getInteger("LEVEL"));
     }
 }
