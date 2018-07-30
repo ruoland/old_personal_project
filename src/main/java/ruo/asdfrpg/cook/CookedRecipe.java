@@ -1,4 +1,4 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.cook;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;

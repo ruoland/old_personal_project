@@ -11,6 +11,7 @@ public class Skills {
     public static final Skill CAMP_FIRE = new Skill().setY(2).setX(1).setUnlocalizedName("CAMP_FIRE").setLocalizedName("캠프파이어");
     public static final Skill COOKED = new Skill().setY(2).setX(2).setUnlocalizedName("COOKED").setLocalizedName("요리");
     public static final Skill VILLAGE_RETURN = new SkillVillageReturn().setY(2).setX(3).setUnlocalizedName("VILLAGE_RETURN").setLocalizedName("마을 귀환");
+    public static final Skill LIGHT = new SkillLight().setY(2).setX(4).setUnlocalizedName("LIGHT").setLocalizedName("라이트");
 
     public static void register(){
         SkillHelper.registerSkill(BLOCK_GRAB);
@@ -20,6 +21,7 @@ public class Skills {
         SkillHelper.registerSkill(COOKED);
         SkillHelper.registerSkill(VILLAGE_RETURN);
         SkillHelper.registerSkill(AUTO_ATTACK);
+        SkillHelper.registerSkill(LIGHT);
     }
 
     public static Skill valueOf(String skillName){

@@ -54,7 +54,7 @@ import java.util.Random;
 public class SUAKGEEvent {
     private static int creeperSize = 0, spiderSize = 0, skeletonSize = 0;
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public void event(TickEvent.WorldTickEvent e) {
         if (e.world.rand.nextInt(2) == 0) {
             if (e.world.getWorldTime() == 6000 && Sky.getSunbright() == 0) {

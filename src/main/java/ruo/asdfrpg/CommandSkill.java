@@ -1,9 +1,12 @@
 package ruo.asdfrpg;
 
+import atomicstryker.dynamiclights.client.DynamicLights;
+import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import ruo.asdfrpg.skill.*;
@@ -23,9 +26,13 @@ public class CommandSkill extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if(args[0].equalsIgnoreCase("light")){
+            DynamicLights.addLightSource(new EntityLightAdapter((EntityPlayer) sender, 15));
+        }
         if(args[0].equalsIgnoreCase("reg")){
-            SkillHelper.registerSkill((EntityPlayer)sender, Skills.valueOf(args[1]));
-            SkillHelper.getPlayerSkill((EntityPlayer)sender).useSkill(Skills.valueOf(args[1]), 1);
+            SkillHelper.registerSkill((EntityPlayer)sender, Skills.valueOf(args[1].toUpperCase()));
+            SkillHelper.getPlayerSkill((EntityPlayer)sender).useSkill(Skills.valueOf(args[1].toUpperCase()));
+
             return;
         }
         if(args[0].equalsIgnoreCase("return")){
@@ -49,5 +56,29 @@ public class CommandSkill extends CommandBase {
             skillStack.onEffect(0);
         else
             playerSkill.registerSkill(skill);
+    }
+
+    private class EntityLightAdapter implements IDynamicLightSource
+    {
+        private EntityPlayer entity;
+        private int level;
+        public EntityLightAdapter(EntityPlayer light, int level)
+        {
+            entity = light;
+            this.level = level;
+            System.out.println(level);
+        }
+
+        @Override
+        public Entity getAttachmentEntity()
+        {
+            return entity;
+        }
+
+        @Override
+        public int getLightLevel()
+        {
+            return level * 2;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class PlayerSkill {
         SkillStack skillStack = new SkillStack(getPlayer(), skill);
         skillStack.addLevel();
         skillList.add(skillStack);
-
+        System.out.println(skillStack+" - "+skill);
     }
 
     public SkillStack getSkill(Skill skill) {
@@ -62,8 +62,10 @@ public class PlayerSkill {
 
     public NBTTagCompound writeToNBT(){
         NBTTagCompound tagCompound = new NBTTagCompound();
-        for(SkillStack skillStack : skillList) {
-            System.out.println(skillStack+ " " + skillStack == null ? "" : skillStack.getSkill());
+        for(SkillStack skillStack : skillList)
+        {
+            System.out.println(skillStack.getSkill());
+            if(skillStack.getSkill() != null)
             tagCompound.setTag(skillStack.getSkill().getUnlocalizedName(), skillStack.serializeNBT());
         }
         return tagCompound;

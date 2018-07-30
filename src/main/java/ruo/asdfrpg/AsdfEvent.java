@@ -1,13 +1,20 @@
 package ruo.asdfrpg;
 
+import atomicstryker.dynamiclights.client.DynamicLights;
+import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.inventory.GuiBeacon;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -60,8 +67,8 @@ public class AsdfEvent {
     //EntityCreeper['Creeper'/11621, l='TEST', x=1170.59, y=4.00, z=196.16] - EntityPlayerMP['Player508'/111, l='TEST', x=1168.61, y=4.00, z=193.21] - net.minecraft.util.EntityDamageSource@33d163d6EntityPlayerMP['Player508'/111, l='TEST', x=1168.61, y=4.00, z=193.21]
     @SubscribeEvent
     public void playerTick(LivingAttackEvent e) {
-        System.out.println(e.getEntityLiving().isServerWorld());
         if (e.getSource().getEntity() instanceof EntityPlayer) {
+            System.out.println("플레이어가 공격함");
             EntityPlayer player = (EntityPlayer) e.getSource().getEntity();
 
             PlayerSkill playerSkill = SkillHelper.getPlayerSkill(player.getUniqueID());
@@ -71,7 +78,16 @@ public class AsdfEvent {
                 if (e.getEntityLiving().isServerWorld())
                     player.worldObj.spawnEntityInWorld(asdfBlock);
                 asdfBlock.setTarget(e.getEntityLiving());
+                asdfBlock.player = player;
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityJoinedWorld(EntityJoinWorldEvent event) {
+        if (event.getEntity() instanceof EntityLight) {
+            EntityLight arrow = (EntityLight) event.getEntity();
+            DynamicLights.addLightSource(new EntityLightAdapter(arrow, 15));
         }
     }
 
@@ -88,4 +104,29 @@ public class AsdfEvent {
         }
 
     }
+
+    private class EntityLightAdapter implements IDynamicLightSource
+    {
+        private EntityLight entity;
+        private int level;
+        public EntityLightAdapter(EntityLight light, int level)
+        {
+            entity = light;
+            this.level = level;
+            System.out.println(level);
+        }
+
+        @Override
+        public Entity getAttachmentEntity()
+        {
+            return entity;
+        }
+
+        @Override
+        public int getLightLevel()
+        {
+            return 15;
+        }
+    }
+
 }
