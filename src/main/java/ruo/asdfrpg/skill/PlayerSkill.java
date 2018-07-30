@@ -63,6 +63,7 @@ public class PlayerSkill {
     public NBTTagCompound writeToNBT(){
         NBTTagCompound tagCompound = new NBTTagCompound();
         for(SkillStack skillStack : skillList) {
+            System.out.println(skillStack+ " " + skillStack == null ? "" : skillStack.getSkill());
             tagCompound.setTag(skillStack.getSkill().getUnlocalizedName(), skillStack.serializeNBT());
         }
         return tagCompound;

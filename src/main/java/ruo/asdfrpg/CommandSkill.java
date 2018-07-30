@@ -23,7 +23,11 @@ public class CommandSkill extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        System.out.println(""+((EntityPlayer)sender).getUniqueID()+Minecraft.getMinecraft().thePlayer.getUniqueID());
+        if(args[0].equalsIgnoreCase("reg")){
+            SkillHelper.registerSkill((EntityPlayer)sender, Skills.valueOf(args[1]));
+            SkillHelper.getPlayerSkill((EntityPlayer)sender).useSkill(Skills.valueOf(args[1]), 1);
+            return;
+        }
         if(args[0].equalsIgnoreCase("return")){
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.VILLAGE_RETURN);
             SkillHelper.getPlayerSkill((EntityPlayer)sender).useSkill(Skills.VILLAGE_RETURN, 1);

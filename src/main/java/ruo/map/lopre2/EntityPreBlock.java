@@ -148,7 +148,6 @@ public class EntityPreBlock extends EntityDefaultNPC {
             }
         }
         return false;
-
     }
 
     @Override

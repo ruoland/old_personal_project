@@ -16,6 +16,7 @@ import ruo.asdfrpg.camp.TileCampFire;
 import ruo.asdfrpg.camp.TileCampFireRenderer;
 import ruo.asdfrpg.skill.*;
 import ruo.cmplus.deb.DebAPI;
+import ruo.minigame.map.EntityDefaultNPC;
 
 @Mod(modid = "asdfrpg")
 public class AsdfRPG {
@@ -27,6 +28,8 @@ public class AsdfRPG {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         DebAPI.registerTileEntity(campFire, TileCampFire.class, new TileCampFireRenderer());
+        DebAPI.registerEntity(this, "NO-EGG-AsdfBlock", EntityAsdfBlock.class);
+
         GameRegistry.register(respawn);
         DebAPI.registerEvent(new AsdfEvent());
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_BEEF), new ItemStack(Items.BEEF)));
