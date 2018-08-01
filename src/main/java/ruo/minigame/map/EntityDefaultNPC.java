@@ -219,6 +219,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         setCollision(compound.getBoolean("canCollision"));
         if (compound.getBoolean("ISSTURN"))
             setSturn(compound.getInteger("STURN_TICK"));
+        if(compound.hasKey("targetX"))
         setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"));
         setDistance(compound.getDouble("distance"));
     }

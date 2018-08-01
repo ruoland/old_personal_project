@@ -13,9 +13,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -26,9 +30,45 @@ import ruo.asdfrpg.skill.EntityAsdfBlock;
 import ruo.asdfrpg.skill.PlayerSkill;
 import ruo.asdfrpg.skill.SkillHelper;
 import ruo.asdfrpg.skill.Skills;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.LoginEvent;
+import ruo.minigame.api.RenderAPI;
+import ruo.minigame.api.ScriptAPI;
 
 public class AsdfEvent {
+    public static int backX, backY, healthX, healthY, foodX, foodY;
+    @SubscribeEvent
+    public void guiopen(GuiOpenEvent e) {
+        GuiIngameForge.renderHealth = false;
+        GuiIngameForge.renderExperiance = false;
+        GuiIngameForge.renderFood = false;
+        GuiIngameForge.renderHotbar = false;
+    }
+    @SubscribeEvent
+    public void gameoverlay(LivingEvent.LivingUpdateEvent e) {
+        DebAPI.deb();
+    }
+    @SubscribeEvent
+    public void gameoverlay(ServerChatEvent e) {
+        DebAPI.activeName = e.getMessage();
+    }
+    @SubscribeEvent
+    public void gameoverlay(RenderGameOverlayEvent.Post e) {
+        int width = e.getResolution().getScaledWidth();
+        int height = e.getResolution().getScaledHeight();
+        DebAPI back = DebAPI.createDebAPI("backXYZ", width / 2 - 40, height - 10,0 );
+        DebAPI health = DebAPI.createDebAPI("healthXYZ", width / 2 - 40, height - 10,0 );
+        DebAPI food = DebAPI.createDebAPI("foodXYZ", width / 2 + 40, height - 10,0 );
+        if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            RenderAPI.drawTexture("asdfrpg:backgroundbar.png", back.x, back.y, 32, 14);
+            RenderAPI.drawTexture("asdfrpg:healthbar.png", health.x,health.y, player.getHealth() * 3, 14);
+            RenderAPI.drawTexture("asdfrpg:foodbar.png", food.x,food.y, (player.getFoodStats().getFoodLevel()) * 3, 14);
+            RenderAPI.drawTexture("asdfrpg:skill.png", 30,0, (player.getFoodStats().getFoodLevel()) * 3, 14);
+
+        }
+    }
+
     @SubscribeEvent
     public void playerTick(LoginEvent e) {
         SkillHelper.init(e.player);
@@ -105,26 +145,23 @@ public class AsdfEvent {
 
     }
 
-    private class EntityLightAdapter implements IDynamicLightSource
-    {
+    private class EntityLightAdapter implements IDynamicLightSource {
         private EntityLight entity;
         private int level;
-        public EntityLightAdapter(EntityLight light, int level)
-        {
+
+        public EntityLightAdapter(EntityLight light, int level) {
             entity = light;
             this.level = level;
             System.out.println(level);
         }
 
         @Override
-        public Entity getAttachmentEntity()
-        {
+        public Entity getAttachmentEntity() {
             return entity;
         }
 
         @Override
-        public int getLightLevel()
-        {
+        public int getLightLevel() {
             return 15;
         }
     }

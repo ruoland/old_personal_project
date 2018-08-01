@@ -69,14 +69,14 @@ public class ScriptAPI {
 		}
 		public String replaceFunction(String line) {
 			try {
-				int index = line.indexOf("펑션");
+				int index = line.indexOf("function");
 				if (index != -1) {
 					String ss = line.substring(index);
-					ss = ss.replace("펑션", "function");
+					ss = ss.replace("function", "function");
 					ss = ss.substring(ss.indexOf("function"), ss.indexOf("("));
 					ss = ss.replace("function ", "");
 					if (replace.containsKey(ss)) {
-						ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss)).replace("펑션 ", "");
+						ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss)).replace("function ", "");
 						return "function "+ss;
 					}
 				}
@@ -164,7 +164,7 @@ public class ScriptAPI {
 
 		public void reload() {
 			try {
-				if (script.indexOf("@") != -1 || script.indexOf("펑션") != -1 || !isScriptFile && isChange()) {
+				if (script.indexOf("@") != -1 || script.indexOf("function") != -1 || !isScriptFile && isChange()) {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
 					script = new StringBuffer();
 					for (String s = reader.readLine(); s != null; s = reader.readLine()) {
@@ -192,11 +192,11 @@ public class ScriptAPI {
 		}
 		public boolean addFunction(String methodName, String Parameter, String retu) {
 			try {
-				if (getScript().indexOf("펑션 " + methodName + "(" + Parameter + ")") != -1)
+				if (getScript().indexOf("function " + methodName + "(" + Parameter + ")") != -1)
 					return false;
 				BufferedWriter b = new BufferedWriter(new FileWriter(f, true));
 				b.newLine();
-				b.append("펑션 " + methodName + "(" + Parameter + ")");
+				b.append("function " + methodName + "(" + Parameter + ")");
 				b.newLine();
 
 				b.write("{");
@@ -215,13 +215,13 @@ public class ScriptAPI {
 
 		public boolean addFunction(String help, String methodName, String Parameter, String retu) {
 			try {
-				if (getScript().indexOf("펑션 " + methodName + "(" + Parameter + ")") != -1)
+				if (getScript().indexOf("function " + methodName + "(" + Parameter + ")") != -1)
 					return false;
 				BufferedWriter b = new BufferedWriter(new FileWriter(f, true));
 				b.newLine();
 				b.append("//"+help);
 				b.newLine();
-				b.append("펑션 " + methodName + "(" + Parameter + ")");
+				b.append("function " + methodName + "(" + Parameter + ")");
 				b.newLine();
 
 				b.write("{");

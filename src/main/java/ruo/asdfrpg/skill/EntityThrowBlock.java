@@ -12,11 +12,13 @@ public class EntityThrowBlock extends EntityDefaultBlock {
 
     @Override
     public void targetArrive() {
+        if (getTarget() != null) {
+            EntityDefaultBlock defaultBlock = (EntityDefaultBlock) getTarget();
+            BlockPos pos = new BlockPos(WorldAPI.rand(1), WorldAPI.rand(1), WorldAPI.rand(1));
+            defaultBlock.addBlock(getCurrentBlock(), pos);
+            System.out.println("도착함" + pos);
+        }
         this.setDead();
-        EntityDefaultBlock defaultBlock = (EntityDefaultBlock) getTarget();
-        BlockPos pos =  new BlockPos(WorldAPI.rand(1), WorldAPI.rand(1), WorldAPI.rand(1));
-        defaultBlock.addBlock(getCurrentBlock(),pos);
-        this.setDead();
-        System.out.println("도착함"+pos);
+
     }
 }

@@ -11,8 +11,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import ruo.asdfrpg.skill.*;
+import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.MouseHelper10;
 import ruo.minigame.action.ActionEffect;
+import ruo.minigame.api.ScriptAPI;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -30,6 +32,23 @@ public class CommandSkill extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if(args[0].equalsIgnoreCase("script")){
+            ScriptAPI.Script script = ScriptAPI.createScript("ingame", false);
+            script.addObject("width",Minecraft.getMinecraft().displayWidth);
+            script.addObject("height", Minecraft.getMinecraft().displayHeight);
+            script.addFunction("backbarX", "", "width / 2 - 40");
+            script.addFunction("backbarY", "", "height - 10");
+            script.addFunction("healthX", "", "width / 2 - 40");
+            script.addFunction("healthY", "", "height - 10");
+            script.addFunction("foodX", "", "width / 2 - 40");
+            script.addFunction("foodY", "", "height - 10");
+            AsdfEvent.backX = (int) script.runFunction("backbarX");
+            AsdfEvent.backY = (int) script.runFunction("backbarY");
+            AsdfEvent.healthX = (int) script.runFunction("healthX");
+            AsdfEvent.healthY = (int) script.runFunction("healthY");
+            AsdfEvent.foodX = (int) script.runFunction("foodX");
+            AsdfEvent.foodY = (int) script.runFunction("foodY");
+        }
         if(args[0].equalsIgnoreCase("light")){
             DynamicLights.addLightSource(new EntityLightAdapter((EntityPlayer) sender, 15));
         }
@@ -50,7 +69,6 @@ public class CommandSkill extends CommandBase {
             SkillHelper.registerSkill((EntityPlayer)sender, Skills.DOUBLE_JUMP);
             ActionEffect.doubleJump(true);
             Minecraft.getMinecraft().displayGuiScreen(new GuiAsdfSkill((EntityPlayer) sender));
-
             return;
         }
         Skill skill = SkillHelper.getSkill(args[0]);

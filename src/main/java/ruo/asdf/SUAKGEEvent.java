@@ -239,7 +239,7 @@ public class SUAKGEEvent {
 
     @SubscribeEvent
     public void event(LivingExperienceDropEvent event) {
-        if(event.getAttackingPlayer().inventory.armorInventory[0] != null) {
+        if(event.getAttackingPlayer() != null && event.getAttackingPlayer().inventory.armorInventory[0] != null) {
             int level = EnchantmentHelper.getEnchantmentLevel(SUAKGEMod.bonusExpEnchant, event.getAttackingPlayer().inventory.armorInventory[0]);
             if (level != 0) {
                 event.setDroppedExperience(event.getDroppedExperience() * (level + 60));

@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.CMPlus;
+import ruo.cmplus.cm.v17.Deb;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultBlock;
 import ruo.minigame.map.ModelDefaultNPC;
@@ -49,6 +50,7 @@ public class DebAPI {
     public float x = 0, y = 0F, z = 0;
     public float dex, dey, dez;
     public String name;
+    public static String activeName;
 
     public DebAPI(String name) {
         this.name = name;
@@ -69,39 +71,45 @@ public class DebAPI {
         return Minecraft.getMinecraft().getRenderManager();
     }
 
-    public void a() {
-        if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-            reset();
+    public static void deb(){
+        for(DebAPI debAPI: debAPI.values()){
+            debAPI.a2();
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
-            mode--;
-            System.out.println("MODE" + mode);
+    }
+    public void a2() {
+        if(activeName != null && activeName.equalsIgnoreCase(name)) {
+            if (DebAPI.isKeyDown(Keyboard.KEY_F)) {
+                reset();
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_G)) {
+                mode--;
+                System.out.println("MODE" + mode);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_Z)) {
+                x += 0.05;
+                System.out.println("X" + x);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_X)) {
+                y += 0.05;
+                System.out.println("Y" + y);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_C)) {
+                z += 0.05;
+                System.out.println("Z" + z);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
+                x -= 0.05;
+                System.out.println("X" + x);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_B)) {
+                y -= 0.05;
+                System.out.println("Y" + y);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_N)) {
+                z -= 0.05;
+                System.out.println("Z" + z);
+            }
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-            x += 0.05;
-            System.out.println("X" + x);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            y += 0.05;
-            System.out.println("Y" + y);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
-            z += 0.05;
-            System.out.println("Z" + z);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
-            x -= 0.05;
-            System.out.println("X" + x);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-            y -= 0.05;
-            System.out.println("Y" + y);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
-            z -= 0.05;
-            System.out.println("Z" + z);
-        }
-
     }
 
     public static boolean isKeyDown(int keycode) {
