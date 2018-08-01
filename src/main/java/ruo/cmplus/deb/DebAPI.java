@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.CMPlus;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.map.EntityDefaultBlock;
 import ruo.minigame.map.ModelDefaultNPC;
 import ruo.minigame.map.RenderDefaultNPC;
 

@@ -21,6 +21,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ruo.map.lopre2.EntityBuildBlock;
 import ruo.minigame.api.RenderAPI;
+import scala.xml.dtd.EntityDef;
 
 @SideOnly(Side.CLIENT)
 public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<EntityDefaultNPC> {
@@ -42,7 +43,19 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     @Override
     protected void renderModel(EntityDefaultNPC npc, float limbSwing, float limbSwingAmount, float ageInTicks,
                                float netHeadYaw, float headPitch, float scaleFactor) {
-
+        if( npc instanceof EntityDefaultBlock){
+            EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
+            for(EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()){
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
+                this.bindTexture(blockData.getTexture());
+                this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                GlStateManager.popMatrix();
+            }
+            this.bindTexture(entitylivingbaseIn.getTexture());
+            this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            return;
+        }
         if (npc instanceof EntityBuildBlock) {
             EntityBuildBlock block = (EntityBuildBlock) npc;
             if (block.blockList.size() == 0) {
@@ -140,6 +153,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     @Override
     public void doRender(EntityDefaultNPC entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.mainModel.isChild = entity.isChild();
+        if (entity.getModel() == TypeModel.BLOCK && !(mainModel instanceof ModelDefaultBlock)) {
+            mainModel = new ModelDefaultBlock();
+            DEFAULT_RES_LOC = entity.getTexture();
+        }
         if (entity.getModel() == TypeModel.NPC && !(mainModel instanceof ModelDefaultNPC)) {
             mainModel = new ModelDefaultNPC();
             DEFAULT_RES_LOC = new ResourceLocation("textures/entity/steve.png");

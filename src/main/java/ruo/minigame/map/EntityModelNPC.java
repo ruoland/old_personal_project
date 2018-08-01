@@ -320,6 +320,7 @@ class EntityModelNPC extends EntityMob {
         setSleep(compound.getBoolean("ISSLEEP"), (int) compound.getFloat("SLEEPROTATE"));
         setElytra(compound.getBoolean("ISELYTRA"));
         setSit(compound.getBoolean("ISSIT"));
+        if(compound.hasKey("MODELTYPE"))
         this.typeModel = TypeModel.valueOf(compound.getString("MODELTYPE"));
         if (!compound.getString("texture").equals(""))
             setTexture(compound.getString("texture"));

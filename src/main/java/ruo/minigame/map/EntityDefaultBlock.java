@@ -16,6 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -49,13 +50,19 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
 
     private ArrayList<BlockData> blockList = new ArrayList<>();
     private ResourceLocation blockTexture = new ResourceLocation("minecraft:textures/blocks/dirt.png");
-    private Vec3d targetVec = null, targetPosition;
     public static double ax = 3;
-    private double distance = 1;
+
     public EntityDefaultBlock(World worldIn) {
         super(worldIn);
         this.setSize(1, 1);
         this.setCollision(true);
+        isFly = true;
+        this.setBlockMode(Blocks.STONE);
+    }
+
+    @Override
+    public void setDead() {
+        super.setDead();
     }
 
     @Override
@@ -99,29 +106,16 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
         dataManager.set(ENTITY_SKIN, blockTexture.toString());
     }
 
-    public void addBlock(Block block, Vec3d vec3d) {
-        blockList.add(new BlockData(Block.getIdFromBlock(block), vec3d.xCoord, vec3d.yCoord, vec3d.zCoord));
+    public void addBlock(Block block, BlockPos pos) {
+        blockList.add(new BlockData(Block.getIdFromBlock(block), pos.getX(), pos.getY(), pos.getZ()));
+        System.out.println(isServerWorld()+" - "+block+" - "+pos);
         blockTexture = RenderAPI.getBlockTexture(block);
-
     }
 
-    public void addBlock(int block, Vec3d vec3d) {
-        addBlock(Block.getBlockById(block), vec3d);
+    public void addBlock(int block, BlockPos pos) {
+        addBlock(Block.getBlockById(block), pos);
     }
 
-    public void setTarget(Entity base) {
-        setTarget(base.posX, base.posY, base.posZ);
-    }
-
-    public void setTarget(double x, double y, double z) {
-        if (x == 0 && y == 0 && z == 0) {
-            targetPosition = null;
-            targetVec = null;
-        } else {
-            this.targetVec = new Vec3d(x - posX, y - posY, z - posZ).normalize().scale(0.5);
-            this.targetPosition = new Vec3d(x, y, z);
-        }
-    }
 
     public EntityDefaultBlock spawn(double x, double y, double z) {
         EntityDefaultBlock defaultBlock = new EntityDefaultBlock(worldObj);
@@ -155,14 +149,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
             if (isTeleport()) {
                 teleport();
             }
-            if (targetVec != null) {
-                setVelocity(targetVec);
-                System.out.println(isTeleport() + " - " + targetVec + " - " + getDistance(targetPosition));
-                if (getDistance(targetPosition) < distance) {
-                    setTarget(0, 0, 0);
-                    targetArrive();
-                }
-            }
             super.onLivingUpdate();
             this.rotationYaw = 0;
             this.renderYawOffset = 0;
@@ -171,10 +157,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
                 System.out.println("블럭이 멀리 날라가 사라짐");
             }
         }
-    }
-
-    public void targetArrive() {
-
     }
 
     @Override
@@ -209,19 +191,11 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (targetPosition != null) {
-            compound.setDouble("targetX", targetPosition.xCoord);
-            compound.setDouble("targetY", targetPosition.yCoord);
-            compound.setDouble("targetZ", targetPosition.zCoord);
-        }
-        compound.setDouble("distance", distance);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"));
-        setDistance(compound.getDouble("distance"));
     }
 
     @Override
@@ -236,10 +210,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
     @Override
     protected void collideWithEntity(Entity entityIn) {
         //super.collideWithEntity(entityIn);
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
     }
 
     public void setTeleport(boolean a) {

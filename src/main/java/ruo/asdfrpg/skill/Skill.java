@@ -1,6 +1,7 @@
 package ruo.asdfrpg.skill;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class Skill {
     private String localizedName, unlocalizedName;
@@ -61,5 +62,26 @@ public class Skill {
     public Skill setY(int y) {
         this.lineY = 30 + (y * 40);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return unlocalizedName;
+    }
+    public boolean equals(Object p_equals_1_)
+    {
+        if (this == p_equals_1_)
+        {
+            return true;
+        }
+        else if (!(p_equals_1_ instanceof Skill))
+        {
+            return false;
+        }
+        else
+        {
+            Skill skill = (Skill)p_equals_1_;
+            return this.unlocalizedName.equals(skill.unlocalizedName) && localizedName.equals(skill.localizedName);
+        }
     }
 }

@@ -82,7 +82,15 @@ public class Elytra extends AbstractMiniGame {
             @Override
             public void run(Type type) {
                 //spawnPumpkinAttack(SpawnDirection.FORWARD);
-                test();
+                for (int i = 1; i < 3; i++) {
+                    EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+                    setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i);
+                }
+                for (int i = 1; i < 3; i++) {
+                    EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+                    setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i);
+                }
+                spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
             }
         });
 
@@ -96,19 +104,6 @@ public class Elytra extends AbstractMiniGame {
     }
 
     public void second() {
-
-    }
-
-    public void test() {
-        for (int i = 1; i < 3; i++) {
-            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
-            setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i);
-        }
-        for (int i = 1; i < 3; i++) {
-            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
-            setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i);
-        }
-        spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
 
     }
 
@@ -141,44 +136,6 @@ public class Elytra extends AbstractMiniGame {
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
     }
 
-    public void spawnWeen() {
-        flyingWeen = new EntityFlyingWeen(WorldAPI.getWorld());
-        flyingWeen.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 20, true).addVector(0, -5, 0));
-        WorldAPI.getWorld().spawnEntityInWorld(flyingWeen);
-    }
-
-    public void firstPattern() {
-        TickRegister.register(new AbstractTick(60, true) {
-            @Override
-            public boolean stopCondition() {
-                return !flyingWeen.isEntityAlive() || !isStart() || flyingWeen.deadFalling;
-            }
-
-            @Override
-            public void run(Type type) {
-                if (!facing.getName().equalsIgnoreCase(WorldAPI.getPlayer().getHorizontalFacing().getName())) {
-                    facing = WorldAPI.getPlayer().getHorizontalFacing();
-                    cameraSetting();
-                }
-                double spawnPosX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
-                double spawnPosY = fakePlayer.posY;
-                double spawnPosZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
-
-                if (absRunCount == 0)
-                    absDefTick = 20;
-                if (absRunCount >= 8) {
-                    flyingWeen.secondPattern();
-                    absLoop = false;
-                    return;
-                }
-                for (int i = 0; i < 5; i++) {
-                    double rightX = fakePlayer.getX(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
-                    double rightZ = fakePlayer.getZ(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
-                    spawnWeenElytra(spawnPosX + rightX, spawnPosY, spawnPosZ + rightZ, targetX + rightX, targetY, targetZ + rightZ);
-                }
-            }
-        });
-    }
 
     @Override
     public boolean end(Object... obj) {
@@ -236,5 +193,51 @@ public class Elytra extends AbstractMiniGame {
         }
         ((ElytraEvent) MiniGame.elytraEvent).elytraMode = false;
 
+    }
+
+    /**
+     * 구버전 코드
+     * 쓸일 없을 것 같지만 혹시나 해서 남겨둠
+     */
+    private void spawnWeen() {
+        flyingWeen = new EntityFlyingWeen(WorldAPI.getWorld());
+        flyingWeen.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 20, true).addVector(0, -5, 0));
+        WorldAPI.getWorld().spawnEntityInWorld(flyingWeen);
+    }
+    /**
+     * 구버전 코드
+     * 쓸일 없을 것 같지만 혹시나 해서 남겨둠
+     */
+    private void firstPattern() {
+        TickRegister.register(new AbstractTick(60, true) {
+            @Override
+            public boolean stopCondition() {
+                return !flyingWeen.isEntityAlive() || !isStart() || flyingWeen.deadFalling;
+            }
+
+            @Override
+            public void run(Type type) {
+                if (!facing.getName().equalsIgnoreCase(WorldAPI.getPlayer().getHorizontalFacing().getName())) {
+                    facing = WorldAPI.getPlayer().getHorizontalFacing();
+                    cameraSetting();
+                }
+                double spawnPosX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
+                double spawnPosY = fakePlayer.posY;
+                double spawnPosZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
+
+                if (absRunCount == 0)
+                    absDefTick = 20;
+                if (absRunCount >= 8) {
+                    flyingWeen.secondPattern();
+                    absLoop = false;
+                    return;
+                }
+                for (int i = 0; i < 5; i++) {
+                    double rightX = fakePlayer.getX(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
+                    double rightZ = fakePlayer.getZ(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
+                    spawnWeenElytra(spawnPosX + rightX, spawnPosY, spawnPosZ + rightZ, targetX + rightX, targetY, targetZ + rightZ);
+                }
+            }
+        });
     }
 }

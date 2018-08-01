@@ -61,26 +61,13 @@ public class EntityFlyingCreeper extends EntityDefaultNPC {
     public void randomPosition() {
         delay++;
         if (isAttackTargetPlayer()) {
-            setTarget(getAttackTarget().getPositionVector());
+            setTarget(getAttackTarget());
             return;
         }
         if (delay >= 200 && noTarget()) {
-            setTarget(new Vec3d(posX+ WorldAPI.rand(10), posY, posZ+ WorldAPI.rand(10)));
+            setTarget(posX+ WorldAPI.rand(10), posY, posZ+ WorldAPI.rand(10));
             delay = 0;
         }
     }
 
-    public boolean noTarget(){
-        return targetVelocity == null;
-    }
-
-    public void setTarget(Vec3d vec3d){
-        if(vec3d == null){
-            targetVelocity = null;
-            targetXYZ = null;
-        }else {
-            targetVelocity = vec3d.subtract(this.getPositionVector());
-            targetXYZ = vec3d;
-        }
-    }
 }

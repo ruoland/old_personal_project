@@ -29,6 +29,8 @@ public class AsdfRPG {
     public void init(FMLInitializationEvent e) {
         DebAPI.registerTileEntity(campFire, TileCampFire.class, new TileCampFireRenderer());
         DebAPI.registerEntity(this, "NO-EGG-AsdfBlock", EntityAsdfBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-ThrowBlock", EntityThrowBlock.class);
+
         DebAPI.registerEntity(this, "NO-EGG-Light", EntityLight.class, new RenderLight(1.0F));
 
         GameRegistry.register(villageReturn);
