@@ -34,6 +34,7 @@ import ruo.minigame.effect.TickRegister;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultBlock;
 import ruo.minigame.map.EntityDefaultNPC;
+import ruo.minigame.map.RenderDefaultBlock;
 import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.elytra.ElytraEvent;
 import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
@@ -130,7 +131,7 @@ public class MiniGame {
 
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultNPC", EntityDefaultNPC.class);
-        DebAPI.registerEntity(this, "NO-EGG-DefaultBlock", EntityDefaultBlock.class);
+        DebAPI.registerEntity(this, "DefaultBlock", EntityDefaultBlock.class, new RenderDefaultBlock());
 
         DebAPI.registerEvent(new ActionEvent());
         DebAPI.registerEvent(new TickRegister());

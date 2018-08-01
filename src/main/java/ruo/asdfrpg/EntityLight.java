@@ -2,8 +2,10 @@ package ruo.asdfrpg;
 
 import atomicstryker.dynamiclights.client.DynamicLights;
 import atomicstryker.dynamiclights.client.IDynamicLightSource;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -21,7 +23,6 @@ public class EntityLight extends EntityDefaultNPC {
         super(worldIn);
         isFly = true;
         this.setSize(1,1);
-        setScale(1,1,1);
     }
 
     public void setFollower(EntityPlayer player, int skillLevel){
@@ -39,9 +40,8 @@ public class EntityLight extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(player != null) {
-            double posX = EntityAPI.getX(player, SpawnDirection.RIGHT, 1.5, true);
-            double posZ = EntityAPI.getZ(player, SpawnDirection.RIGHT, 1.5, true);
-            this.setPosition(posX, player.posY + 4, posZ);
+            this.setPosition(player.posX, player.posY + 2, player.posZ);
+
         }
     }
 

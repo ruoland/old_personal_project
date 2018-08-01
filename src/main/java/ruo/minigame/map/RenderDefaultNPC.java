@@ -26,9 +26,7 @@ import ruo.minigame.api.RenderAPI;
 public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<EntityDefaultNPC> {
     private ResourceLocation DEFAULT_RES_LOC;
 
-    public ModelBiped modelBipedMain;
     protected float scale;
-    private double x, y, z;
 
     public RenderDefaultNPC(ModelBase modelBipedIn, ResourceLocation r) {
         super(Minecraft.getMinecraft().getRenderManager(), modelBipedIn, 0);
