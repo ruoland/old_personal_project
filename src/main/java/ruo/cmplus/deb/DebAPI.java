@@ -51,6 +51,7 @@ public class DebAPI {
     public float dex, dey, dez;
     public String name;
     public static String activeName;
+    public double speed = 0.05;
 
     public DebAPI(String name) {
         this.name = name;
@@ -76,37 +77,45 @@ public class DebAPI {
             debAPI.a2();
         }
     }
+
     public void a2() {
         if(activeName != null && activeName.equalsIgnoreCase(name)) {
             if (DebAPI.isKeyDown(Keyboard.KEY_F)) {
                 reset();
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_G)) {
-                mode--;
-                System.out.println("MODE" + mode);
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_Z)) {
-                x += 0.05;
-                System.out.println("X" + x);
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_X)) {
-                y += 0.05;
-                System.out.println("Y" + y);
+                System.out.println(x+" - "+y+" - "+z);
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_C)) {
-                z += 0.05;
-                System.out.println("Z" + z);
+                speed+=0.05;
+                System.out.println(speed);
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
-                x -= 0.05;
+                speed-=0.05;
+                System.out.println(speed);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_J)) {
+                x += speed;
                 System.out.println("X" + x);
             }
-            if (DebAPI.isKeyDown(Keyboard.KEY_B)) {
-                y -= 0.05;
+            if (DebAPI.isKeyDown(Keyboard.KEY_I)) {
+                y += speed;
                 System.out.println("Y" + y);
             }
-            if (DebAPI.isKeyDown(Keyboard.KEY_N)) {
-                z -= 0.05;
+            if (DebAPI.isKeyDown(Keyboard.KEY_Z)) {
+                z += speed;
+                System.out.println("Z" + z);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_L)) {
+                x -= speed;
+                System.out.println("X" + x);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_K)) {
+                y -= speed;
+                System.out.println("Y" + y);
+            }
+            if (DebAPI.isKeyDown(Keyboard.KEY_X)) {
+                z -= speed;
                 System.out.println("Z" + z);
             }
         }

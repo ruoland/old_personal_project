@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.asdfrpg.skill.EntityAsdfBlock;
 import ruo.asdfrpg.skill.PlayerSkill;
@@ -45,27 +46,46 @@ public class AsdfEvent {
         GuiIngameForge.renderHotbar = false;
     }
     @SubscribeEvent
-    public void gameoverlay(LivingEvent.LivingUpdateEvent e) {
+    public void gameoverlay(TickEvent.PlayerTickEvent e) {
+        if(e.phase ==TickEvent.Phase.END && e.side == Side.SERVER)
         DebAPI.deb();
     }
     @SubscribeEvent
     public void gameoverlay(ServerChatEvent e) {
-        DebAPI.activeName = e.getMessage();
+        if(e.getMessage().startsWith("set:")) {
+            DebAPI.activeName = e.getMessage().replace("set:", "");
+        }
+        System.out.println("FOOD "+e.getPlayer().getFoodStats().getFoodLevel());
+        String[] split = e.getMessage().split(",");
+        if(split.length > 2){
+            float x = Float.valueOf(split[0]);
+            float y = Float.valueOf(split[1]);
+            float z = Float.valueOf(split[2]);
+            DebAPI.debAPI.get(DebAPI.activeName).x = x;
+            DebAPI.debAPI.get(DebAPI.activeName).y = y;
+            DebAPI.debAPI.get(DebAPI.activeName).z = z;
+        }
     }
     @SubscribeEvent
     public void gameoverlay(RenderGameOverlayEvent.Post e) {
         int width = e.getResolution().getScaledWidth();
         int height = e.getResolution().getScaledHeight();
-        DebAPI back = DebAPI.createDebAPI("backXYZ", width / 2 - 40, height - 10,0 );
-        DebAPI health = DebAPI.createDebAPI("healthXYZ", width / 2 - 40, height - 10,0 );
-        DebAPI food = DebAPI.createDebAPI("foodXYZ", width / 2 + 40, height - 10,0 );
+        DebAPI back = DebAPI.createDebAPI("backXYZ", 203.59, 21.55, 17 );
+        DebAPI health = DebAPI.createDebAPI("healthXYZ", 202.25, 19.3, 13.1 );
+        DebAPI backf = DebAPI.createDebAPI("backfXYZ", 124, 21, 17);
+        DebAPI food = DebAPI.createDebAPI("foodXYZ", 123, 19.5, 30);
+        DebAPI exp = DebAPI.createDebAPI("expXYZ", 180, 30,8 );
+        DebAPI hotbar = DebAPI.createDebAPI("hotXYZ", 150, 30,8 );
         if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            RenderAPI.drawTexture("asdfrpg:backgroundbar.png", back.x, back.y, 32, 14);
-            RenderAPI.drawTexture("asdfrpg:healthbar.png", health.x,health.y, player.getHealth() * 3, 14);
-            RenderAPI.drawTexture("asdfrpg:foodbar.png", food.x,food.y, (player.getFoodStats().getFoodLevel()) * 3, 14);
-            RenderAPI.drawTexture("asdfrpg:skill.png", 30,0, (player.getFoodStats().getFoodLevel()) * 3, 14);
-
+            RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - back.x, height - back.y, player.getMaxHealth() * 3, back.z);
+            RenderAPI.drawTexture("asdfrpg:healthbar.png", width / 2 - health.x,height - health.y, player.getHealth() * 3 - 2, health.z);
+            RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - backf.x, height - back.y, 60, back.z);
+            RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - food.x,height - food.y, (player.getFoodStats().getFoodLevel()) * 3 - 2, health.z);
+            RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - exp.x,height - exp.y, (player.experience) * 10, exp.z);
+            for(int i =0; i < 9; i++) {
+                RenderAPI.drawTexture("asdfrpg:backgroundbar.png", (width / 2 - hotbar.x) + (i * 20), height - hotbar.y, 16, 16);
+            }
         }
     }
 

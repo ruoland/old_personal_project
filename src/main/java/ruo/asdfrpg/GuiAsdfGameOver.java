@@ -42,7 +42,6 @@ public class GuiAsdfGameOver extends GuiGameOver implements GuiYesNoCallback {
                 WorldAPI.teleport(pos);
                 break;
             case 1:
-
                 BlockPos spawnPoint = mc.thePlayer.getPosition();
                 this.mc.thePlayer.respawnPlayer();
                 this.mc.displayGuiScreen((GuiScreen) null);
