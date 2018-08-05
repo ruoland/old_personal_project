@@ -10,7 +10,7 @@ public class CommandMath extends CommandPlusBase{
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		if(args[0].equals("abs")) {
 			VAR.putDouble(args[1], (double) MathHelper.abs(Float.valueOf(args[2])));
 		}

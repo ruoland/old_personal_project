@@ -24,7 +24,7 @@ public class CommandCustomEntity extends CommandPlusBase{
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		if(args[0].equals("pos1")){
 			if(args.length > 2){
 				double[] xyz = WorldAPI.valueOfStr(args[1],args[2],args[3]);

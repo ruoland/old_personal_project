@@ -9,7 +9,7 @@ public class CommandWhile extends CommandPlusBase{
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, final String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		if(t.length(args)){
 			return;
 		}

@@ -20,7 +20,7 @@ public class CommandRender extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		if (args[0].equals("darkscreen")) {
 			
 			if(args[1].equals("plus"))

@@ -32,7 +32,7 @@ public class CommandCloud extends CommandPlusBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender p_71515_1_, final String[] command) throws CommandException{
+	public void execute(MinecraftServer server, ICommandSender sender, final String[] command) throws CommandException{
 		CommandTool t = new CommandTool(getCommandName());
 		EntityPlayerMP p = WorldAPI.getPlayerMP();
 		if(t.length(command)){
@@ -40,7 +40,7 @@ public class CommandCloud extends CommandPlusBase {
 		}
 		int b = Integer.valueOf(command[0]);
 		t.addSettingMessage(b);
-		//p_71515_1_.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commandPlus.cloud.setting", Boolean.valueOf(p_71515_2_[0]))));
+		//sender.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commandPlus.cloud.setting", Boolean.valueOf(args[0]))));
 		t.s.clouds = b;
 	}
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)

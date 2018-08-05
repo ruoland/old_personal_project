@@ -13,7 +13,7 @@ public class CommandEvent extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		if(args[1].equals("edit")) {
 			FunctionEvent.edit(args[0]);
 		}

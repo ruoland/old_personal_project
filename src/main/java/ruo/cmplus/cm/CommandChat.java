@@ -37,7 +37,7 @@ public class CommandChat extends CommandBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender p_71515_1_, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 		CommandTool t = new CommandTool(getCommandName());
 		EntityPlayerMP p = WorldAPI.getPlayerMP();
 		if (t.length(args)) {

@@ -14,7 +14,7 @@ public class CommandOpenFolder extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		try {
 			Desktop.getDesktop().open(new File(Minecraft.getMinecraft().mcDataDir+"/"+args[0]));
 		} catch (IOException e) {

@@ -27,7 +27,7 @@ public class CommandClip extends CommandPlusBase {
     String start="", end = "";
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
         double posX = WorldAPI.cut(sender.getCommandSenderEntity().posX);
         double posY = WorldAPI.cut(sender.getCommandSenderEntity().posY);

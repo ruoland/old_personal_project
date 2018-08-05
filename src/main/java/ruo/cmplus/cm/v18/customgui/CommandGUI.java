@@ -15,7 +15,7 @@ public class CommandGUI extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		if (args.length == 1)
 			Minecraft.getMinecraft().displayGuiScreen(new GuiCustom(args[0]));
 		else if (Minecraft.getMinecraft().currentScreen instanceof GuiCustom) {

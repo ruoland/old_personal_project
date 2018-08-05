@@ -11,7 +11,7 @@ public class CommandItem extends CommandPlusBase{
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		if(t.argCheck(args[0], "name", "na")){
 			if(sender instanceof EntityPlayer){
 				EntityPlayer player = (EntityPlayer) sender;

@@ -10,7 +10,7 @@ public class CommandStage extends CommandPlusBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         if(args[0].equalsIgnoreCase("reload")){
             Minecraft.getMinecraft().getLanguageManager().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
 

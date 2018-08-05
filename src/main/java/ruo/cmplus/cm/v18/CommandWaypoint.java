@@ -15,7 +15,7 @@ public class CommandWaypoint extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		if(args.length > 1) {
 			String key = args[1].indexOf(":") == -1 ? WorldAPI.getCurrentWorldName() + ":" + args[1] : args[1];
 			if (args[0].equals("set")) {

@@ -30,7 +30,7 @@ public class CommandEntity extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		Entity get = getPlusEntity(server, sender, args[0]);
 		if(get instanceof EntityLivingBase){
 			EntityLiving mob = (EntityLiving) get;

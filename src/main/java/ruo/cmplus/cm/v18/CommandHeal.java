@@ -10,7 +10,7 @@ public class CommandHeal extends CommandPlusBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         EntityPlayer base;
         if(args.length == 2) {
             base = getPlayer(server, sender, args[0]);

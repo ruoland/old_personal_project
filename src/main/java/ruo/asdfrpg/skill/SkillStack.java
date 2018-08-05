@@ -29,6 +29,8 @@ public class SkillStack {
 
     public void addExp() {
         exp+=3;
+        System.out.println(getSkill().getLocalizedName()+" 스킬의 경험치 "+exp+" - "+skill.maxExp());
+
         if (exp >= skill.maxExp()) {
             addLevel();
             exp = 0;

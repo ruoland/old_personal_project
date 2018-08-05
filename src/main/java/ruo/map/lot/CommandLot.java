@@ -16,7 +16,7 @@ public class CommandLot extends CommandPlusBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         LOTEvent.isLOT = true;
         if (args[0].equalsIgnoreCase("pos1")) {
             if (args.length > 1) {

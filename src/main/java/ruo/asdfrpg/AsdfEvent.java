@@ -9,13 +9,17 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.inventory.GuiBeacon;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -31,10 +35,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
-import ruo.asdfrpg.skill.EntityAsdfBlock;
-import ruo.asdfrpg.skill.PlayerSkill;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.Skills;
+import ruo.asdfrpg.skill.*;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.RenderAPI;
@@ -106,21 +107,21 @@ public class AsdfEvent {
                 RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - backf.x, height - back.y, 60, back.z);
                 RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - food.x, height - food.y, (player.getFoodStats().getFoodLevel()) * 3 - 2, health.z);
                 RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - exp.x, height - exp.y, (player.experience) * 10, exp.z);
+                GlStateManager.pushMatrix();
                 for (int i = 0; i < 9; i++) {
+                    ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
                     RenderAPI.drawTexture("asdfrpg:backgroundbar.png", (width / 2 - hotbar.x) + (i * 20), height - hotbar.y, 19, 19);
-                    GlStateManager.pushMatrix();
-                    GlStateManager.enableRescaleNormal();
-                    GlStateManager.enableBlend();
-                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    RenderHelper.enableGUIStandardItemLighting();
-                    GlStateManager.translate(0,0,1000);
-                    mc.getRenderItem().renderItemAndEffectIntoGUI(player, player.inventory.mainInventory[i],  (int)((width / 2 - hotbar.x) + (i * 20)), 0);
-                    mc.getRenderItem().renderItemOverlays(mc.fontRendererObj, player.inventory.mainInventory[i],  (int)((width / 2 - hotbar.x) + (i * 20)), (int)(height - hotbar.y));
-                    RenderHelper.disableStandardItemLighting();
-                    GlStateManager.disableRescaleNormal();
-                    GlStateManager.disableBlend();
-                    GlStateManager.popMatrix();
+                    GlStateManager.translate(0.0F, 0.0F, 32.0F);
+                    RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+                    itemRender.zLevel = 200.0F;
+                    net.minecraft.client.gui.FontRenderer font = null;
+                    if (stack != null) font = stack.getItem().getFontRenderer(stack);
+                    if (font == null) font = mc.fontRendererObj;
+                    itemRender.renderItemIntoGUI(stack, (int)(width / 2 - hotbar.x) + (i * 20), (int) (height - hotbar.y));
+                    itemRender.renderItemOverlayIntoGUI(font, stack, (int)(width / 2 - hotbar.x) + (i * 20), (int) (height - hotbar.y), null);
+                    itemRender.zLevel = 0.0F;
                 }
+                GlStateManager.popMatrix();
             }
         }
     }
@@ -138,8 +139,10 @@ public class AsdfEvent {
 
     @SubscribeEvent
     public void village(PlayerInteractEvent.EntityInteract e) {
-        e.getEntityPlayer().startRiding(e.getTarget());
-        SkillHelper.getPlayerSkill(e.getEntityPlayer()).useSkill(Skills.RIDING, 0);
+        if(SkillHelper.getPlayerSkill(e.getEntityPlayer()).isRegister(Skills.RIDING)) {
+            e.getEntityPlayer().startRiding(e.getTarget());
+            SkillHelper.getPlayerSkill(e.getEntityPlayer()).useSkill(Skills.RIDING, 0);
+        }
     }
     @SubscribeEvent
     public void village(PlayerInteractEvent.RightClickBlock e) {

@@ -17,7 +17,7 @@ public class CommandOpen extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 
 		if(t.argCheck(args[0], "txt")){
 			try {

@@ -3,6 +3,7 @@ package ruo.map.lopre2;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,6 +17,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
@@ -27,6 +29,7 @@ import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityPreBlock extends EntityDefaultNPC {
@@ -62,6 +65,14 @@ public class EntityPreBlock extends EntityDefaultNPC {
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(COPY, false);
+    }
+
+    @Nullable
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        if(getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
+        setRotate(90,90,90);
+        return super.onInitialSpawn(difficulty, livingdata);
     }
 
     public void setInv(boolean is) {

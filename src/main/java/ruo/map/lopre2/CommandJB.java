@@ -32,7 +32,7 @@ public class CommandJB extends CommandPlusBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         if (args.length == 0) {
             sender.addChatMessage(new TextComponentString(I18n.format("item.lotbow.name")));
             sender.addChatMessage(new TextComponentString(I18n.format("entity.LoopPre2.lavablock.name")));

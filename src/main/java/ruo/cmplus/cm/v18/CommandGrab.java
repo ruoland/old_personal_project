@@ -15,7 +15,7 @@ public class CommandGrab extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		Minecraft.getMinecraft().mouseHelper = new MouseHelper10();
 		
 		if(t.argCheck(args[0], "그랩", "grab", "true")){

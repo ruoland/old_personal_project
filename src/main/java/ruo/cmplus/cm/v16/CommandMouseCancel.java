@@ -15,13 +15,7 @@ public class CommandMouseCancel extends CommandPlusBase{
 
 	@Override
 	public String getCommandName() {
-		
 		return "mouse";
-	}
-	@Override
-	public int getRequiredPermissionLevel() {
-	
-		return 2;
 	}
 	@Override
 	public String getCommandUsage(ICommandSender sender) {

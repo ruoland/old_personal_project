@@ -15,7 +15,7 @@ public class CommandKey extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		KeyManager manager = KeyManager.instance();
 		String command;
 		KeyBinding keycode;

@@ -9,7 +9,7 @@ public class CommandDoor extends CommandPlusBase{
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         EntityDoorBlock wind = (EntityDoorBlock)getPlusEntity(server,sender, args[0]);
         if(args[1].equalsIgnoreCase("open"))
             wind.open();

@@ -9,7 +9,7 @@ import ruo.cmplus.util.CommandPlusBase;
 public class CommandNoRain extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         CMManager.norain = Boolean.valueOf(args[0]);
     }
 }

@@ -18,7 +18,7 @@ public class CommandNPC extends CommandPlusBase{
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		EntityDefaultNPC npc = EntityDefaultNPC.getNPC(args[0]);
 		if(args[0].equals("remove")){
 			npc.removeNPC(args[0]);

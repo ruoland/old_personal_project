@@ -12,9 +12,6 @@ public class CommandMultiCommand extends CommandPlusBase {
 	}
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-		
-
-
 		String[] commandList = WorldAPI.strBind(true, args).split("/");
 		for(String command : commandList){
 			if(command.equals(""))

@@ -69,7 +69,7 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 			delay--;
 			waterDelay--;
 		}
-		if(WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getDistance(posX, posY, posZ) < 30) {
+		if(WorldAPI.getPlayer() != null) {
 			if (!inWater && waterDelay == 0) {
 				waterDelay = 40;
 			}

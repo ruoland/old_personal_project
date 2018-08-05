@@ -28,15 +28,6 @@ public class CommandSky extends CommandPlusBase {
 				if (args[0].equals("fog")){
 					if(t.parseBooleanCheck(args[1])){
 						Sky.fogOnOff(t.findBoolean(args, 1, false));
-						System.out.println("fog"+t.parseBoolean(args[1]));
-						return;
-					}
-					if(t.argCheck(args[1], "des")){
-						Sky.setFogDestiny(t.findFloat(args, 2, 0));
-						return;
-					}
-					if(t.argCheck(args[1], "mode")){
-						Sky.setFogMode(t.findString(args, 2, ""));
 						return;
 					}
 					Sky.fogDistance(t.findFloat(args, 1, Sky.getFogDistance()));

@@ -18,7 +18,7 @@ public class CommandPosition extends CommandPlusBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         double[] pos = getPos(sender, 0, args);
         if (args.length >= 4 && !args[3].startsWith("/")) {
             double[] pos2 = getPos(sender, 3, args);

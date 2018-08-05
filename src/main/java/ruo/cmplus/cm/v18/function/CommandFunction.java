@@ -17,7 +17,7 @@ import java.util.List;
 public class CommandFunction extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		if (t.length(args)) {
 			t.addLoMessage("help.openfolder");
 			t.addLoMessage("help.open");

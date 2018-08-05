@@ -30,7 +30,7 @@ public class CommandArea extends CommandPlusBase {
     //그 구역 안에 몬스터가 한마리도 없는 경우 문이 열림
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         String name = args[1];
         File jsonFile = new File("./" + name + ".json");
         Gson gson = new Gson();

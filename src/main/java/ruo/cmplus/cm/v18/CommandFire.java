@@ -10,7 +10,7 @@ public class CommandFire extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		EntityPlayer player = (EntityPlayer) sender;
 		player.setFire(Integer.valueOf(args[0]));
 	}

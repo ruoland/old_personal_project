@@ -15,7 +15,7 @@ public class CommandMg extends CommandPlusBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        super.execute(server, sender, args);
+        
         EntityPlayer player = (EntityPlayer) sender;
         Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
         if(args[0].equalsIgnoreCase("aa")){

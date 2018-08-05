@@ -19,7 +19,7 @@ public class CommandDisplay extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, final String[] args) throws CommandException {
-		super.execute(server, sender, args);
+		
 		TickRegister.register(new AbstractTick(Type.CLIENT, 1, false) {
 			@Override
 			public void run(Type type) {

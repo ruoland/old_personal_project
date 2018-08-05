@@ -17,7 +17,7 @@ public class CommandPlayer extends CommandPlusBase{
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		
-		super.execute(server, sender, args);
+		
 		CommandTool t = new CommandTool(getCommandName());
 		int mode = 0;
 		if(t.argCheck(args[mode], "lock", "락", "잠금"))

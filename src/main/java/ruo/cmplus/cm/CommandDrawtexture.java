@@ -15,19 +15,19 @@ public class CommandDrawtexture extends CommandPlusBase{
 	private Minecraft mc = Minecraft.getMinecraft();
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender p_71515_1_, String[] p_71515_2_) {
-		String texture = p_71515_2_[0];
-		if(p_71515_2_[0].startsWith("https://") || p_71515_2_[0].startsWith("http://")){
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+		String texture = args[0];
+		if(args[0].startsWith("https://") || args[0].startsWith("http://")){
 			texture = "textures/gui/"+CMResourcePack.imageDownload(texture);
 		}else {
 			if(texture.indexOf(":") == -1){
 				texture = WorldAPI.getCurrentWorldName()+":"+texture;
 			}
 		}
-		if(p_71515_2_.length == 3)
-			CMEffect.getEffect().drawImage(texture, 0,0,mc.displayWidth,mc.displayHeight,Integer.parseInt(p_71515_2_[1]) * 20);
+		if(args.length == 3)
+			CMEffect.getEffect().drawImage(texture, 0,0,mc.displayWidth,mc.displayHeight,Integer.parseInt(args[1]) * 20);
 		else
-			CMEffect.getEffect().drawImage(texture, Integer.parseInt(p_71515_2_[1]), Integer.parseInt(p_71515_2_[2]), Integer.parseInt(p_71515_2_[3]), Integer.parseInt(p_71515_2_[4]),  Integer.parseInt(p_71515_2_[5]) * 20);
+			CMEffect.getEffect().drawImage(texture, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]),  Integer.parseInt(args[5]) * 20);
 	}
 
 	@Override

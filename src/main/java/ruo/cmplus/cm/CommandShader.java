@@ -10,14 +10,10 @@ import ruo.cmplus.util.CommandTool;
 public class CommandShader extends CommandPlusBase {
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender p_71515_1_, String[] p_71515_2_) throws CommandException {
-		super.execute(server, p_71515_1_, p_71515_2_);
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		CommandTool t = new CommandTool(getCommandName());
-		if(Integer.valueOf(p_71515_2_[0]) >= 22){
-			t.addErrorMessage();
-			return;
-		}
-		CMManager.shader(Integer.valueOf(p_71515_2_[0]));
-		t.addSettingMessage(Integer.valueOf(p_71515_2_[0]));
+		int id = parseInt(args[0], 0, 22);
+		CMManager.shader(id);
+		t.addSettingMessage(id);
 	}
 }

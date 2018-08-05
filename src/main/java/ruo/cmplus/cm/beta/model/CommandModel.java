@@ -14,7 +14,7 @@ public class CommandModel extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
-		super.execute(server, sender, args);
+		
 		if (args[0].equalsIgnoreCase("sleep")) {
 			setRenderOffsetForSleep(EnumFacing.byName(t.findString(args, 2, "NORTH")));
 			setSize(0.2F, 0.2F);
