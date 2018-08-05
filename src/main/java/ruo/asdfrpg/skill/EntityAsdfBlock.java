@@ -24,7 +24,6 @@ public class EntityAsdfBlock extends EntityDefaultBlock {
     @Override
     public void targetArrive() {
         worldObj.createExplosion(player,posX,posY,posZ,1.5F, false);
-
         this.setDead();
     }
 }

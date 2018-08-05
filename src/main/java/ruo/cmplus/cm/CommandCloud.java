@@ -6,13 +6,14 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import ruo.cmplus.util.CommandPlusBase;
 import ruo.cmplus.util.CommandTool;
 import ruo.minigame.api.WorldAPI;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class CommandCloud extends CommandBase{
+public class CommandCloud extends CommandPlusBase {
 
 	@Override
 	public String getCommandName() {

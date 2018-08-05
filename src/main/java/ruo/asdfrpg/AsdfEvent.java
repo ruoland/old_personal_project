@@ -5,8 +5,12 @@ import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiGameOver;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.inventory.GuiBeacon;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,15 +39,32 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.ScriptAPI;
+import ruo.minigame.api.WorldAPI;
 
 public class AsdfEvent {
     public static int backX, backY, healthX, healthY, foodX, foodY;
     @SubscribeEvent
     public void guiopen(GuiOpenEvent e) {
-        GuiIngameForge.renderHealth = false;
-        GuiIngameForge.renderExperiance = false;
-        GuiIngameForge.renderFood = false;
-        GuiIngameForge.renderHotbar = false;
+        if(WorldAPI.equalsWorldName("TEST")) {
+            GuiIngameForge.renderHealth = false;
+            GuiIngameForge.renderExperiance = false;
+            GuiIngameForge.renderFood = false;
+            GuiIngameForge.renderHotbar = false;
+            GuiIngameForge.renderJumpBar = false;
+            if (e.getGui() instanceof GuiChat) {
+                e.setGui(new GuiRPGChat());
+            }
+            if (e.getGui() instanceof GuiGameOver) {
+                e.setGui(new GuiAsdfGameOver());
+            }
+            if (e.getGui() instanceof GuiBeacon)
+                e.setCanceled(true);
+        }else{
+            GuiIngameForge.renderHealth = true;
+            GuiIngameForge.renderExperiance = true;
+            GuiIngameForge.renderFood = true;
+            GuiIngameForge.renderHotbar = true;
+        }
     }
     @SubscribeEvent
     public void gameoverlay(TickEvent.PlayerTickEvent e) {
@@ -68,23 +89,38 @@ public class AsdfEvent {
     }
     @SubscribeEvent
     public void gameoverlay(RenderGameOverlayEvent.Post e) {
-        int width = e.getResolution().getScaledWidth();
-        int height = e.getResolution().getScaledHeight();
-        DebAPI back = DebAPI.createDebAPI("backXYZ", 203.59, 21.55, 17 );
-        DebAPI health = DebAPI.createDebAPI("healthXYZ", 202.25, 19.3, 13.1 );
-        DebAPI backf = DebAPI.createDebAPI("backfXYZ", 124, 21, 17);
-        DebAPI food = DebAPI.createDebAPI("foodXYZ", 123, 19.5, 30);
-        DebAPI exp = DebAPI.createDebAPI("expXYZ", 180, 30,8 );
-        DebAPI hotbar = DebAPI.createDebAPI("hotXYZ", 150, 30,8 );
-        if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - back.x, height - back.y, player.getMaxHealth() * 3, back.z);
-            RenderAPI.drawTexture("asdfrpg:healthbar.png", width / 2 - health.x,height - health.y, player.getHealth() * 3 - 2, health.z);
-            RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - backf.x, height - back.y, 60, back.z);
-            RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - food.x,height - food.y, (player.getFoodStats().getFoodLevel()) * 3 - 2, health.z);
-            RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - exp.x,height - exp.y, (player.experience) * 10, exp.z);
-            for(int i =0; i < 9; i++) {
-                RenderAPI.drawTexture("asdfrpg:backgroundbar.png", (width / 2 - hotbar.x) + (i * 20), height - hotbar.y, 16, 16);
+        if(WorldAPI.equalsWorldName("TEST")) {
+            Minecraft mc = Minecraft.getMinecraft();
+            int width = e.getResolution().getScaledWidth();
+            int height = e.getResolution().getScaledHeight();
+            DebAPI back = DebAPI.createDebAPI("backXYZ", 203.59, 21.55, 17);
+            DebAPI health = DebAPI.createDebAPI("healthXYZ", 202.25, 19.3, 13.1);
+            DebAPI backf = DebAPI.createDebAPI("backfXYZ", 124, 21, 17);
+            DebAPI food = DebAPI.createDebAPI("foodXYZ", 123, 19.5, 30);
+            DebAPI exp = DebAPI.createDebAPI("expXYZ", 180, 30, 8);
+            DebAPI hotbar = DebAPI.createDebAPI("hotXYZ", 30, 21, 8);
+            if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+                RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - back.x, height - back.y, player.getMaxHealth() * 3, back.z);
+                RenderAPI.drawTexture("asdfrpg:healthbar.png", width / 2 - health.x, height - health.y, player.getHealth() * 3 - 2, health.z);
+                RenderAPI.drawTexture("asdfrpg:backgroundbar.png", width / 2 - backf.x, height - back.y, 60, back.z);
+                RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - food.x, height - food.y, (player.getFoodStats().getFoodLevel()) * 3 - 2, health.z);
+                RenderAPI.drawTexture("asdfrpg:foodbar.png", width / 2 - exp.x, height - exp.y, (player.experience) * 10, exp.z);
+                for (int i = 0; i < 9; i++) {
+                    RenderAPI.drawTexture("asdfrpg:backgroundbar.png", (width / 2 - hotbar.x) + (i * 20), height - hotbar.y, 19, 19);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.enableRescaleNormal();
+                    GlStateManager.enableBlend();
+                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                    RenderHelper.enableGUIStandardItemLighting();
+                    GlStateManager.translate(0,0,1000);
+                    mc.getRenderItem().renderItemAndEffectIntoGUI(player, player.inventory.mainInventory[i],  (int)((width / 2 - hotbar.x) + (i * 20)), 0);
+                    mc.getRenderItem().renderItemOverlays(mc.fontRendererObj, player.inventory.mainInventory[i],  (int)((width / 2 - hotbar.x) + (i * 20)), (int)(height - hotbar.y));
+                    RenderHelper.disableStandardItemLighting();
+                    GlStateManager.disableRescaleNormal();
+                    GlStateManager.disableBlend();
+                    GlStateManager.popMatrix();
+                }
             }
         }
     }
@@ -101,6 +137,11 @@ public class AsdfEvent {
     }
 
     @SubscribeEvent
+    public void village(PlayerInteractEvent.EntityInteract e) {
+        e.getEntityPlayer().startRiding(e.getTarget());
+        SkillHelper.getPlayerSkill(e.getEntityPlayer()).useSkill(Skills.RIDING, 0);
+    }
+    @SubscribeEvent
     public void village(PlayerInteractEvent.RightClickBlock e) {
         Block block = e.getWorld().getBlockState(e.getPos()).getBlock();
         if (Blocks.BEACON == block) {
@@ -112,15 +153,6 @@ public class AsdfEvent {
     @SubscribeEvent
     public void keyEvent(InputEvent.KeyInputEvent e) {
 
-    }
-
-    @SubscribeEvent
-    public void guiOpen(GuiOpenEvent e) {
-        if (e.getGui() instanceof GuiGameOver) {
-            e.setGui(new GuiAsdfGameOver());
-        }
-        if (e.getGui() instanceof GuiBeacon)
-            e.setCanceled(true);
     }
 
     //        System.out.println(e.getEntityLiving()+" - "+e.getSource().getEntity()+" - "+e.getSource()+e.getSource().getSourceOfDamage());

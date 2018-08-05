@@ -32,6 +32,7 @@ public class SkillStack {
         if (exp >= skill.maxExp()) {
             addLevel();
             exp = 0;
+            System.out.println(getSkill().getLocalizedName()+" 스킬의 레벨이 올랐습니다 "+level);
         }
     }
 

@@ -94,7 +94,7 @@ public class TextEffect {
 					if(message.indexOf("/tp:") != -1){
 						String look = parsing(message, "/tp:", ":tp/");
 						String[] split = look.split(",");
-						double[] xyz = WorldAPI.valueOfS(split[1], split[2], split[3]);
+						double[] xyz = WorldAPI.valueOfStr(split[1], split[2], split[3]);
 						mob.setPositionAndUpdate(xyz[0], xyz[1], xyz[2]);
 						Deb.msgText("텔레포트 발견함-"+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 					}
@@ -121,12 +121,12 @@ public class TextEffect {
 						String move = parsing(message, "/move:", ":mo/");
 						String[] split = move.split(",");
 						if(split.length == 3){
-							double[] xyz = WorldAPI.valueOfS(split[0], split[1], split[2]);
+							double[] xyz = WorldAPI.valueOfStr(split[0], split[1], split[2]);
 							EntityAPI.move((EntityMob) mob, xyz[0], xyz[1], xyz[2]);
 							Deb.msgText("이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 						}
 						if(split.length == 4){
-							double[] xyz = WorldAPI.valueOfS(split[1], split[2], split[3]);
+							double[] xyz = WorldAPI.valueOfStr(split[1], split[2], split[3]);
 							EntityAPI.move(lookMob.get(split[0]), xyz[0], xyz[1], xyz[2]);
 							Deb.msgText("특정 몬스터 이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 							Deb.msgText("대상 몬스터-"+lookMob.get(split[0]));

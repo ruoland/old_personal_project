@@ -10,6 +10,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.camp.BlockCampFire;
 import ruo.asdfrpg.camp.TileCampFire;
@@ -25,6 +27,7 @@ public class AsdfRPG {
     public static final Item villageReturn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("villagereturn").setRegistryName("asdfrpg:villagereturn").setMaxStackSize(1);
     public static final Item respawn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn").setMaxStackSize(1);
     public static final Block campFire = new BlockCampFire().setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("campfire").setRegistryName("asdfrpg:campfire");
+    public static final SimpleNetworkWrapper ASDF_RPG = NetworkRegistry.INSTANCE.newSimpleChannel("asdfrpg");
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         DebAPI.registerTileEntity(campFire, TileCampFire.class, new TileCampFireRenderer());

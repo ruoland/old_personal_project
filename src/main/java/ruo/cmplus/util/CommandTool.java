@@ -235,28 +235,4 @@ public class CommandTool {
 		}
 		return command.toString();
 	}
-	public boolean isValueOf(String s, boolean d){
-		try{
-			Boolean.valueOf(s);
-			return true;
-		}catch (Exception e) {
-			return false;
-		}
-	}
-	public boolean isValueOf(String s, int d){
-		try{
-			Integer.valueOf(s);
-			return true;
-		}catch (Exception e) {
-			return false;
-		}
-	}
-	public boolean isValueOf(String s){
-		try{
-			Double.valueOf(s);
-			return true;
-		}catch (Exception e) {
-			return false;
-		}
-	}
 }

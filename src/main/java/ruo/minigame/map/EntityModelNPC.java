@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Rotations;
 import net.minecraft.world.World;
+import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 
 import java.io.File;
@@ -231,7 +234,7 @@ class EntityModelNPC extends EntityMob {
         this.setSize(1F, 1F);
         setModel(TypeModel.BLOCK);
         setBlockMetadata(stack.getMetadata());
-
+        setTexture(RenderAPI.getBlockTexture(((ItemBlock) stack.getItem()).getBlock()));
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
         if (getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
             setRotate(0, 0, 180);
@@ -243,8 +246,8 @@ class EntityModelNPC extends EntityMob {
 
     public void setBlock(ItemStack stack) {
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
-        System.out.println(stack.toString() + stack.getMetadata());
         setBlockMetadata(stack.getMetadata());
+        setTexture(RenderAPI.getBlockTexture(((ItemBlock) stack.getItem()).getBlock()));
     }
 
     public void setBlockMetadata(int metadata) {
@@ -306,7 +309,8 @@ class EntityModelNPC extends EntityMob {
         compound.setString("texture", getTexture() != null ? getTexture().toString() : "");
         compound.setInteger("BlockID", Block.getIdFromBlock(getCurrentBlock()));
         compound.setInteger("BlockMetadata", dataManager.get(BLOCK_METADATA));
-
+        if(getCurrentBlock() != null)
+            compound.setString("blockTexture", RenderAPI.getBlockTexture(getCurrentBlock()).toString());
     }
 
     @Override
@@ -325,8 +329,8 @@ class EntityModelNPC extends EntityMob {
         if (!compound.getString("texture").equals(""))
             setTexture(compound.getString("texture"));
         if ((Block.getBlockById(compound.getInteger("BlockID")) != Blocks.AIR)) {
-
             setBlockMode(Block.getBlockById(compound.getInteger("BlockID")));
+            setTexture(compound.getString("blockTexture"));
         }
         setBlockMetadata(compound.getInteger("BlockMetadata"));
     }

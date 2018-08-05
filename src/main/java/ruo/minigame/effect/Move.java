@@ -99,7 +99,7 @@ public abstract class Move {
 			@Override
 			public void run(Type type) {
 				if(absRunCount % 40 == 0)
-					Deb.msgMove(mob.getName() + "이"+WorldAPI.stra(true, ""+targetX, ""+targetY, ""+targetZ)+"로 이동 중입니다. (이 메세지는 40틱마다 나옵니다)");
+					Deb.msgMove(mob.getName() + "이"+" "+targetX+ " "+targetY+ " "+targetZ+"로 이동 중입니다. (이 메세지는 40틱마다 나옵니다)");
 				move(absRunCount, mob, targetX, targetY, targetZ);
 				if (WorldAPI.checkPos(mob, targetX, targetY, targetZ) || getDistance() < xyzDistance) {
 					complete();

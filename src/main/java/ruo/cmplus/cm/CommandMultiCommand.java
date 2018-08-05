@@ -11,18 +11,15 @@ public class CommandMultiCommand extends CommandPlusBase {
 		return "multi";
 	}
 	@Override
-	public void execute(MinecraftServer server, ICommandSender p_71515_1_, String[] p_71515_2_) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 		
-		StringBuffer multi = new StringBuffer();
-		for(String s : p_71515_2_){
-			multi.append(s+" ");
-		}
 
-		String[] command = multi.toString().split("/");
-		for(String comm : command){
-			if(comm.equals(""))
+
+		String[] commandList = WorldAPI.strBind(true, args).split("/");
+		for(String command : commandList){
+			if(command.equals(""))
 				continue;
-			WorldAPI.command(p_71515_1_,"/"+comm);
+			WorldAPI.command(sender,"/"+command);
 		}
 	}
 

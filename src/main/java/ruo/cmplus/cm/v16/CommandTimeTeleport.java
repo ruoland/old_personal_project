@@ -37,7 +37,7 @@ public class CommandTimeTeleport extends CommandPlusBase{
 		}
 
 		if (args.length == 7) {// /ttp @p X Y Z pitch yaw Tick
-			double[] d = WorldAPI.valueOfS(args[1], args[2], args[3]);
+			double[] d = WorldAPI.valueOfStr(args[1], args[2], args[3]);
 			float yaw = Float.valueOf(args[4]);
 			float pitch = Float.valueOf(args[5]);
 			double[] playerXYZ = WorldAPI.changePosArray(player);
@@ -52,7 +52,7 @@ public class CommandTimeTeleport extends CommandPlusBase{
 		}
 
 		if (args.length == 5) {// /ttp @p X Y Z Tick
-             double[] d = WorldAPI.valueOfS(args[1], args[2], args[3]);
+             double[] d = WorldAPI.valueOfStr(args[1], args[2], args[3]);
 			double[] playerXYZ = WorldAPI.changePosArray(player);
 			float rotationY = player.rotationYaw;
 			float rotationP = player.rotationPitch;
@@ -64,7 +64,7 @@ public class CommandTimeTeleport extends CommandPlusBase{
 
 		}
 		if (args.length == 6) {// /ttp @p X Y Z pitch yaw
-			double[] d = WorldAPI.valueOfS(args[1], args[2], args[3]);
+			double[] d = WorldAPI.valueOfStr(args[1], args[2], args[3]);
 			float yaw = Float.valueOf(args[4]);
 			float pitch = Float.valueOf(args[5]);
 			player.connection.setPlayerLocation(d[0], d[1], d[2], yaw, pitch);

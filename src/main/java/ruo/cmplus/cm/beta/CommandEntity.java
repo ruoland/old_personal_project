@@ -115,11 +115,11 @@ public class CommandEntity extends CommandPlusBase {
 			}
 			if(args[mode].equalsIgnoreCase("ender") || args[mode].equalsIgnoreCase("엔더")){
 				if(args.length >= 7){
-					double[] pitch = (double[]) WorldAPI.valueOfS(args[mode+3],args[4],"0");
-					double[] xyz = (double[]) WorldAPI.valueOfS(args[5], args[6], args[7]);
+					double[] pitch = WorldAPI.valueOfStr(args[mode+3],args[4],"0");
+					double[] xyz = WorldAPI.valueOfStr(args[5], args[6], args[7]);
 					ENEffect.ender((EntityLivingBase) getEntity(server, sender, args[mode+1]), xyz[0], xyz[1], xyz[2], (float) pitch[0],(float) pitch[1]);
 				}else{
-					double[] pitch = (double[]) WorldAPI.valueOfS(args[mode+3],args[4],"0");
+					double[] pitch = WorldAPI.valueOfStr(args[mode+3],args[4],"0");
 					ENEffect.ender((EntityLivingBase) getEntity(server, sender, args[mode+1]), (float) pitch[0],(float) pitch[1]);
 				}
 			}

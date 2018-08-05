@@ -27,7 +27,7 @@ public class CommandCustomEntity extends CommandPlusBase{
 		super.execute(server, sender, args);
 		if(args[0].equals("pos1")){
 			if(args.length > 2){
-				double[] xyz = WorldAPI.valueOfS(args[1],args[2],args[3]);
+				double[] xyz = WorldAPI.valueOfStr(args[1],args[2],args[3]);
 				x = xyz[0];
 				y = xyz[1];
 				z = xyz[2];
@@ -39,7 +39,7 @@ public class CommandCustomEntity extends CommandPlusBase{
 		}
 		if(args[0].equals("pos2")){
 			if(args.length > 2){
-				double[] xyz = WorldAPI.valueOfS(args[1],args[2],args[3]);
+				double[] xyz = WorldAPI.valueOfStr(args[1],args[2],args[3]);
 				x2 = xyz[0];
 				y2 = xyz[1];
 				z2 = xyz[2];

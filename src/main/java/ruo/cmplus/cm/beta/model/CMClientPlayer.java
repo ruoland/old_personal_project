@@ -8,7 +8,6 @@ public class CMClientPlayer extends ClientPlayerBase{
 
 	public CMClientPlayer(ClientPlayerAPI playerAPI) {
 		super(playerAPI);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

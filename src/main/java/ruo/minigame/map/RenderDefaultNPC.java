@@ -43,17 +43,36 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     @Override
     protected void renderModel(EntityDefaultNPC npc, float limbSwing, float limbSwingAmount, float ageInTicks,
                                float netHeadYaw, float headPitch, float scaleFactor) {
-        if( npc instanceof EntityDefaultBlock){
-            EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
-            for(EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()){
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
-                this.bindTexture(blockData.getTexture());
-                this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                GlStateManager.popMatrix();
+        if ((npc.getModel() == TypeModel.BLOCK || npc instanceof EntityDefaultBlock) && !npc.isInvisible()) {
+            GlStateManager.pushMatrix();
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
+            GlStateManager.translate(0F, 2F, 0);
+            GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
+            GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
+            GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
+            GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
+            GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+            if (npc instanceof EntityDefaultBlock) {
+                EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
+
+                for (EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()) {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
+
+                    this.bindTexture(blockData.getTexture());
+                    this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                    GlStateManager.popMatrix();
+                }
             }
-            this.bindTexture(entitylivingbaseIn.getTexture());
-            this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+
+            this.bindTexture(npc.getTexture());
+            this.mainModel.render(npc, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            GlStateManager.disableAlpha();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
             return;
         }
         if (npc instanceof EntityBuildBlock) {
@@ -86,44 +105,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
             GlStateManager.disableAlpha();
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
-            return;
-        }
-        if (npc.getModel() == TypeModel.BLOCK) {
-            boolean flag = !npc.isInvisible() || this.renderOutlines;
-            boolean flag1 = !flag && !npc.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
-
-            if (flag || flag1) {
-                this.setRenderOutlines(false);
-                GlStateManager.pushMatrix();
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
-                if (!this.bindEntityTexture(npc)) {
-                    GlStateManager.disableAlpha();
-                    GlStateManager.disableBlend();
-                    GlStateManager.popMatrix();
-                    return;
-                }
-
-                if (flag1) {
-                    GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-                }
-
-                GlStateManager.translate(npc.getTraX(), npc.getTraY() + 1, npc.getTraZ());
-                GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-                GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-                GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-                GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
-                RenderAPI.renderBlock(npc.getCurrentStack(), npc);
-
-                if (flag1) {
-                    GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-                }
-                GlStateManager.disableAlpha();
-                GlStateManager.disableBlend();
-                GlStateManager.popMatrix();
-            }
             return;
         }
 
@@ -208,8 +189,8 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
             GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(0, 0.3, 0);
         } else if (entityLiving2.isElytra() || entityLiving2.isElytraFlying()) {
-            if(entityLiving2.isElytra())
-            entityLiving2.setElytra(true);
+            if (entityLiving2.isElytra())
+                entityLiving2.setElytra(true);
             super.rotateCorpse(entityLiving2, p_77043_2_, p_77043_3_, partialTicks);
             float f = (float) entityLiving2.getTicksElytraFlying() + partialTicks;
             float f1 = MathHelper.clamp_float(f * f / 100.0F, 0.0F, 1.0F);

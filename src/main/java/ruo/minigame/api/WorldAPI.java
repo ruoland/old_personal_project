@@ -40,15 +40,11 @@ import java.util.UUID;
 public class WorldAPI {
 
     public static boolean equalsWorldName(String worldName) {
-        return getCurrentWorldName().equalsIgnoreCase(worldName);
+        return getCurrentWorldName() != null && getCurrentWorldName().equalsIgnoreCase(worldName);
     }
 
     public static boolean equalsBlock(Block block, Block block2) {
         return block != null && block2 != null && block.getLocalizedName().equals(block2.getLocalizedName());
-    }
-
-    public static boolean canEntitySeen(EntityLivingBase base, double x, double y, double z) {
-        return base.worldObj.rayTraceBlocks(new Vec3d(base.posX, base.posY + (double) base.getEyeHeight(), base.posZ), new Vec3d(x, y, z), false, true, false) == null;
     }
 
     public static void worldtime(float time) {
@@ -146,16 +142,12 @@ public class WorldAPI {
     /**
      * String 인자를 하나로 묶어주는 메서드 묶을 때 점프로 구분할 수 있게 해줌
      */
-    public static String stra(boolean space, String... str) {
+    public static String strBind(boolean space, String... str) {
         StringBuffer b = new StringBuffer();
         for (String s : str) {
             b.append(s + (space ? " " : ""));
         }
         return b.toString();
-    }
-
-    public static void explosion(double x, double y, double z, int strength) {
-        getWorld().newExplosion(null, x, y, z, strength, false, true);
     }
 
     public static boolean isDay() {
@@ -211,10 +203,6 @@ public class WorldAPI {
         return itemstack == null ? "없음" : itemstack.getCustomNameTag();
     }
 
-    public static double[] ppos() {
-        return changePosArray(getPlayer());
-    }
-
     public static int floor(double x) {
         return MathHelper.floor_double(x);
     }
@@ -243,32 +231,12 @@ public class WorldAPI {
         return new int[]{floor(x), floor(y), floor(z)};
     }
 
-    public static int[] floorPos(BlockPos pos) {
-        return new int[]{floor(pos.getX()), floor(pos.getY()), floor(pos.getZ())};
-    }
-
     public static double[] valueOf(BlockPos pos) {
         return new double[]{pos.getX(), pos.getY(), pos.getZ()};
     }
 
     public static double[] valueOfStr(String x, String y, String z) {
         return new double[]{Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)};
-    }
-
-    public static double[] valueOfS(String x, String y, String z) {
-        return valueOfStr(x, y, z);
-    }
-
-    public static String toXYZString(Entity e) {
-        return e.getCustomNameTag() + ":::" + e.posX + "," + e.posY + "," + e.posZ;
-    }
-
-    public static boolean checkPos(EntityLivingBase living, int[] xyz) {
-        return floor(living.posX) == xyz[0] && floor(living.posY) == xyz[1] && floor(living.posZ) == xyz[2];
-    }
-
-    public static boolean checkPos(EntityLivingBase living, EntityLivingBase living2) {
-        return checkPos(living, living2.posX, living2.posY, living2.posZ);
     }
 
     public static boolean checkPos(EntityLivingBase living, double X, double Y, double Z) {

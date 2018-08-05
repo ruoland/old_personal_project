@@ -38,7 +38,7 @@ public class CommandPosCommand extends CommandPlusBase {
 				}
 			});
 		} else if (args[0].equals("pos")) {
-			double[] d = WorldAPI.valueOfS(args[2], args[3], args[4]);
+			double[] d = WorldAPI.valueOfStr(args[2], args[3], args[4]);
 			EntityAPI.position(d[0], d[1], d[2], 0, new AbstractTick.Position() {
 				@Override
 				public void runPosition() {

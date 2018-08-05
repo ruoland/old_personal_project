@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-public class CommandPlusBase extends CommandBase {
+public abstract class CommandPlusBase extends CommandBase {
 
 	public CommandTool t;
 
@@ -59,10 +59,6 @@ public class CommandPlusBase extends CommandBase {
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
 		return "commandPlus." + getCommandName() + ".help";
-	}
-
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 	}
 
 	public Entity addAI(MinecraftServer server, ICommandSender sender, String args, EntityAIBase ab)

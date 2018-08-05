@@ -19,10 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
-import ruo.minigame.api.WorldAPI;
+import ruo.minigame.api.*;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.Move;
 import ruo.minigame.effect.TextEffect;
@@ -185,6 +182,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
+
         if (targetPosition != null) {
             compound.setDouble("targetX", targetPosition.xCoord);
             compound.setDouble("targetY", targetPosition.yCoord);
@@ -222,6 +220,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if(compound.hasKey("targetX"))
         setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"));
         setDistance(compound.getDouble("distance"));
+
     }
 
     @Override

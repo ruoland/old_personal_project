@@ -47,11 +47,9 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
     private static final DataParameter<Boolean> CAN_KNOCK_BACK = EntityDataManager.createKey(EntityDefaultBlock.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<String> ENTITY_SKIN = EntityDataManager.createKey(EntityDefaultBlock.class, DataSerializers.STRING);
-
-    private ArrayList<BlockData> blockList = new ArrayList<>();
     private ResourceLocation blockTexture = new ResourceLocation("minecraft:textures/blocks/dirt.png");
     public static double ax = 3;
-
+    private ArrayList<BlockData> blockList = new ArrayList<>();
     public EntityDefaultBlock(World worldIn) {
         super(worldIn);
         this.setSize(1, 1);
@@ -108,8 +106,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
 
     public void addBlock(Block block, BlockPos pos) {
         blockList.add(new BlockData(Block.getIdFromBlock(block), pos.getX(), pos.getY(), pos.getZ()));
-        System.out.println(isServerWorld()+" - "+block+" - "+pos);
-        blockTexture = RenderAPI.getBlockTexture(block);
     }
 
     public void addBlock(int block, BlockPos pos) {

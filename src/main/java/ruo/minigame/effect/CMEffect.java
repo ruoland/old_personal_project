@@ -79,13 +79,8 @@ public class CMEffect {
 			}
 		});
 	}
-	/*
-	 * TODO 반드시 클래스를 고쳐야함 이 클래스는 한번에 하나만 처리가능함 
-	 * TODO 코드를 두번 실행하면 비정상적으로 작동할 거임.
-	 */
 	public void drawImage(final String texture, final int x, final int y, final int width, final int height,
 			int tick) {
-		final Minecraft mc = Minecraft.getMinecraft();
 		TickRegister.register(new AbstractTick(null, 1, true) {
 			float alpha = 1.0F;
 			@Override
