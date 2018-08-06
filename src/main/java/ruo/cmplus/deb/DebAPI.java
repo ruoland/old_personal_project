@@ -78,6 +78,14 @@ public class DebAPI {
         }
     }
 
+    public static DebAPI get(){
+        return debAPI.get(activeName);
+    }
+
+    public static void println(){
+        DebAPI deb = debAPI.get(activeName);
+        System.out.println(activeName+" - "+deb.x+" - "+deb.y+" - "+deb.z);
+    }
     public void a2() {
         if(activeName != null && activeName.equalsIgnoreCase(name)) {
             if (DebAPI.isKeyDown(Keyboard.KEY_F)) {

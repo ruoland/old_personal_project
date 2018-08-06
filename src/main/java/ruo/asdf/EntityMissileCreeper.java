@@ -49,7 +49,7 @@ public class EntityMissileCreeper extends EntityFlyNPC {
         if (getAttackTarget() != null && attackTarget == null) {
             attackTarget = getAttackTarget();
             if (!isArrive()) {
-                setTarget(posX, posY + 32, posZ);
+                setTarget(posX, posY + 16, posZ);
                 System.out.println("타겟 설정함");
             }
         }
@@ -70,7 +70,7 @@ public class EntityMissileCreeper extends EntityFlyNPC {
     @Override
     public void targetArrive() {
         super.targetArrive();
-        this.setPosition(attackTarget.posX, attackTarget.posY + 32, attackTarget.posZ);
+        this.setPosition(attackTarget.posX, attackTarget.posY + 16, attackTarget.posZ);
         this.setRotate(0, 180, 0);
     }
 }

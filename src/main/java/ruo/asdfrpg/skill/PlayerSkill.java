@@ -10,6 +10,8 @@ import java.util.UUID;
 public class PlayerSkill {
     private UUID uuid;
     private ArrayList<SkillStack> skillList = new ArrayList();
+    private int playerLevel = 1;
+    private float playerExp = 8;
 
     public PlayerSkill(UUID user) {
         uuid = user;
@@ -29,6 +31,18 @@ public class PlayerSkill {
             }
         }
         return null;
+    }
+
+    public float getPlayerExp() {
+        return playerExp;
+    }
+
+    public int getPlayerLevel() {
+        return playerLevel;
+    }
+
+    public void addPlayerExp(int i){
+        playerExp += i;
     }
 
     public boolean isRegister(Skill skill){
@@ -68,6 +82,9 @@ public class PlayerSkill {
             if(skillStack.getSkill() != null)
             tagCompound.setTag(skillStack.getSkill().getUnlocalizedName(), skillStack.serializeNBT());
         }
+        tagCompound.setInteger("playerLevel", playerLevel);
+        tagCompound.setFloat("playerExp", playerExp);
+
         return tagCompound;
     }
 
@@ -79,6 +96,9 @@ public class PlayerSkill {
                 getSkill(skill).readFromNBT(stackCompound);
             }
         }
+        playerLevel = compound.getInteger("playerLevel");
+        playerExp = compound.getFloat("playerExp");
+        playerExp = 10;
     }
 
 }

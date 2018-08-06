@@ -30,6 +30,8 @@ public class EntityFlyNPC extends EntityDefaultNPC {
         targetVec = null;
         target = null;
     }
+
+    @Override
     public void setTarget(double x, double y, double z) {
         double targetX = x != 0 ? (x - posX) : 0;
         double targetY = y != 0 ? (y - posY) : 0;

@@ -18,6 +18,7 @@ import ruo.asdfrpg.camp.TileCampFire;
 import ruo.asdfrpg.camp.TileCampFireRenderer;
 import ruo.asdfrpg.cook.CookedRecipe;
 import ruo.asdfrpg.cook.CookedRecipeHelper;
+import ruo.asdfrpg.event.AsdfEvent;
 import ruo.asdfrpg.skill.*;
 import ruo.cmplus.deb.DebAPI;
 
@@ -27,6 +28,12 @@ public class AsdfRPG {
     public static final Item villageReturn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("villagereturn").setRegistryName("asdfrpg:villagereturn").setMaxStackSize(1);
     public static final Item respawn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn").setMaxStackSize(1);
     public static final Block campFire = new BlockCampFire().setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("campfire").setRegistryName("asdfrpg:campfire");
+    public static final CreativeTabs SKILL_TABS = new CreativeTabs("asdfrpg.skilltabs.name") {
+        @Override
+        public Item getTabIconItem() {
+            return Items.BOOK;
+        }
+    };
     public static final SimpleNetworkWrapper ASDF_RPG = NetworkRegistry.INSTANCE.newSimpleChannel("asdfrpg");
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {

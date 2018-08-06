@@ -2,12 +2,16 @@ package ruo.asdfrpg.skill;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import ruo.asdfrpg.AsdfRPG;
+import ruo.asdfrpg.ItemSkillBook;
 
 public class Skill {
     private String localizedName, unlocalizedName;
     private int maxLevel = 5, maxExp = 30;
     private double lineX = 30, lineY = 30;
     public Skill(){
+
     }
 
     public String getUnlocalizedName() {
@@ -29,6 +33,7 @@ public class Skill {
     }
     public Skill setUnlocalizedName(String name){
         this.unlocalizedName = name;
+        addSkillBook();
         return this;
     }
     public Skill setLocalizedName(String name){
@@ -64,6 +69,10 @@ public class Skill {
         return this;
     }
 
+    public Skill addSkillBook(){
+        GameRegistry.register(new ItemSkillBook().setUnlocalizedName(getUnlocalizedName()).setCreativeTab(AsdfRPG.SKILL_TABS).setRegistryName("asdfrpg:"+getUnlocalizedName()));
+        return this;
+    }
     @Override
     public String toString() {
         return unlocalizedName;

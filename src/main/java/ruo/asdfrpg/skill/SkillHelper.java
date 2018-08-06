@@ -14,6 +14,9 @@ import java.util.UUID;
 public class SkillHelper {
     private static HashMap<UUID, PlayerSkill> playerSkillMap = new HashMap<>();
     private static HashMap<String, Skill> registerSkills = new HashMap<>();
+    public static PlayerSkill getPlayerSkill() {
+        return getPlayerSkill(WorldAPI.getPlayer());
+    }
 
     public static PlayerSkill getPlayerSkill(UUID username) {
         return playerSkillMap.get(username);
