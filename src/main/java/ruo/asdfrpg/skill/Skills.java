@@ -16,6 +16,7 @@ public class Skills {
     public static final Skill LIGHT = new SkillLight().setY(2).setX(4).setUnlocalizedName("LIGHT").setLocalizedName("라이트");
 
     public static final Skill THROW_BLOCK = new SkillBlockThrowAttack().setY(2).setX(5).setUnlocalizedName("THROW_BLOCK").setLocalizedName("블럭 던지기");
+    public static final Skill IRON_BODY = new SkillIronBody().setY(2).setX(6).setUnlocalizedName("IRON_BODY").setLocalizedName("스탠스");
 
     public static void register(){
         SkillHelper.registerSkill(BLOCK_GRAB);
@@ -28,6 +29,7 @@ public class Skills {
         SkillHelper.registerSkill(AUTO_ATTACK);
         SkillHelper.registerSkill(LIGHT);
         SkillHelper.registerSkill(THROW_BLOCK);
+        SkillHelper.registerSkill(IRON_BODY);
     }
 
     public static Skill valueOf(String skillName){

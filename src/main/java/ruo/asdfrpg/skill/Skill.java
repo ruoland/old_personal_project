@@ -28,7 +28,7 @@ public class Skill {
     public int maxLevel(){
         return maxLevel;
     }
-    public void onEffect(SkillStack playerSkill, int data){
+    public void onEffect(SkillStack skillStack, int data){
 
     }
     public Skill setUnlocalizedName(String name){

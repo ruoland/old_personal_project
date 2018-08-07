@@ -162,14 +162,17 @@ public class RenderAPI {
     }
 
     public static void drawTexture(String texture, float alpha, double x, double y, double width, double height, boolean push) {
-        drawTexture(texture, 1, 1, 1, alpha, x, y, 1000, width, height, true);
+        drawTexture(texture, 1, 1, 1, alpha, x, y, 1000, width, height, push);
     }
 
     public static void drawTexture(ResourceLocation texture, float alpha, double x, double y, double width,
                                    double height) {
         drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, 1000, width, height, true);
     }
-
+    public static void drawTextureZ(String texture, double x, double y, double z, double width,
+                                   double height) {
+        drawTexture(texture, 1, 1, 1, 1, x, y, z, width, height, true);
+    }
     public static void drawTexture(String texture, float red, float green, float blue, float alpha, double x, double y, double z, double width, double height,
                                    boolean push) {
         if (!hash.containsKey(texture)) {
@@ -230,7 +233,7 @@ public class RenderAPI {
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.color(red, green, blue, alpha);
-            GlStateManager.translate(0, 0, z);
+            GlStateManager.translate(0,0,z);
             Tessellator tessellator = Tessellator.getInstance();
             VertexBuffer vertexbuffer = tessellator.getBuffer();
             vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);

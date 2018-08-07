@@ -3,7 +3,9 @@ package ruo.asdfrpg.event;
 import atomicstryker.dynamiclights.client.DynamicLights;
 import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -72,6 +74,12 @@ public class SkillEvent {
             } else {
                 e.player.capabilities.isFlying = false;
                 e.player.sendPlayerAbilities();
+            }
+            if (e.player.isPotionActive(AsdfRPG.ironBodyPotion)) {
+                e.player.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100000);
+            } else {
+                e.player.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0);
+
             }
         }
 

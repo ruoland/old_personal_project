@@ -5,6 +5,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -12,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.camp.BlockCampFire;
 import ruo.asdfrpg.camp.TileCampFire;
@@ -24,6 +28,8 @@ import ruo.cmplus.deb.DebAPI;
 
 @Mod(modid = "asdfrpg", dependencies = "required-after:DynamicLights")
 public class AsdfRPG {
+    public static final PotionIronBody ironBodyPotion = new PotionIronBody(false, 0);
+
     public static final PotionFly flyPotion = new PotionFly(false, 0);
     public static final Item villageReturn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("villagereturn").setRegistryName("asdfrpg:villagereturn").setMaxStackSize(1);
     public static final Item respawn = new ItemRespawn().setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("respawn").setRegistryName("asdfrpg:respawn").setMaxStackSize(1);
@@ -41,7 +47,8 @@ public class AsdfRPG {
         DebAPI.registerEntity(this, "NO-EGG-AsdfBlock", EntityAsdfBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-ThrowBlock", EntityThrowBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-Light", EntityLight.class, new RenderLight(1.0F));
-
+        DebAPI.registerEntity(this, "RPGWolf", EntityRPGWolf.class);
+        DebAPI.registerEntity(this, "TraderR", EntityTrader.class);
         GameRegistry.register(villageReturn);
         GameRegistry.register(respawn);
         DebAPI.registerEvent(new AsdfEvent());
@@ -52,6 +59,9 @@ public class AsdfRPG {
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_CHICKEN),  new ItemStack(Items.CHICKEN)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_CHICKEN),  new ItemStack(Items.CHICKEN)));
         Skills.register();
+        Potion.REGISTRY.register(28, new ResourceLocation("fly"), flyPotion);
+        Potion.REGISTRY.register(29, new ResourceLocation("iron_body"), ironBodyPotion);
+
     }
     @Mod.EventHandler
     public void init(FMLServerStartingEvent e) {
