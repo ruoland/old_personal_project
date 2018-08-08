@@ -16,10 +16,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.deb.CommandDeb;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.map.lopre2.jump2.EntityKnockbackBlock;
+
+import java.util.List;
 
 public class ItemSpanner extends Item {
     public static String renderText;
@@ -27,6 +31,7 @@ public class ItemSpanner extends Item {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         String name = target.getClass().getSimpleName().replace("Entity", "");
+
 
         if (!target.isInvisible()) {
             if(target instanceof EntityBuildBlock){

@@ -27,10 +27,15 @@ public class GuiAsdfGameOver extends GuiGameOver implements GuiYesNoCallback {
         super.initGui();
         buttonList.get(0).displayString = "여기서 부활(부활 아이템 소모)";
         buttonList.get(1).displayString = "마을에서 부활";
+        System.out.println("아이템 체크"+mc.thePlayer.inventory.hasItemStack(new ItemStack(AsdfRPG.respawn)));
+
         if (mc.thePlayer.inventory.hasItemStack(new ItemStack(AsdfRPG.respawn))) {
             buttonList.get(0).enabled = true;
         }else
             buttonList.get(0).enabled = false;
+        for(int i = 0; i < buttonList.size();i++){
+            System.out.println(buttonList.get(i).displayString);
+        }
     }
 
     protected void actionPerformed(GuiButton button) {

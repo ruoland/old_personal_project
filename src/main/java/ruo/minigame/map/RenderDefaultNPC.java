@@ -50,11 +50,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
             if (flag || flag1) {
                 this.setRenderOutlines(false);
                 GlStateManager.pushMatrix();
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
                 if (!this.bindEntityTexture(npc)) {
-                    GlStateManager.disableAlpha();
-                    GlStateManager.disableBlend();
                     GlStateManager.popMatrix();
                     return;
                 }
@@ -68,15 +64,12 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
                 GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
                 GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
                 RenderAPI.renderBlock(npc.getCurrentStack(), npc);
 
                 if (flag1) {
                     GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
                 }
-                GlStateManager.disableAlpha();
-                GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
             }
             return;

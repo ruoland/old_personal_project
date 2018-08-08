@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentKnockback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,7 +72,7 @@ public class AsdfEvent {
             GuiIngameForge.renderHotbar = false;
             GuiIngameForge.renderJumpBar = false;
             if (e.getGui() instanceof GuiChat) {
-                e.setGui(new GuiRPGChat());
+                //e.setGui(new GuiRPGChat());
             }
             if (e.getGui() instanceof GuiGameOver) {
                 e.setGui(new GuiAsdfGameOver());

@@ -49,6 +49,8 @@ public class AsdfRPG {
         DebAPI.registerEntity(this, "NO-EGG-Light", EntityLight.class, new RenderLight(1.0F));
         DebAPI.registerEntity(this, "RPGWolf", EntityRPGWolf.class);
         DebAPI.registerEntity(this, "TraderR", EntityTrader.class);
+
+        DebAPI.registerEntity(this, "RPGGolem", EntityRPGGolem.class);
         GameRegistry.register(villageReturn);
         GameRegistry.register(respawn);
         DebAPI.registerEvent(new AsdfEvent());

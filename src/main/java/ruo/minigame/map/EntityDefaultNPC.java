@@ -251,6 +251,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public void setSpawnXYZ(double x, double y, double z) {
         this.dataManager.set(SPAWN_XYZ, new Rotations((float) x, (float) y, (float) z));
     }
+    public void setSpawnXYZ(Vec3d vec3d) {
+        this.dataManager.set(SPAWN_XYZ, new Rotations((float) vec3d.xCoord, (float) vec3d.yCoord, (float) vec3d.yCoord));
+    }
 
     @Nullable
     @Override

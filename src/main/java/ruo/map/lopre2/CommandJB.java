@@ -29,10 +29,11 @@ public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
     public static long startTime, endTime;
     public static boolean isDebMode = false, isLavaInvisible, playerMove;//용암 블럭 투명화를 반대로 설정함
+    public static boolean upMode, downMode;
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        
+
         if (args.length == 0) {
             sender.addChatMessage(new TextComponentString(I18n.format("item.lotbow.name")));
             sender.addChatMessage(new TextComponentString(I18n.format("entity.LoopPre2.lavablock.name")));
@@ -45,8 +46,8 @@ public class CommandJB extends CommandPlusBase {
             s.fallDistance = 0;
             return;
         }
-        if(args.length > 0) {
-            if(args[0].equalsIgnoreCase("pm")){
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("pm")) {
                 playerMove = !playerMove;
                 System.out.println(playerMove);
             }
@@ -77,7 +78,7 @@ public class CommandJB extends CommandPlusBase {
                     WorldAPI.addMessage("R키를 누르고 벽으로 다가가면 벽에 매달리거나 올라갈 수 있습니다.");
                 }
                 DebAPI.getWorldProperties().setProperty("crawl", "" + var);
-                ActionEffect.crawl( var);
+                ActionEffect.crawl(var);
 
             }
             if (args[0].equalsIgnoreCase("dj")) {
@@ -85,7 +86,7 @@ public class CommandJB extends CommandPlusBase {
                     WorldAPI.addMessage("이제 점프를 공중에서 한번더 할 수 있습니다.(달리면서 점프하면 좀 더 멀리 뛸 수 있음)");
                 }
                 DebAPI.getWorldProperties().setProperty("doubleJump", "" + Boolean.valueOf(args[1]));
-                ActionEffect.doubleJump( Boolean.valueOf(args[1]));
+                ActionEffect.doubleJump(Boolean.valueOf(args[1]));
             }
 
             if (args[0].equalsIgnoreCase("food")) {
@@ -109,14 +110,25 @@ public class CommandJB extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("7달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
 
             }
-            if (args[0].equalsIgnoreCase("apple")) {
-                EntityPlayer s = (EntityPlayer) sender.getCommandSenderEntity();
+            if (args[0].equalsIgnoreCase("up")) {
+                upMode = !upMode;
+                if (upMode)
+                    sender.addChatMessage(new TextComponentString("스패너를 들고 우클릭하면 빅블럭과 투명 블럭의 위치를 위로 올릴 수 있습니다."));
+                else
+                    sender.addChatMessage(new TextComponentString("해제됐습니다."));
+            }
+            if (args[0].equalsIgnoreCase("down")) {
+                downMode = !downMode;
+                if (downMode)
+                    sender.addChatMessage(new TextComponentString("스패너를 들고 우클릭하면 빅블럭과 투명 블럭의 위치를 아래로 내릴 수 있습니다."));
+                else
+                    sender.addChatMessage(new TextComponentString("해제됐습니다."));
             }
             if (args[0].equalsIgnoreCase("start")) {
                 startTime = System.currentTimeMillis();
             }
             if (args[0].equalsIgnoreCase("tpy")) {
-                ActionEffect.setYTP(Double.valueOf(args[1]),ActionEffect.getPitch(), ActionEffect.getYaw());
+                ActionEffect.setYTP(Double.valueOf(args[1]), ActionEffect.getPitch(), ActionEffect.getYaw());
             }
             if (args[0].equalsIgnoreCase("yp")) {
                 ActionEffect.setYP(Float.valueOf(args[1]), Float.valueOf(args[2]));

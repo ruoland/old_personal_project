@@ -1,7 +1,10 @@
 package ruo.asdfrpg;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -12,10 +15,18 @@ import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.map.EntityDefaultNPC;
 import scala.xml.dtd.EntityDef;
 
+import javax.annotation.Nullable;
+
 public class EntityTrader extends EntityDefaultNPC {
     private BlockPos chestPos;
     public EntityTrader(World worldIn) {
         super(worldIn);
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
+        sellToTrader();
+        return super.processInteract(player, hand, stack);
     }
 
     public void findChest(){

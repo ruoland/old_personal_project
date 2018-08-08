@@ -126,6 +126,32 @@ public class EntityPreBlock extends EntityDefaultNPC {
                 setCanFalling(!canFalling());
                 System.out.println("canFalling이" + canFalling() + "으로 설정됨");
             }
+            if(CommandJB.downMode || CommandJB.upMode){
+                if(this instanceof EntityBigBlock){
+                    EntityBigBlock bigBlock = (EntityBigBlock) this;
+                    List<EntityLavaBlock> list = worldObj.getEntitiesWithinAABB(EntityLavaBlock.class, getEntityBoundingBox().expand(0,2,0));
+                    if(CommandJB.downMode){
+                        for(int i = 0;i < list.size();i++){
+                            EntityLavaBlock lavaBlock = list.get(i);
+                            Vec3d vec3d = lavaBlock.getPositionVector().addVector(0,-0.1,0);
+                            lavaBlock.setPosition(vec3d);
+                            lavaBlock.setSpawnXYZ(vec3d);
+                        }
+                        bigBlock.setPosition(bigBlock.getPositionVector().addVector(0,-0.1,0));
+                    }
+                    if(CommandJB.upMode){
+                        for(int i = 0;i < list.size();i++){
+                            EntityLavaBlock lavaBlock = list.get(i);
+                            Vec3d vec3d = lavaBlock.getPositionVector().addVector(0,0.1,0);
+                            lavaBlock.setPosition(vec3d);
+                            lavaBlock.setSpawnXYZ(vec3d);
+                        }
+                        bigBlock.setPosition(bigBlock.getPositionVector().addVector(0,0.1,0));
+                    }
+                }
+                return true;
+
+            }
         }
         return super.processInteract(player, hand, stack);
     }
