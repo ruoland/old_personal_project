@@ -50,12 +50,28 @@ public class EntityRPGGolem extends EntityDefaultNPC {
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+        if(getAttackTarget() != null){
+            if(getAttackTarget().getDistanceToEntity(this) < 2) {
+                getAttackTarget().setPosition(posX, posY + 2, posZ);
+            }
+        }
+    }
+
     private void findAndThrow(EntityLivingBase target){
         List<EntityRPGGolem> golemList = worldObj.getEntitiesWithinAABB(EntityRPGGolem.class, getEntityBoundingBox().expand(10, 3, 10));
         if (golemList.size() > 0) {
-            EntityRPGGolem rpgGolem = golemList.get(worldObj.rand.nextInt(Math.max(golemList.size() - 1, 0)));
+            EntityRPGGolem rpgGolem = golemList.get(worldObj.rand.nextInt(Math.max(golemList.size() - 1, 1)));
+            if(rpgGolem == this) {
+                return;
+            }
+            this.faceEntity(rpgGolem, 360, 360);
             Vec3d throwVector = rpgGolem.getPositionVector().subtract(getPositionVector()).addVector(0, 1, 0).normalize().scale(1.3);
             target.setVelocity(throwVector.xCoord, throwVector.yCoord, throwVector.zCoord);
+            System.out.println(""+golemList+ throwVector);
+            getAttackTarget().setPosition(posX, posY+3,posZ);
         }
     }
 }

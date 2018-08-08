@@ -128,25 +128,31 @@ public class EntityPreBlock extends EntityDefaultNPC {
             }
             if(CommandJB.downMode || CommandJB.upMode){
                 if(this instanceof EntityBigBlock){
+                    System.out.println("업모드 다운모드 둘중 하나 활성화된상태");
                     EntityBigBlock bigBlock = (EntityBigBlock) this;
                     List<EntityLavaBlock> list = worldObj.getEntitiesWithinAABB(EntityLavaBlock.class, getEntityBoundingBox().expand(0,2,0));
                     if(CommandJB.downMode){
                         for(int i = 0;i < list.size();i++){
                             EntityLavaBlock lavaBlock = list.get(i);
                             Vec3d vec3d = lavaBlock.getPositionVector().addVector(0,-0.1,0);
-                            lavaBlock.setPosition(vec3d);
-                            lavaBlock.setSpawnXYZ(vec3d);
+                            lavaBlock.spawn(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
+                            lavaBlock.setDead();
+                            System.out.println("다운모드 - 블럭 내리는 중"+ vec3d);
+
                         }
-                        bigBlock.setPosition(bigBlock.getPositionVector().addVector(0,-0.1,0));
+                        bigBlock.spawn(bigBlock.posX, bigBlock.posY - 0.1, bigBlock.posZ);
+                        bigBlock.setDead();
                     }
                     if(CommandJB.upMode){
                         for(int i = 0;i < list.size();i++){
                             EntityLavaBlock lavaBlock = list.get(i);
                             Vec3d vec3d = lavaBlock.getPositionVector().addVector(0,0.1,0);
-                            lavaBlock.setPosition(vec3d);
-                            lavaBlock.setSpawnXYZ(vec3d);
+                            lavaBlock.spawn(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
+                            lavaBlock.setDead();
+                            System.out.println("업모드 - 블럭 올리는 중"+ vec3d);
                         }
-                        bigBlock.setPosition(bigBlock.getPositionVector().addVector(0,0.1,0));
+                        bigBlock.spawn(bigBlock.posX, bigBlock.posY + 0.1, bigBlock.posZ);
+                        bigBlock.setDead();
                     }
                 }
                 return true;
