@@ -20,7 +20,7 @@ public class JumpEvent2 {
 
     @SubscribeEvent
     public void chatMessage(ClientChatReceivedEvent e) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             if (e.getType() == 1) {
                 if (e.getMessage().getUnformattedComponentText().indexOf("의 리스폰 지점을") != -1)
                     e.setCanceled(true);
@@ -35,7 +35,7 @@ public class JumpEvent2 {
 
     @SubscribeEvent
     public void playerTick(CommandEvent e) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             if (e.getCommand().getCommandName().equalsIgnoreCase("spawnpoint")) {
                 ActionEffect.setYTP(WorldAPI.getPlayer().posY - 20, WorldAPI.getPlayer().rotationPitch, WorldAPI.getPlayer().rotationYaw);
                 WorldAPI.command("/heal");
@@ -45,7 +45,7 @@ public class JumpEvent2 {
 
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent e) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             if (!CommandJB.isDebMode && e.side == Side.SERVER && e.phase == TickEvent.Phase.END) {
                 for (ItemStack stack : e.player.inventory.mainInventory) {
                     if (stack != null && stack.getItem() instanceof ItemSpanner) {

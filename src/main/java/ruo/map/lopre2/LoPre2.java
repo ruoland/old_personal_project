@@ -97,7 +97,7 @@ public class LoPre2 {
         e.registerServerCommand(new CommandJB());
     }
 
-    public static boolean chackWorld() {
+    public static boolean checkWorld() {
         String worldName = WorldAPI.getCurrentWorldName();
         return worldName.equalsIgnoreCase("JumpMap") || worldName.equalsIgnoreCase("JumpMap2");
     }

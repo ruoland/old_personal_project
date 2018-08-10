@@ -26,7 +26,7 @@ import ruo.asdfrpg.event.AsdfEvent;
 import ruo.asdfrpg.skill.*;
 import ruo.cmplus.deb.DebAPI;
 
-@Mod(modid = "asdfrpg", dependencies = "required-after:DynamicLights")
+//@Mod(modid = "asdfrpg", dependencies = "required-after:DynamicLights")
 public class AsdfRPG {
     public static final PotionIronBody ironBodyPotion = new PotionIronBody(false, 0);
 

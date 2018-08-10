@@ -26,9 +26,10 @@ public class ActionEvent {
     public static boolean forceJump;
     @SubscribeEvent
     public void login(LoginEvent e){
-        if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
+        if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld")) {
             ActionEffect.mapName = WorldAPI.getCurrentWorldName();
-
+            System.out.println(ActionEffect.mapName+WorldAPI.getCurrentWorldName());
+        }
     }
     @SubscribeEvent
     public void rotate(LivingFallEvent e) {

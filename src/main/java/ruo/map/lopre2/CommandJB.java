@@ -147,7 +147,8 @@ public class CommandJB extends CommandPlusBase {
                 System.out.println((endTime - startTime) / 1000 + "초.");
 
                 WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
-                WorldAPI.addMessage("플레이 해주셔서 감사합니다.");
+                WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
+
             }
 
             if (args[0].equalsIgnoreCase("pos1")) {

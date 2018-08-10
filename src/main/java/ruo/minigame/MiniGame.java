@@ -91,13 +91,12 @@ public class MiniGame {
 
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
-        minigameConfig = new Configuration(e.getSuggestedConfigurationFile());
-        minigameConfig.load();
-        minigameConfig.save();
-
         proxy.pre(e);
         network();
+        minigameConfig = new Configuration(e.getSuggestedConfigurationFile());
+        minigameConfig.load();
         ActionEffect.load();
+        minigameConfig.save();
         MiniGame.minerun = new MineRun();
         MiniGame.scroll = new Scroll();
         MiniGame.bomber = new Bomber();

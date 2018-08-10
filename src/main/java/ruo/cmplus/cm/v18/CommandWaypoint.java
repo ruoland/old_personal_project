@@ -20,19 +20,22 @@ public class CommandWaypoint extends CommandPlusBase {
 			String key = args[1].indexOf(":") == -1 ? WorldAPI.getCurrentWorldName() + ":" + args[1] : args[1];
 			if (args[0].equals("set")) {
 				if(CMManager.waypoint.containsKey(key)){
-					sender.addChatMessage(new TextComponentString(key+"라는 웨이포인트는 이미 존재합니다."));
+					sender.addChatMessage(new TextComponentString(key+" 웨이포인트는 이미 존재합니다."));
 					return;
 				}
 				if (args.length == 2) {
+					sender.addChatMessage(new TextComponentString(key+" 웨이포인트를 만들었습니다."));
 					CMManager.waypoint.put(key, new double[]{WorldAPI.x(), WorldAPI.y(), WorldAPI.z()});
 				}
 				else
 					CMManager.waypoint.put(key, WorldAPI.parseDouble(args[2], args[3], args[4]));
 			} else if (args[0].equals("remove")) {
-				if (CMManager.waypoint.containsKey(key))
+				if (CMManager.waypoint.containsKey(key)) {
 					CMManager.waypoint.remove(key);
+					sender.addChatMessage(new TextComponentString(key+" 웨이포인트를 제거했습니다."));
+				}
 				else
-					sender.addChatMessage(new TextComponentString(WorldAPI.getCurrentWorldName() + ":" + args[0] + "라는 웨이포인트가 존재하지 않습니다."));
+					sender.addChatMessage(new TextComponentString(WorldAPI.getCurrentWorldName() + ":" + args[0] + " 웨이포인트가 존재하지 않습니다."));
 			}
 		}
 		else {

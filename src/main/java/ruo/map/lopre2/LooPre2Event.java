@@ -33,7 +33,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void waterJump(LivingUpdateEvent e) {
-        if (LoPre2.chackWorld() && e.getEntityLiving().isServerWorld() && e.getEntityLiving() instanceof EntityPlayer && e.getEntityLiving().isInWater()) {
+        if (LoPre2.checkWorld() && e.getEntityLiving().isServerWorld() && e.getEntityLiving() instanceof EntityPlayer && e.getEntityLiving().isInWater()) {
             if (e.getEntityLiving().onGround) {
                 startY = e.getEntityLiving().posY;
             }
@@ -88,7 +88,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void deathCount(LivingDeathEvent event) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             if (event.getEntityLiving() instanceof EntityPlayer) {
                 deathCount++;
             }
@@ -97,7 +97,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void gamemode(CommandEvent event) {
-        if (LoPre2.chackWorld() && event.getSender() instanceof EntityPlayer) {
+        if (LoPre2.checkWorld() && event.getSender() instanceof EntityPlayer) {
             if (event.getCommand().getCommandName().equalsIgnoreCase("gamemode") && event.getParameters()[0].equalsIgnoreCase("1")) {
                 gamemodeCount++;
             }
@@ -113,7 +113,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void a(CommandEvent event) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             if (event.getCommand().getCommandName().equalsIgnoreCase("waypoint")) {
                 if (event.getParameters()[0].indexOf("stage") != -1) {
                     try {
@@ -131,7 +131,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void a(PlayerTickEvent event) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             event.player.setAir(0);
             event.player.worldObj.setRainStrength(0);
             if(fireAttack) {
@@ -158,7 +158,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void renderUI(RenderGameOverlayEvent.Post event) {
-        if (LoPre2.chackWorld()) {
+        if (LoPre2.checkWorld()) {
             if (event.getType() == ElementType.ALL) {
                 Minecraft.getMinecraft().fontRendererObj.drawString("도움이 필요하면 /jb help", 0, 0,
                         0xFFFFFF);

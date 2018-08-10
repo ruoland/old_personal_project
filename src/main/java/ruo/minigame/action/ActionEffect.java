@@ -91,6 +91,7 @@ public class ActionEffect {
 	}
 
 	public static float getPitch() {
+		System.out.println(mapName);
 		return tpPitchMap.get(mapName);
 	}
 

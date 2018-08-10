@@ -19,7 +19,7 @@ import ruo.asdf.enchant.*;
 import ruo.awild.EntityWildZombie;
 import ruo.cmplus.deb.DebAPI;
 
-@Mod(modid = "SUAKGE", name = "Super Ultra King God Emperor Mod")
+//@Mod(modid = "SUAKGE", name = "Super Ultra King God Emperor Mod")
 public class SUAKGEMod {
     public static final Enchantment bonusExpEnchant = new BonusExpEnchant();
     public static final Enchantment explosionEnchant = new ExplosionEnchant();
