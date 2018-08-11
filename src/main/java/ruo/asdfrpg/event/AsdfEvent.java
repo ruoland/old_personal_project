@@ -88,28 +88,6 @@ public class AsdfEvent {
         }
     }
 
-    @SubscribeEvent
-    public void gameoverlay(TickEvent.PlayerTickEvent e) {
-        if (e.phase == TickEvent.Phase.END && e.side == Side.SERVER)
-            DebAPI.deb();
-    }
-
-    @SubscribeEvent
-    public void gameoverlay(ServerChatEvent e) {
-        if (e.getMessage().startsWith("s:")) {
-            DebAPI.activeName = e.getMessage().replace("s:", "");
-        }
-        System.out.println("FOOD " + e.getPlayer().getFoodStats().getFoodLevel());
-        String[] split = e.getMessage().split(",");
-        if (split.length > 2) {
-            float x = Float.valueOf(split[0]);
-            float y = Float.valueOf(split[1]);
-            float z = Float.valueOf(split[2]);
-            DebAPI.debAPI.get(DebAPI.activeName).x = x;
-            DebAPI.debAPI.get(DebAPI.activeName).y = y;
-            DebAPI.debAPI.get(DebAPI.activeName).z = z;
-        }
-    }
 
     @SubscribeEvent
     public void gameoverlay(RenderGameOverlayEvent.Post e) {

@@ -128,7 +128,7 @@ public class MiniGame {
         reg(bomber.bombItem);
 
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
-        DebAPI.registerEntity(this, "NO-EGG-DefaultNPC", EntityDefaultNPC.class);
+        DebAPI.registerEntity(this, "DefaultNPC", EntityDefaultNPC.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultBlock", EntityDefaultBlock.class);
 
         DebAPI.registerEvent(new ActionEvent());

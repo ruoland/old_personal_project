@@ -53,12 +53,12 @@ public class DebAPI {
     public static String activeName;
     public double speed = 0.05;
 
-    public DebAPI(String name) {
+    private DebAPI(String name) {
         this.name = name;
         debAPI.put(name, this);
     }
 
-    public DebAPI(String name, double x, double y, double z) {
+    private DebAPI(String name, double x, double y, double z) {
         this(name);
         this.x = (float) x;
         this.y = (float) y;

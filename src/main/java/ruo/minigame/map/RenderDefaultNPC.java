@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.layers.LayerDeadmau5Head;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -34,6 +35,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerBipedArmor(this));
         this.addLayer(new LayerDefaultNPCElytra(this));
+        this.addLayer(new LayerEye(this));
         //this.addLayer(new LayerDefaultNPCEye(this));
         DEFAULT_RES_LOC = r;
     }

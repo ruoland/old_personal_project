@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -56,13 +57,14 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private Vec3d targetVec = null, targetPosition;
     private double distance = 1.5;
     private Entity target;
-
+    public int random = 0;
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
         this.eft = TextEffect.getHelper(this);
         posHelper = new PosHelper(this);
         this.setSize(0.6F, 1.95F);
         PathNavigateGround path = (PathNavigateGround) this.getNavigator();
+        this.setRotate(0,0,0);
         path.setEnterDoors(true);
         path.setBreakDoors(true);
         if (!worldIn.isRemote) {
@@ -70,6 +72,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
             npcHash.put(getCustomNameTag(), this);
             uuidHash.put(getUniqueID().toString(), this);
         }
+        random = rand.nextInt(100);
     }
 
     @Override
@@ -104,6 +107,13 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public void setTarget(Entity base) {
         target = base;
         setTarget(base.posX, base.posY, base.posZ);
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
+        this.faceEntity(player, 360, 360);
+        random = rand.nextInt(100);
+        return super.processInteract(player, hand, stack);
     }
 
     public void setTarget(double x, double y, double z) {
@@ -145,6 +155,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(random > 0){
+            random--;
+            System.out.println("random 깎는 중"+random);
+        }
         if (isSturn()) {
             this.rotationPitch = getDataManager().get(LOCK_PITCH);
             this.rotationYaw = getDataManager().get(LOCK_YAW);
