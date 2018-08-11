@@ -38,5 +38,16 @@ public class PosHelper {
         return EntityAPI.getZ(base, spawnDirection, plus, rlplus, pos);
     }
 
+    public EnumFacing getFacing(SpawnDirection spawnDirection){
+        if(spawnDirection == SpawnDirection.LEFT)
+            return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() - 90);
+        if(spawnDirection == SpawnDirection.RIGHT)
+            return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() + 90);
+        if(spawnDirection == SpawnDirection.FORWARD)
+            return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle());
+        if(spawnDirection == SpawnDirection.BACK)
+            return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() + 180);
+        return null;
+    }
 
 }
