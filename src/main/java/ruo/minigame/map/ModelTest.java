@@ -38,6 +38,7 @@ public class ModelTest extends ModelBase {
     DebAPI eye = DebAPI.createDebAPI("eye", 0, 0, 3);//눈 좌표
     DebAPI scale = DebAPI.createDebAPI("scale", 1,1,0.02);//눈 크기
     DebAPI bscale = DebAPI.createDebAPI("bscale", 1,1,0.02);//블라인드 크기
+    public DebAPI eyero = DebAPI.createDebAPI("eyero", 0, 0, 3);//눈 좌표
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
