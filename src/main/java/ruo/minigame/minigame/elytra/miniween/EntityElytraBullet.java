@@ -1,8 +1,6 @@
 package ruo.minigame.minigame.elytra.miniween;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
@@ -11,7 +9,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import ruo.halloween.miniween.EntityMiniWeen;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 

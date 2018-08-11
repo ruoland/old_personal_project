@@ -8,9 +8,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import ruo.halloween.EntityWeen;
-import ruo.halloween.WeenEffect;
-import ruo.halloween.WeenEvent;
-import ruo.minigame.api.WorldAPI;
 
 import java.util.List;
 

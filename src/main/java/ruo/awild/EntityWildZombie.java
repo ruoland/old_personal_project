@@ -1,14 +1,9 @@
 package ruo.awild;
 
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import ruo.asdf.ai.EntityAIBlockPlace;
-import ruo.awild.ai.EntityAIAvoidEntityCreeper;
 import ruo.awild.ai.EntityAIBreakBlock;
 import ruo.awild.ai.EntityAIFindSound;
 

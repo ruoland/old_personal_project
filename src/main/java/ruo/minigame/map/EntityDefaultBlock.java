@@ -2,10 +2,8 @@ package ruo.minigame.map;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,30 +11,20 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import ruo.asdfrpg.skill.SkillHelper;
 import ruo.asdfrpg.skill.Skills;
 import ruo.cmplus.deb.DebAPI;
-import ruo.halloween.miniween.EntityAttackMiniWeen;
-import ruo.map.lopre2.CommandJB;
-import ruo.map.lopre2.EntityBuildBlock;
-import ruo.map.lopre2.EntityLavaBlock;
-import ruo.map.lopre2.EntityPreBlock;
-import ruo.map.lopre2.dummy.EntityBuildBlockMove;
-import ruo.minigame.api.*;
+import ruo.minigame.api.RenderAPI;
+import ruo.minigame.api.WorldAPI;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 public class EntityDefaultBlock extends EntityDefaultNPC {
     //넉백된 상태

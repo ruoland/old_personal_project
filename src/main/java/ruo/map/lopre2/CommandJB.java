@@ -18,12 +18,12 @@ import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
 import ruo.map.lopre2.jump2.JumpEvent2;
+import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 import ruo.minigame.map.EntityDefaultNPC;
-import ruo.minigame.action.ActionEffect;
 
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;

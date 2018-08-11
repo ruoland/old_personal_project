@@ -1,6 +1,5 @@
 package ruo.map.lopre2;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +15,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
-import ruo.halloween.EntityWeen;
 import ruo.minigame.action.ActionEvent;
 import ruo.minigame.action.GrabHelper;
 import ruo.minigame.api.EntityAPI;

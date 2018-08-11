@@ -1,16 +1,9 @@
 package ruo.asdfrpg;
 
-import atomicstryker.dynamiclights.client.DynamicLights;
-import atomicstryker.dynamiclights.client.IDynamicLightSource;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 

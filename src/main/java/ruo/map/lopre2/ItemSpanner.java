@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -16,14 +15,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
-import ruo.cmplus.deb.CommandDeb;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.map.lopre2.jump2.EntityKnockbackBlock;
-
-import java.util.List;
 
 public class ItemSpanner extends Item {
     public static String renderText;

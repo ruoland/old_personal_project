@@ -3,8 +3,6 @@ package ruo.asdfrpg;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -14,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.map.EntityDefaultNPC;
 

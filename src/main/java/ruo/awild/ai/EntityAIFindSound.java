@@ -1,18 +1,7 @@
 package ruo.awild.ai;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import ruo.minigame.api.BlockAPI;
-import ruo.minigame.api.WorldAPI;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class EntityAIFindSound extends net.minecraft.entity.ai.EntityAIBase {
     private EntityLiving theEntity;

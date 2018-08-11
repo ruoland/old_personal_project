@@ -1,10 +1,8 @@
 package ruo.awild.ai;
 
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.monster.EntityCreeper;
-import ruo.awild.EntityWildHorse;
 
 public class EntityAIAvoidEntityCreeper extends EntityAIAvoidEntity {
     private EntityCreature creature;

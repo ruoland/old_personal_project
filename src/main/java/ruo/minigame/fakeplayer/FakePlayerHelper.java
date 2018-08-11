@@ -1,9 +1,6 @@
 package ruo.minigame.fakeplayer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumFacing;
-import ruo.minigame.MiniGame;
-import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
 public class FakePlayerHelper {

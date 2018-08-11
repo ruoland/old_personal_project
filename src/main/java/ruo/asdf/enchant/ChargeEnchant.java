@@ -2,8 +2,6 @@ package ruo.asdf.enchant;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
 
 public class ChargeEnchant extends Enchantment {
     public ChargeEnchant() {

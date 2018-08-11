@@ -3,7 +3,6 @@ package ruo.minigame.action;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;

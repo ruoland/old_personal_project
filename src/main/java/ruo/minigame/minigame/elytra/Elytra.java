@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.camera.Camera;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.PosHelper;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
@@ -17,7 +18,6 @@ import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
 import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
-import ruo.minigame.api.SpawnDirection;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;

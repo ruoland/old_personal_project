@@ -20,7 +20,6 @@ import ruo.map.tycoon.block.shopping.BlockShopping;
 import ruo.map.tycoon.block.shopping.TileShopping;
 import ruo.map.tycoon.block.shopping.TileShoppingRenderer;
 import ruo.map.tycoon.consumer.EntityConsumer;
-import ruo.minigame.api.RenderAPI;
 
 //@Mod(modid = "BreadTycoon", name="BreadTycooooooooooooooooooooooooooon", version="1.0")
 public class TyconMain {

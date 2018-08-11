@@ -10,7 +10,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ruo.cmplus.cm.v17.CommandPosition;
 
 public class ItemSpawnCoin extends Item {
 

@@ -1,12 +1,9 @@
 package ruo.asdfrpg.skill;
 
-import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import ruo.minigame.api.NBTAPI;
 import ruo.minigame.api.WorldAPI;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;

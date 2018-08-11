@@ -2,22 +2,15 @@ package ruo.minigame.minigame.minerun;
 
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.util.FakePlayer;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
 import ruo.minigame.MiniGame;
@@ -25,7 +18,6 @@ import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
-import ruo.minigame.map.RenderDefaultNPC;
 import ruo.minigame.minigame.AbstractMiniGame;
 
 public class MineRun extends AbstractMiniGame {

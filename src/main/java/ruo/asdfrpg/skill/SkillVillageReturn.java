@@ -1,9 +1,7 @@
 package ruo.asdfrpg.skill;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import ruo.asdfrpg.AsdfRPG;
 import ruo.minigame.api.WorldAPI;
 
 public class SkillVillageReturn extends Skill {

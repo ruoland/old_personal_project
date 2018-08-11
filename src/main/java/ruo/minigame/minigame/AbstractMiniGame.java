@@ -1,8 +1,5 @@
 package ruo.minigame.minigame;
 
-import net.minecraft.init.Items;
-import net.minecraftforge.common.MinecraftForge;
-import ruo.cmplus.cm.CommandChat;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 

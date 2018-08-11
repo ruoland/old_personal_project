@@ -5,9 +5,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.cm.v15.GuiCGameOver;
 import ruo.cmplus.util.Sky;
@@ -16,8 +13,6 @@ import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CMManager implements Serializable {

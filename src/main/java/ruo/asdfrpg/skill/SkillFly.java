@@ -1,14 +1,7 @@
 package ruo.asdfrpg.skill;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityTippedArrow;
-import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import ruo.asdfrpg.AsdfRPG;
-import ruo.minigame.api.WorldAPI;
 
 public class SkillFly extends Skill {
 

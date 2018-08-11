@@ -43,7 +43,6 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.deb.DebEvent;
 import ruo.cmplus.test.CMMessageHandler;
 import ruo.cmplus.test.CMPacketCommand;
-import ruo.cmplus.util.Sky;
 
 import java.io.FileInputStream;
 import java.util.Map;

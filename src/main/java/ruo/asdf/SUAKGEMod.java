@@ -1,7 +1,10 @@
 package ruo.asdf;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.RenderCreeper;
+import net.minecraft.client.renderer.entity.RenderSkeleton;
+import net.minecraft.client.renderer.entity.RenderSpider;
+import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;

@@ -4,11 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.Properties;
-import java.util.Random;
 
 public class Main {
     private static StringBuffer renderText = new StringBuffer("");

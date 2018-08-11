@@ -1,14 +1,12 @@
 package ruo.asdfrpg;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 import ruo.asdfrpg.skill.PlayerSkill;
-import ruo.asdfrpg.skill.SkillHelper;
 import ruo.asdfrpg.skill.Skill;
+import ruo.asdfrpg.skill.SkillHelper;
 import ruo.asdfrpg.skill.SkillStack;
 import ruo.minigame.api.RenderAPI;
 

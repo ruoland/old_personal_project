@@ -3,8 +3,8 @@ package ruo.minigame;
 import api.player.server.ServerPlayerAPI;
 import api.player.server.ServerPlayerBase;
 import net.minecraft.util.DamageSource;
-import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.action.ActionEffect;
+import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class MiniGameServerPlayer extends ServerPlayerBase
 {

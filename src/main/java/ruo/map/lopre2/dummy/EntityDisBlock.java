@@ -8,7 +8,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import ruo.map.lopre2.EntityPreBlock;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 

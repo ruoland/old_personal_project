@@ -1,13 +1,10 @@
 package ruo.asdf.boss;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.map.EntityDefaultNPC;
-import scala.xml.dtd.EntityDef;
 
 import java.util.List;
 

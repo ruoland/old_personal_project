@@ -11,7 +11,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import ruo.map.lopre2.jump2.EntityKnockbackBlock;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;

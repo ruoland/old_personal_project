@@ -2,7 +2,6 @@ package ruo.asdfrpg.tileentity;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import ruo.map.tycoon.block.TileEntityBase;
 
 public class TileEntityItemDecorationRenderer extends TileEntitySpecialRenderer {
     @Override

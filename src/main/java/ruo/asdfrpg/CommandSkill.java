@@ -10,10 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import ruo.asdfrpg.event.AsdfEvent;
 import ruo.asdfrpg.skill.*;
 import ruo.minigame.action.ActionEffect;
-import ruo.minigame.api.ScriptAPI;
 
 import javax.annotation.Nullable;
 import java.util.List;

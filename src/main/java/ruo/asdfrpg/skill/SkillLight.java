@@ -1,9 +1,5 @@
 package ruo.asdfrpg.skill;
 
-import atomicstryker.dynamiclights.client.DynamicLights;
-import atomicstryker.dynamiclights.client.IDynamicLightSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCreeper;
 import ruo.asdfrpg.EntityLight;
 
 public class SkillLight extends Skill {

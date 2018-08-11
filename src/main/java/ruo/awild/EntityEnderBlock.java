@@ -3,9 +3,7 @@ package ruo.awild;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.EntityFlyNPC;
 
 public class EntityEnderBlock extends EntityFlyNPC {

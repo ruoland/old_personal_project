@@ -1,17 +1,12 @@
 package ruo.awild;
 
-import net.minecraft.entity.ai.EntityAIOcelotSit;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import ruo.awild.ai.EntityAIAvoidEntityWildHorse;
-import ruo.cmplus.cm.CommandChat;
 import net.minecraft.world.World;
-import ruo.minigame.api.WorldAPI;
 
 import javax.annotation.Nullable;
 

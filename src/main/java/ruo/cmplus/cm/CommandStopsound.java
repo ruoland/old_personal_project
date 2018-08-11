@@ -1,10 +1,8 @@
 package ruo.cmplus.cm;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import ruo.cmplus.util.CommandPlusBase;
 

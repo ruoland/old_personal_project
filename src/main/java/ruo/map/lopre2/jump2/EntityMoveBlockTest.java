@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 import ruo.map.lopre2.CommandJB;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.map.lopre2.LoPre2;
+import ruo.minigame.action.GrabHelper;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
-import ruo.minigame.action.GrabHelper;
 
 
 public class EntityMoveBlockTest extends EntityPreBlock {

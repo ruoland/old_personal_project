@@ -12,7 +12,6 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.map.platformer.chapter1.EntityPlatBlock;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;

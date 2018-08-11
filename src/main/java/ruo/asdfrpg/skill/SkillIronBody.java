@@ -1,6 +1,5 @@
 package ruo.asdfrpg.skill;
 
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 

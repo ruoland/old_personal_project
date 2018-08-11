@@ -117,23 +117,27 @@ public class EntityLavaBlock extends EntityPreBlock {
         if(getScaleX() != 1 && getScaleZ() != 1 && getWidth() != 0 && getHeight() != 0 && (getWidth() != width || getHeight() != height)){
             this.setSize(getWidth(), getHeight());
             this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+            System.out.println("스폰장소로 설정됨"+getScaleX()+ " - "+getScaleZ()+" - "+getWidth()+" - "+getHeight()+" - "+(getWidth() != width || getHeight() != height));
         }
-        if (WorldAPI.getPlayer() != null && !canFalling() && WorldAPI.getPlayer().getDistance(posX, posY, posZ) < 20) {
+        if (WorldAPI.getPlayer() != null && !canFalling()) {
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
             if (!list.isEmpty()) {
                 for (Entity entity : list) {
                     if ((entity instanceof EntityPlayer) && !entity.noClip) {
                         isFly = false;
+                        System.out.println("플레이어 발견함");
                     } else
                         isFly = true;
                 }
             }
             if (isFly && posY < getSpawnY()) {
                 setVelocity(0, downSpeed, 0);
+                System.out.println("올라가는 중");
             }
             if (!isFly) {
                 setVelocity(0, -downSpeed, 0);
+                System.out.println("내려가는 중");
                 isFly = true;
 
             }

@@ -2,7 +2,6 @@ package ruo.map.platformer;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 

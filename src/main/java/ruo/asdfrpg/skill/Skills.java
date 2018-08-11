@@ -1,7 +1,5 @@
 package ruo.asdfrpg.skill;
 
-import net.minecraft.item.Item;
-
 public class Skills {
     public static final Skill BLOCK_GRAB = new Skill().setX(1).setUnlocalizedName("BLOCK_GRAB").setLocalizedName("블럭 잡기").setMaxLevel(1);
     public static final Skill DOUBLE_JUMP = new Skill().setX(2).setUnlocalizedName("DOUBLE_JUMP").setLocalizedName("더블 점프").setMaxLevel(5);

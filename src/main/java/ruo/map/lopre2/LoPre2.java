@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
-import ruo.map.lopre2.dummy.*;
+import ruo.map.lopre2.dummy.EntityDummyGuardLoop;
 import ruo.map.lopre2.jump2.*;
 import ruo.minigame.api.WorldAPI;
 
@@ -57,7 +57,7 @@ public class LoPre2 {
         ClientRegistry.registerKeyBinding(blockSetKey);
         ClientRegistry.registerKeyBinding(grab);
         DebAPI.registerEvent(new JumpEvent2());
-        DebAPI.registerEntity(this, "FastBlock", EntityFastBlock.class);
+        DebAPI.registerEntity(this, "TeleportBlock", EntityTeleportBlock.class);
         DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
         DebAPI.registerEntity(this, "LoopGuard", EntityDummyGuardLoop.class);
         DebAPI.registerEntity(this, "BigBlockInvisible", EntityBigInvisibleBlock.class);

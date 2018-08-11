@@ -5,8 +5,8 @@ import api.player.client.ClientPlayerBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHand;
-import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.action.ActionEffect;
+import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class MiniGameClientPlayer extends ClientPlayerBase {
 

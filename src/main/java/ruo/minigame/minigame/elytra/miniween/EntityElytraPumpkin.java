@@ -2,14 +2,12 @@ package ruo.minigame.minigame.elytra.miniween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.fakeplayer.EntityFakePlayer;

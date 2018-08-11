@@ -6,10 +6,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
-import ruo.minigame.command.CommandScroll;
 import ruo.minigame.map.EntityDefaultNPC;
 
 import javax.annotation.Nullable;

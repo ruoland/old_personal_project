@@ -5,28 +5,26 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import ruo.map.lopre2.EntityPreBlock;
-import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 
-public class EntityFastBlock extends EntityPreBlock {
+public class EntityTeleportBlock extends EntityPreBlock {
     private int moveXZ = 0, timeDelay, moveDelay;
     private double moveX, moveZ;
     private boolean reverse;
 
-    public EntityFastBlock(World worldObj) {
+    public EntityTeleportBlock(World worldObj) {
         super(worldObj);
         this.setBlockMode(Blocks.STONE);
     }
 
     @Override
     public String getCustomNameTag() {
-        return "FastBlock 이동 딜레이 " + moveDelay;
+        return "텔레포트 블럭 이동시간  " + moveDelay;
     }
 
     @Override
@@ -52,13 +50,20 @@ public class EntityFastBlock extends EntityPreBlock {
         super.onLivingUpdate();
         timeDelay++;
         if (timeDelay >= 20) {
+            timeDelay = 0;
+
             if (!reverse)
                 moveXZ++;
-            else
+            else if(reverse)
                 moveXZ--;
-            timeDelay = 0;
-            if (moveXZ == 3 || moveXZ == -1)
+
+            if (moveXZ == 3 || moveXZ == -1) {
                 reverse = !reverse;
+
+                if(moveXZ == 3) moveXZ--;
+                if(moveXZ == -1) moveXZ++;
+            }
+            System.out.println(moveXZ+" - "+reverse);
         }
 
         if (moveXZ == 2)

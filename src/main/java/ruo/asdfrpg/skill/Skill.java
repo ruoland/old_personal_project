@@ -1,7 +1,5 @@
 package ruo.asdfrpg.skill;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.AsdfRPG;
 import ruo.asdfrpg.ItemSkillBook;

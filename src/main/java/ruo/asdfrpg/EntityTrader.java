@@ -13,7 +13,6 @@ import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.map.EntityDefaultNPC;
-import scala.xml.dtd.EntityDef;
 
 import javax.annotation.Nullable;
 

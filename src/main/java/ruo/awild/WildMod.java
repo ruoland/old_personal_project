@@ -1,7 +1,6 @@
 package ruo.awild;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.client.renderer.entity.RenderHorse;
@@ -15,7 +14,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import ruo.asdf.EntityTeleportCreeper;
 import ruo.cmplus.deb.DebAPI;
 
 //@Mod(modid =  "WildPlus", name =  "WildPlus")
