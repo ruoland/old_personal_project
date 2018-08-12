@@ -20,7 +20,6 @@ public class EntityBigBlock extends EntityPreBlock {
             DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DEFAULT_DELAY = EntityDataManager.<Integer>createKey(EntityBigBlock.class,
             DataSerializers.VARINT);
-    private AxisAlignedBB renderBoundingBox;
 
     public EntityBigBlock(World world) {
         super(world);
@@ -30,13 +29,6 @@ public class EntityBigBlock extends EntityPreBlock {
         this.setSize(3, 1);
         this.setLock(true);
         this.noClip = !noClip;
-        renderBoundingBox = getEntityBoundingBox().expand(5,5,5);
-    }
-
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return renderBoundingBox;
     }
 
     @Override

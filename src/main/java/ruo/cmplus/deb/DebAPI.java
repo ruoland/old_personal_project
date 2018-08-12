@@ -352,7 +352,7 @@ public class DebAPI {
     }
 
     public static void registerEntity(Object mod, String name, Class entity) {
-        registerEntity(mod, name, "textures/entity/steve.png", entity, new ModelDefaultNPC());
+        registerEntity(mod, name, "minigame:textures/entity/herobrine.png", entity, new ModelDefaultNPC());
     }
 
     public static void registerEntity(Object mod, String name, String texture, Class entity) {

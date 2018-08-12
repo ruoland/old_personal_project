@@ -59,7 +59,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private Vec3d targetVec = null, targetPosition;
     private double distance = 1.5;
     private Entity target;
+
     public int random = 0;
+    public double eyeCloseScaleY;
+    public boolean eyeCloseReverse;
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
         this.eft = TextEffect.getHelper(this);
@@ -159,7 +162,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
         super.onLivingUpdate();
         if(random > 0 && getModel() == TypeModel.NPC){
             random--;
-            System.out.println("random 깎는 중"+random);
         }
         if (isSturn()) {
             this.rotationPitch = getDataManager().get(LOCK_PITCH);

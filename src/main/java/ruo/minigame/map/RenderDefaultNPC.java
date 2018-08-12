@@ -164,7 +164,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         }
         if (entity.getModel() == TypeModel.NPC && !(mainModel instanceof ModelDefaultNPC)) {
             mainModel = new ModelDefaultNPC();
-            DEFAULT_RES_LOC = new ResourceLocation("textures/entity/steve.png");
+            DEFAULT_RES_LOC = new ResourceLocation("minigame:textures/entity/herobrine.png");
         }
         if ((entity.getModel() == TypeModel.ZOMBIE && !(mainModel instanceof ModelZombie))) {
             mainModel = new ModelZombie();
