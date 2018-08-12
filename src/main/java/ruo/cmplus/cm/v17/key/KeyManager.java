@@ -60,6 +60,8 @@ public class KeyManager {
 			String str = (String) key;
 			keyMap.put(Integer.valueOf(str), DebAPI.getWorldProperties().getProperty(str));
 		}
+		DebAPI.saveWorldProperties();
+
 	}
 	
 	public KeyBinding getKeyBinding(String key) throws CommandException{

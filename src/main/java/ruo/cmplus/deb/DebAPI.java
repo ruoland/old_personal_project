@@ -68,34 +68,35 @@ public class DebAPI {
         return Minecraft.getMinecraft().getRenderManager();
     }
 
-    public static void deb(){
-        for(DebAPI debAPI: debAPI.values()){
+    public static void deb() {
+        for (DebAPI debAPI : debAPI.values()) {
             debAPI.a2();
         }
     }
 
-    public static DebAPI get(){
+    public static DebAPI get() {
         return debAPI.get(activeName);
     }
 
-    public static void println(){
+    public static void println() {
         DebAPI deb = debAPI.get(activeName);
-        System.out.println(activeName+" - "+deb.x+" - "+deb.y+" - "+deb.z);
+        System.out.println(activeName + " - " + deb.x + " - " + deb.y + " - " + deb.z);
     }
+
     public void a2() {
-        if(activeName != null && activeName.equalsIgnoreCase(name)) {
+        if (activeName != null && activeName.equalsIgnoreCase(name)) {
             if (DebAPI.isKeyDown(Keyboard.KEY_F)) {
                 reset();
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_G)) {
-                System.out.println(x+" - "+y+" - "+z);
+                System.out.println(x + " - " + y + " - " + z);
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_C)) {
-                speed+=0.05;
+                speed += 0.05;
                 System.out.println(speed);
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
-                speed-=0.05;
+                speed -= 0.05;
                 System.out.println(speed);
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_J)) {
@@ -143,13 +144,14 @@ public class DebAPI {
     }
 
     private static HashMap<String, Configuration> configHash = new HashMap<>();
+
     public static Configuration getWorldConfig() {
         return getWorldConfig(WorldAPI.getCurrentWorldName());
 
     }
 
     public static Configuration getWorldConfig(String worldName) {
-        if(!configHash.containsKey(worldName)) {
+        if (!configHash.containsKey(worldName)) {
             try {
                 createFile("./saves/" + worldName + "/commandplus/", "key.txt");
                 Configuration configuration = new Configuration(new File("./saves/" + worldName + "/commandplus/", "key.txt"));
@@ -163,8 +165,8 @@ public class DebAPI {
         return configHash.get(worldName);
     }
 
-    public static void reloadConfig(){
-        for(Configuration config : configHash.values()){
+    public static void reloadConfig() {
+        for (Configuration config : configHash.values()) {
             config.load();
             config.save();
         }
@@ -187,11 +189,13 @@ public class DebAPI {
         Properties properties = hash.containsKey(worldName)
                 ? hash.get(worldName) : new Properties();
         try {
-            File file = new File("./saves/"+worldName+"/commandplus/key.txt");
-            if(!file.isFile()) {
+            File file = new File("./saves/" + worldName + "/commandplus/key.txt");
+            if (!file.isFile()) {
                 createFile("./saves/" + worldName + "/commandplus/", "key.txt");
             }
-            properties.load(new FileInputStream("./saves/" + worldName + "/commandplus/key.txt"));
+            FileInputStream inputStream = new FileInputStream("./saves/" + worldName + "/commandplus/key.txt");
+            properties.load(inputStream);
+            inputStream.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,8 +209,10 @@ public class DebAPI {
         try {
             for (String key : hash.keySet()) {
                 System.out.println(hash.get(key).getProperty("tpy"));
-                hash.get(key)
-                        .store(new FileOutputStream("./saves/" + key + "/commandplus/key.txt"), "");
+                FileOutputStream fos = new FileOutputStream("./saves/" + key + "/commandplus/key.txt");
+                hash.get(key).store(fos, "");
+                fos.flush();
+                fos.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -268,9 +274,9 @@ public class DebAPI {
 
     private static int id = 140;
 
-    public static void createJson(Item itemBlock, Item model){
-        ResourceLocation resourceLocation = itemBlock instanceof ItemBlock ?((ItemBlock) itemBlock).getBlock().getRegistryName() : itemBlock.getRegistryName();
-        ResourceLocation resourceLocationModel = model instanceof ItemBlock ?((ItemBlock) model).getBlock().getRegistryName() : model.getRegistryName();
+    public static void createJson(Item itemBlock, Item model) {
+        ResourceLocation resourceLocation = itemBlock instanceof ItemBlock ? ((ItemBlock) itemBlock).getBlock().getRegistryName() : itemBlock.getRegistryName();
+        ResourceLocation resourceLocationModel = model instanceof ItemBlock ? ((ItemBlock) model).getBlock().getRegistryName() : model.getRegistryName();
 
         String modid = resourceLocation.getResourceDomain();
         String modelBlock = model == null ? "stone" : resourceLocationModel.getResourcePath();
@@ -278,20 +284,20 @@ public class DebAPI {
         Gson gson = new Gson();
         JsonObject parent = new JsonObject();
         JsonObject texture = new JsonObject();
-        parent.addProperty("parent", itemBlock instanceof ItemBlock ?"block/"+modelBlock : "item/"+modelBlock);
-        if(itemBlock instanceof ItemBlock) {
+        parent.addProperty("parent", itemBlock instanceof ItemBlock ? "block/" + modelBlock : "item/" + modelBlock);
+        if (itemBlock instanceof ItemBlock) {
             parent.add("textures", texture);
         }
-        File jsonFolder = new File("D:/OneDrive/src/main/resources/assets/"+modid+"");
-        File blockStateFolder = new File(jsonFolder+"/blockstates/");
-        File blockFolder = new File(jsonFolder+"/models/block/");
-        File itemFolder = new File(jsonFolder+"/models/item/");
-        File jsonBlockState = new File(blockStateFolder+"/"+itemName+".json");
-        File jsonBlock = new File(blockFolder+"/"+itemName+".json");
-        File jsonItem = new File(itemFolder+"/"+itemName+".json");
-        if(jsonItem.isFile() || jsonBlock.isFile() || jsonBlockState.isFile())
+        File jsonFolder = new File("D:/OneDrive/src/main/resources/assets/" + modid + "");
+        File blockStateFolder = new File(jsonFolder + "/blockstates/");
+        File blockFolder = new File(jsonFolder + "/models/block/");
+        File itemFolder = new File(jsonFolder + "/models/item/");
+        File jsonBlockState = new File(blockStateFolder + "/" + itemName + ".json");
+        File jsonBlock = new File(blockFolder + "/" + itemName + ".json");
+        File jsonItem = new File(itemFolder + "/" + itemName + ".json");
+        if (jsonItem.isFile() || jsonBlock.isFile() || jsonBlockState.isFile())
             return;
-        if(!jsonFolder.isDirectory())
+        if (!jsonFolder.isDirectory())
             return;
         try {
             jsonFolder.mkdirs();
@@ -302,8 +308,9 @@ public class DebAPI {
             BufferedWriter writerItem = Files.newWriter(jsonItem, Charset.forName("UTF-8"));
             writerItem.write(gson.toJson(parent));
             writerItem.newLine();
-            writerItem.close();;
-            if(itemBlock instanceof ItemBlock) {
+            writerItem.close();
+            ;
+            if (itemBlock instanceof ItemBlock) {
                 jsonBlockState.createNewFile();
                 jsonBlock.createNewFile();
                 BufferedWriter writerBlock = Files.newWriter(jsonBlock, Charset.forName("UTF-8"));
@@ -311,17 +318,18 @@ public class DebAPI {
                 writerBlock.newLine();
                 writerBlock.close();
                 BufferedWriter writerBlockState = Files.newWriter(jsonBlockState, Charset.forName("UTF-8"));
-                writerBlockState.write("{ \"variants\": { \"normal\": {\"model\": \""+modelBlock+"\" } } }");
+                writerBlockState.write("{ \"variants\": { \"normal\": {\"model\": \"" + modelBlock + "\" } } }");
                 writerBlockState.newLine();
                 writerBlockState.close();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        ModelLoader.setCustomModelResourceLocation(itemBlock, 0, new ModelResourceLocation(modid+":"+itemName, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(itemBlock, 0, new ModelResourceLocation(modid + ":" + itemName, "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-                .register(itemBlock, 0, new ModelResourceLocation(modid+":"+itemName, "inventory"));
+                .register(itemBlock, 0, new ModelResourceLocation(modid + ":" + itemName, "inventory"));
     }
+
     public static void createJson(Block block, Block model) {
         createJson(new ItemBlock(block), new ItemBlock(model));
     }

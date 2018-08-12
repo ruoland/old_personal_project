@@ -157,7 +157,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(random > 0){
+        if(random > 0 && getModel() == TypeModel.NPC){
             random--;
             System.out.println("random 깎는 중"+random);
         }

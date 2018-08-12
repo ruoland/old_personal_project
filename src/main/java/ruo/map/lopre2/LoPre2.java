@@ -50,10 +50,6 @@ public class LoPre2 {
         //DebAPI.registerEntity(this, "ridingBlock", EntityRidingBlock.class);
         //점프맵 2 코드
         JumpEvent2.food = Boolean.valueOf(DebAPI.getWorldProperties("JumpMap").getProperty("food", "false"));
-        LooPre2Event.gamemodeCount = Integer.valueOf(DebAPI.getWorldProperties("JumpMap").getProperty("gamemodeCount", "0"));
-        LooPre2Event.spawnCount = Integer.valueOf(DebAPI.getWorldProperties("JumpMap").getProperty("spawnCount", "0"));
-        LooPre2Event.nightVision = Boolean.valueOf(DebAPI.getWorldProperties("JumpMap").getProperty("NightVision", "true"));
-        LooPre2Event.posYDead = Boolean.valueOf(DebAPI.getWorldProperties("JumpMap").getProperty("posYDead", "true"));
         ClientRegistry.registerKeyBinding(blockSetKey);
         ClientRegistry.registerKeyBinding(grab);
         DebAPI.registerEvent(new JumpEvent2());

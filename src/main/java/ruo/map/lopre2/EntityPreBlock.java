@@ -41,7 +41,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);//클라이언트 월드에서 엔티티가 스폰 될 수 있게 함, 가짜 블럭 생성용
     private static final DataParameter<Boolean> COPY = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);//복사용 블럭인가
-    private static final DataParameter<Boolean> CANFALLING = EntityDataManager.createKey(EntityPreBlock.class,
+    private static final DataParameter<Boolean> LOCK = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ISTELEPORT = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
@@ -54,14 +54,14 @@ public class EntityPreBlock extends EntityDefaultNPC {
 
     @Override
     public boolean hasCustomName() {
-        return Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox() || (WorldAPI.getPlayer() != null && WorldAPI.getPlayerItem() == LoPre2.itemSpanner);
+        return Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox() || (WorldAPI.equalsHeldItem(LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(LoPre2.itemCopy));
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
         dataManager.register(ISTELEPORT, false);
-        dataManager.register(CANFALLING, false);
+        dataManager.register(LOCK, false);
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(COPY, false);
@@ -72,11 +72,15 @@ public class EntityPreBlock extends EntityDefaultNPC {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         if(getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
         setRotate(90,90,90);
+        this.setTeleport(true);
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
     public void setInv(boolean is) {
         dataManager.set(ISINV, is);
+        if(is){
+            setLock(true);
+        }
     }
 
     public boolean isInv() {
@@ -113,19 +117,26 @@ public class EntityPreBlock extends EntityDefaultNPC {
             if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
                 setInv(!isInv());
                 setInvisible(isInv());
-                System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨");
+                setLock(true);
+                System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨(락 걸림)");
+
+                return super.processInteract(player, hand, stack);
+            }
+            if (player.isSneaking()) {
+                setTeleport(true);
+                return super.processInteract(player, hand, stack);
+            }
+            if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
+                setLock(!isLock());
+                System.out.println("isLock이" + isLock() + "으로 설정됨");
+                return super.processInteract(player, hand, stack);
             }
             if (stack != null && Block.getBlockFromItem(stack.getItem()) != null) {
                 setBlock(stack);
                 prevBlock = Block.getBlockFromItem(stack.getItem());
+                return super.processInteract(player, hand, stack);
             }
-            if (player.isSneaking()) {
-                setTeleport(true);
-            }
-            if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
-                setCanFalling(!canFalling());
-                System.out.println("canFalling이" + canFalling() + "으로 설정됨");
-            }
+
             if(CommandJB.downMode || CommandJB.upMode){
                 if(this instanceof EntityBigBlock){
                     System.out.println("업모드 다운모드 둘중 하나 활성화된상태");
@@ -133,7 +144,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
                     List<EntityLavaBlock> list = worldObj.getEntitiesWithinAABB(EntityLavaBlock.class, getEntityBoundingBox().offset(1,0,1).expand(1,2,1));
                     System.out.println(""+list.size()+" - "+list);
                 }
-                return true;
+                return super.processInteract(player, hand, stack);
 
             }
         }
@@ -354,12 +365,12 @@ public class EntityPreBlock extends EntityDefaultNPC {
         return this;
     }
 
-    public void setCanFalling(boolean a) {
-        this.dataManager.set(CANFALLING, a);
+    public void setLock(boolean a) {
+        this.dataManager.set(LOCK, a);
     }
 
-    public boolean canFalling() {
-        return dataManager.get(CANFALLING);
+    public boolean isLock() {
+        return dataManager.get(LOCK);
     }
 
     public void setForceSpawn(boolean a) {
@@ -383,7 +394,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        compound.setBoolean("falling", canFalling());
+        compound.setBoolean("falling", isLock());
         compound.setBoolean("isInv", isInv());
 
     }
@@ -391,10 +402,11 @@ public class EntityPreBlock extends EntityDefaultNPC {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        setCanFalling(compound.getBoolean("falling"));
+        setLock(compound.getBoolean("falling"));
         setSize(compound.getFloat("widthl"), compound.getFloat("heightl"));
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
+
     }
 
     @Override

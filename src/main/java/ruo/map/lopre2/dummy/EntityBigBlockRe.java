@@ -29,7 +29,7 @@ public class EntityBigBlockRe extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
-        this.setCanFalling(true);
+        this.setLock(true);
         this.noClip = !noClip;
 
     }
@@ -50,7 +50,7 @@ public class EntityBigBlockRe extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return this.getClass().getSimpleName().replace("Entity", "") + " 다운상태:" + canFalling();
+        return this.getClass().getSimpleName().replace("Entity", "") + " 다운상태:" + isLock();
     }
 
     @Override
@@ -82,12 +82,12 @@ public class EntityBigBlockRe extends EntityPreBlock {
             System.out.println(isServerWorld()+ " - " +width+ " - " +Float.compare(width, 3F)+" - "+getRotateX()+ " - "+ Float.compare(getRotateX(), 90));
         if (!isServerWorld() && Float.compare(width, 3F) == 0 && (Float.compare(getRotateX(), 90) != 0 || Float.compare(getRotateY(), 90) != 0
                 || Float.compare(getRotateZ(), 90) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
-            this.setCanFalling(false);
+            this.setLock(false);
             this.setSize(1, 1);
             this.setFalling(false);
             System.out.println("설정");
         }
-        if (!canFalling()) {
+        if (!isLock()) {
             setVelocity(0, 0, 0);
             return;
         } else {

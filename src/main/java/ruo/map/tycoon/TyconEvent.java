@@ -71,6 +71,8 @@ public class TyconEvent {
             TyconHelper.playermoney = Float.valueOf(pro.getProperty("돈", "0"));
             MapHelper.setFlowerBonus(Integer.valueOf(pro.getProperty("플라워보너스", "0")));
             MapHelper.setTyconOpen(Boolean.valueOf(pro.getProperty("열림", "true")));
+            DebAPI.saveWorldProperties();
+
         }
     }
 
@@ -80,6 +82,8 @@ public class TyconEvent {
             DebAPI.getWorldProperties().setProperty("돈", "" + TyconHelper.playermoney);
             DebAPI.getWorldProperties().setProperty("플라워보너스", "" + MapHelper.getFlowerBonus());
             DebAPI.getWorldProperties().setProperty("열림", "" + MapHelper.isTyconOpen());
+            DebAPI.saveWorldProperties();
+
         }
     }
 

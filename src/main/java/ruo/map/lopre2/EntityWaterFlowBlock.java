@@ -74,7 +74,6 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
     @Override
     public EntityWaterFlowBlock spawn(double x, double y, double z) {
         EntityWaterFlowBlock lavaBlock = new EntityWaterFlowBlock(worldObj);
-        lavaBlock.setCanFalling(canFalling());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());

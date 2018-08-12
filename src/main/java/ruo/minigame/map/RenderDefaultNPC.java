@@ -37,121 +37,122 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     @Override
     protected void renderModel(EntityDefaultNPC npc, float limbSwing, float limbSwingAmount, float ageInTicks,
                                float netHeadYaw, float headPitch, float scaleFactor) {
-        if (npc instanceof EntityBuildBlock) {
-            EntityBuildBlock block = (EntityBuildBlock) npc;
-            if (block.blockList.size() == 0) {
+        if(!npc.isInvisible()) {
+            if (npc instanceof EntityBuildBlock) {
+                EntityBuildBlock block = (EntityBuildBlock) npc;
+                if (block.blockList.size() == 0) {
+                    return;
+                }
+                GlStateManager.pushMatrix();
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+                GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
+                GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
+                GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
+                GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
+                GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
+                for (int i = 0; i < block.blockPosList.size(); i++) {
+                    BlockPos pos = block.blockPosList.get(i);
+                    if (block.blockList.get(i) == null) {
+                        continue;
+                    }
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
+                    RenderAPI.renderBlock(block.blockList.get(i), npc);
+                    //RenderAPI.renderBlock2(x, y, z, this, npc, npc.getCurrentBlock());
+                    GlStateManager.popMatrix();
+                }
+                GlStateManager.disableAlpha();
+                GlStateManager.disableBlend();
+                GlStateManager.popMatrix();
                 return;
             }
+
+            if (npc.getModel() == TypeModel.BLOCK) {
+                boolean flag = !npc.isInvisible() || this.renderOutlines;
+                boolean flag1 = !flag && !npc.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
+
+                if (flag || flag1) {
+                    this.setRenderOutlines(false);
+                    GlStateManager.pushMatrix();
+                    if (!this.bindEntityTexture(npc)) {
+                        GlStateManager.popMatrix();
+                        return;
+                    }
+
+                    if (flag1) {
+                        GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
+                    }
+
+                    GlStateManager.translate(npc.getTraX(), npc.getTraY() + 1, npc.getTraZ());
+                    GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
+                    GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
+                    GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
+                    GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
+                    GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+                    RenderAPI.renderBlock(npc.getCurrentStack(), npc);
+
+                    if (flag1) {
+                        GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
+                    }
+                    GlStateManager.popMatrix();
+                }
+                return;
+            }
+
+            if (npc instanceof EntityDefaultBlock && !npc.isInvisible()) {
+                GlStateManager.pushMatrix();
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
+                GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
+                GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
+                GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
+                GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
+                GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+                EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
+
+                for (EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()) {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
+
+                    this.bindTexture(blockData.getTexture());
+                    this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                    GlStateManager.popMatrix();
+                }
+
+                this.bindTexture(npc.getTexture());
+                this.mainModel.render(npc, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                GlStateManager.disableAlpha();
+                GlStateManager.disableBlend();
+                GlStateManager.popMatrix();
+                return;
+            }
+
             GlStateManager.pushMatrix();
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
-            GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-            GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-            GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-            GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
-            GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-            for (int i = 0; i < block.blockPosList.size(); i++) {
-                BlockPos pos = block.blockPosList.get(i);
-                if (block.blockList.get(i) == null) {
-                    continue;
-                }
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
-                RenderAPI.renderBlock(block.blockList.get(i), npc);
-                //RenderAPI.renderBlock2(x, y, z, this, npc, npc.getCurrentBlock());
-                GlStateManager.popMatrix();
-            }
-            GlStateManager.disableAlpha();
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
-            return;
-        }
-
-        if (npc.getModel() == TypeModel.BLOCK) {
-            boolean flag = !npc.isInvisible() || this.renderOutlines;
-            boolean flag1 = !flag && !npc.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
-
-            if (flag || flag1) {
-                this.setRenderOutlines(false);
-                GlStateManager.pushMatrix();
-                if (!this.bindEntityTexture(npc)) {
-                    GlStateManager.popMatrix();
-                    return;
-                }
-
-                if (flag1) {
-                    GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-                }
-
-                GlStateManager.translate(npc.getTraX(), npc.getTraY() + 1, npc.getTraZ());
+            if (npc.isChild()) {
+                GlStateManager.translate(0, 0.7, 0);
+                GlStateManager.scale(0.7, 0.7, 0.6);
+            } else {
+                GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
                 GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
                 GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
                 GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
                 GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
-                RenderAPI.renderBlock(npc.getCurrentStack(), npc);
-
-                if (flag1) {
-                    GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-                }
-                GlStateManager.popMatrix();
             }
-            return;
-        }
-
-        if (npc instanceof EntityDefaultBlock && !npc.isInvisible()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-            GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-            GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-            GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
-            GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
-            EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
-
-            for (EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()) {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
-
-                this.bindTexture(blockData.getTexture());
-                this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                GlStateManager.popMatrix();
-            }
-
-            this.bindTexture(npc.getTexture());
-            this.mainModel.render(npc, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            super.renderModel(npc, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            GlStateManager.color(0, 0, 0, 1F);
             GlStateManager.disableAlpha();
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
-            return;
         }
-
-        GlStateManager.pushMatrix();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
-        if (npc.isChild()) {
-            GlStateManager.translate(0, 0.7, 0);
-            GlStateManager.scale(0.7, 0.7, 0.6);
-        } else {
-            GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
-            GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-            GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-            GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-            GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
-        }
-        super.renderModel(npc, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-        GlStateManager.color(0, 0, 0, 1F);
-        GlStateManager.disableAlpha();
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
-
     }
 
     @Override

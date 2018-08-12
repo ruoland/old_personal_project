@@ -30,7 +30,6 @@ public class EntityMagmaBlock extends EntityBigBlock {
     @Override
     public EntityMagmaBlock spawn(double x, double y, double z) {
         EntityMagmaBlock lavaBlock = new EntityMagmaBlock(worldObj);
-        lavaBlock.setCanFalling(canFalling());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

@@ -16,6 +16,7 @@ public class EntityAIFindPlayer extends EntityAIBase {
     private AxisAlignedBB aabb = null;
     public EntityAIFindPlayer(EntityGuardLoop guard){
         this.guard = guard;
+        worldObj = guard.worldObj;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class ActionEvent {
         if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld")) {
             ActionEffect.mapName = WorldAPI.getCurrentWorldName();
             System.out.println(ActionEffect.mapName+WorldAPI.getCurrentWorldName());
+            ActionEffect.load();
         }
     }
     @SubscribeEvent

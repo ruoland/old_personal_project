@@ -159,7 +159,6 @@ public class EntityMoveBlock extends EntityPreBlock {
     @Override
     public EntityMoveBlock spawn(double x, double y, double z) {
         EntityMoveBlock lavaBlock = new EntityMoveBlock(worldObj);
-        lavaBlock.setCanFalling(canFalling());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

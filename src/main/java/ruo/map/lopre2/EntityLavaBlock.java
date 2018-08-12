@@ -1,5 +1,6 @@
 package ruo.map.lopre2;
 
+import net.minecraft.block.BlockBarrier;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -36,7 +37,7 @@ public class EntityLavaBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "LavaBlock 고정:"+canFalling()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
+        return "LavaBlock 고정:"+isLock()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
         EntityLavaBlock lavaBlock = new EntityLavaBlock(worldObj);
-        lavaBlock.setCanFalling(canFalling());
+        lavaBlock.setLock(isLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
@@ -114,52 +115,50 @@ public class EntityLavaBlock extends EntityPreBlock {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if (canTeleportLock()) {
+            setVelocity(0, 0, 0);
+        }
         if(getScaleX() != 1 && getScaleZ() != 1 && getWidth() != 0 && getHeight() != 0 && (getWidth() != width || getHeight() != height)){
             this.setSize(getWidth(), getHeight());
             this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-            System.out.println("스폰장소로 설정됨"+getScaleX()+ " - "+getScaleZ()+" - "+getWidth()+" - "+getHeight()+" - "+(getWidth() != width || getHeight() != height));
         }
-        if (WorldAPI.getPlayer() != null && !canFalling()) {
+        if (WorldAPI.getPlayer() != null && !isLock()) {
+            boolean isFly = true;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
             if (!list.isEmpty()) {
                 for (Entity entity : list) {
                     if ((entity instanceof EntityPlayer) && !entity.noClip) {
                         isFly = false;
-                        System.out.println("플레이어 발견함");
                     } else
                         isFly = true;
                 }
             }
-            if (isFly && posY < getSpawnY()) {
-                setVelocity(0, downSpeed, 0);
-                System.out.println("올라가는 중");
+            if (isFly) {
+                if(posY < getSpawnY()) {
+                    setVelocity(0, downSpeed, 0);
+                }
+                else
+                    setVelocity(0,0,0);
             }
             if (!isFly) {
                 setVelocity(0, -downSpeed, 0);
-                System.out.println("내려가는 중");
-                isFly = true;
-
             }
             if (inWater && this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, 0.5D, 0.0D).contract(0.001D), Material.WATER, this)) {
                 this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-                System.out.println("고정됨"+getPosition());
             }
         }
-        if (canTeleportLock()) {
-            setVelocity(0, 0, 0);
-        }
+
     }
 
     @Override
     public boolean canTeleportLock() {
-        return !canFalling();
+        return isLock();
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        compound.setBoolean("falling", canFalling());
         compound.setDouble("downSpeed",downSpeed);
         compound.setFloat("widthl", getWidth());
         compound.setFloat("heightl", getHeight());
@@ -169,7 +168,6 @@ public class EntityLavaBlock extends EntityPreBlock {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        setCanFalling(compound.getBoolean("falling"));
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
         downSpeed = compound.getDouble("downSpeed");

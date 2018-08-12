@@ -47,11 +47,15 @@ public class ActionEffect {
 		return crawlMapList.contains(mapName);
 	}
 
-	public static void doubleJump(boolean onoff) {
-		if(onoff && !djList.contains(mapName)) {
+	public static void doubleJump(boolean on) {
+		if(on && !djList.contains(mapName)) {
 			djList.add(mapName);
-		}else if(!onoff && djList.indexOf(mapName) != -1)
+		}else if(!on && djList.indexOf(mapName) != -1) {
 			djList.remove(djList.get(djList.indexOf(mapName)));
+			if(djList.indexOf(mapName) != -1)
+				djList.remove(djList.get(djList.indexOf(mapName)));
+
+		}
 	}
 
 	public static boolean canDoubleJump() {
@@ -103,6 +107,7 @@ public class ActionEffect {
 
 	public static void save() {
 		String worldName = ActionEffect.mapName;
+		System.out.println(worldName+"세이브 "+djList.contains(worldName));
 		if (!worldName.equalsIgnoreCase("noworld")) {
 			MiniGame.instance.minigameConfig.get(worldName, "crawl", false).set(crawlMapList.contains(worldName));
 			if(inWaterMap.containsKey(worldName))
@@ -118,6 +123,8 @@ public class ActionEffect {
 
 	public static void load() {
 		for (String category : MiniGame.instance.minigameConfig.getCategoryNames()) {
+			if(category.equalsIgnoreCase(mapName))
+				category = mapName;
 			ConfigCategory action = MiniGame.instance.minigameConfig.getCategory(category);
 			if (action.containsKey("crawl") && action.get("crawl").getBoolean())
 				crawlMapList.add(category);
@@ -130,6 +137,7 @@ public class ActionEffect {
 				tpYawMap.put(category, (float) action.get("tpYaw").getDouble());
 				tpPitchMap.put(category, (float) action.get("tpPitch").getDouble());
 			}
+			System.out.println(category+ action.get("doubleJump").getBoolean());
 		}
 	}
 }

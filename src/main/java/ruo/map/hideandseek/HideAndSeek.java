@@ -11,7 +11,7 @@ public class HideAndSeek {
 
     @EventHandler
     public void init(FMLInitializationEvent eve){
-        DebAPI.registerEntity(this, "VELOCITY-guardLoop", EntityGuardLoop.class);
+        DebAPI.registerEntity(this, "guardLoop", EntityGuardLoop.class);
 
     }
     @EventHandler

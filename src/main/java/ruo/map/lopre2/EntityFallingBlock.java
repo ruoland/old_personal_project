@@ -33,7 +33,6 @@ public class EntityFallingBlock extends EntityPreBlock {
 	@Override
 	public EntityFallingBlock spawn(double x, double y, double z) {
 		EntityFallingBlock lavaBlock = new EntityFallingBlock(worldObj);
-		lavaBlock.setCanFalling(canFalling());
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());

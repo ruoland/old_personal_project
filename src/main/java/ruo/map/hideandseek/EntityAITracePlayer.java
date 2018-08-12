@@ -35,7 +35,7 @@ public class EntityAITracePlayer extends EntityAIBase {
 
     public boolean continueExecuting() {
         EntityLivingBase entitylivingbase = this.attacker.getTraceEntity();
-        if (entitylivingbase == null || !entitylivingbase.isEntityAlive() || attacker.getNavigator().noPath()) {
+        if (entitylivingbase == null || !entitylivingbase.isEntityAlive() || attacker.getNavigator().noPath() || attacker.getEntitySenses().canSee(entitylivingbase)) {
             return false;
         } else
             return true;

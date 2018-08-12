@@ -20,6 +20,7 @@ public class EntityBigBlock extends EntityPreBlock {
             DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DEFAULT_DELAY = EntityDataManager.<Integer>createKey(EntityBigBlock.class,
             DataSerializers.VARINT);
+    private AxisAlignedBB renderBoundingBox;
 
     public EntityBigBlock(World world) {
         super(world);
@@ -27,19 +28,21 @@ public class EntityBigBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
-        this.setCanFalling(true);
+        this.setLock(true);
         this.noClip = !noClip;
+        renderBoundingBox = getEntityBoundingBox().expand(5,5,5);
     }
+
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().expand(5,5,5);
+        return renderBoundingBox;
     }
 
     @Override
     public EntityBigBlock spawn(double x, double y, double z) {
         EntityBigBlock lavaBlock = new EntityBigBlock(worldObj);
-        lavaBlock.setCanFalling(canFalling());
+        lavaBlock.setLock(isLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
@@ -79,7 +82,7 @@ public class EntityBigBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "BigBlock " + " 떨어지는가:" + canFalling()+ " 딜레이:"+getDefaultDelay();
+        return "BigBlock " + " 떨어지는가:" + isLock()+ " 딜레이:"+getDefaultDelay();
     }
 
     @Override
@@ -100,11 +103,11 @@ public class EntityBigBlock extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(getCurrentBlock() == Blocks.GLASS){
-            setCanFalling(true);
+            setLock(true);
             setBlockMetadata(0);
         }
         if ((getCurrentBlock() == Blocks.WOOL && (getBlockMetadata() == 11 || getBlockMetadata() == 5))) {
-            this.setCanFalling(false);
+            this.setLock(false);
             setBlockMetadata(5);
         }
         if (getCustomNameTag().indexOf("SmallBlock") != -1) {
@@ -113,19 +116,19 @@ public class EntityBigBlock extends EntityPreBlock {
                 this.setScale(1, 1, 1);
                 this.setBlock(new ItemStack(Blocks.WOOL, 1, 11));
             }
-            setCanFalling(true);
+            setLock(true);
         }
         if (Float.compare(getRotateX(), 90) != 0 || Float.compare(getRotateY(), 90) != 0
                 || Float.compare(getRotateZ(), 90) != 0){
-            setCanFalling(false);
+            setLock(false);
         }
         if (!isServerWorld() && Float.compare(width, 3F) == 0 && (Float.compare(getRotateX(), 90) != 0 || Float.compare(getRotateY(), 90) != 0
                 || Float.compare(getRotateZ(), 90) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
-            this.setCanFalling(false);
+            this.setLock(false);
             this.setSize(1, 1);
             this.setFalling(false);
         }
-        if (!canFalling()) {
+        if (!isLock()) {
             setVelocity(0, 0, 0);
             return;
         } else {

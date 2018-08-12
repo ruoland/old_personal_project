@@ -31,6 +31,15 @@ public class PosHelper {
     public double getX(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         return EntityAPI.getX(base, spawnDirection, plus, rlplus, pos);
     }
+    public double getY(double plus, boolean pos) {
+        if (base.rotationPitch <= -60 && base.rotationPitch >= -90) {
+            return pos ? base.posY + plus : plus;
+        }
+        if (base.rotationPitch >= 60 && base.rotationPitch <= 90) {
+            return pos ? base.posY - plus : -plus;
+        }
+        return pos ? base.posY : 0;
+    }
     public double getZ(SpawnDirection spawnDirection, double plus, boolean pos) {
         return EntityAPI.getZ(base, spawnDirection, plus, pos);
     }

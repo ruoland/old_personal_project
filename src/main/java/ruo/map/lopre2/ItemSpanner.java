@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -19,27 +20,30 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.map.lopre2.jump2.EntityKnockbackBlock;
+import ruo.map.lopre2.jump2.EntityTeleportBlock;
+import ruo.minigame.api.WorldAPI;
 
 public class ItemSpanner extends Item {
     public static String renderText;
     public static double debX, debZ;
+
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         String name = target.getClass().getSimpleName().replace("Entity", "");
 
 
         if (!target.isInvisible()) {
-            if(target instanceof EntityBuildBlock){
+            if (target instanceof EntityBuildBlock) {
                 EntityBuildBlock lavaBlock = (EntityBuildBlock) target;
                 lavaBlock.setRotate(lavaBlock.getRotateX(), lavaBlock.getRotateZ(), lavaBlock.getRotateY());
             }
             if (target instanceof EntityWaterBlockCreator && hand == EnumHand.MAIN_HAND) {
                 EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
-                lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay()+1);
+                lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
             }
             if (target instanceof EntityLavaBlock && hand == EnumHand.MAIN_HAND) {
                 EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
-                lavaBlock.setCanFalling(!lavaBlock.canFalling());
+                lavaBlock.setLock(!lavaBlock.isLock());
                 System.out.println("대상 위치" + lavaBlock.posX + " - " + lavaBlock.posY + " - " + lavaBlock.posZ);
             }
             if (target instanceof EntityInvisibleBlock) {
@@ -62,7 +66,7 @@ public class ItemSpanner extends Item {
             }
             if (target instanceof EntityBigBlock) {
                 EntityBigBlock lavaBlock = (EntityBigBlock) target;
-                lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay()+1);
+                lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
                 //if (lavaBlock.getRotateX() != 0 || lavaBlock.getRotateY() != 0 || lavaBlock.getRotateZ() != 0) {
                 //   lavaBlock.setCanFalling(!lavaBlock.canFalling());
                 //} else
@@ -147,17 +151,17 @@ public class ItemSpanner extends Item {
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer playerIn, Entity target) {
         if (target instanceof EntityBigBlock) {
             EntityBigBlock lavaBlock = (EntityBigBlock) target;
-            lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay()-1);
+            lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() - 1);
         }
         if (target instanceof EntityWaterBlockCreator) {
             EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
-            lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay()-1);
+            lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() - 1);
         }
         if (target instanceof EntityLavaBlock) {
             EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
             lavaBlock.setWidth(0.5F);
             lavaBlock.setHeight(1F);
-            lavaBlock.setScale(0.5F,1F,0.5F);
+            lavaBlock.setScale(0.5F, 1F, 0.5F);
             lavaBlock.setSpawnPosition();
         }
         if (target instanceof EntityInvisibleBlock) {

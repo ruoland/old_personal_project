@@ -30,7 +30,6 @@ public class EntityKnockbackBlock extends EntityMoveBlock {
     @Override
     public EntityKnockbackBlock spawn(double x, double y, double z) {
         EntityKnockbackBlock lavaBlock = new EntityKnockbackBlock(worldObj);
-        lavaBlock.setCanFalling(canFalling());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

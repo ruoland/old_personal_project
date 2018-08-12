@@ -44,7 +44,6 @@ public class EntityLoopUpDownMoveBlock extends EntityPreBlock {
 	@Override
 	public EntityLoopUpDownMoveBlock spawn(double x, double y, double z) {
 		EntityLoopUpDownMoveBlock lavaBlock = new EntityLoopUpDownMoveBlock(worldObj);
-		lavaBlock.setCanFalling(canFalling());
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());

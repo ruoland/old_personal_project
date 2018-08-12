@@ -37,13 +37,11 @@ public class EntityLoopUpDownWaterBlock extends EntityPreBlock {
 	@Override
 	public EntityLoopUpDownWaterBlock spawn(double x, double y, double z) {
 		EntityLoopUpDownWaterBlock lavaBlock = new EntityLoopUpDownWaterBlock(worldObj);
-		lavaBlock.setCanFalling(canFalling());
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());
 		lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ(), 90, 90, 1, false);
 		this.copyModel(lavaBlock);
-		lavaBlock.prevBlock = prevBlock;
 		lavaBlock.setBlockMode(getCurrentBlock());
 		worldObj.spawnEntityInWorld(lavaBlock);
 		return lavaBlock;
@@ -52,7 +50,6 @@ public class EntityLoopUpDownWaterBlock extends EntityPreBlock {
 	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_L) && hand == EnumHand.MAIN_HAND && isServerWorld()) {
 			this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-
 		}
 		return super.processInteract(player, hand, stack);
 	}

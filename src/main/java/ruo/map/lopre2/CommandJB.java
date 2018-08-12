@@ -77,7 +77,6 @@ public class CommandJB extends CommandPlusBase {
                 if (!ActionEffect.canCrawl() && Boolean.valueOf(args[1])) {
                     WorldAPI.addMessage("R키를 누르고 벽으로 다가가면 벽에 매달리거나 올라갈 수 있습니다.");
                 }
-                DebAPI.getWorldProperties().setProperty("crawl", "" + var);
                 ActionEffect.crawl(var);
 
             }
@@ -85,12 +84,10 @@ public class CommandJB extends CommandPlusBase {
                 if (!ActionEffect.canDoubleJump() && Boolean.valueOf(args[1])) {
                     WorldAPI.addMessage("이제 점프를 공중에서 한번더 할 수 있습니다.(달리면서 점프하면 좀 더 멀리 뛸 수 있음)");
                 }
-                DebAPI.getWorldProperties().setProperty("doubleJump", "" + Boolean.valueOf(args[1]));
                 ActionEffect.doubleJump(Boolean.valueOf(args[1]));
             }
 
             if (args[0].equalsIgnoreCase("food")) {
-                DebAPI.getWorldProperties().setProperty("food", args[1]);
                 JumpEvent2.food = Boolean.valueOf(args[1]);
             }
             if (args[0].equalsIgnoreCase("give")) {
@@ -192,11 +189,9 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("nightvision")) {
                 LooPre2Event.nightVision = t.parseBoolean(args[1]);
-                DebAPI.getWorldProperties().setProperty("NightVision", "" + LooPre2Event.nightVision);
             }
             if (args[0].equalsIgnoreCase("posy")) {
                 LooPre2Event.posYDead = t.parseBoolean(args[1]);
-                DebAPI.getWorldProperties().setProperty("posYDead", "" + LooPre2Event.posYDead);
             }
             if (args[0].equalsIgnoreCase("invlock")) {
                 EntityBigInvisibleBlock.isInvisibleLock = !EntityBigInvisibleBlock.isInvisibleLock;

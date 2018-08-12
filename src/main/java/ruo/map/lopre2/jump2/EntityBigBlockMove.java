@@ -34,7 +34,6 @@ public class EntityBigBlockMove extends EntityMoveBlock {
     @Override
     public EntityBigBlockMove spawn(double x, double y, double z) {
         EntityBigBlockMove lavaBlock = new EntityBigBlockMove(worldObj);
-        lavaBlock.setCanFalling(canFalling());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

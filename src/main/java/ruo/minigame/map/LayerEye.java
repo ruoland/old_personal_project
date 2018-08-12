@@ -24,8 +24,8 @@ public class LayerEye implements LayerRenderer<EntityDefaultNPC> {
             float f = entitylivingbaseIn.prevRotationYaw + (entitylivingbaseIn.rotationYaw - entitylivingbaseIn.prevRotationYaw) * partialTicks - (entitylivingbaseIn.prevRenderYawOffset + (entitylivingbaseIn.renderYawOffset - entitylivingbaseIn.prevRenderYawOffset) * partialTicks);
             float f1 = entitylivingbaseIn.prevRotationPitch + (entitylivingbaseIn.rotationPitch - entitylivingbaseIn.prevRotationPitch) * partialTicks;
             GlStateManager.pushMatrix();
+            GlStateManager.color(100,100,100,1);
             GlStateManager.rotate(entitylivingbaseIn.rotationPitch, 1, 0, 0);
-
             GlStateManager.rotate(f, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(f1, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(-f1, 1.0F, 0.0F, 0.0F);
