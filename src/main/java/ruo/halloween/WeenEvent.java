@@ -48,8 +48,6 @@ public class WeenEvent {
                 return;
             } else {
                 WorldAPI.addMessage("호박파이와 무한 활이 지급되었습니다.");
-            }
-            if (e.getPlayer().worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
                 EntityWeen ween = new EntityWeen(e.getPlayer().worldObj);
                 ween.setPosition(EntityAPI.lookPlayerX(15), e.getPlayer().posY, EntityAPI.lookPlayerZ(15));
                 e.getPlayer().worldObj.spawnEntityInWorld(ween);
@@ -73,7 +71,7 @@ public class WeenEvent {
                 itemstack.addEnchantment(Enchantment.getEnchantmentByID(51), 1);
                 e.getPlayer().inventory.addItemStackToInventory(itemstack);
                 e.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.ARROW));
-                e.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.PUMPKIN_PIE, 3));
+                e.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.PUMPKIN_PIE, 6));
                 e.getPlayer().setHealth(e.getPlayer().getMaxHealth());
                 e.getPlayer().getFoodStats().setFoodLevel(20);
                 this.ween = ween;

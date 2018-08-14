@@ -46,7 +46,6 @@ public class CMPlusEvent {
             if (Sky.getFogDistance() == -1 || prevDistance != mc.gameSettings.renderDistanceChunks) {
                 prevDistance = mc.gameSettings.renderDistanceChunks;
                 Sky.fogDistance(5.0F + ((mc.gameSettings.renderDistanceChunks * 16) - 5.0F) * (1.0F - (float) 0 / 20.0F));
-                Sky.fogOnOff(false);
             }
             GlStateManager.enableFog();
             GlStateManager.setFogStart(Sky.getFogDistance());

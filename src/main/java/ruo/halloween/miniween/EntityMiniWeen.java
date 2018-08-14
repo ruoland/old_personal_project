@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ruo.halloween.EntityBigWeen;
 import ruo.halloween.EntityWeen;
@@ -13,12 +12,12 @@ import ruo.minigame.map.EntityDefaultNPC;
 public class EntityMiniWeen extends EntityDefaultNPC {
 	public EntityWeen ween;
 
-	protected Vec3d targetVec, target;
 	public EntityMiniWeen(World worldIn) {
 		super(worldIn);
 		setBlockMode(Blocks.PUMPKIN);
 		setCollision(true);
 		this.setDeathTimer(400);
+		this.isFly = true;
 	}
 
 	@Override
@@ -42,21 +41,6 @@ public class EntityMiniWeen extends EntityDefaultNPC {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-	}
-
-	public EntityMiniWeen setFlyXYZ(double x, double y, double z) {
-		double targetX = x != 0 ? x - posX : 0;
-		double targetY = y != 0 ? y - posY : 0;
-		double targetZ = z != 0 ? z - posZ : 0;
-		if(targetX == 0 && targetY == 0 && targetZ == 0)
-		{
-			targetVec = null;
-			target = null;
-			return this;
-		}
-		targetVec = new Vec3d(targetX,targetY,targetZ).normalize();
-		target = new Vec3d(x,y,z);
-		return this;
 	}
 
 	public boolean isDefenceMiniWeen() {

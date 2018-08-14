@@ -82,7 +82,7 @@ public class WildEvent {
                         enderBlock.setBlockMode(enderman.getHeldBlockState().getBlock());
                     if (!worldObj.isRemote)
                         worldObj.spawnEntityInWorld(enderBlock);
-                    enderBlock.setTarget(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+                    enderBlock.setTarget(target.posX, target.posY + target.getEyeHeight(), target.posZ, 1);
                 } else {
                     BlockAPI api = WorldAPI.getBlock(((EntityEnderman) event.getEntityLiving()).worldObj, enderman.posX - 3, enderman.posX + 3, enderman.posY - 1, enderman.posY + 2, enderman.posZ - 3, enderman.posZ + 3);
                     enderman.setHeldBlockState(api.getBlockState(0));

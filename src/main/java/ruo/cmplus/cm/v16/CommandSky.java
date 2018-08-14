@@ -27,10 +27,10 @@ public class CommandSky extends CommandPlusBase {
 				try {
 				if (args[0].equals("fog")){
 					if(t.parseBooleanCheck(args[1])){
+						Sky.fogDistance(t.findFloat(args, 1, Sky.getFogDistance()));
 						Sky.fogOnOff(t.findBoolean(args, 1, false));
 						return;
 					}
-					Sky.fogDistance(t.findFloat(args, 1, Sky.getFogDistance()));
 				}
 				if (args[1].equals("star")  && args.length > 1) {
 					Sky.starGenerate(t.findInteger(args, 2, 1500));

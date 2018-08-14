@@ -101,7 +101,7 @@ public class WeenEffect {
 			@Override
 			public void run(Type type) {
 				boolean minus = (""+x).startsWith("-");
-				entity.addRotate(minus ? -1.5F : 1.5F,0,0);
+				entity.addRotate(minus ? -2.5F : 2.5F,0,0);
 				if ((minus && entity.getRotateX() <= x) || (!minus && entity.getRotateX() >= x)) {
 					absLoop = false;
 					tick2.run(type);

@@ -11,6 +11,7 @@ public class EntityDefenceMiniWeen extends EntityMiniWeen {
 
     public EntityDefenceMiniWeen(World worldIn) {
         super(worldIn);
+        this.setDeathTimer(300);
     }
 
     public EntityDefenceMiniWeen(World worldIn, EntityWeen ween) {
@@ -32,15 +33,17 @@ public class EntityDefenceMiniWeen extends EntityMiniWeen {
     }
 
     @Override
+    public void targetArrive() {
+        super.targetArrive();
+    }
+
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (target != null && getDistance(target.xCoord, target.yCoord, target.zCoord) > 1) {
-            this.setVelocity(targetVec.xCoord / 2, targetVec.yCoord / 2, targetVec.zCoord / 2);
-        }else{
-            motionY = 0;
-        }
-        if (goWeen && getDistance(target.xCoord, target.yCoord, target.zCoord) <= 1) {
-            this.setDead();
+        if (getTargetPosition() != null) {
+            if (goWeen && this.isTargetArrive()) {
+                this.setDead();
+            }
         }
     }
 }

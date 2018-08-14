@@ -2,13 +2,15 @@ package ruo.halloween.miniween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import ruo.halloween.EntityWeen;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityAttackMiniWeen extends EntityMiniWeen {
@@ -34,7 +36,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         System.out.println("미니윈이 플레이어와 충돌해 폭발함");
         this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
         this.setDead();
-        targetVec = new Vec3d(0, 0, 0);
+        setTarget(0, 0, 0, 0);
     }
 
     /**
@@ -53,13 +55,18 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
     }
 
     @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
+        return super.processInteract(player, hand, stack);
+
+    }
+
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source.getEntity() instanceof EntityPlayer) {
             System.out.println("미니윈이 반사됨" + source.damageType);
-            if (ween != null) {
-                targetVec = new Vec3d(ween.posX, ween.posY + 5, ween.posZ);
-                isAttackReverse = true;
-            }
+            this.setTarget(getSpawnX(), getSpawnY(), getSpawnZ());
+            this.setDistance(10);
+            isAttackReverse = true;
         }
         if (source.getEntity() instanceof EntityWeen || source == DamageSource.fall)
             return false;
@@ -72,35 +79,32 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
     }
 
     @Override
+    public void targetArrive() {
+        super.targetArrive();
+        if (targetExplosion) {
+            explosion();
+        }
+        setDead();
+    }
+
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         this.worldObj.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
-        if (targetVec != null && target != null) {
+        if (!noTarget()) {
             addRotate(rand.nextInt(10), rand.nextInt(10), rand.nextInt(10));
-            this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
-            if (isAttackReverse && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 10) {
-                this.setDead();
-                target = new Vec3d(0, 0, 0);
-                System.out.println("반사된 미니윈이 윈 근처에 도달해 터짐");
-                explosion();
-            }
-            if (targetExplosion && this.getDistance(target.xCoord, target.yCoord, target.zCoord) < 0.8) {
-                this.setDead();
-                explosion();
-            }
-
         }
     }
 
     /**
      * 윈이 폭발 데미지를 받지 않아서 만든 메서드
      */
-    public void explosion(){
-        List<EntityWeen> list = worldObj.getEntitiesWithinAABB(EntityWeen.class, getCollisionBoundingBox().expand(3,3,3));
+    public void explosion() {
+        List<EntityWeen> list = worldObj.getEntitiesWithinAABB(EntityWeen.class, getCollisionBoundingBox().expand(3, 3, 3));
         System.out.println(list);
         Explosion explosion = this.worldObj.createExplosion(this, posX, posY, posZ, explosionStrength, false);
 
-        for(EntityWeen ween : list){
+        for (EntityWeen ween : list) {
             ween.attackEntityFrom(DamageSource.causeExplosionDamage(explosion), 5);
         }
 

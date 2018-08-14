@@ -30,18 +30,16 @@ public class EntityBigWeen extends EntityDefaultNPC {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
 	}
 
 	double targetX, targetY, targetZ;
 	boolean isFivePattern;
 
-
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		if(isFivePattern)
 			TickRegister.register(new AbstractTick(20, true) {
-				
 				@Override
 				public void run(Type type) {
 					setPosition(ween.posX + WorldAPI.minRand(5, 20), posY,
@@ -58,10 +56,12 @@ public class EntityBigWeen extends EntityDefaultNPC {
 			return;
 		super.collideWithEntity(entityIn);
 	}
+	private int delay = 0;
 
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+
 		onGround = true;
 		if (isDead || WorldAPI.getPlayer() == null || !isServerWorld())
 			return;
@@ -70,7 +70,14 @@ public class EntityBigWeen extends EntityDefaultNPC {
 		else
 			this.setVelocity((targetX - posX) / 7, (targetY - posY) / 7, (targetZ - posZ) / 7);
 
-		addScale();
+		delay++;
+		if(delay > 20) {
+			delay = 0;
+			float size = (15 / 250);
+			this.setSize(getScaleX() + size, getScaleZ() +  size);
+			addScale(size);
+		}
+
 		if (getScaleX() > 15 && targetX == 0 && targetY == 0 && targetZ == 0) {
 			System.out.println("완전히 커짐");
 			targetX = WorldAPI.x();
@@ -126,17 +133,6 @@ public class EntityBigWeen extends EntityDefaultNPC {
 			});
 		super.onDeath(cause);
 	}
-
-	public void addScale() {
-		if (isFivePattern) {
-			this.setSize(getScaleX() + 0.01F, getScaleZ() + 0.01F);
-			addScale(0.02F);
-		} else {
-			this.setSize(getScaleX() + 0.01F, getScaleZ() + 0.01F);
-			addScale(0.02F);
-		}
-	}
-
 
 	/**
 	 * double maxX = Math.max(posX, player.posX); double maxY = Math.max(posY,

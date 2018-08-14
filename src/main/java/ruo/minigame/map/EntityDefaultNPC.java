@@ -56,9 +56,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private PosHelper posHelper;
     public boolean isFly;
     public TextEffect eft;
-    private Vec3d targetVec = null, targetPosition;
-    private double distance = 1.5;
-    private Entity target;
+    private Vec3d targetPosition;
+    private double distance = 0.8;
+    private double targetMoveSpeed;
 
     public int random = 0;
     public double eyeCloseScaleY;
@@ -109,11 +109,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return super.getDistance(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
-    public void setTarget(Entity base) {
-        target = base;
-        setTarget(base.posX, base.posY, base.posZ);
-    }
-
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
         this.faceEntity(player, 360, 360);
@@ -121,35 +116,37 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return super.processInteract(player, hand, stack);
     }
 
-    public void setTarget(double x, double y, double z) {
+    public void setTarget(double x, double y, double z, double speed) {
         if (x == 0 && y == 0 && z == 0) {
             targetPosition = null;
-            targetVec = null;
-            target = null;
         } else {
-            this.targetVec = new Vec3d(x - posX, y - posY, z - posZ).normalize().scale(0.8);
             this.targetPosition = new Vec3d(x, y, z);
         }
+        this.targetMoveSpeed = speed;
+    }
+    public void setTarget(double x, double y, double z) {
+        setTarget(x,y,z,0.4);
+    }
+    public void setTarget(@Nullable EntityLivingBase target, double speed) {
+        if(target == null)
+            setTarget(0,0,0,0);
+        this.setTarget(target.posX, target.posY, target.posZ, speed);
     }
 
     public boolean noTarget() {
-        return targetVec == null && target == null;
+        return targetPosition == null;
     }
 
     public Vec3d getTargetPosition() {
         return targetPosition;
     }
 
-    public Vec3d getTargetVec() {
-        return targetVec;
-    }
-
-    public Entity getTarget() {
-        return target;
-    }
-
     public void targetArrive() {
 
+    }
+
+    public boolean isTargetArrive(){
+        return getDistance(targetPosition) < distance;
     }
 
     public void setDistance(double distance) {
@@ -160,6 +157,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(getSpawnX() == 0 && getSpawnY() == 0 && getSpawnZ() == 0){
+            setSpawnXYZ(posX, posY, posZ);
+        }
         if(random > 0 && getModel() == TypeModel.NPC){
             random--;
         }
@@ -168,11 +168,12 @@ public class EntityDefaultNPC extends EntityModelNPC {
             this.rotationYaw = getDataManager().get(LOCK_YAW);
             this.rotationYawHead = getDataManager().get(LOCK_YAW);
         }
-        if (targetVec != null) {
-            setVelocity(targetVec);
+        if (targetPosition != null) {
+            setVelocity(this.targetPosition.subtract(this.getPositionVector()).normalize().scale(targetMoveSpeed));
+            System.out.println(this.targetPosition.subtract(this.getPositionVector()).normalize().scale(targetMoveSpeed));
             if (getDistance(targetPosition) < distance) {
                 targetArrive();
-                setTarget(0, 0, 0);
+                setTarget(0, 0, 0, 0);
             }
         } else if (isFly) {
             motionY = 0;
@@ -205,6 +206,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
             compound.setDouble("targetX", targetPosition.xCoord);
             compound.setDouble("targetY", targetPosition.yCoord);
             compound.setDouble("targetZ", targetPosition.zCoord);
+            compound.setDouble("speed", targetMoveSpeed);
+
         }
         compound.setDouble("distance", distance);
 
@@ -236,7 +239,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (compound.getBoolean("ISSTURN"))
             setSturn(compound.getInteger("STURN_TICK"));
         if(compound.hasKey("targetX"))
-        setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"));
+        setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"), compound.getDouble("speed"));
         setDistance(compound.getDouble("distance"));
 
     }

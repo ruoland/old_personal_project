@@ -43,7 +43,7 @@ public class EntityFlyingCreeper extends EntityDefaultNPC {
         if (!noTarget() && getDistance(targetXYZ.xCoord, posY, targetXYZ.zCoord) > 1) {
             setVelocity(targetVelocity);
         }else{
-            setTarget(null);
+            setTarget(null, 0);
         }
         if (attackDelay > 50 && getAttackTarget() instanceof EntityPlayer) {
             EntityTNTPrimed tntPrimed = new EntityTNTPrimed(worldObj, posX, posY, posZ, this);
@@ -59,11 +59,11 @@ public class EntityFlyingCreeper extends EntityDefaultNPC {
     public void randomPosition() {
         delay++;
         if (isAttackTargetPlayer()) {
-            setTarget(getAttackTarget());
+            setTarget(getAttackTarget(), 0.7);
             return;
         }
         if (delay >= 200 && noTarget()) {
-            setTarget(posX+ WorldAPI.rand(10), posY, posZ+ WorldAPI.rand(10));
+            setTarget(posX+ WorldAPI.rand(10), posY, posZ+ WorldAPI.rand(10), 0.7);
             delay = 0;
         }
     }
