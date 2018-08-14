@@ -35,7 +35,7 @@ public class ActionEvent {
     public void rotate(LivingFallEvent e) {
         if (ActionEffect.canDoubleJump() && e.getEntityLiving() instanceof EntityPlayer) {
             if(!canDoubleJump)
-                e.setDistance(e.getDistance() - 6);
+                e.setDistance(0);
         }
     }
     @SubscribeEvent

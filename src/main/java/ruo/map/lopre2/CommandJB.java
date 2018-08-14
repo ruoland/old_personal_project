@@ -19,6 +19,7 @@ import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
 import ruo.map.lopre2.jump2.JumpEvent2;
 import ruo.minigame.action.ActionEffect;
+import ruo.minigame.action.ActionEvent;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
