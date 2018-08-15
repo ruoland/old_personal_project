@@ -82,7 +82,7 @@ public class EntityBigBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "BigBlock " + " 떨어지는가:" + isLock()+ " 딜레이:"+getDefaultDelay();
+        return "BigBlock " + " 잠금:" + isLock()+ " 딜레이:"+getDefaultDelay();
     }
 
     @Override
@@ -137,10 +137,17 @@ public class EntityBigBlock extends EntityPreBlock {
             this.setSize(3, 1);
             System.out.println("Rotate가 0임 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
+        if(!isServerWorld() && Float.compare(width, 3F) == 0&& isLock() && Float.compare(getRotateX(), 0) == 0 && Float.compare(getRotateY(), 0) == 0
+                && Float.compare(getRotateZ(), 0) == 0){
+            setLock(false);
+            System.out.println(isLock()+ " 222- "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+
+        }
+
 
         if (isLock()) {
             setVelocity(0, 0, 0);
-            return;
+
         } else {
             float size = 2.5F;
             if (getCustomNameTag().indexOf("BigBlock") != -1)
@@ -167,6 +174,9 @@ public class EntityBigBlock extends EntityPreBlock {
                     }
                 }
             }
+            if(downSpeed != 0)
+                System.out.println(isLock()+ " - "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+
             this.setVelocity(0, downSpeed, 0);
         }
     }
