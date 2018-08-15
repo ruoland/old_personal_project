@@ -123,7 +123,6 @@ public class EntityBigBlock extends EntityPreBlock {
         if(getRotateZ() == 180 && getRotateY() == 0 && getRotateX() == 0){
             this.setRotate(0,0,0);
         }
-
         if (!isServerWorld() && Float.compare(width, 3F) == 0 && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
                 || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
             this.setLock(true);
@@ -137,11 +136,10 @@ public class EntityBigBlock extends EntityPreBlock {
             this.setSize(3, 1);
             System.out.println("Rotate가 0임 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
-        if(!isServerWorld() && Float.compare(width, 3F) == 0&& isLock() && Float.compare(getRotateX(), 0) == 0 && Float.compare(getRotateY(), 0) == 0
+        if(isLock() && Float.compare(getRotateX(), 0) == 0 && Float.compare(getRotateY(), 0) == 0
                 && Float.compare(getRotateZ(), 0) == 0){
             setLock(false);
             System.out.println(isLock()+ " 222- "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
-
         }
 
 
