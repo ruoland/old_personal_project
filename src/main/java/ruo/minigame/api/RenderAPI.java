@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -27,6 +28,7 @@ import ruo.minigame.map.RenderDefaultNPC;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -264,7 +266,26 @@ public class RenderAPI {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
+    public static void renderBlock(ArrayList<BlockPos> blockPosList, ArrayList<ItemStack> itemStackList, EntityLivingBase entitylivingbaseIn) {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
+        GlStateManager.pushMatrix();
+        for (int i = 0; i < blockPosList.size(); i++) {
+            BlockPos pos = blockPosList.get(i);
+            if (itemStackList.get(i) == null) {
+                continue;
+            }
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
+            renderItem(itemStackList.get(i), Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemStackList.get(i), entitylivingbaseIn.worldObj, entitylivingbaseIn));
+            //RenderAPI.renderBlock2(x, y, z, this, npc, npc.getCurrentBlock());
+            GlStateManager.popMatrix();
+        }
+        GlStateManager.popMatrix();
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 
+    }
     public static void renderBlock(ItemStack itemstack, EntityLivingBase entitylivingbaseIn) {
         IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemstack, entitylivingbaseIn.worldObj, entitylivingbaseIn);
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

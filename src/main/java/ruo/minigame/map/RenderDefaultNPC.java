@@ -6,10 +6,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import net.minecraft.client.resources.GrassColorReloadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.model.pipeline.ForgeBlockModelRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -37,35 +39,19 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     @Override
     protected void renderModel(EntityDefaultNPC npc, float limbSwing, float limbSwingAmount, float ageInTicks,
                                float netHeadYaw, float headPitch, float scaleFactor) {
-        if(!npc.isInvisible()) {
+        if (!npc.isInvisible()) {
             if (npc instanceof EntityBuildBlock) {
                 EntityBuildBlock block = (EntityBuildBlock) npc;
                 if (block.blockList.size() == 0) {
                     return;
                 }
                 GlStateManager.pushMatrix();
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
                 GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
                 GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
                 GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
                 GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
                 GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-                for (int i = 0; i < block.blockPosList.size(); i++) {
-                    BlockPos pos = block.blockPosList.get(i);
-                    if (block.blockList.get(i) == null) {
-                        continue;
-                    }
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
-                    RenderAPI.renderBlock(block.blockList.get(i), npc);
-                    //RenderAPI.renderBlock2(x, y, z, this, npc, npc.getCurrentBlock());
-                    GlStateManager.popMatrix();
-                }
-                GlStateManager.disableAlpha();
-                GlStateManager.disableBlend();
+                RenderAPI.renderBlock(block.blockPosList, block.blockList, npc);
                 GlStateManager.popMatrix();
                 return;
             }

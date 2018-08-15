@@ -42,14 +42,16 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void event(RenderFogEvent e) {
-        if (Sky.isFogOn()) {
-            if (Sky.getFogDistance() == -1 || prevDistance != mc.gameSettings.renderDistanceChunks) {
-                prevDistance = mc.gameSettings.renderDistanceChunks;
-                Sky.fogDistance(5.0F + ((mc.gameSettings.renderDistanceChunks * 16) - 5.0F) * (1.0F - (float) 0 / 20.0F));
+        if(Sky.isFogOn()) {
+            if (Sky.getFogDistance() == -1) {
+                Sky.fogDistance(5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F)
+                        * (1.0F - (float) 0 / 20.0F));
             }
-            GlStateManager.enableFog();
-            GlStateManager.setFogStart(Sky.getFogDistance());
-            GlStateManager.setFogEnd(Sky.getFogDistance() + 1);
+            if (Sky.getFogDistance() != -1) {
+                GlStateManager.enableFog();
+                GlStateManager.setFogStart(Sky.getFogDistance());
+                GlStateManager.setFogEnd(Sky.getFogDistance() + 1);
+            }
         }
     }
 
@@ -168,8 +170,7 @@ public class CMPlusEvent {
     }
 
     @SubscribeEvent
-    public void login(RenderHandEvent event)
-    {
+    public void login(RenderHandEvent event) {
         event.setCanceled(!CMManager.isUI("HAND"));
     }
 
@@ -177,7 +178,7 @@ public class CMPlusEvent {
     @SubscribeEvent
     public void login(LoginEvent e) {
         if (!WorldAPI.getCurrentWorldName().equalsIgnoreCase("MpServer") && !WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
-            if(new File("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint").isFile()) {
+            if (new File("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint").isFile()) {
                 CMManager.waypoint = (HashMap<String, double[]>) DebAPI
                         .readObject("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint", new HashMap<String, double[]>());
             }

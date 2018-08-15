@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -27,7 +28,7 @@ public class EntityBigBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
-        this.setLock(true);
+        this.setLock(false);
         this.noClip = !noClip;
     }
 
@@ -48,6 +49,13 @@ public class EntityBigBlock extends EntityPreBlock {
             lavaBlock.setBlockMetadata(getBlockMetadata());
         System.out.println("스폰 좌표 " + lavaBlock.getSpawnX() + ", " + lavaBlock.getSpawnY() + ", " + lavaBlock.getSpawnZ());
         return lavaBlock;
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+        System.out.println(getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+
+        return super.processInteract(player, hand, stack);
     }
 
     @Override
@@ -94,12 +102,8 @@ public class EntityBigBlock extends EntityPreBlock {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(getCurrentBlock() == Blocks.GLASS){
-            setLock(true);
-            setBlockMetadata(0);
-        }
         if ((getCurrentBlock() == Blocks.WOOL && (getBlockMetadata() == 11 || getBlockMetadata() == 5))) {
-            this.setLock(false);
+            this.setLock(true);
             setBlockMetadata(5);
         }
         if (getCustomNameTag().indexOf("SmallBlock") != -1) {
@@ -108,19 +112,33 @@ public class EntityBigBlock extends EntityPreBlock {
                 this.setScale(1, 1, 1);
                 this.setBlock(new ItemStack(Blocks.WOOL, 1, 11));
             }
-            setLock(true);
-        }
-        if (Float.compare(getRotateX(), 90) != 0 || Float.compare(getRotateY(), 90) != 0
-                || Float.compare(getRotateZ(), 90) != 0){
             setLock(false);
         }
-        if (!isServerWorld() && Float.compare(width, 3F) == 0 && (Float.compare(getRotateX(), 90) != 0 || Float.compare(getRotateY(), 90) != 0
-                || Float.compare(getRotateZ(), 90) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
-            this.setLock(false);
+        if(getRotateZ() == 0 && getRotateY() == 0 && getRotateX() == 0){
+            this.setRotate(0,0,0);
+        }
+        if(getRotateZ() == 90 && getRotateY() == 90 && getRotateX() == 90){
+            this.setRotate(0,0,0);
+        }
+        if(getRotateZ() == 180 && getRotateY() == 0 && getRotateX() == 0){
+            this.setRotate(0,0,0);
+        }
+
+        if (!isServerWorld() && Float.compare(width, 3F) == 0 && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
+                || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
+            this.setLock(true);
             this.setSize(1, 1);
             this.setFalling(false);
+            System.out.println(getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
-        if (!isLock()) {
+        if (!isServerWorld() && Float.compare(width, 1F) == 0 && (Float.compare(getRotateX(), 0) == 0 && Float.compare(getRotateY(), 0) == 0
+                && Float.compare(getRotateZ(), 0) == 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
+            this.setLock(false);
+            this.setSize(3, 1);
+            System.out.println("Rotate가 0임 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+        }
+
+        if (isLock()) {
             setVelocity(0, 0, 0);
             return;
         } else {

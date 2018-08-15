@@ -1,6 +1,9 @@
 package ruo.map.lopre2.jump2;
 
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -13,6 +16,8 @@ import ruo.map.lopre2.LoPre2;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.WorldAPI;
 
+import java.util.List;
+
 
 public class JumpEvent2 {
     public static boolean food;
@@ -24,6 +29,7 @@ public class JumpEvent2 {
                 if (e.getMessage().getUnformattedComponentText().indexOf("의 리스폰 지점을") != -1)
                     e.setCanceled(true);
             }
+
         }
 
     }
