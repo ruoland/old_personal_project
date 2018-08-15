@@ -11,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -57,7 +58,7 @@ public class SUAKGEMod {
         EntityRegistry.addSpawn(EntityTeleportCreeper.class, 50, 1, 5, EnumCreatureType.MONSTER, biomes);
         EntityRegistry.addSpawn(EntitySpiderJockey.class, 50, 1, 5, EnumCreatureType.MONSTER, biomes);
         //EntityRegistry.addSpawn(EntityGhast.class, 3, 1, 3, EnumCreatureType.MONSTER, biomes);
-        DebAPI.registerEvent(new SUAKGEEvent());
+        MinecraftForge.EVENT_BUS.register(new SUAKGEEvent());
         ItemStack stack = new ItemStack(Items.COMPASS, 1);
         stack.setStackDisplayName("나침반 - 탐지");
         GameRegistry.addShapelessRecipe(stack,

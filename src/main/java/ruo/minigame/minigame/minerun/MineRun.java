@@ -48,7 +48,6 @@ public class MineRun extends AbstractMiniGame {
         } else if (elytraMode == 1) {
             fakePlayer.setElytra(false);
             Camera.getCamera().rotateX = -Camera.getCamera().rotateX;
-
             Camera.getCamera().rotateZ = -Camera.getCamera().rotateZ;
             System.out.println("엘리트라 모드 해제");
         } else {

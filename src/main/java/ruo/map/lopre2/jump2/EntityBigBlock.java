@@ -105,6 +105,8 @@ public class EntityBigBlock extends EntityPreBlock {
         if ((getCurrentBlock() == Blocks.WOOL && (getBlockMetadata() == 11 || getBlockMetadata() == 5))) {
             this.setLock(true);
             setBlockMetadata(5);
+        }else if(getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0){
+            setLock(false);
         }
         if (getCustomNameTag().indexOf("SmallBlock") != -1) {
             if (getScaleX() == 3) {
@@ -141,7 +143,11 @@ public class EntityBigBlock extends EntityPreBlock {
             setLock(false);
             System.out.println(isLock()+ " 222- "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
-
+        if ((Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
+                || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
+            this.setLock(true);
+            this.setFalling(false);
+        }
 
         if (isLock()) {
             setVelocity(0, 0, 0);

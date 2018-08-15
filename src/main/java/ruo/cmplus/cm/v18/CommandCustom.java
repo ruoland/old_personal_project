@@ -13,10 +13,9 @@ public class CommandCustom extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		
 		ClientCommandHandler.instance.registerCommand(new CustomCommand(args[0], args[1]));
-		CMPlus.debConfig.get("customcommand", args[0], args[1]);
-		CMPlus.debConfig.save();
+		CMPlus.cmPlusConfig.get("customcommand", args[0], args[1]);
+		CMPlus.cmPlusConfig.save();
 	}
 	
 	public static class CustomCommand extends CommandPlusBase implements Serializable {

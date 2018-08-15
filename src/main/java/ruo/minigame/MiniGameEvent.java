@@ -13,32 +13,26 @@ import ruo.minigame.api.LoginEvent;
 public class MiniGameEvent {
 
     @SubscribeEvent
-    public void waterJump(TickEvent.PlayerTickEvent e) {
-        if (e.side == Side.SERVER && e.phase == TickEvent.Phase.END) {
-            MiniGame.cooldownTracker.tick();
-        }
-
-    }
-
-    @SubscribeEvent
     public void gameoverlay(TickEvent.PlayerTickEvent e) {
-        if (e.phase == TickEvent.Phase.END && e.side == Side.SERVER)
+        if (DebAPI.debAPI.size() > 0 && e.phase == TickEvent.Phase.END && e.side == Side.SERVER)
             DebAPI.deb();
     }
 
     @SubscribeEvent
     public void gameoverlay(ServerChatEvent e) {
-        if (e.getMessage().startsWith("s:")) {
-            DebAPI.activeName = e.getMessage().replace("s:", "");
-        }
-        String[] split = e.getMessage().split(",");
-        if (split.length > 2) {
-            float x = Float.valueOf(split[0]);
-            float y = Float.valueOf(split[1]);
-            float z = Float.valueOf(split[2]);
-            DebAPI.debAPI.get(DebAPI.activeName).x = x;
-            DebAPI.debAPI.get(DebAPI.activeName).y = y;
-            DebAPI.debAPI.get(DebAPI.activeName).z = z;
+        if(DebAPI.debAPI.size() > 0) {
+            if (e.getMessage().startsWith("s:")) {
+                DebAPI.activeName = e.getMessage().replace("s:", "");
+            }
+            String[] split = e.getMessage().split(",");
+            if (split.length > 2) {
+                float x = Float.valueOf(split[0]);
+                float y = Float.valueOf(split[1]);
+                float z = Float.valueOf(split[2]);
+                DebAPI.debAPI.get(DebAPI.activeName).x = x;
+                DebAPI.debAPI.get(DebAPI.activeName).y = y;
+                DebAPI.debAPI.get(DebAPI.activeName).z = z;
+            }
         }
     }
     //Login 이벤트

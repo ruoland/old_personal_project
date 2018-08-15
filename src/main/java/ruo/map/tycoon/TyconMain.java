@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -38,7 +39,7 @@ public class TyconMain {
 
 	@EventHandler
 	public void init(FMLInitializationEvent e){
-		DebAPI.registerEvent(new TyconEvent());
+		MinecraftForge.EVENT_BUS.register(new TyconEvent());
 		DebAPI.registerEntity(this, "Consumer", EntityConsumer.class);
 		DebAPI.registerEntity(this, "PartTimeJob", EntityPartTimeJob.class);
 	}

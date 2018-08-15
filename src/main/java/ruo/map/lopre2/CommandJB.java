@@ -13,13 +13,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
-import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
-import ruo.map.lopre2.jump2.JumpEvent2;
 import ruo.minigame.action.ActionEffect;
-import ruo.minigame.action.ActionEvent;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
@@ -88,9 +85,6 @@ public class CommandJB extends CommandPlusBase {
                 ActionEffect.doubleJump(Boolean.valueOf(args[1]));
             }
 
-            if (args[0].equalsIgnoreCase("food")) {
-                JumpEvent2.food = Boolean.valueOf(args[1]);
-            }
             if (args[0].equalsIgnoreCase("give")) {
                 EntityPlayer s = (EntityPlayer) sender.getCommandSenderEntity();
                 WorldAPI.getWorld().getBlockState(WorldAPI.getLookBlock()).withProperty(BlockLiquid.LEVEL, 0);

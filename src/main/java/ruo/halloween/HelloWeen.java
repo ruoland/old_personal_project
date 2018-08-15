@@ -1,5 +1,6 @@
 package ruo.halloween;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -27,7 +28,7 @@ public class HelloWeen {
 		DebAPI.registerEntity(this, "NO-EGG-EntityBlock", EntityBlock.class);
 		DebAPI.registerEntity(this, "NO-EGG-EntityBlock2", EntityBlockFallAttack.class);
 		DebAPI.registerEntity(this, "NO-EGG-EntityBlock3", EntityBlockMoveAttack.class);
-		DebAPI.registerEvent(new WeenEvent());
+		MinecraftForge.EVENT_BUS.register(new WeenEvent());
 		//GameRegistry.register(itemFlying);
 	}
 	

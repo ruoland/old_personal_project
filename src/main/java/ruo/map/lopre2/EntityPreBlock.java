@@ -14,7 +14,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
@@ -24,7 +23,6 @@ import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.dummy.EntityBuildBlockMove;
 import ruo.map.lopre2.jump2.EntityBigBlock;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
@@ -235,22 +233,6 @@ public class EntityPreBlock extends EntityDefaultNPC {
         super.onLivingUpdate();
         this.rotationYaw = 0;
         this.renderYawOffset = 0;
-        if (getCurrentBlock() == Blocks.MAGMA) {
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
-                    this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
-            for (Entity player : list) {
-                if (!MiniGame.cooldownTracker.hasCooldown(getUniqueID().toString()))
-                    MiniGame.cooldownTracker.setCooldown(getUniqueID().toString(), 60);
-                if (MiniGame.cooldownTracker.getCooldown(getUniqueID().toString(), 0) <= 0.2) {
-                    player.setFire(5);
-                    MiniGame.cooldownTracker.removeCooldown(getUniqueID().toString());
-                    MiniGame.cooldownTracker.setCooldown(getUniqueID().toString(), 60);
-                }
-            }
-            if (list.isEmpty()) {
-                MiniGame.cooldownTracker.removeCooldown(getUniqueID().toString());
-            }
-        }
     }
     protected void resetHeight() {
         float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;

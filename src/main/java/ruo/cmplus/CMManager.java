@@ -13,7 +13,6 @@ import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 public class CMManager implements Serializable {
     private static final ResourceLocation[] shaderResourceLocations = new ResourceLocation[]{
@@ -34,7 +33,6 @@ public class CMManager implements Serializable {
     private static EnumFacing sleepFacing;
     public static boolean norain, mouse, HAND = true, ALL = true, HELMET = true, PORTAL = true, CROSSHAIRS = true, BOSSHEALTH = true, ARMOR = true, HEALTH = true, FOOD = true, AIR = true, HOTBAR = true, EXPERIENCE = true, HEALTHMOUNT = true, JUMPBAR = true, CHAT = true, PLAYER_LIST = true, DEBUG = true;
     private static boolean moveLock, sit, sleep;
-    public static HashMap<String, double[]> waypoint = new HashMap<String, double[]>();
     private static GuiCGameOver gameover;
 
     public static boolean isUI(String name) {

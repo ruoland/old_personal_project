@@ -9,6 +9,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -57,7 +58,6 @@ import ruo.minigame.minigame.scroll.ScrollEvent;
 public class MiniGame {
     public static SimpleNetworkWrapper network;
     public static KeyBinding grab = new KeyBinding("액션-", Keyboard.KEY_R, "카카카테고리");
-    public static final StringCooldownTracker cooldownTracker = new StringCooldownTracker();
 
     @SidedProxy(clientSide = "ruo.minigame.ClientProxy", serverSide = "ruo.minigame.CommonProxy")
     public static CommonProxy proxy;
@@ -131,13 +131,13 @@ public class MiniGame {
         DebAPI.registerEntity(this, "DefaultNPC", EntityDefaultNPC.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultBlock", EntityDefaultBlock.class);
 
-        DebAPI.registerEvent(new ActionEvent());
-        DebAPI.registerEvent(new TickRegister());
-        DebAPI.registerEvent(new MiniGameEvent());
-        DebAPI.registerEvent(mineRunEvent = new MineRunEvent());
-        DebAPI.registerEvent(scrollEvent = new ScrollEvent());
-        DebAPI.registerEvent(bomberEvent = new BomberEvent());
-        DebAPI.registerEvent(elytraEvent = new ElytraEvent());
+        MinecraftForge.EVENT_BUS.register(new ActionEvent());
+        MinecraftForge.EVENT_BUS.register(new TickRegister.TickRegisterEvent());
+        MinecraftForge.EVENT_BUS.register(new MiniGameEvent());
+        MinecraftForge.EVENT_BUS.register(mineRunEvent = new MineRunEvent());
+        MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
+        MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());
+        MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
         ClientRegistry.registerKeyBinding(grab);
 
         ClientCommandHandler.instance.registerCommand(new CommandMg());

@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import ruo.cmplus.deb.DebAPI;
+import ruo.cmplus.WorldConfig;
 import ruo.map.tycoon.consumer.EntityConsumer;
 import ruo.map.tycoon.map.MapHelper;
 import ruo.minigame.api.LoginEvent;
@@ -33,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.Properties;
 
 public class TyconEvent {
     private int npcCreateDelay = 0;
@@ -67,23 +66,21 @@ public class TyconEvent {
     @SubscribeEvent
     public void playerLogin(LoginEvent event) {
         if (WorldAPI.equalsWorldName("타이쿤")) {
-            Properties pro = DebAPI.getWorldProperties();
-            TyconHelper.playermoney = Float.valueOf(pro.getProperty("돈", "0"));
-            MapHelper.setFlowerBonus(Integer.valueOf(pro.getProperty("플라워보너스", "0")));
-            MapHelper.setTyconOpen(Boolean.valueOf(pro.getProperty("열림", "true")));
-            DebAPI.saveWorldProperties();
-
+            WorldConfig worldConfig = WorldConfig.getWorldConfig();
+            TyconHelper.playermoney = Float.valueOf(worldConfig.getProperty("돈").getString());
+            MapHelper.setFlowerBonus(Integer.valueOf(worldConfig.getProperty("플라워보너스").getInt()));
+            MapHelper.setTyconOpen(Boolean.valueOf(worldConfig.getProperty("열림").getBoolean()));
         }
     }
 
     @SubscribeEvent
     public void playerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (WorldAPI.equalsWorldName("타이쿤")) {
-            DebAPI.getWorldProperties().setProperty("돈", "" + TyconHelper.playermoney);
-            DebAPI.getWorldProperties().setProperty("플라워보너스", "" + MapHelper.getFlowerBonus());
-            DebAPI.getWorldProperties().setProperty("열림", "" + MapHelper.isTyconOpen());
-            DebAPI.saveWorldProperties();
+            WorldConfig worldConfig = WorldConfig.getWorldConfig();
 
+            worldConfig.setProperty("돈", "" + TyconHelper.playermoney);
+            worldConfig.setProperty("플라워보너스", "" + MapHelper.getFlowerBonus());
+            worldConfig.setProperty("열림", "" + MapHelper.isTyconOpen());
         }
     }
 

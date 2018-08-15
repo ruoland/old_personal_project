@@ -133,7 +133,7 @@ public class Camera {
 				rotateX = plusminus(x, rotateX);
 				rotateY = plusminus(y, rotateY);
 				rotateZ = plusminus(z, rotateZ);
-				absLoop = moveLoop(x, rotateX) || moveLoop(y, rotateY) || moveLoop(z, rotateZ);
+				absLoop = equalsCut(x, rotateX) || equalsCut(y, rotateY) || equalsCut(z, rotateZ);
 			}
 		});
 	}
@@ -145,56 +145,48 @@ public class Camera {
 				traX = plusminus(x, traX);
 				traY = plusminus(y, traY);
 				traZ = plusminus(z, traZ);
-				absLoop = moveLoop(x, traX) || moveLoop(y, traY) || moveLoop(z, traZ);
+				absLoop = equalsCut(x, traX) || equalsCut(y, traY) || equalsCut(z, traZ);
 			}
 		});
 	}
 	
 	public boolean cmTraEquals(double x, double y, double z) {
-		if(Double.compare(Math.round(x), Math.round(traX)) == 0 &&
-				Double.compare(Math.round(y), Math.round(traY)) == 0 &&
-				Double.compare(Math.round(z), Math.round(traZ)) == 0) {
-			return true;
-		}
-		else
-			return false;
+        return Double.compare(Math.round(x), Math.round(traX)) == 0 &&
+                Double.compare(Math.round(y), Math.round(traY)) == 0 &&
+                Double.compare(Math.round(z), Math.round(traZ)) == 0;
 	}
 	public boolean cmRotateEquals(double x, double y, double z) {
-		if(Double.compare(Math.round(x), Math.round(rotateX)) == 0 && 
-				Double.compare(Math.round(y), Math.round(rotateY)) == 0 && 
-				Double.compare(Math.round(z), Math.round(rotateZ)) == 0) {
-			return true;
-		}
-		else
-			return false;
+        return Double.compare(Math.round(x), Math.round(rotateX)) == 0 &&
+                Double.compare(Math.round(y), Math.round(rotateY)) == 0 &&
+                Double.compare(Math.round(z), Math.round(rotateZ)) == 0;
 	}
 	/**
 	 * 특정 값이 될 때까지 1/20의 값으로 더하는 메서드
 	 */
-	public double plusminus(double x, double traX) {
-		return plusminus(x,traX,20);
+	public double plusminus(double fir, double sec) {
+		return plusminus(fir,sec,20);
 	}
 
 	/**
 	 * 특정 값이 될 때까지 1/n의 값으로 더하는 메서드입
 	 */
-	public double plusminus(double x, double traX, double tick) {
-		if (Math.round(x) == Math.round(traX))
-			return x;
-		if (WorldAPI.cut(x, 1) > WorldAPI.cut(traX, 1)) {
-			traX += WorldAPI.cut(1F / tick, 1);
+	public double plusminus(double fir, double sec, double tick) {
+		if (Math.round(fir) == Math.round(sec))
+			return fir;
+		if (WorldAPI.cut(fir, 1) > WorldAPI.cut(sec, 1)) {
+			sec += WorldAPI.cut(1F / tick, 1);
 		}
-		if (WorldAPI.cut(x, 1) < WorldAPI.cut(traX, 1)) {
-			traX -= WorldAPI.cut(1F / tick, 1);
+		if (WorldAPI.cut(fir, 1) < WorldAPI.cut(sec, 1)) {
+			sec -= WorldAPI.cut(1F / tick, 1);
 		}
-		return traX;
+		return sec;
 	}
 
 	/**
 	 * 둘의 값을 비교
 	 */
-	public boolean moveLoop(double x, double traX) {
-		return WorldAPI.cut(x) != WorldAPI.cut(traX);
+	public boolean equalsCut(double fir, double sec) {
+		return WorldAPI.cut(fir) != WorldAPI.cut(sec);
 	}
 
 }

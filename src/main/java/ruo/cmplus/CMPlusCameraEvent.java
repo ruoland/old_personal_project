@@ -19,15 +19,6 @@ public class CMPlusCameraEvent {
     private Camera cm = Camera.getCamera();
     private Minecraft mc = Minecraft.getMinecraft();
 
-    private void lockCamera(EntityLivingBase entitylivingbase) {
-        entitylivingbase.rotationPitch = (float) cm.pitch;
-        entitylivingbase.rotationYaw = (float) cm.yaw;
-        entitylivingbase.rotationYawHead = (float) cm.yaw;
-        entitylivingbase.prevRotationPitch = (float) cm.pitch;
-        entitylivingbase.prevRotationYaw = (float) cm.yaw;
-        entitylivingbase.renderYawOffset = cm.yaw;
-    }
-
     @SubscribeEvent
     public void event2(EntityViewRenderEvent.FOVModifier e) {
         e.setFOV(Camera.getCamera().getZoom());
@@ -49,7 +40,9 @@ public class CMPlusCameraEvent {
         if (cm.lockCamera) {
             e.setPitch(0);
             e.setYaw(0);
-            lockCamera(Minecraft.getMinecraft().thePlayer);
+            EntityLivingBase entitylivingbase = Minecraft.getMinecraft().thePlayer;
+            entitylivingbase.rotationPitch = entitylivingbase.prevRotationPitch = cm.pitch;
+            entitylivingbase.rotationYaw = entitylivingbase.prevRotationYaw = entitylivingbase.rotationYawHead = entitylivingbase.renderYawOffset = cm.yaw ;
         }
         if (cm.yp) {
             e.setRoll(0);

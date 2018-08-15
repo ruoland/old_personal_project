@@ -20,14 +20,14 @@ import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
 
+import static ruo.minigame.action.ActionEffect.*;
+
 public class ActionEvent {
-    private static boolean canDoubleJump, isPlayerJump;
-    public static boolean forceJump;
+
     @SubscribeEvent
     public void login(LoginEvent e){
         if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld")) {
             ActionEffect.mapName = WorldAPI.getCurrentWorldName();
-            System.out.println(ActionEffect.mapName+WorldAPI.getCurrentWorldName());
             ActionEffect.load();
         }
     }
@@ -77,7 +77,7 @@ public class ActionEvent {
                 event.player.setHealth(event.player.getMaxHealth());
                 WorldAPI.teleport(event.player.getBedLocation().add(0, 0.3, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
                 Block block = event.player.worldObj.getBlockState(event.player.getBedLocation().add(0, -1, 0)).getBlock();
-                if(block instanceof BlockLiquid || event.player.worldObj.isAirBlock(event.player.getBedLocation().add(0, -1, 0))){
+                if(block instanceof BlockLiquid || event.player.worldObj.isAirBlock(event.player.getBedLocation().add(0, -1, 0))){//만약 텔레포트할 위치에 밟을 블럭이 없는 경우
                     BlockAPI blockAPI = WorldAPI.getBlock(event.player.worldObj, event.player.getBedLocation(), 4D);
                     for(int i=0;i<blockAPI.size();i++){
                         if(blockAPI.getBlock(i) instanceof BlockBasePressurePlate){

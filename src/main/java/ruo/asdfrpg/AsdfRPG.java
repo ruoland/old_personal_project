@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -51,7 +52,7 @@ public class AsdfRPG {
         DebAPI.registerEntity(this, "RPGGolem", EntityRPGGolem.class);
         GameRegistry.register(villageReturn);
         GameRegistry.register(respawn);
-        DebAPI.registerEvent(new AsdfEvent());
+        MinecraftForge.EVENT_BUS.register(new AsdfEvent());
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_BEEF), new ItemStack(Items.BEEF)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_PORKCHOP),  new ItemStack(Items.PORKCHOP)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT),  new ItemStack(Items.RABBIT)));

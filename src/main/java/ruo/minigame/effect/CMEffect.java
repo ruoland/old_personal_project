@@ -28,7 +28,7 @@ public class CMEffect {
             @Override
             public void run(Type type) {
                 Camera.getCamera().zoom = Camera.getCamera().plusminus(argZoom, Camera.getCamera().zoom, tick);
-                absLoop = Camera.getCamera().moveLoop(argZoom, Camera.getCamera().zoom);
+                absLoop = Camera.getCamera().equalsCut(argZoom, Camera.getCamera().zoom);
             }
         });
     }
@@ -38,7 +38,7 @@ public class CMEffect {
             @Override
             public void run(Type type) {
                 Camera.getCamera().zoom = Camera.getCamera().plusminus(argZoom, Camera.getCamera().zoom, tick);
-                absLoop = Camera.getCamera().moveLoop(argZoom, Camera.getCamera().zoom);
+                absLoop = Camera.getCamera().equalsCut(argZoom, Camera.getCamera().zoom);
                 if (!absLoop)
                     abs.run(type);
             }
@@ -240,7 +240,6 @@ public class CMEffect {
                 } else {
                     this.absLoop = false;
                     Camera.getCamera().reset();
-                    return;
                 }
             }
         };
@@ -249,8 +248,6 @@ public class CMEffect {
 
     /**
      * 점점 낮아짐
-     *
-     * @param randomi
      */
     public static void setCameraEarthquake2(final int randomi, int maxcount) {
         if (TickRegister.isAbsTickRun("EarthQuake") && randomi == 0) {
@@ -269,7 +266,6 @@ public class CMEffect {
                 } else {
                     this.absLoop = false;
                     Camera.getCamera().reset();
-                    return;
                 }
             }
         });

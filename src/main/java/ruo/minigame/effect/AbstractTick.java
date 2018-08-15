@@ -10,12 +10,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.minigame.api.WorldAPI;
 
-import java.io.Serializable;
-
 import static ruo.minigame.api.WorldAPI.floor;
 import static ruo.minigame.api.WorldAPI.getWorld;
 
-public abstract class AbstractTick implements Serializable {
+public abstract class AbstractTick {
 	protected String absName;
 	protected int absDefTick;// 초기값
 	protected int absTick;
@@ -118,13 +116,13 @@ public abstract class AbstractTick implements Serializable {
 			return this;
 		}
 
-		public Position setY(double... x) {
-			this.yArray = x;
+		public Position setY(double... y) {
+			this.yArray = y;
 			return this;
 		}
 
-		public Position setZ(double... x) {
-			this.zArray = x;
+		public Position setZ(double... z) {
+			this.zArray = z;
 			return this;
 		}
 
@@ -148,7 +146,6 @@ public abstract class AbstractTick implements Serializable {
 			if (runCondition()) {
 				runPosition();
 				absLoop = false;
-				return;
 			}
 		}
 
@@ -176,25 +173,30 @@ public abstract class AbstractTick implements Serializable {
 		private boolean checkX() {
 			double x2 = mob.posX;
 			for (double x : xArray) {
-				return x == x2 || x == -12345 || (int) x == (int) x2 || floor(x) == floor(x2);
+				if(x == x2 || x == -12345 || (int) x == (int) x2 || floor(x) == floor(x2)){
+					return true;
+				}
 			}
 			return posX == x2 || posX == -12345 || (int) posX == (int) x2 || floor(posX) == floor(x2);
 		}
 
 		private boolean checkY() {
-			double x2 = mob.posY;
-			for (double x : yArray) {
-				return x == x2 || x == -12345 || (int) x == (int) x2 || floor(x) == floor(x2);
+			double y2 = mob.posY;
+			for (double y : yArray) {
+				if(y == y2 || y == -12345 || (int) y == (int) y2 || floor(y) == floor(y2))
+					return true;
 			}
-			return posY == x2 || posY == -12345 || (int) posY == (int) x2 || floor(posY) == floor(x2);
+			return posY == y2 || posY == -12345 || (int) posY == (int) y2 || floor(posY) == floor(y2);
 		}
 
 		private boolean checkZ() {
-			double x2 = mob.posZ;
-			for (double x : yArray) {
-				return x == x2 || x == -12345 || (int) x == (int) x2 || floor(x) == floor(x2);
+			double z2 = mob.posZ;
+			for (double z : yArray) {
+				if(z == z2 || z == -12345 || (int) z == (int) z2 || floor(z) == floor(z2)) {
+					return true;
+				}
 			}
-			return posZ == x2 || posZ == -12345 || (int) posZ == (int) x2 || floor(posZ) == floor(x2);
+			return posZ == z2 || posZ == -12345 || (int) posZ == (int) z2 || floor(posZ) == floor(z2);
 		}
 	}
 

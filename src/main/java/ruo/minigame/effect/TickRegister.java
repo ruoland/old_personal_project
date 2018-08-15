@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class TickRegister {
 
-	private static ArrayList<AbstractTick> list = new ArrayList<AbstractTick>();
-	private static ArrayList<AbstractTick> removeList = new ArrayList<AbstractTick>();
+	private static ArrayList<AbstractTick> list = new ArrayList<>();
+	private static ArrayList<AbstractTick> removeList = new ArrayList<>();
 
 	public static void register(AbstractTick abs) {
 		list.add(abs);
@@ -45,10 +45,7 @@ public class TickRegister {
 	}
 	public static boolean isAbsTickRun(String name) {
 		AbstractTick abs = getAbsTick(name);
-		if(abs == null || removeList.contains(abs)) {
-			return false;
-		}
-		return true;
+		return abs != null && !removeList.contains(abs);
 	}
 
 	/**
@@ -64,30 +61,33 @@ public class TickRegister {
 		return null;
 	}
 
-	@SubscribeEvent
-	public void sub(TickEvent event) {
-		if (event.phase == Phase.END && !isGamePaused()) {
-			for (int i = 0; i < list.size();i++) {
-				AbstractTick abs = list.get(i);
-				if (abs == null || abs.isPause() || abs.isDead()) {
-					continue;
-				}
-				if (abs.tickEvent == null)
-					abs.tickEvent = event;
-				if (abs.subtraction(event.type)) {
-					remove(abs);
-				}
-			}
-		}
-		if(removeList.size() > 0 && isGamePaused()) {
-			list.removeAll(removeList);
-			removeList.clear();
-		}
-	}
 
-	public boolean isGamePaused() {
+
+	public static boolean isGamePaused() {
 		Minecraft mc = Minecraft.getMinecraft();
 		return (mc.currentScreen instanceof GuiDownloadTerrain)
 				|| (mc.currentScreen instanceof GuiScreenWorking);
+	}
+
+	public static class TickRegisterEvent{
+		@SubscribeEvent
+		public void sub(TickEvent event) {
+			if (event.phase == Phase.END && !isGamePaused()) {
+				for (AbstractTick abs : list) {
+					if (abs == null || abs.isPause() || abs.isDead()) {
+						continue;
+					}
+					if (abs.tickEvent == null)
+						abs.tickEvent = event;
+					if (abs.subtraction(event.type)) {
+						remove(abs);
+					}
+				}
+			}
+			if(removeList.size() > 0 && isGamePaused()) {
+				list.removeAll(removeList);
+				removeList.clear();
+			}
+		}
 	}
 }

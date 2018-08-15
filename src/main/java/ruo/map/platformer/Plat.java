@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -31,7 +32,7 @@ public class Plat {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
 
-        DebAPI.registerEvent(new PlatEvent());
+        MinecraftForge.EVENT_BUS.register(new PlatEvent());
         GameRegistry.register(platCoin);
         GameRegistry.register(chickenRiding);
         GameRegistry.register(platCoinSpawn);

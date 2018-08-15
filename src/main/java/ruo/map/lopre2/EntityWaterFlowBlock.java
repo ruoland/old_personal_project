@@ -15,7 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
-import ruo.minigame.action.ActionEvent;
+import ruo.minigame.action.ActionEffect;
 import ruo.minigame.action.GrabHelper;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
@@ -119,7 +119,7 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
                             if (WorldAPI.getPlayerSP().movementInput.jump) {
                                 WorldAPI.getPlayerSP().jump();
                                 WorldAPI.getPlayerMP().jump();
-                                ActionEvent.forceJump = true;
+                                ActionEffect.setForceJump(true);
                             }
                             WorldAPI.getPlayerSP().moveEntity(px, py, pz);
                             WorldAPI.getPlayerMP().moveEntity(px, py, pz);

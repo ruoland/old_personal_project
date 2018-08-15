@@ -6,6 +6,7 @@ import api.player.render.RenderPlayerAPI;
 import api.player.server.ServerPlayerAPI;
 import net.minecraft.command.ICommand;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Loader;
@@ -68,26 +69,22 @@ public class CMPlus {
 
     @Instance("CommandPlus")
     public static CMPlus instance;
-    public static Configuration debConfig;//DebAPI 에서 사용됨
+    public static Configuration cmPlusConfig;//
 
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("CommandPlus");
 
     @EventHandler
     public void init(FMLPreInitializationEvent event) {
-        debConfig = new Configuration(event.getSuggestedConfigurationFile());
-        debConfig.load();
-        debConfig.save();
-
-        //DebAPI.register(Sky.class);
-        //DebAPI.register(CMManager.class);
-        VAR.read();
+        cmPlusConfig = new Configuration(event.getSuggestedConfigurationFile());
+        cmPlusConfig.load();
+        cmPlusConfig.save();
         proxy.pre(event);
         CustomClient.preInit(event);
-        DebAPI.registerEvent(new DebEvent());
-        DebAPI.registerEvent(new CMPlusEvent());
-        DebAPI.registerEvent(new CMPlusCameraEvent());
-        DebAPI.registerEvent(new KeyEvent());
-        DebAPI.registerEvent(new FunctionEvent());
+        MinecraftForge.EVENT_BUS.register(new DebEvent());
+        MinecraftForge.EVENT_BUS.register(new CMPlusEvent());
+        MinecraftForge.EVENT_BUS.register(new CMPlusCameraEvent());
+        MinecraftForge.EVENT_BUS.register(new KeyEvent());
+        MinecraftForge.EVENT_BUS.register(new FunctionEvent());
     }
 
     @EventHandler
@@ -101,7 +98,7 @@ public class CMPlus {
     }
 
     public void readCustomCommand() {
-        Map<String, Property> keyvalue = debConfig.getCategory("customcommand").getValues();
+        Map<String, Property> keyvalue = cmPlusConfig.getCategory("customcommand").getValues();
         for (String com : keyvalue.keySet()) {
             ClientCommandHandler.instance.registerCommand(new CommandCustom.CustomCommand(com, keyvalue.get(com).getString()));
         }
@@ -110,9 +107,7 @@ public class CMPlus {
 
     @EventHandler
     public void stopServer(FMLServerStoppedEvent event) {
-        VAR.save();
-        DebAPI.saveObject("Waypoint", CMManager.waypoint);
-        DebAPI.saveWorldProperties();
+        cmPlusConfig.save();
         DebAPI.saveWorldConfig();
     }
 

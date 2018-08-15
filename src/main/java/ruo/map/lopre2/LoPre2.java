@@ -4,6 +4,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -49,10 +50,9 @@ public class LoPre2 {
         //        DebAPI.registerEntity(this, "BeltBlock", EntityBeltBlock.class);
         //DebAPI.registerEntity(this, "ridingBlock", EntityRidingBlock.class);
         //점프맵 2 코드
-        JumpEvent2.food = Boolean.valueOf(DebAPI.getWorldProperties("JumpMap").getProperty("food", "false"));
         ClientRegistry.registerKeyBinding(blockSetKey);
         ClientRegistry.registerKeyBinding(grab);
-        DebAPI.registerEvent(new JumpEvent2());
+        MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         DebAPI.registerEntity(this, "TeleportBlock", EntityTeleportBlock.class);
         DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
         DebAPI.registerEntity(this, "LoopGuard", EntityDummyGuardLoop.class);
@@ -80,7 +80,7 @@ public class LoPre2 {
 
         DebAPI.createJson(itemSpanner, Items.NETHER_STAR);
         DebAPI.createJson(itemBlockMove, Items.NETHER_STAR);
-        DebAPI.registerEvent(new LooPre2Event());
+        MinecraftForge.EVENT_BUS.register(new LooPre2Event());
     }
 
     @EventHandler

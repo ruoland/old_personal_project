@@ -1,54 +1,63 @@
 package ruo.cmplus.cm.v18.function;
 
-import ruo.cmplus.deb.DebAPI;
+import net.minecraftforge.common.config.ConfigCategory;
+import ruo.cmplus.CMPlus;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.util.HashMap;
 
 public class VAR {
-	private static HashMap<String, Double> doubleVar = new HashMap<>();
-	private static HashMap<String, String> stringVar = new HashMap<>();
-	private static HashMap<String, Boolean> booleanVar = new HashMap<>();
 
+	private static ConfigCategory getDouble(){
+		return CMPlus.cmPlusConfig.getCategory("doubleVar");
+	}
+	private static ConfigCategory getString(){
+		return CMPlus.cmPlusConfig.getCategory("stringVar");
+	}
+	private static ConfigCategory getInteger(){
+		return CMPlus.cmPlusConfig.getCategory("integerVar");
+	}
+	private static ConfigCategory getBoolean(){
+		return CMPlus.cmPlusConfig.getCategory("booleanVar");
+	}
 	public static void putDouble(String key, double value) {
-		doubleVar.put(key, value);
+		CMPlus.cmPlusConfig.get("doubleVar", key, value).set(value);
 	}
 
 	public static void putInteger(String key, int value) {
-		doubleVar.put(key, (double) value);
+		CMPlus.cmPlusConfig.get("integerVar", key, value).set(value);
 	}
 
 	public static void putString(String key, String value) {
-		stringVar.put(key, value);
+		CMPlus.cmPlusConfig.get("stringVar", key, value).set(value);
 	}
 
 	public static void putBoolean(String key, boolean value) {
-		booleanVar.put(key, value);
+		CMPlus.cmPlusConfig.get("booleanVar", key, value).set(value);
 	}
 
 	public static boolean hasDouble(String key) {
-		return doubleVar.containsKey(key);
+		return getDouble().containsKey(key);
 	}
 
 	public static boolean hasInteger(String key) {
-		return doubleVar.containsKey(key);
+		return getInteger().containsKey(key);
 	}
 
 	public static boolean hasString(String key) {
-		return stringVar.containsKey(key);
+		return getString().containsKey(key);
 	}
 
 	public static boolean hasBoolean(String key) {
 		key = key.replace("!", "");
-		return booleanVar.containsKey(key);
+		return getBoolean().containsKey(key);
 	}
 
 	public static boolean getBoolean(String key) {
 		if (hasBoolean(key)) {
 			boolean reverse = key.startsWith("!");
 			key = key.replace("!", "");
-			return reverse ? !booleanVar.get(key) : booleanVar.get(key);
+			return reverse ? !getBoolean().get(key).getBoolean() : getBoolean().get(key).getBoolean();
 		} else {
 			return Boolean.valueOf(key);
 		}
@@ -57,7 +66,7 @@ public class VAR {
 
 	public static String getStr(String key) {
 		if (hasString(key))
-			return stringVar.get(key);
+			return getString().get(key).getString();
 		else {
 			return String.valueOf(key);
 		}
@@ -65,7 +74,7 @@ public class VAR {
 
 	private static double getDoublePrivate(String key) {
 		if (hasDouble(key))
-			return doubleVar.get(key);
+			return getDouble().get(key).getDouble();
 		else {
 			try {
 				return Double.valueOf(key);
@@ -77,7 +86,17 @@ public class VAR {
 	}
 
 	public static int getInt(String key) {
-		return (int) getDouble(key);
+
+		if (hasInteger(key))
+			return getInteger().get(key).getInt();
+		else {
+			try {
+				return Integer.valueOf(key);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
 	}
 
 	public static double getDouble(String key) {
@@ -104,18 +123,18 @@ public class VAR {
 	 * 이름을 가진 변수가 있는 경우 그 변수의 이름을 반환함
 	 */
 	public static String findDoubleKey(String key) {
-		for (String var : doubleVar.keySet()) {
+		for (String var : getDouble().keySet()) {
 			if (var.equals(key))
 				return var;
-			if (key.indexOf(var) != -1)
+			if (key.contains(var))
 				return var;
 		}
 		return null;
 	}
 
 	public static boolean ifMath(String key) {
-		return key.indexOf("+") != -1 || key.indexOf("-") != -1 || key.indexOf("*") != -1
-				|| (key.indexOf("/") != -1 && checkNumber(key));
+		return key.contains("+") || key.contains("-") || key.contains("*")
+				|| (key.contains("/") && checkNumber(key));
 	}
 
 	public static boolean checkNumber(String key) {
@@ -165,21 +184,4 @@ public class VAR {
 		return hasBoolean(key) || hasDouble(key) || hasInteger(key) || hasString(key);
 	}
 
-	public static void save() {
-		DebAPI.saveObject("cmplusvarDou", doubleVar);
-		DebAPI.saveObject("cmplusvarStr", stringVar);
-		DebAPI.saveObject("cmplusvarBoo", booleanVar);
-	}
-
-	public static void read() {
-		doubleVar = (HashMap<String, Double>) DebAPI.readObject("cmplusvarDou", new HashMap<String, Double>());
-		stringVar = (HashMap<String, String>) DebAPI.readObject("cmplusvarStr", new HashMap<String, String>());
-		booleanVar = (HashMap<String, Boolean>) DebAPI.readObject("cmplusvarBoo", new HashMap<String, Boolean>());
-		if (doubleVar == null)
-			doubleVar = new HashMap<>();
-		if (stringVar == null)
-			stringVar = new HashMap<>();
-		if (booleanVar == null)
-			booleanVar = new HashMap<>();
-	}
 }

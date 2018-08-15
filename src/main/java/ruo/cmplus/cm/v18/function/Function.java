@@ -16,7 +16,8 @@ public class Function {
 	private static final HashMap<String, Function> functionHash = new HashMap<>();
 	private final HashMap<String, String> onereplace = new HashMap<>();
 	public HashMap<String, String> replace = new HashMap<>();
-	private File currentFile, eventFolder, commandFolder, guiFolder, entityFolder;
+	private File currentFile;
+	private static File eventFolder, commandFolder, guiFolder, entityFolder;
 	public boolean isCanceled;//이벤트 캔슬했나
 	public boolean stopRead;//폴문이 끝날 때까지 코드 실행을 멈춰야 하는가?
 	private String name;
@@ -41,6 +42,9 @@ public class Function {
 	}
 	public static Function getFunction(String name) {
 		return functionHash.get(name);
+	}
+	public static boolean hasFunction(String name) {
+		return functionHash.containsKey(name);
 	}
 
 	public File getFile() {
@@ -222,7 +226,7 @@ public class Function {
 				.replace("@밝기", "" + e.getBrightness(0)).replace("@이름", e.getCustomNameTag());
 	}
 
-	private File getEventFolder() {
+	private static File getEventFolder() {
 		if (eventFolder == null) {
 			eventFolder = new File(WorldAPI.getCurrentWorldFile() + "/commandplus/" + "script/event/");
 		}
@@ -231,7 +235,7 @@ public class Function {
 		return eventFolder;
 	}
 
-	private File getEntityFolder() {
+	private static File getEntityFolder() {
 		if (entityFolder == null) {
 			entityFolder = new File(WorldAPI.getCurrentWorldFile() + "/commandplus/" + "script/entity/");
 		}
@@ -240,7 +244,7 @@ public class Function {
 		return entityFolder;
 	}
 
-	private File getCommandFolder() {
+	private static File getCommandFolder() {
 		if (commandFolder == null) {
 			commandFolder = new File(WorldAPI.getCurrentWorldFile() + "/commandplus/" + "script/");
 		}
@@ -249,7 +253,7 @@ public class Function {
 		return commandFolder;
 	}
 
-	private File getGuiFolder() {
+	private static File getGuiFolder() {
 		if (guiFolder == null) {
 			guiFolder = new File(WorldAPI.getCurrentWorldFile() + "/commandplus/" + "script/gui/");
 		}

@@ -5,8 +5,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandException;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.WorldConfig;
 import ruo.cmplus.cm.v17.Deb;
-import ruo.cmplus.deb.DebAPI;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -14,9 +14,10 @@ import java.util.Set;
 public class KeyManager {
 
 	private static HashMap<Integer, String> keyMap = new HashMap<>();
-	
+	private static WorldConfig worldConfig;
 	private static KeyManager instance = new KeyManager();
 	public static KeyManager instance(){
+		worldConfig = WorldConfig.getWorldConfig();
 		return instance;
 	}
 	public void addKey(int key, String string){
@@ -34,8 +35,8 @@ public class KeyManager {
 		Deb.msgKey("삭제-키코드"+key+" 명령어"+keyMap.get(key));
 	}
 	public void replaceKey(KeyBinding key, int key2) throws CommandException{
-		key.unPressAllKeys();
-		key.setKeyCode(key2);;
+		KeyBinding.unPressAllKeys();
+		key.setKeyCode(key2);
 		keyMap.put(key2, keyMap.get(key.getKeyCode()) == null ? "" : keyMap.get(key.getKeyCode()));
 		keyMap.remove(key.getKeyCode());
 		Deb.msgKey("리플레이스- 첫번째 키코드"+"---"+key.getDisplayName()+"---"+key.getKeyCode()+"-두번째 키코드"+"---"+key.getDisplayName()+"---"+keyMap.get(key.getKeyCode()));
@@ -50,17 +51,15 @@ public class KeyManager {
 	
 	public void saveKey(){
 		for(int key: getKey()){
-			DebAPI.getWorldProperties().setProperty(String.valueOf(key), keyMap.get(key));
+			worldConfig.setProperty(String.valueOf(key), keyMap.get(key));
 		}
-		DebAPI.saveWorldProperties();
 	}
 
 	public void loadKey(){
-		for(Object key : DebAPI.getWorldProperties().keySet()){
+		for(Object key : worldConfig.keySet()){
 			String str = (String) key;
-			keyMap.put(Integer.valueOf(str), DebAPI.getWorldProperties().getProperty(str));
+			keyMap.put(Integer.valueOf(str), worldConfig.getProperty(str).getString());
 		}
-		DebAPI.saveWorldProperties();
 
 	}
 	
@@ -72,16 +71,8 @@ public class KeyManager {
 			return keyBinding;
 		
 	}
-	private KeyBinding getKeyB(String key) throws CommandException{
+	private KeyBinding getKeyB(String key){
 		key = key.trim();
-		//System.out.println("찾을 키:"+key);
-		//for(KeyBinding keyb : Minecraft.getMinecraft().gameSettings.keyBindings){
-		//	System.out.println(keyb.getDisplayName()+Minecraft.getMinecraft().gameSettings.keyBindings.length+" 키 이름:"+I18n.format(keyb.getKeyDescription(), new Object[0]));
-		//System.out.println(key+(i < Minecraft.getMinecraft().gameSettings.keyBindings.length)+"키바인딩리스트 길이"+Minecraft.getMinecraft().gameSettings.keyBindings.length);
-		//System.out.println(i+keyDesc+keyDesc.equalsIgnoreCase(key));
-		//System.out.println(i+keyName+keyName.equalsIgnoreCase(key));
-		//System.out.println(i+keyCode+keyCode.equalsIgnoreCase(key));
-		//System.out.println(i+keybind.getKeyCode()+keybind.getKeyCode() == getKey(key));
 		for(int i = 0; i < Minecraft.getMinecraft().gameSettings.keyBindings.length;i++){
 			KeyBinding keybind = Minecraft.getMinecraft().gameSettings.keyBindings[i];
 			String keyDesc = I18n.format(keybind.getKeyDescription(), new Object[0]);
@@ -96,7 +87,7 @@ public class KeyManager {
 		Deb.msgKey("getKeyB-"+key+"키가 없습니다.");
 		return null;
 	}
-	public int getKey(String key) throws CommandException{
+	public int getKey(String key) {
 		try {
 			return Keyboard.getKeyIndex(key);
 		} catch (Exception e) {
@@ -106,7 +97,9 @@ public class KeyManager {
 	}
 
 	
-	
+
+	//아래 주석은 언제 생긴 걸까? 2018년 8월 15일 남김
+
 	//키 코드는 문제가 많네..
 	//슬프다.
 	//이번에는 왜 게임이 멈춰버리는 걸까?..

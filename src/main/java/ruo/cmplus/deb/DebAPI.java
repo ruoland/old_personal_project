@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -17,10 +18,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -28,17 +26,16 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
-import ruo.cmplus.CMPlus;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.ModelDefaultNPC;
 import ruo.minigame.map.RenderDefaultNPC;
 
-import java.io.*;
-import java.lang.reflect.Field;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
 
 public class DebAPI {
     public static HashMap<String, DebAPI> debAPI = new HashMap<>();
@@ -178,46 +175,6 @@ public class DebAPI {
         }
     }
 
-    private static HashMap<String, Properties> hash = new HashMap<>();
-    public static int debMode = 0;
-
-    public static Properties getWorldProperties() {
-        return getWorldProperties(WorldAPI.getCurrentWorldName());
-    }
-
-    public static Properties getWorldProperties(String worldName) {
-        Properties properties = hash.containsKey(worldName)
-                ? hash.get(worldName) : new Properties();
-        try {
-            File file = new File("./saves/" + worldName + "/commandplus/key.txt");
-            if (!file.isFile()) {
-                createFile("./saves/" + worldName + "/commandplus/", "key.txt");
-            }
-            FileInputStream inputStream = new FileInputStream("./saves/" + worldName + "/commandplus/key.txt");
-            properties.load(inputStream);
-            inputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        hash.put(worldName, properties);
-
-        return hash.get(worldName);
-    }
-
-    public static void saveWorldProperties() {
-        try {
-            for (String key : hash.keySet()) {
-                System.out.println(hash.get(key).getProperty("tpy"));
-                FileOutputStream fos = new FileOutputStream("./saves/" + key + "/commandplus/key.txt");
-                hash.get(key).store(fos, "");
-                fos.flush();
-                fos.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static File createFile(String dir, String fileName) {
         File file = new File(dir + fileName);
@@ -232,34 +189,6 @@ public class DebAPI {
         return file;
     }
 
-    public static void saveObject(String name, Object array) {
-        try {
-            FileOutputStream fos = new FileOutputStream("./" + name);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(array);
-            oos.close();
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Object readObject(String name, Object defaultObject) {
-        Object list = defaultObject;
-        try {
-            FileInputStream fos = new FileInputStream("./" + name);
-            ObjectInputStream oos = new ObjectInputStream(fos);
-            list = oos.readObject();
-            oos.close();
-            fos.close();
-            return list;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
     public static void removeRecipe(ItemStack stack) {
         Iterator recipe = CraftingManager.getInstance().getRecipeList().iterator();
         while (recipe.hasNext()) {
@@ -267,12 +196,6 @@ public class DebAPI {
                 recipe.remove();
         }
     }
-
-    public static void registerEvent(Object obj) {
-        MinecraftForge.EVENT_BUS.register(obj);
-    }
-
-    private static int id = 140;
 
     public static void createJson(Item itemBlock, Item model) {
         ResourceLocation resourceLocation = itemBlock instanceof ItemBlock ? ((ItemBlock) itemBlock).getBlock().getRegistryName() : itemBlock.getRegistryName();
@@ -366,10 +289,10 @@ public class DebAPI {
     public static void registerEntity(Object mod, String name, String texture, Class entity, ModelBase model) {
         registerEntity(mod, name, new ResourceLocation(texture), entity, model);
     }
-
-    public static void registerEntity(Object mod, String name, Class entity, Render r) {
-        boolean sendsVelocity = name.indexOf("VELOCITY-") != -1;
-        boolean noEgg = name.indexOf("NO-EGG-") != -1;
+    private static int id = 140;
+    public static void registerEntity(Object mod, String name, Class<? extends Entity> entity, Render<? extends Entity> r) {
+        boolean sendsVelocity = name.contains("VELOCITY-");
+        boolean noEgg = name.contains("NO-EGG-");
         name = name.replace("NO-EGG-", "").replace("VELOCITY-", "");
 
         if (noEgg) {
@@ -382,9 +305,9 @@ public class DebAPI {
         id++;
     }
 
-    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class entity, ModelBase model) {
-        boolean sendsVelocity = name.indexOf("VELOCITY-") != -1;
-        boolean noEgg = name.indexOf("NO-EGG-") != -1;
+    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity>  entity, ModelBase model) {
+        boolean sendsVelocity = name.contains("VELOCITY-");
+        boolean noEgg = name.contains("NO-EGG-");
         name = name.replace("NO-EGG-", "").replace("VELOCITY-", "");
 
         if (noEgg) {
@@ -395,7 +318,7 @@ public class DebAPI {
         id++;
     }
 
-    public static int getEggColor(String name) {
+    private static int getEggColor(String name) {
         int color11 = 0;
         for (byte b : name.getBytes()) {
             color11 += b * 30;
@@ -403,91 +326,5 @@ public class DebAPI {
         return color11 * 400;
 
     }
-
-    public static String readFirstLine(String f) {
-        try {
-            return Files.readFirstLine(new File(f), Charset.forName("UTF-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return f;
-    }
-
-    public static void save(Object save, String name) {
-        try {
-            for (Field field : save.getClass().getDeclaredFields()) {
-                field.setAccessible(true);
-                ConfigCategory category = CMPlus.debConfig.getCategory(name);
-                String key = field.getName().toLowerCase();
-                Property property = CMPlus.debConfig.getCategory(name).get(key);
-                if (property == null)
-                    continue;
-                Object obj = field.get(null);
-                field.setAccessible(true);
-                if (field.getType() == double.class)
-                    property.set((double) obj);
-                if (field.getType() == float.class)
-                    property.set((float) obj);
-                if (field.getType() == int.class)
-                    property.set((int) obj);
-                if (field.getType() == String.class)
-                    property.set((String) obj);
-                if (field.getType() == boolean.class)
-                    property.set((boolean) obj);
-                if (field.getType() == double[].class)
-                    property.set((double[]) field.get(null));
-                if (field.getType() == int[].class)
-                    property.set((int[]) obj);
-                if (field.getType() == String[].class)
-                    property.set((String[]) obj);
-                if (field.getType() == boolean[].class)
-                    property.set((boolean[]) obj);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * ㅣ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-     * 이 메서드는 게임에서 나갈 때 실행됨
-     */
-    public static void load(Object save, String name) {
-        try {
-            for (Field field : save.getClass().getDeclaredFields()) {
-                field.setAccessible(true);
-                ConfigCategory category = CMPlus.debConfig.getCategory(name);
-                String key = field.getName().toLowerCase();
-                String simName = name;
-                Property property = CMPlus.debConfig.getCategory(simName).get(key);
-
-                if (!CMPlus.debConfig.hasKey(save.getClass().getSimpleName(), key))
-                    continue;
-
-                if (field.getType() == double.class)
-                    field.set(null, property.getDouble());
-                if (field.getType() == float.class)
-                    field.set(null, (float) property.getDouble());
-                if (field.getType() == int.class)
-                    field.set(null, property.getInt());
-                if (field.getType() == String.class)
-                    field.set(null, property.getString());
-                if (field.getType() == boolean.class)
-                    field.set(null, property.getBoolean());
-
-                if (field.getType() == double[].class)
-                    field.set(null, property.getDoubleList());
-                if (field.getType() == int[].class)
-                    field.set(null, property.getIntList());
-                if (field.getType() == String[].class)
-                    field.set(null, property.getStringList());
-                if (field.getType() == boolean[].class)
-                    field.set(null, property.getBooleanList());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
 

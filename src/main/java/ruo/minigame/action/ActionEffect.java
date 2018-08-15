@@ -16,12 +16,20 @@ import java.util.HashMap;
 
 public class ActionEffect {
 	static String mapName;
+	protected static boolean canDoubleJump, isPlayerJump;
+	protected static boolean forceJump;
+
+	public static void setForceJump(boolean forceJump) {
+		ActionEffect.forceJump = forceJump;
+	}
+
 	public static void inWaterRemove() {
 		inWaterMap.remove(mapName);
 	}
 	public static void inWater(boolean inWater) {
 		inWaterMap.put(mapName, inWater);
 	}
+
 	//CommandJB , MiniGameClientPlayer 에 있음
 	public static boolean isInWater() {
 		return inWaterMap.containsKey(mapName);

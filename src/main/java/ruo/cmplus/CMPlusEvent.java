@@ -24,14 +24,10 @@ import ruo.cmplus.camera.Camera;
 import ruo.cmplus.cm.v17.Deb;
 import ruo.cmplus.cm.v18.function.FunctionIF;
 import ruo.cmplus.cm.v18.function.VAR;
-import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.*;
-import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 
 public class CMPlusEvent {
     private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
@@ -161,7 +157,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void login(PlayerTickEvent event) {
-        if (event.player.worldObj.getGameRules().getBoolean("food")) {
+        if (event.player.worldObj.getGameRules().getBoolean("noHunger")) {
             event.player.getFoodStats().setFoodLevel(20);
         }
         if (!event.player.worldObj.getGameRules().getBoolean("weatherChange")) {
@@ -176,28 +172,13 @@ public class CMPlusEvent {
 
 
     @SubscribeEvent
-    public void login(LoginEvent e) {
-        if (!WorldAPI.getCurrentWorldName().equalsIgnoreCase("MpServer") && !WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
-            if (new File("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint").isFile()) {
-                CMManager.waypoint = (HashMap<String, double[]>) DebAPI
-                        .readObject("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint", new HashMap<String, double[]>());
-            }
-    }
-
-    @SubscribeEvent
     public void worldLoad(WorldEvent.Load e) {
         GameRules rules = e.getWorld().getGameRules();
-        if (!rules.hasRule("food"))
-            rules.addGameRule("food", "false", GameRules.ValueType.BOOLEAN_VALUE);
+        if (!rules.hasRule("noHunger"))
+            rules.addGameRule("noHunger", "false", GameRules.ValueType.BOOLEAN_VALUE);
         if (!rules.hasRule("weatherChange"))
             rules.addGameRule("weatherChange", "true", GameRules.ValueType.BOOLEAN_VALUE);
 
-    }
-
-    @SubscribeEvent
-    public void worldUnload(WorldEvent.Unload e) {
-        if (!WorldAPI.getCurrentWorldName().equalsIgnoreCase("MpServer") && !WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
-            DebAPI.saveObject("/saves/" + WorldAPI.getCurrentWorldName() + "/Waypoint", CMManager.waypoint);
     }
 
     @SubscribeEvent

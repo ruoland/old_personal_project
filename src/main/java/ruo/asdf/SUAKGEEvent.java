@@ -4,12 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
@@ -18,12 +16,10 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -39,14 +35,11 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import ruo.cmplus.util.Sky;
-import ruo.minigame.MiniGame;
 import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -286,7 +279,8 @@ public class SUAKGEEvent {
             }
         }
     }
-
+    /*
+    쿨다운 트래커 대체제를 찾기 전까지 봉인
     @SubscribeEvent
     public void event(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
@@ -395,4 +389,5 @@ public class SUAKGEEvent {
         }
     }
 
+*/
 }
