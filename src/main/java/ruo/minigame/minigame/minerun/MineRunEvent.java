@@ -81,7 +81,7 @@ public class MineRunEvent {
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         PosHelper posHelper = new PosHelper(WorldAPI.getPlayer());
-        if (DebAPI.isKeyDown(Keyboard.KEY_V)) {
+        if (DebAPI.isKeyDown(Keyboard.KEY_V)) {//엘리트라 모드로 변경함
             if (MineRun.elytraMode() == 2) {
                 MineRun.setElytra(1);
                 System.out.println(MineRun.elytraMode());

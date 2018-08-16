@@ -55,8 +55,12 @@ public class MineRun extends AbstractMiniGame {
             fakePlayer.setElytra(false);
         }
     }
-    private static double xCoord, zCoord;
+    private static double xCoord, zCoord, lookX, lookZ;
     protected static double curX, curY, curZ, playerStartY;
+
+    public static double getCurY() {
+        return curY;
+    }
 
     public static void setPosition(double x, double y, double z){
         curX = x;
@@ -105,6 +109,9 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(fakePlayer, 1);
         xCoord =  EntityAPI.lookX(player, 0.3);
         zCoord =  EntityAPI.lookZ(player, 0.3);
+        lookX = EntityAPI.lookX(player,3);
+        lookZ = EntityAPI.lookX(player,3);
+
         System.out.println(xCoord+" - "+zCoord);
         return super.start();
     }
@@ -120,9 +127,9 @@ public class MineRun extends AbstractMiniGame {
         EntityPlayer player = WorldAPI.getPlayer();
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if(elytraMode() == 1){
-            fakePlayer.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), player.posY + 8, player.posZ + curZ + EntityAPI.lookZ(player, 3));
+            fakePlayer.setPosition(player.posX + curX + lookX, player.posY + 8, player.posZ + curZ + lookZ);
         }else
-        fakePlayer.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), fakePlayer.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
+        fakePlayer.setPosition(player.posX + curX + lookX, fakePlayer.posY + curY, player.posZ + curZ + lookZ);
         if (curY != 0) {
             curY = 0;
         }

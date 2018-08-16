@@ -4,9 +4,13 @@ import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Items;
 import net.minecraft.util.EnumHand;
 import ruo.minigame.action.ActionEffect;
+import ruo.minigame.api.WorldAPI;
+import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.minigame.minerun.MineRun;
 
 public class MiniGameClientPlayer extends ClientPlayerBase {
 
@@ -20,16 +24,34 @@ public class MiniGameClientPlayer extends ClientPlayerBase {
 			return ActionEffect.getInWater();
 		return super.isInWater();
 	};
-	
+
+
 	public void onUpdate() {
-		if (FakePlayerHelper.fakePlayer != null) {
-			FakePlayerHelper.fakePlayer.rotationPitch = player.rotationPitch;
-			FakePlayerHelper.fakePlayer.rotationYaw = player.rotationYaw;
-			FakePlayerHelper.fakePlayer.rotationYawHead = player.rotationYawHead;
-			FakePlayerHelper.fakePlayer.attackedAtYaw = player.attackedAtYaw;
-			FakePlayerHelper.fakePlayer.renderYawOffset = player.renderYawOffset;
-			FakePlayerHelper.fakePlayer.cameraPitch = player.cameraPitch;
+		EntityFakePlayer fakePlayer =FakePlayerHelper.fakePlayer;
+		if (fakePlayer != null) {
+			fakePlayer.rotationPitch = player.rotationPitch;
+			fakePlayer.rotationYaw = player.rotationYaw;
+			fakePlayer.rotationYawHead = player.rotationYawHead;
+			fakePlayer.attackedAtYaw = player.attackedAtYaw;
+			fakePlayer.renderYawOffset = player.renderYawOffset;
+			fakePlayer.cameraPitch = player.cameraPitch;
+			if (MineRun.elytraMode() == 0 || MineRun.elytraMode() == 2) {//플레이어를 페이크 위에 갖다 놓음 - 7월 14일
+				if (MineRun.elytraMode() == 2) {
+					fakePlayer.motionY = 0;//모드2 는 앞을 향해 날라가기 때문에 공중에 띄워줘야 함 - 7월 14일
+					//엘리트라 모드 2에서 위 아래로 움직이면 카메라도 같이 움직여서 고쳐야하는데 아직 안고침 - 7월 14일
+					//e.player.motionY = (fakePlayer.posY + 3 - MiniGame.minerun.curY) - e.player.posY; - 이거 안됨 움직일 때 어긋남 - 7월 14일
+				}
+				if (fakePlayer.isNotColliding() && !fakePlayer.isCollidedHorizontally) {//페이크 플레이어가 어딘가에 막힌 상태가 아닌 경우에만 - 7월 14일
+					player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
+					player.motionY = (fakePlayer.posY + 3) - player.posY;
+					player.motionZ = MineRun.zCoord();
+					MineRun.setFakePositionUpdate();
+					fakePlayer.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
+					fakePlayer.motionZ = MineRun.zCoord();
+				}
+			}
 		}
+
 		super.onUpdate();
 	}
 

@@ -47,9 +47,7 @@ import ruo.minigame.minigame.elytra.miniween.*;
 import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
 import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenTNT;
 import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenUP;
-import ruo.minigame.minigame.minerun.EntityMineRunCreeper;
-import ruo.minigame.minigame.minerun.MineRun;
-import ruo.minigame.minigame.minerun.MineRunEvent;
+import ruo.minigame.minigame.minerun.*;
 import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
 
@@ -109,7 +107,8 @@ public class MiniGame {
         //스크롤 메이커용
         //DebAPI.registerEntity(this, "ScrollMouse", EntityScrollMouse.class);
         //마인런 게임용
-        DebAPI.registerEntity(this, "MRCreeper", EntityMineRunCreeper.class);
+        DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
+        DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
         DebAPI.registerEntity(this, "Test", EntityElytraTest.class);
 
         //엘리트라 슈팅 게임용

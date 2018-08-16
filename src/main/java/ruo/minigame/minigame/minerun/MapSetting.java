@@ -27,11 +27,11 @@ public class MapSetting {
     }
 
     public void spawnCreeper(double x, double y, double z){
-        EntityMineRunCreeper creeper = new EntityMineRunCreeper(WorldAPI.getWorld());
+        EntityMRCreeper creeper = new EntityMRCreeper(WorldAPI.getWorld());
         creeper.setPosition(-191.5, 60.0, 538.9);
         WorldAPI.getWorld().spawnEntityInWorld(creeper);
     }
-    public void create(){
+    private void create(){
         World world = WorldAPI.getWorld();
         EntityPlayer player = WorldAPI.getPlayer();
         PosHelper posHelper = new PosHelper(player);
