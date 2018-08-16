@@ -26,29 +26,18 @@ import ruo.minigame.map.EntityDefaultNPC;
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
     public static long startTime, endTime;
-    public static boolean isDebMode = false, isLavaInvisible, playerMove;//용암 블럭 투명화를 반대로 설정함
+    public static boolean isDebMode = false, isLavaInvisible;//용암 블럭 투명화를 반대로 설정함
     public static boolean upMode, downMode;
+    //E 1127 247 -70
+    //E 회전 -180 0 -180
+    //N 1127 247 -61
+    //N 회전 -180 0 -180
+    //D 1127 247 -56
+    //D 회전 -180 0 -180
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-
-        if (args.length == 0) {
-            sender.addChatMessage(new TextComponentString(I18n.format("item.lotbow.name")));
-            sender.addChatMessage(new TextComponentString(I18n.format("entity.LoopPre2.lavablock.name")));
-
-            EntityPlayer s = (EntityPlayer) sender.getCommandSenderEntity();
-            WorldAPI.teleport(s.getBedLocation().getX(), s.getBedLocation().getY(), s.getBedLocation().getZ());
-
-            s.setHealth(20);
-            s.getFoodStats().setFoodLevel(20);
-            s.fallDistance = 0;
-            return;
-        }
         if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("pm")) {
-                playerMove = !playerMove;
-                System.out.println(playerMove);
-            }
             if (args[0].equalsIgnoreCase("spider") || args[0].equalsIgnoreCase("spi")) {
                 EntityPlayer player = (EntityPlayer) sender;
                 EntityJumpSpider spider = new EntityJumpSpider(WorldAPI.getWorld());
@@ -85,12 +74,9 @@ public class CommandJB extends CommandPlusBase {
                 ActionEffect.doubleJump(Boolean.valueOf(args[1]));
             }
 
-            if (args[0].equalsIgnoreCase("give")) {
-                EntityPlayer s = (EntityPlayer) sender.getCommandSenderEntity();
-                WorldAPI.getWorld().getBlockState(WorldAPI.getLookBlock()).withProperty(BlockLiquid.LEVEL, 0);
-            }
             if (args[0].equalsIgnoreCase("deb"))
                 isDebMode = true;
+
 
             if (args[0].equalsIgnoreCase("help")) {
                 sender.addChatMessage(new TextComponentString("1.블럭에 끼인 경우는 /jb up"));
@@ -137,7 +123,6 @@ public class CommandJB extends CommandPlusBase {
                 long minute = sec / 60;
                 long second = sec - sec / 60 * 60;
                 System.out.println((endTime - startTime) / 1000 + "초.");
-
                 WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
                 WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
 

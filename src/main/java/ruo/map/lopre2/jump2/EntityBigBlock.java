@@ -132,26 +132,13 @@ public class EntityBigBlock extends EntityPreBlock {
             this.setFalling(false);
             System.out.println(getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
-        if (!isServerWorld() && Float.compare(width, 1F) == 0 && (Float.compare(getRotateX(), 0) == 0 && Float.compare(getRotateY(), 0) == 0
-                && Float.compare(getRotateZ(), 0) == 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
-            this.setLock(false);
-            this.setSize(3, 1);
-            System.out.println("Rotate가 0임 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
-        }
-        if(isLock() && Float.compare(getRotateX(), 0) == 0 && Float.compare(getRotateY(), 0) == 0
-                && Float.compare(getRotateZ(), 0) == 0){
-            setLock(false);
-            System.out.println(isLock()+ " 222- "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
-        }
-        if ((Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
+        if (!isLock() && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
                 || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
             this.setLock(true);
             this.setFalling(false);
         }
-
         if (isLock()) {
             setVelocity(0, 0, 0);
-
         } else {
             float size = 2.5F;
             if (getCustomNameTag().indexOf("BigBlock") != -1)

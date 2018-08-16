@@ -190,7 +190,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void event(WorldEvent.Load e) {
-        if (e.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
+        if (e.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && !(e.getWorld().provider instanceof WorldProvider10)) {
             try {
                 WorldProvider10 pro = new WorldProvider10();
                 pro.registerWorld(e.getWorld());
@@ -244,13 +244,15 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
-        if (Keyboard.isKeyDown(Keyboard.KEY_INSERT) && WorldAPI.getLookBlock() != null) {
-            if (WorldAPI.getLookBlock() == null && WorldAPI.getBlock(WorldAPI.getLookBlock()) == null) {
-                return;
+        if (Keyboard.isKeyDown(Keyboard.KEY_INSERT)) {
+            Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
+            if(entity!= null) {
+                System.out.println(entity.getCustomNameTag()+entity.getPosition());
+            }else if(WorldAPI.getLookBlock() != null) {
+                System.out.println(WorldAPI.getLookBlock().getX() + "," + WorldAPI.getLookBlock().getY() + ","
+                        + WorldAPI.getLookBlock().getZ());
+                System.out.println(WorldAPI.getBlock(WorldAPI.getLookBlock()).getLocalizedName());
             }
-            System.out.println(WorldAPI.getLookBlock().getX() + "," + WorldAPI.getLookBlock().getY() + ","
-                    + WorldAPI.getLookBlock().getZ());
-            System.out.println(WorldAPI.getBlock(WorldAPI.getLookBlock()).getLocalizedName());
         }
     }
 

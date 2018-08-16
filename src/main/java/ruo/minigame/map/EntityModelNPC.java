@@ -420,4 +420,7 @@ class EntityModelNPC extends EntityMob {
         return dataManager.get(IS_CHILD).booleanValue();
     }
 
+    protected void addRotate(double x, double y, double z) {
+        addRotate((float)x,(float)y,(float)z);
+    }
 }

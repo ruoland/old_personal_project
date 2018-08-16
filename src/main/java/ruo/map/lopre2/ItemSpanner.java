@@ -33,10 +33,6 @@ public class ItemSpanner extends Item {
 
 
         if (!target.isInvisible()) {
-            if (target instanceof EntityBuildBlock) {
-                EntityBuildBlock lavaBlock = (EntityBuildBlock) target;
-                lavaBlock.setRotate(lavaBlock.getRotateX(), lavaBlock.getRotateZ(), lavaBlock.getRotateY());
-            }
             if (target instanceof EntityWaterBlockCreator && hand == EnumHand.MAIN_HAND) {
                 EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
                 lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
@@ -77,34 +73,6 @@ public class ItemSpanner extends Item {
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
-
-        if (raytraceresult == null) {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
-        } else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
-        } else {
-            BlockPos blockpos = raytraceresult.getBlockPos();
-
-            if (!worldIn.isBlockModifiable(playerIn, blockpos)) {
-                return new ActionResult(EnumActionResult.FAIL, itemStackIn);
-            } else {
-                {
-                    IBlockState iblockstate = worldIn.getBlockState(blockpos);
-                    Material material = iblockstate.getMaterial();
-
-                    if (material == Material.WATER) {
-                        iblockstate.withProperty(BlockLiquid.LEVEL, 0);
-                    } else if (material == Material.LAVA) {
-                        iblockstate.withProperty(BlockLiquid.LEVEL, 0);
-                    }
-                }
-            }
-        }
-        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
-    }
 
     int delay = 0;
 

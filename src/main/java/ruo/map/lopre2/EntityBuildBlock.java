@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -12,6 +13,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.minigame.api.WorldAPI;
@@ -21,46 +23,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EntityBuildBlock extends EntityPreBlock {
-    /*
-    	if(npc instanceof EntityBuildBlock){
-				EntityBuildBlock block = (EntityBuildBlock) npc;
-				if(block.blockList.size() == 0) {
-					return;
-				}
-				GlStateManager.pushMatrix();
-				GlStateManager.enableAlpha();
-				GlStateManager.enableBlend();
-				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				GlStateManager.color(npc.getRed(),npc.getGreen(), npc.getBlue(), npc.getTransparency());
-				GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-				GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-				GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-				GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-				for(int i = 0; i < block.blockPosList.size();i++){
-					BlockPos pos = block.blockPosList.get(i);
-					if(block.blockList.get(i) == null) {
-						continue;
-					}
-					GlStateManager.pushMatrix();
-					GlStateManager.translate(pos.getX(),pos.getY(),pos.getZ());
-					RenderAPI.renderBlock(block.blockList.get(i), npc);
-					GlStateManager.popMatrix();
-				}
-				GlStateManager.disableAlpha();
-				GlStateManager.disableBlend();
-				GlStateManager.popMatrix();
-				return;
-			}
-     */
+    public static EntityBuildBlock eBlock, nBlock, dBlock;
+
     private static HashMap<String, ArrayList<BlockPos>> blockPosHashMap = new HashMap<>();
     private static HashMap<String, ArrayList<ItemStack>> blockHashMap = new HashMap<>();
 
     public ArrayList<BlockPos> blockPosList = new ArrayList<BlockPos>();
     public ArrayList<ItemStack> blockList = new ArrayList<ItemStack>();
-
-    private static final DataParameter<BlockPos> BLOCKPOS1 = EntityDataManager.<BlockPos>createKey(EntityBuildBlock.class,
+    private static final DataParameter<String> CUSTOM_NAME = EntityDataManager.<String>createKey(EntityBuildBlock.class,
+            DataSerializers.STRING);
+    private static final DataParameter<BlockPos> BLOCK_POS1 = EntityDataManager.<BlockPos>createKey(EntityBuildBlock.class,
             DataSerializers.BLOCK_POS);
-    private static final DataParameter<BlockPos> BLOCKPOS2 = EntityDataManager.<BlockPos>createKey(EntityBuildBlock.class,
+    private static final DataParameter<BlockPos> BLOCK_POS2 = EntityDataManager.<BlockPos>createKey(EntityBuildBlock.class,
             DataSerializers.BLOCK_POS);
 
     public EntityBuildBlock(World worldObj) {
@@ -76,11 +50,42 @@ public class EntityBuildBlock extends EntityPreBlock {
         buildBlock.setPosition(x, y, z);
         buildBlock.setSpawnXYZ(x, y, z);
         worldObj.spawnEntityInWorld(buildBlock);
-
+        buildBlock.setPosition(x, y, z);
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeEntityToNBT(tagCompound);
         buildBlock.readEntityFromNBT(tagCompound);
+        buildBlock.setSpawnXYZ(x, y, z);
+        buildBlock.setPosition(x, y, z);
         return buildBlock;
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+        if (isServerWorld()) {
+            if (WorldAPI.equalsItem(stack, Items.APPLE)) {
+                dataManager.set(CUSTOM_NAME, "E 블럭");
+                System.out.println("E 블럭됨");
+                eBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
+                eBlock.setInv(true);
+                eBlock.setCustomName( "빌드 블럭");
+            }
+            if (WorldAPI.equalsItem(stack, Items.BREAD)) {
+                dataManager.set(CUSTOM_NAME, "N 블럭");
+                System.out.println("N 블럭됨");
+                nBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
+                nBlock.setInv(true);
+                nBlock.setCustomName( "빌드 블럭");
+            }
+            if (WorldAPI.equalsItem(stack, Items.CHICKEN)) {
+                dataManager.set(CUSTOM_NAME, "D 블럭");
+                System.out.println("D 블럭됨");
+                dBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
+                dBlock.setInv(true);
+                dBlock.setCustomName( "빌드 블럭");
+
+            }
+        }
+        return super.processInteract(player, hand, stack);
     }
 
     @Override
@@ -88,23 +93,35 @@ public class EntityBuildBlock extends EntityPreBlock {
         return super.getRenderBoundingBox().expandXyz(10);
     }
 
+    public void setCustomName(String name){
+        dataManager.set(CUSTOM_NAME, name);
+    }
+
+    public String getCustomName() {
+        return dataManager.get(CUSTOM_NAME);
+    }
+
     @Override
     public String getCustomNameTag() {
-        return "빌드 블럭 "+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
+        return "빌드 블럭 " + " RoX:" + getRotateX() + " RoY:" + getRotateY() + " RoZ:" + getRotateZ();
+    }
+
+    @Override
+    public boolean canTeleportLock() {
+        return isLock();
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(BLOCKPOS1, BlockPos.ORIGIN);
-        dataManager.register(BLOCKPOS2, BlockPos.ORIGIN);
+        dataManager.register(BLOCK_POS1, BlockPos.ORIGIN);
+        dataManager.register(BLOCK_POS2, BlockPos.ORIGIN);
+        dataManager.register(CUSTOM_NAME, "빌드 블럭");
     }
 
-
-
     public void setBlock(int xx, int yy, int zz, int x2, int y2, int z2) {
-        dataManager.set(BLOCKPOS1, new BlockPos(xx, yy, zz));
-        dataManager.set(BLOCKPOS2, new BlockPos(x2, y2, z2));
+        dataManager.set(BLOCK_POS1, new BlockPos(xx, yy, zz));
+        dataManager.set(BLOCK_POS2, new BlockPos(x2, y2, z2));
         WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new AbstractTick.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
@@ -116,11 +133,6 @@ public class EntityBuildBlock extends EntityPreBlock {
                 }
             }
         });
-    }
-
-    @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        return super.processInteract(player, hand, stack);
     }
 
     @Override
@@ -136,11 +148,49 @@ public class EntityBuildBlock extends EntityPreBlock {
             setBlock(pos1.getX(), pos1.getY(), pos1.getZ(), pos2.getX(), pos2.getY(), pos2.getZ());
         }
 
+        if (CommandJB.endTime != 0 && eBlock != null) {
+            if(!eBlock.isInv()){
+                String customName = dataManager.get(CUSTOM_NAME);
+                System.out.println(customName+ getTargetPosition());
+                if(customName.equalsIgnoreCase("E 블럭")) {
+                    setInv(true);
+                }
+                if(customName.equalsIgnoreCase("N 블럭")) {
+                    setInv(true);
+                }
+                if(customName.equalsIgnoreCase("D 블럭")) {
+                    setInv(true);
+                }
+            }
+            eBlock.setLock(false);
+            nBlock.setLock(false);
+            dBlock.setLock(false);
+            eBlock.setInv(false);
+            nBlock.setInv(false);
+            dBlock.setInv(false);
+            eBlock.setTarget(1127, 247, -70, 1);
+            nBlock.setTarget(1127, 247, -61, 1);
+            dBlock.setTarget(1127, 249, -56);
+            Vec3d eVec = new Vec3d(-180 - eBlock.getRotateX(), 90 - eBlock.getRotateY(), -180 - eBlock.getRotateZ()).normalize().scale(0.6);
+            Vec3d nVec = new Vec3d(-180 - nBlock.getRotateX(), 0 - nBlock.getRotateY(), -180 - nBlock.getRotateZ()).normalize().scale(0.8);
+            Vec3d dVec = new Vec3d(-180 - dBlock.getRotateX(), 0 - dBlock.getRotateY(), -180 - dBlock.getRotateZ()).normalize().scale(0.3);
+
+            eBlock.addRotate(eVec.xCoord, eVec.yCoord, eVec.zCoord);
+            nBlock.addRotate(nVec.xCoord, nVec.yCoord, nVec.zCoord);
+            dBlock.addRotate(dVec.xCoord, dVec.yCoord, dVec.zCoord);
+        }
+    }
+
+    @Override
+    public void targetArrive() {
+        super.targetArrive();
+
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
+        compound.setString("customName", dataManager.get(CUSTOM_NAME));
         compound.setInteger("BUILDSIZE", blockList.size());
         for (int i = 0; i < blockList.size(); i++) {
             ItemStack stack = blockList.get(i);
@@ -155,6 +205,8 @@ public class EntityBuildBlock extends EntityPreBlock {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
+        dataManager.set(CUSTOM_NAME, compound.getString("customName"));
+
         int size = compound.getInteger("BUILDSIZE");
         for (int i = 0; i < size; i++) {
             ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) compound.getTag(i + "-STACK"));
@@ -173,10 +225,10 @@ public class EntityBuildBlock extends EntityPreBlock {
     }
 
     public BlockPos getPos1() {
-        return dataManager.get(BLOCKPOS1);
+        return dataManager.get(BLOCK_POS1);
     }
 
     public BlockPos getPos2() {
-        return dataManager.get(BLOCKPOS2);
+        return dataManager.get(BLOCK_POS2);
     }
 }
