@@ -41,7 +41,6 @@ public class Elytra extends AbstractMiniGame {
         playerSpawnZ = fakePlayer.posZ;
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());
         spawnPosHelper = new PosHelper(fakePlayer.getPositionVector(), fakePlayer.getHorizontalFacing());
-
         cameraSetting();
         first();
         MiniGame.elytraEvent.elytraMode = true;

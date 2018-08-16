@@ -26,8 +26,12 @@ import ruo.cmplus.cm.v18.function.FunctionIF;
 import ruo.cmplus.cm.v18.function.VAR;
 import ruo.cmplus.util.*;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.effect.AbstractTick;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CMPlusEvent {
     private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
@@ -38,7 +42,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void event(RenderFogEvent e) {
-        if(Sky.isFogOn()) {
+        if (Sky.isFogOn()) {
             if (Sky.getFogDistance() == -1) {
                 Sky.fogDistance(5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F)
                         * (1.0F - (float) 0 / 20.0F));
@@ -246,9 +250,9 @@ public class CMPlusEvent {
     public void playerTick(PlayerTickEvent e) {
         if (Keyboard.isKeyDown(Keyboard.KEY_INSERT)) {
             Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
-            if(entity!= null) {
-                System.out.println(entity.getCustomNameTag()+entity.getPosition());
-            }else if(WorldAPI.getLookBlock() != null) {
+            if (entity != null) {
+                System.out.println(entity.getCustomNameTag() + entity.getPosition());
+            } else if (WorldAPI.getLookBlock() != null) {
                 System.out.println(WorldAPI.getLookBlock().getX() + "," + WorldAPI.getLookBlock().getY() + ","
                         + WorldAPI.getLookBlock().getZ());
                 System.out.println(WorldAPI.getBlock(WorldAPI.getLookBlock()).getLocalizedName());

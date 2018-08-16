@@ -151,9 +151,10 @@ public class Camera {
 	}
 	
 	public boolean cmTraEquals(double x, double y, double z) {
-        return Double.compare(Math.round(x), Math.round(traX)) == 0 &&
-                Double.compare(Math.round(y), Math.round(traY)) == 0 &&
-                Double.compare(Math.round(z), Math.round(traZ)) == 0;
+		if (Double.compare(Math.round(x), Math.round(traX)) == 0)
+			if (Double.compare(Math.round(y), Math.round(traY)) == 0)
+				if (Double.compare(Math.round(z), Math.round(traZ)) == 0) return true;
+		return false;
 	}
 	public boolean cmRotateEquals(double x, double y, double z) {
         return Double.compare(Math.round(x), Math.round(rotateX)) == 0 &&
