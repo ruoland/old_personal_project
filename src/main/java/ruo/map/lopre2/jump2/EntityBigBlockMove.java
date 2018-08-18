@@ -43,4 +43,14 @@ public class EntityBigBlockMove extends EntityMoveBlock {
         this.copyModel(lavaBlock);
         return lavaBlock;
     }
+
+    @Override
+    public void setDead() {
+        super.setDead();
+        try{
+            new NullPointerException();
+        }catch (Exception e){
+            e.printStackTrace();;
+        }
+    }
 }

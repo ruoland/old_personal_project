@@ -1,0 +1,39 @@
+﻿
+commandPlus.chat.help=/chat <delete 삭제할줄 혹은 All> 혹은 <set 변경할 줄 변경할 말> - 채팅을 청소하거나 변경할 수 있는 명령어입니다. 
+commandPlus.cloud.help=/cloud <true|false> - 구름을 끄거나 킬 수 있는 명령어입니다. 
+commandPlus.cloud.setting=구름을 %s 로 설정 했습니다
+commandPlus.distance.help=/distance <add|sub|set> [값] - 시야를 설정합니다
+commandPlus.distance.setting=거리를 %d로 설정 했습니다
+commandPlus.distance.error=시야를 0 이하로 설정할 수 없습니다
+commandPlus.gamma.help=/gamma <add|sub|set> [값] - 밝기를 조절합니다
+commandPlus.gamma.setting=밝기를 %d로 설정 했습니다
+commandPlus.multi.help=/multi /명령어1 /명령어2 /명령어3 /명령어4
+commandPlus.particle.help=/particle [값](0=모두,1=적게,2=최소)
+commandPlus.particle.error=0 = 모두, 1 = 적게, 2 = 최소입니다 3 이상의 값을 넣으면 안됩니다
+commandPlus.particle.setting=파티클을 %d로 설정 했습니다
+commandPlus.shader.help=/shader [셰이더아이디]
+commandPlus.shader.error=셰이더는 21개까지 있습니다
+commandPlus.shader.setting=셰이더를 %d로 설정 했습니다
+commandPlus.sound.help=/sound <master,music,records,weather,blocks,mobs,animals,players,ambient> <add|set|sub> [볼륨]
+commandPlus.sound.help2=혹은 /sound <add|setsub> <master,music,records,weather,blocks,mobs,animals,players,ambient> [볼륨] 로도 가능합니다
+commandPlus.sound.setting=%d의 볼륨을 %d로 설정 했습니다
+commandPlus.sound.error=100 이상으로 설정할 수 없습니다
+commandPlus.stopsound.help=/stopsound 모든 소리를 중지 합니다
+commandPlus.stopsound.stop=모든 소리를 중지 했습니다
+commandPlus.timer.help=/timer <명령어> [틱] - 시간이 지난 후 명령어를 실행합니다
+commandPlus.timer.start=타이머가 실행 됐습니다
+commandPlus.ui.help=/ui <ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXP,CHAT> <on|off 혹은 true|false> - UI를 온오프합니다. 
+commandPlus.ui.help2=/ui reset은 모든 UI를 리셋합니다
+commandPlus.ui.setting=%s를 %s로 설정 했습니다.
+commandPlus.ui.error=%s는 존재하지 않습니다.
+commandPlus.ui.reset=모두 리셋 했습니다.
+commandPlus.for.help=/for <명령어> [틱] [실행횟수] - 명령어를 정해진 값만큼 반복실행 합니다.
+commandPlus.camera.help=/camera <reset|zoom|rotate|move|player|lock|person> - 카메라 설정 명령어입니다
+commandPlus.camera.reset=카메라 관련 설정을 모두 리셋 했습니다.
+commandPlus.camera.person.error=0 이나 3 이상으로 설정할 수 없습니다.
+commandPlus.camera.person.help=/person [add|set|sub] <값> - 플레이어의 시점을 변경합니다.
+commandPlus.ttp.help=/ttp [플레이어] [X] [Y] [Z] [yaw] [pitch] [틱] - 지정한 장소로 이동 했다가 시간이 지난 후에 이전에 있던 장소로 돌아갑니다. 
+commandPlus.t.help=/t [파일이름] - txt 파일에 적혀있는 명령어를 실행합니다. 
+commandPlus.t.error=%d 라는 이름을 가진 txt 파일이 없습니다.
+commandPlus.drawtexture.help=/drawtexture <텍스쳐(혹은 주소)> [X] [Y] [width] [height] [표시할시간(틱)] [투명도(0.1 0.2 0.3...1.0)] - 텍스쳐를 화면에 그립니다. 
+commandPlus.texture.help=/texture <파일이름> <rotate|move|trans|tick> <add|set|sub> [값] - drawtexture 의 보조 명령어입니다. 같은 이름을 가진 텍스쳐는 모두 이 명령어의 영향을 받습니다. 

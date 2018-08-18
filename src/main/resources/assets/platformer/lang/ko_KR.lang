@@ -1,0 +1,10 @@
+﻿
+plat.cowbumo.endcheck=Player.Riding.BabyCow
+plat.c1.stage1.end1=감사합니다.
+plat.c1.stage1.end2=이 은혜는 잊지 않겠습니다.
+plat.c1.stage1.end3=아 맞아. 말 몸에 이런 게 붙어 있었다고 하던데요. /com:/givecoin nether -32.4D 10D 3.2D:com/
+plat.c1.stage2.start1=안녕, 얼마전에 재오픈한 섬 투어 서비스야.
+plat.c1.stage2.start2=이 닭을 잡고 원하는 곳으로 날아가면 돼. 원한다면 랭킹 모드도 있어.
+plat.c1.stage2.end1=도착했구나. 거리는 %d야. 수고 많았어.
+plat.c1.stage2.end2=이제 보내줄게. /tp:-39.4,70,-16.2:tp/
+plat.c1.stage2.end3=%d만큼 날라갔구나. 수고 많았어. 

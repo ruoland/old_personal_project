@@ -1,0 +1,5 @@
+﻿tile.scrollB.name=투명 블럭
+tile.scrollD.name=화살 블럭
+tile.scrollW.name=벽
+tile.blockBomber.name=폭탄 벽
+item.itemBomber.name=폭탄

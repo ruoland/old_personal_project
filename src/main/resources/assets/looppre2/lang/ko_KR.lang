@@ -1,0 +1,15 @@
+﻿
+item.blockmove.name=item.blockmove
+item.spanner.name=도구
+entity.LoopPre2.lavablock.name=밟음 블럭
+entity.LoopPre2.BigBlockInvisible.name=큰 투명 블럭
+entity.LoopPre2.BigBlockMovejump.name=큰 이동 블럭
+entity.LoopPre2.BeltBlock.name=벨트 블럭
+entity.LoopPre2.BigBlockjump.name=큰 블럭
+entity.LoopPre2.KnockbackBlock.name=넉백 블럭
+entity.LoopPre2.loopFallingBlock.name=떨어지는 블럭
+entity.LoopPre2.LoopMoveBlock.name=이동 블럭
+entity.LoopPre2.LoopWaterBlock.name=물에 흘러가는 블럭
+entity.LoopPre2.BuildBlock.name=건물 블럭
+entity.LoopPre2.InvisibleBlock.name=투명 블럭
+entity.LoopPre2.TeleportBlock.name=텔레포트 블럭

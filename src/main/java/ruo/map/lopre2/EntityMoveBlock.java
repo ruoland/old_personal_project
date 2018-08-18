@@ -1,5 +1,6 @@
 package ruo.map.lopre2;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -201,7 +202,7 @@ public class EntityMoveBlock extends EntityPreBlock {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (WorldAPI.getPlayer() != null && WorldAPI.getPlayerSP() != null && WorldAPI.getPlayer().getDistance(posX, posY, posZ) < 20) {
+        if (WorldAPI.getPlayer() != null && WorldAPI.getPlayerSP() != null) {
             entityPos = WorldAPI.changePosArray(this);
             if (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)
                 return;

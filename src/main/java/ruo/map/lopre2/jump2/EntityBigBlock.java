@@ -151,7 +151,7 @@ public class EntityBigBlock extends EntityPreBlock {
                     this.setFalling(true);
             }
             if (isFalling() && isServerWorld()) {
-                delay -= 1;
+                delay -= 2;
 
                 if (delay <= 0) {
                     if (downSpeed == 0)
