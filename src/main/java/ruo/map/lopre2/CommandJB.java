@@ -13,6 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.cm.v18.CommandFly;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
@@ -79,13 +80,11 @@ public class CommandJB extends CommandPlusBase {
 
 
             if (args[0].equalsIgnoreCase("help")) {
-                sender.addChatMessage(new TextComponentString("1.블럭에 끼인 경우는 /jb up"));
-                sender.addChatMessage(new TextComponentString("2.블럭이 보이지 않는 경우는 나갔다 들어오기"));
-                sender.addChatMessage(new TextComponentString("3.못하겠으면 /gamemode 1"));
-                sender.addChatMessage(new TextComponentString("4.체력과 배고픔 회복은 /heal"));
-                sender.addChatMessage(new TextComponentString("5.스폰 포인트가 잘못 설정되어 계속 공중에서 떨어지는 경우 /fly true 를 입력하면 하늘을 날 수 있습니다"));
-                sender.addChatMessage(new TextComponentString("6.중간저장을 하려면 /spawnpoint"));
-                sender.addChatMessage(new TextComponentString("7달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
+                sender.addChatMessage(new TextComponentString("1.블럭이 보이지 않는 경우는 나갔다 들어오기"));
+                sender.addChatMessage(new TextComponentString("2.체력과 배고픔 회복은 /heal"));
+                sender.addChatMessage(new TextComponentString("3.스폰 포인트가 잘못 설정되어 계속 공중에서 떨어지는 경우 /fly true 를 입력하면 하늘을 날 수 있습니다"));
+                sender.addChatMessage(new TextComponentString("4.중간저장을 하려면 /spawnpoint"));
+                sender.addChatMessage(new TextComponentString("5.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
 
             }
             if (args[0].equalsIgnoreCase("up")) {

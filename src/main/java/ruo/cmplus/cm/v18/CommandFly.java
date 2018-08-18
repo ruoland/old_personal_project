@@ -10,9 +10,9 @@ public class CommandFly extends CommandPlusBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		
 		EntityPlayerMP mp = (EntityPlayerMP) sender;
 		mp.capabilities.isFlying = Boolean.valueOf(args[0]);
+		mp.capabilities.allowFlying = Boolean.valueOf(args[0]);
 		mp.sendPlayerAbilities();
 	}
 }

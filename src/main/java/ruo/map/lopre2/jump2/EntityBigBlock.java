@@ -62,7 +62,7 @@ public class EntityBigBlock extends EntityPreBlock {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(ISFALLING, false);
-        dataManager.register(DEFAULT_DELAY, 40);
+        dataManager.register(DEFAULT_DELAY, 20);
     }
     public void setDefaultDelay(int defaultDelay) {
         dataManager.set(DEFAULT_DELAY, defaultDelay);
@@ -192,7 +192,5 @@ public class EntityBigBlock extends EntityPreBlock {
         setFalling(compound.getBoolean("isFall"));
         delay = compound.getInteger("playerDelay");
         setDefaultDelay(compound.getInteger("defaultDelay"));
-        if(getDefaultDelay() == 30 || getDefaultDelay() == 0)
-            setDefaultDelay(40);
     }
 }

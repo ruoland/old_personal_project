@@ -50,11 +50,10 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-@Mod(modid = "CommandPlus", name = "CommandPlus", version = "1.8", dependencies = "required-after:PlayerAPI")
+@Mod(modid = "CommandPlus", name = "CommandPlus", version = "1.8")
 public class CMPlus {
     @SidedProxy(clientSide = "ruo.cmplus.ClientProxy", serverSide = "cm.cmplus.CommonProxy")
     public static CommonProxy proxy;
-    public static boolean isPlayerAPI;
 
     public CMPlus() {
         if(Loader.isModLoaded("PlayerAPI")) {
@@ -62,7 +61,6 @@ public class CMPlus {
             ClientPlayerAPI.register("CommandPlus", CMClientPlayer.class);
             RenderPlayerAPI.register("CommandPlus", CMRenderPlayer.class);
             ModelPlayerAPI.register("CommandPlus", CMModelPlayer.class);
-            isPlayerAPI = true;
             System.out.println("플레이어 API 찾음");
         }
     }
