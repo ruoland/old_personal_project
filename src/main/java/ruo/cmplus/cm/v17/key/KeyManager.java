@@ -6,7 +6,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandException;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.WorldConfig;
-import ruo.cmplus.cm.v17.Deb;
+import ruo.cmplus.deb.DebAPI;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -22,24 +22,24 @@ public class KeyManager {
 	}
 	public void addKey(int key, String string){
 		if(keyMap.containsKey(key)) {
-			Deb.msgKey("추가-키가 이미 있어 해당 키에 추가함 내용:"+ key+"-"+keyMap.get(key) + " "+string.trim());
+			DebAPI.msgKey("추가-키가 이미 있어 해당 키에 추가함 내용:"+ key+"-"+keyMap.get(key) + " "+string.trim());
 			keyMap.put(key, keyMap.get(key) + " "+string.trim());
 			return;
 		}
 		keyMap.put(key, string == null ? "" : string);
-		Deb.msgKey("추가-키코드"+key+" 명령어"+string);
+		DebAPI.msgKey("추가-키코드"+key+" 명령어"+string);
 	}
 	public void removeKey(int key){
 		KeyBinding.setKeyBindState(key, false);
 		keyMap.remove(key);
-		Deb.msgKey("삭제-키코드"+key+" 명령어"+keyMap.get(key));
+		DebAPI.msgKey("삭제-키코드"+key+" 명령어"+keyMap.get(key));
 	}
 	public void replaceKey(KeyBinding key, int key2) throws CommandException{
 		KeyBinding.unPressAllKeys();
 		key.setKeyCode(key2);
 		keyMap.put(key2, keyMap.get(key.getKeyCode()) == null ? "" : keyMap.get(key.getKeyCode()));
 		keyMap.remove(key.getKeyCode());
-		Deb.msgKey("리플레이스- 첫번째 키코드"+"---"+key.getDisplayName()+"---"+key.getKeyCode()+"-두번째 키코드"+"---"+key.getDisplayName()+"---"+keyMap.get(key.getKeyCode()));
+		DebAPI.msgKey("리플레이스- 첫번째 키코드"+"---"+key.getDisplayName()+"---"+key.getKeyCode()+"-두번째 키코드"+"---"+key.getDisplayName()+"---"+keyMap.get(key.getKeyCode()));
 	}
 	
 	public Set<Integer> getKey(){
@@ -80,11 +80,11 @@ public class KeyManager {
 			String keyCode = ""+keybind.getKeyCode();
 
 			if(keyDesc.equalsIgnoreCase(key) || keyName.equalsIgnoreCase(key)  || keyCode.equalsIgnoreCase(key) || keybind.getKeyCode() == getKey(key)){
-				Deb.msgKey("getKeyB-"+key+"-"+keyName+"키를 반환했습니다.");
+				DebAPI.msgKey("getKeyB-"+key+"-"+keyName+"키를 반환했습니다.");
 				return keybind;
 			}
 		}
-		Deb.msgKey("getKeyB-"+key+"키가 없습니다.");
+		DebAPI.msgKey("getKeyB-"+key+"키가 없습니다.");
 		return null;
 	}
 	public int getKey(String key) {

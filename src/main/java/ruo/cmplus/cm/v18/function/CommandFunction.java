@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
-import ruo.cmplus.cm.v17.Deb;
+import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.minigame.api.WorldAPI;
 
@@ -24,20 +24,20 @@ public class CommandFunction extends CommandPlusBase {
 			return;
 		}
 		Function function = Function.addFunction("커맨드", args[0]);
-		Deb.msgfunc(args[0], "-명령어-생성함");
+		DebAPI.msgfunc(args[0], "-명령어-생성함");
 		if (args.length > 1 && args[1].indexOf("open") != -1) {
 			if (args[1].equals("openfolder"))
 				function.openFolder();
 			else
 				function.openFile();
-			Deb.msgfunc(args[0] , "-명령어-펑션 파일 열었음");
+			DebAPI.msgfunc(args[0] , "-명령어-펑션 파일 열었음");
 			return;
 		} else if(args.length > 1 && args[1].indexOf("pause") != -1){
 			function.stopRead = true;
 		}else if(args.length > 1 && args[1].indexOf("resume") != -1){
 			function.stopRead = false;
 		}else {
-			Deb.msgfunc(args[0], "-명령어-펑션 실행");
+			DebAPI.msgfunc(args[0], "-명령어-펑션 실행");
 			function.runScript(args);
 		}
 

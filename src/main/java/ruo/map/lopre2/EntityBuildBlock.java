@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 
@@ -67,21 +68,21 @@ public class EntityBuildBlock extends EntityPreBlock {
                 System.out.println("E 블럭됨");
                 eBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
                 eBlock.setInv(true);
-                eBlock.setCustomName( "빌드 블럭");
+                eBlock.setCustomName("빌드 블럭");
             }
             if (WorldAPI.equalsItem(stack, Items.BREAD)) {
                 dataManager.set(CUSTOM_NAME, "N 블럭");
                 System.out.println("N 블럭됨");
                 nBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
                 nBlock.setInv(true);
-                nBlock.setCustomName( "빌드 블럭");
+                nBlock.setCustomName("빌드 블럭");
             }
             if (WorldAPI.equalsItem(stack, Items.CHICKEN)) {
                 dataManager.set(CUSTOM_NAME, "D 블럭");
                 System.out.println("D 블럭됨");
                 dBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
                 dBlock.setInv(true);
-                dBlock.setCustomName( "빌드 블럭");
+                dBlock.setCustomName("빌드 블럭");
 
             }
         }
@@ -93,7 +94,7 @@ public class EntityBuildBlock extends EntityPreBlock {
         return super.getRenderBoundingBox().expandXyz(10);
     }
 
-    public void setCustomName(String name){
+    public void setCustomName(String name) {
         dataManager.set(CUSTOM_NAME, name);
     }
 
@@ -149,16 +150,16 @@ public class EntityBuildBlock extends EntityPreBlock {
         }
 
         if (CommandJB.endTime != 0 && eBlock != null) {
-            if(!eBlock.isInv()){
+            if (!eBlock.isInv()) {
                 String customName = dataManager.get(CUSTOM_NAME);
-                System.out.println(customName+ getTargetPosition());
-                if(customName.equalsIgnoreCase("E 블럭")) {
+                System.out.println(customName + getTargetPosition());
+                if (customName.equalsIgnoreCase("E 블럭")) {
                     setInv(true);
                 }
-                if(customName.equalsIgnoreCase("N 블럭")) {
+                if (customName.equalsIgnoreCase("N 블럭")) {
                     setInv(true);
                 }
-                if(customName.equalsIgnoreCase("D 블럭")) {
+                if (customName.equalsIgnoreCase("D 블럭")) {
                     setInv(true);
                 }
             }
@@ -206,7 +207,15 @@ public class EntityBuildBlock extends EntityPreBlock {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         dataManager.set(CUSTOM_NAME, compound.getString("customName"));
-
+        if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("E 블럭")) {
+            eBlock = this;
+        }
+        if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("N 블럭")) {
+            nBlock = this;
+        }
+        if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("D 블럭")) {
+            dBlock = this;
+        }
         int size = compound.getInteger("BUILDSIZE");
         for (int i = 0; i < size; i++) {
             ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) compound.getTag(i + "-STACK"));
@@ -221,7 +230,7 @@ public class EntityBuildBlock extends EntityPreBlock {
     @Override
     public void setDead() {
         super.setDead();
-        System.out.println("빌드블럭 삭제됨" + getPosition());
+        DebAPI.msgText("빌드블럭 삭제됨" + getPosition());
     }
 
     public BlockPos getPos1() {

@@ -14,14 +14,12 @@ import java.lang.reflect.Method;
 
 public class CommandDeb extends CommandPlusBase {
 
-	public static boolean cmdeb, debText, debKey = false, debFunction = false, debVar = false, debMove = false;
+	public static boolean cmdeb, traceMethod, debText, debKey = false, debFunction = false, debVar = false, debMove = false;
 	public static String str, funcName;//funcName
 
 	@Override
 	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
 		try {
-
-
 			try {
 				if (args.length == 0) {
 					sender.getEntityWorld().getWorldInfo().setDifficulty(EnumDifficulty.PEACEFUL);
@@ -49,6 +47,9 @@ public class CommandDeb extends CommandPlusBase {
 				}
 				if (args[0].equals("cmdeb")) {
 					cmdeb = parseBoolean(args[1]);
+				}
+				if (args[0].equals("trace")) {
+					traceMethod = parseBoolean(args[1]);
 				}
 				if (args[0].equals("text")) {
 					debText = parseBoolean(args[1]);

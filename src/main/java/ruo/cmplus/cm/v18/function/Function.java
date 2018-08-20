@@ -3,7 +3,7 @@ package ruo.cmplus.cm.v18.function;
 import com.google.common.io.Files;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import ruo.cmplus.cm.v17.Deb;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.WorldAPI;
 
 import java.awt.*;
@@ -151,7 +151,7 @@ public class Function {
 
 	private void readLine(String[] args) throws Exception {
 		if (currentFile == null || currentFile.length() == 0) {
-			Deb.msgfunc(name," 이벤트: 파일이 없거나 파일이 비어 있어 펑션이 취소됐습니다. - "+WorldAPI.getCurrentWorldName());
+			DebAPI.msgfunc(name," 이벤트: 파일이 없거나 파일이 비어 있어 펑션이 취소됐습니다. - "+WorldAPI.getCurrentWorldName());
 			return;
 		}
 		Thread thread = new Thread(new Runnable() {
@@ -162,7 +162,7 @@ public class Function {
 				String command = reader.readLine();
 				while (command != null) {
 					if(stopRead) {
-						Deb.msgfunc(name," 일시 정지 되어 있어 읽는 걸 정지함");
+						DebAPI.msgfunc(name," 일시 정지 되어 있어 읽는 걸 정지함");
 						continue;
 					}
 					if (command.startsWith("/-")) {
@@ -172,36 +172,36 @@ public class Function {
 					for (int i = 1; args != null && i < args.length; i++) {
 						if (("@인자" + i).equals(args[i]) || command.indexOf("@인자" + i) != -1) {
 							command = command.replace("@인자" + i, args[i]).trim();
-							Deb.msgfunc(name," 리플레이스에서 인자를 바꿨음 " + command);
+							DebAPI.msgfunc(name," 리플레이스에서 인자를 바꿨음 " + command);
 						}
 					}
 					for (String parameter : command.split(" ")) {
 						if (replace.containsKey(parameter)) {
 							command = command.replace(parameter, replace.get(parameter));
-							Deb.msgfunc(name," 2222 리플레이스에서 인자를 바꿨음 " + command);
+							DebAPI.msgfunc(name," 2222 리플레이스에서 인자를 바꿨음 " + command);
 						}
 						if (onereplace.containsKey(parameter)) {
 							command = command.replace(parameter, onereplace.get(parameter));
-							Deb.msgfunc(name," 2222 1회용 리플레이스에서 인자를 바꿨음 " + command);
+							DebAPI.msgfunc(name," 2222 1회용 리플레이스에서 인자를 바꿨음 " + command);
 							onereplace.remove(parameter);
 						}
 					}
 					if(!replacePlayer(command).equalsIgnoreCase(command)) {
 						command = replacePlayer(command).trim();
-						Deb.msgfunc(name, " 3333 리플레이스에서 인자를 바꿨음 " + command);
+						DebAPI.msgfunc(name, " 3333 리플레이스에서 인자를 바꿨음 " + command);
 					}
 					if (command.equals(" ") || command.equals("")) {
-						Deb.msgfunc(name," 커맨드가 공백이라 스킵함" + command);
+						DebAPI.msgfunc(name," 커맨드가 공백이라 스킵함" + command);
 						command = reader.readLine();
 						continue;
 					}
 					if (command.equals("cancel")) {
 						isCanceled = true;
-						Deb.msgfunc(name," 이벤트가 캔슬됨");
+						DebAPI.msgfunc(name," 이벤트가 캔슬됨");
 						reader.close();
 						return;
 					}
-					Deb.msgfunc(name,"최종 명령어" + (command.startsWith("/") ? command : "/" + command));
+					DebAPI.msgfunc(name,"최종 명령어" + (command.startsWith("/") ? command : "/" + command));
 					WorldAPI.command(command.startsWith("/") ? command : "/" + command);
 					command = reader.readLine();
 				}

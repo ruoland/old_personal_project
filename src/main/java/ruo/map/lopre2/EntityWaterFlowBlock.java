@@ -26,7 +26,7 @@ import java.util.List;
 public class EntityWaterFlowBlock extends EntityPreBlock {
     private EnumFacing facing;//물에 흘러가는 방향. 수동으로 설정해야 함
     private static final DataParameter<Float> Y_SPEED = EntityDataManager.createKey(EntityWaterFlowBlock.class, DataSerializers.FLOAT);
-
+    private float ySpeed = -0.008F;
     public EntityWaterFlowBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
@@ -48,7 +48,7 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "물에 흘러가는 블럭 내려가는 속도"+dataManager.get(Y_SPEED);
+        return "물에 흘러가는 블럭 내려가는 속도"+getSpeed();
     }
 
     @Override
@@ -58,9 +58,9 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
                 this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
             if (WorldAPI.equalsItem(stack, LoPre2.itemSpanner)) {
                 if (player.isSneaking()) {
-                    this.dataManager.set(Y_SPEED, dataManager.get(Y_SPEED) + 0.01F);
+                    setSpeed(getSpeed() + 0.01F);
                 } else
-                    this.dataManager.set(Y_SPEED, dataManager.get(Y_SPEED) - 0.01F);
+                    setSpeed(getSpeed() - 0.01F);
                 return true;
 
             }
@@ -86,7 +86,6 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
 
     }
 
-    boolean isPlayer;//플레이어가 처음 블럭 위에 올라가는 경우 플레이어 motion을 0으로 바꾸는데 한번만 바꾸게 만들기 위해서 있음
 
     @Override
     public void onLivingUpdate() {
@@ -95,8 +94,10 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
             waterDelay--;
         }
         if (WorldAPI.getPlayer() != null) {
+
             if (!inWater && waterDelay == 0) {
                 waterDelay = 40;
+                ySpeed = dataManager.get(Y_SPEED);
             }
             if ((!inWater && waterDelay == 1) || (posX == prevX && posZ == prevZ))
                 this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
@@ -105,35 +106,22 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
                 prevZ = posZ;
                 delay = 20;
             }
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
-                    this.posX - 1D, this.posY, this.posZ - 1D, this.posX + 1D, this.posY + 1.8, this.posZ + 1D));
-            if (!list.isEmpty()) {
-                for (Entity entity : list) {
-                    if (facing != null && (entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
-                        if (GrabHelper.wallGrab || entity.onGround) {
-                            double px = EntityAPI.lookX(facing, 0.051), py = motionY / 10, pz = EntityAPI.lookZ(facing, 0.051);
-                            if (!GrabHelper.wallGrab && !isPlayer) {
-                                entity.setVelocity(0, 0, 0);
-                                WorldAPI.getPlayerSP().setVelocity(0, 0, 0);
-                            }
-                            if (WorldAPI.getPlayerSP().movementInput.jump) {
-                                WorldAPI.getPlayerSP().jump();
-                                WorldAPI.getPlayerMP().jump();
-                                ActionEffect.setForceJump(true);
-                            }
-                            WorldAPI.getPlayerSP().moveEntity(px, py, pz);
-                            WorldAPI.getPlayerMP().moveEntity(px, py, pz);
-                            isPlayer = true;
-                            break;
-                        }
-                    } else
-                        isPlayer = false;
-                }
-            }
-            this.motionY = dataManager.get(Y_SPEED);
-
+            this.motionY = getSpeed();
+        }
+        if(ySpeed == 0) {
+            setDead();
+            System.out.println("Y가 0이라 삭제함");
         }
         super.onLivingUpdate();
+    }
+
+    public void setSpeed(float speed){
+        this.dataManager.set(Y_SPEED, speed);
+        ySpeed = speed;
+    }
+
+    public float getSpeed(){
+        return ySpeed;
     }
 
     @Override

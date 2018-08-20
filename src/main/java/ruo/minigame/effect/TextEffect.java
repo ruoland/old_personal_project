@@ -5,7 +5,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import ruo.cmplus.cm.v17.Deb;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.text.Monologue;
@@ -83,7 +83,7 @@ public class TextEffect {
 					invoke(tick);
 					String s2 = message.replace("/look:player:lo/", "").replace("/look:remove:lo/", "").replace("/bold/", "");
 
-					Deb.msgText("메세지:"+s2);
+					DebAPI.msgText("메세지:"+s2);
 					if(message.indexOf("/com:") != -1){
 						String command = parsing(message, "/com:", ":com/");
 						System.out.println("명령어 "+command);
@@ -96,16 +96,16 @@ public class TextEffect {
 						String[] split = look.split(",");
 						double[] xyz = WorldAPI.valueOfStr(split[1], split[2], split[3]);
 						mob.setPositionAndUpdate(xyz[0], xyz[1], xyz[2]);
-						Deb.msgText("텔레포트 발견함-"+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
+						DebAPI.msgText("텔레포트 발견함-"+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 					}
 					if(message.indexOf("/look:") != -1){
 						String look = parsing(message, "/look:", ":lo/");
 						if(look.indexOf(",") != -1){
 							String[] split = look.split(",");
 							EntityAPI.look(lookMob.get(split[0]), lookMob.get(split[1]));
-							Deb.msgText("특정 몬스터 LOOK 발견함-"+look);
-							Deb.msgText("대상 몬스터-"+lookMob.get(split[0]));
-							Deb.msgText("대상 몬스터2-"+lookMob.get(split[1]));
+							DebAPI.msgText("특정 몬스터 LOOK 발견함-"+look);
+							DebAPI.msgText("대상 몬스터-"+lookMob.get(split[0]));
+							DebAPI.msgText("대상 몬스터2-"+lookMob.get(split[1]));
 						}
 						else if(look.equals("player"))
 							EntityAPI.look((EntityMob) mob, WorldAPI.getPlayer());
@@ -114,7 +114,7 @@ public class TextEffect {
 							EntityAPI.removeLook((EntityMob) mob);
 						else
 							EntityAPI.look((EntityMob) mob, lookMob.get(look));
-						Deb.msgText("LOOK 발견함-"+look);
+						DebAPI.msgText("LOOK 발견함-"+look);
 					}
 				
 					if(message.indexOf("/move:") != -1){
@@ -123,13 +123,13 @@ public class TextEffect {
 						if(split.length == 3){
 							double[] xyz = WorldAPI.valueOfStr(split[0], split[1], split[2]);
 							EntityAPI.move((EntityMob) mob, xyz[0], xyz[1], xyz[2]);
-							Deb.msgText("이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
+							DebAPI.msgText("이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 						}
 						if(split.length == 4){
 							double[] xyz = WorldAPI.valueOfStr(split[1], split[2], split[3]);
 							EntityAPI.move(lookMob.get(split[0]), xyz[0], xyz[1], xyz[2]);
-							Deb.msgText("특정 몬스터 이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
-							Deb.msgText("대상 몬스터-"+lookMob.get(split[0]));
+							DebAPI.msgText("특정 몬스터 이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
+							DebAPI.msgText("대상 몬스터-"+lookMob.get(split[0]));
 						}
 
 					}
@@ -146,10 +146,10 @@ public class TextEffect {
 						String move = message.substring(message.indexOf("/distance:"), message.indexOf(":dis/"));
 						s2 = s2.replace(move, "").replace("/distance:", "").replace(":dis/", "");
 						int distance = Integer.valueOf(move.replace("/distance:", ""));
-						Deb.msgText("거리 발견함-"+move);
-						Deb.msgText("거리값:"+distance);
-						Deb.msgText("몬스터와 플레이어 거리:"+mob.getDistanceToEntity(WorldAPI.getPlayer()));
-						Deb.msgText("거리 비교:"+(distance >= mob.getDistanceToEntity(WorldAPI.getPlayer())));
+						DebAPI.msgText("거리 발견함-"+move);
+						DebAPI.msgText("거리값:"+distance);
+						DebAPI.msgText("몬스터와 플레이어 거리:"+mob.getDistanceToEntity(WorldAPI.getPlayer()));
+						DebAPI.msgText("거리 비교:"+(distance >= mob.getDistanceToEntity(WorldAPI.getPlayer())));
 
 						if(distance >= mob.getDistanceToEntity(WorldAPI.getPlayer())){
 							WorldAPI.getPlayer().addChatComponentMessage(new TextComponentString(mob.getName()+":"+s2).setStyle(style));
@@ -157,7 +157,7 @@ public class TextEffect {
 						return;
 
 					}
-					Deb.msgText("최종 메세지:"+s2);
+					DebAPI.msgText("최종 메세지:"+s2);
 					WorldAPI.getPlayer().addChatComponentMessage(new TextComponentString(mob.getName()+":"+s2).setStyle(style));
 				}
 				else{
@@ -171,7 +171,7 @@ public class TextEffect {
 						s2 = s2.replace(message, "");
 					}
 					WorldAPI.getPlayer().addChatComponentMessage(new TextComponentString(s2).setStyle(style));
-					Deb.msgText("최종 메세지:"+s2);
+					DebAPI.msgText("최종 메세지:"+s2);
 
 				}
 			}
@@ -221,10 +221,10 @@ public class TextEffect {
 	public Method gm(String name){
 		try {
 			if(gmClass == null && name != null) {
-				Deb.msgText("클래스가 없음!"+name);
+				DebAPI.msgText("클래스가 없음!"+name);
 				return null;
 			}
-			Deb.msgText("메소드 이름:"+name);
+			DebAPI.msgText("메소드 이름:"+name);
 			if(name != null){
 				if(name.startsWith("명령어:")){
 					command = name.replace("명령어:", "");

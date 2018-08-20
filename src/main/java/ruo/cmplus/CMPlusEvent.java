@@ -21,9 +21,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
-import ruo.cmplus.cm.v17.Deb;
 import ruo.cmplus.cm.v18.function.FunctionIF;
 import ruo.cmplus.cm.v18.function.VAR;
+import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.*;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
@@ -75,13 +75,13 @@ public class CMPlusEvent {
             String key = args[i].replace("@", "");// 인자에서 @를 뺌(이 변수가 있는 이유는 매번 @빼기엔 코드가 더러워져서)
             if (args[i].startsWith("@") && (VAR.hasKey(key) || VAR.ifMath(key))) {
                 // @로 시작하는 인자 발견시 그 이름을 가진 변수가 있는지 아니면 그 인자에 계산식이 있는지
-                Deb.msgVar("커멘드 이벤트-@가 들어간 인자를 발견함-발견한 변수이름-" + key);// 발견시 변수이름 표시함
+                DebAPI.msgVar("커멘드 이벤트-@가 들어간 인자를 발견함-발견한 변수이름-" + key);// 발견시 변수이름 표시함
                 if (VAR.hasBoolean(key)) {
                     args[i] = args[i].replace(args[i], "" + VAR.getBoolean(key));
                 } else if (VAR.hasInteger(key)) {
                     args[i] = args[i].replace(args[i], "" + VAR.getInt(key));
                 } else if (VAR.hasDouble(key) || (VAR.ifMath(key) && VAR.findDoubleKey(key) != null)) {
-                    Deb.msgVar(args[i] + " - " + key + " - " + "@" + VAR.findDoubleKey(key));
+                    DebAPI.msgVar(args[i] + " - " + key + " - " + "@" + VAR.findDoubleKey(key));
                     args[i] = args[i].replace("@" + VAR.findDoubleKey(key), "" + VAR.getDouble(VAR.findDoubleKey(key)));
                 } else if (VAR.hasString(key)) {
                     args[i] = args[i].replace(args[i], "" + VAR.getStr(key));
@@ -89,26 +89,24 @@ public class CMPlusEvent {
             }
             try {
                 if (args[i].startsWith("@") || args[i].indexOf("@플레이어") != -1) {
-                    System.out.println("1" + args[i]);
                     Entity entity = args[i].indexOf("@플레이어") != -1 ? WorldAPI.getPlayer()
                             : CommandPlusBase.getPlusEntity(e.getSender().getServer(), e.getSender(),
                             key.split("[.]")[0].replace("@", ""));
                     args[i] = args[i].replace("@플레이어", "@" + WorldAPI.getPlayer().getName());
-                    System.out.println("2" + args[i]);
                     if (entity != null) {
                         args[i] = args[i].replace("@" + entity.getName(), "@" + entity.getName());
-                        Deb.msgVar("커멘드 이벤트-몬스터 인자를 발견함 - 발견한 몬스터" + entity.getName());
+                        DebAPI.msgVar("커멘드 이벤트-몬스터 인자를 발견함 - 발견한 몬스터" + entity.getName());
                         args[i] = replaceEntity((EntityLivingBase) entity, args[i]);
-                        Deb.msgVar("커맨드 이벤트-" + args[i] + "로 교체함");
+                        DebAPI.msgVar("커맨드 이벤트-" + args[i] + "로 교체함");
                         key = args[i].replace("@", "");
                         System.out.println("엔티티를 찾음" + entity);
                     }
                 }
                 if (VAR.ifMath(args[i])) {
-                    Deb.msgVar("계산식을 발견함!" + args[i]);
+                    DebAPI.msgVar("계산식을 발견함!" + args[i]);
                     args[i] = args[i].replace(args[i], "" + VAR.getDouble(args[i]));
                     key = key.replace(args[i], "" + VAR.getDouble(args[i]));
-                    Deb.msgVar("계산식을 발견함!222" + args[i] + " - " + VAR.getDouble(key));
+                    DebAPI.msgVar("계산식을 발견함!222" + args[i] + " - " + VAR.getDouble(key));
                 }
             } catch (CommandException e1) {
                 e1.printStackTrace();

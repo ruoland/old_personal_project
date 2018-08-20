@@ -1,6 +1,6 @@
 package ruo.cmplus.cm.v18.function;
 
-import ruo.cmplus.cm.v17.Deb;
+import ruo.cmplus.deb.DebAPI;
 
 import java.util.ArrayList;
 
@@ -17,16 +17,16 @@ public class FunctionIF {
 
 	public boolean check() {
 		if (VAR.hasInteger(args1)) {
-			Deb.msgfunc("조건", "Integer 변수로 조건을 실행합니다.");
-			Deb.msgfunc("조건", args1 + " " + args2);
+			DebAPI.msgfunc("조건", "Integer 변수로 조건을 실행합니다.");
+			DebAPI.msgfunc("조건", args1 + " " + args2);
 			return VAR.ifcheck(args1, type, args2);
 		}
 		if (VAR.hasBoolean(args1) ) {
-			Deb.msgfunc("조건", "불린 변수에서 실행합니다." + VAR.getBoolean(args1));
+			DebAPI.msgfunc("조건", "불린 변수에서 실행합니다." + VAR.getBoolean(args1));
 			return VAR.getBoolean(args1);
 		}
-		Deb.msgfunc("조건", "String 변수에서 실행합니다.");
-		Deb.msgfunc("조건", VAR.getStr(args1) + type + VAR.getStr(args2));
+		DebAPI.msgfunc("조건", "String 변수에서 실행합니다.");
+		DebAPI.msgfunc("조건", VAR.getStr(args1) + type + VAR.getStr(args2));
 
 		if (type.equalsIgnoreCase("!=")) {
 			return !VAR.getStr(args1).equalsIgnoreCase(VAR.getStr(args2));

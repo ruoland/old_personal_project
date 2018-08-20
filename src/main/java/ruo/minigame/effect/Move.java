@@ -6,7 +6,7 @@ import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import ruo.cmplus.cm.v17.Deb;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.WorldAPI;
 
 public abstract class Move {
@@ -84,7 +84,7 @@ public abstract class Move {
 
 	public boolean moveToXYZ() {
 		if (mob == null || mob.isDead) {
-			Deb.msgMove(mob + "이 죽었거나("+(mob.isDead)+") 없습니다.");
+			DebAPI.msgMove(mob + "이 죽었거나("+(mob.isDead)+") 없습니다.");
 			return false;
 		}
 		distanceCheck();
@@ -92,25 +92,25 @@ public abstract class Move {
 			@Override
 			public boolean stopCondition() {
 				if (mob == null || mob.isDead) {
-					Deb.msgMove(mob + "이 죽었거나("+(mob.isDead)+") 없습니다.");
+					DebAPI.msgMove(mob + "이 죽었거나("+(mob.isDead)+") 없습니다.");
 				}
 				return mob == null || mob.isDead;
 			}
 			@Override
 			public void run(Type type) {
 				if(absRunCount % 40 == 0)
-					Deb.msgMove(mob.getName() + "이"+" "+targetX+ " "+targetY+ " "+targetZ+"로 이동 중입니다. (이 메세지는 40틱마다 나옵니다)");
+					DebAPI.msgMove(mob.getName() + "이"+" "+targetX+ " "+targetY+ " "+targetZ+"로 이동 중입니다. (이 메세지는 40틱마다 나옵니다)");
 				move(absRunCount, mob, targetX, targetY, targetZ);
 				if (WorldAPI.checkPos(mob, targetX, targetY, targetZ) || getDistance() < xyzDistance) {
 					complete();
 					distanceReset();
 					if (WorldAPI.checkPos(mob, targetX, targetY, targetZ) || getDistance() < xyzDistance) {// 목표 좌표가 변한 경우를 대비해서 한번더 검사
 						moveLoop = false;
-						Deb.msgMove(mob.getName() + "이 목표 변하지 않고 목표지점에 도달함");
+						DebAPI.msgMove(mob.getName() + "이 목표 변하지 않고 목표지점에 도달함");
 						mob.getNavigator().clearPathEntity();
 					} else {
 						move(absRunCount, mob, targetX, targetY, targetZ);
-						Deb.msgMove(mob.getName() + "이 목표가 변했으므로 새로 갱신됐음. 갱신 횟수" + movecount);
+						DebAPI.msgMove(mob.getName() + "이 목표가 변했으므로 새로 갱신됐음. 갱신 횟수" + movecount);
 						movecount++;
 					}
 				}

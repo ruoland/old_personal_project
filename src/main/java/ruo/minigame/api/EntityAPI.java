@@ -409,7 +409,7 @@ public class EntityAPI {
         });
     }
 
-    public static List getEntity(World worldObj, AxisAlignedBB aabb, Class entity) {
+    public static <T extends Entity> List<T> getEntity(World worldObj, AxisAlignedBB aabb, Class<? extends T> entity) {
         return worldObj.getEntitiesWithinAABB(entity, aabb);
     }
 

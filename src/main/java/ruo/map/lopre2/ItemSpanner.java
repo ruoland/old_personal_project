@@ -21,6 +21,7 @@ import org.lwjgl.input.Keyboard;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.map.lopre2.jump2.EntityKnockbackBlock;
 import ruo.map.lopre2.jump2.EntityTeleportBlock;
+import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.WorldAPI;
 
 public class ItemSpanner extends Item {
@@ -127,14 +128,21 @@ public class ItemSpanner extends Item {
         }
         if (target instanceof EntityLavaBlock) {
             EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
-            if(lavaBlock.getWidth() == 0.5F){
-                lavaBlock.setWidth(1F);
-                lavaBlock.setScale(1,1,1);
-                lavaBlock.setSpawnPosition();
-            }else {
+            if(lavaBlock.getWidth() == 1F && lavaBlock.getHeight() == 1F){
                 lavaBlock.setWidth(0.5F);
                 lavaBlock.setHeight(1F);
                 lavaBlock.setScale(0.5F, 1F, 0.5F);
+                lavaBlock.setSpawnPosition();
+
+            }else if(lavaBlock.getWidth() == 0.5F && lavaBlock.getHeight() == 1F){
+                lavaBlock.setWidth(1F);
+                lavaBlock.setHeight(0.3F);
+                lavaBlock.setScale(1,0.3F,1);
+                lavaBlock.setSpawnPosition();
+            }else{
+                lavaBlock.setWidth(1F);
+                lavaBlock.setHeight(1F);
+                lavaBlock.setScale(1,1,1);
                 lavaBlock.setSpawnPosition();
             }
         }

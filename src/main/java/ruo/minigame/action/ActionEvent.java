@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.LoginEvent;
@@ -42,7 +43,7 @@ public class ActionEvent {
     public void rotate(LivingEvent.LivingJumpEvent e) {
         if (ActionEffect.canDoubleJump() && e.getEntityLiving() instanceof EntityPlayer) {
             isPlayerJump = true;
-            System.out.println("점프함"+e.getEntityLiving());
+            DebAPI.msgText("점프함"+e.getEntityLiving());
 
         }
 
@@ -52,7 +53,7 @@ public class ActionEvent {
         GameSettings gs = Minecraft.getMinecraft().gameSettings;
         if (ActionEffect.canDoubleJump()) {
             if (event.player instanceof EntityPlayerMP && !canDoubleJump && event.player.onGround) {
-                System.out.println(""+isPlayerJump+!canDoubleJump+event.player.onGround+event.player.motionY+event.player+"땅에 닿음");
+                DebAPI.msgText(""+isPlayerJump+!canDoubleJump+event.player.onGround+event.player.motionY+event.player+"땅에 닿음");
                 canDoubleJump = true;
             }
             if (canDoubleJump && gs.keyBindJump.isPressed() && (!event.player.onGround || forceJump) && isPlayerJump) {
@@ -61,7 +62,7 @@ public class ActionEvent {
                 forceJump = false;
                 event.player.motionY = 0.5F;
                 event.player.fallDistance = 0;
-                System.out.println("더블점프함");
+                DebAPI.msgText("더블점프함");
                 if (event.player.isSprinting()) {
                     float f = event.player.rotationYaw * 0.017453292F;
                     event.player.motionX -= (double) (MathHelper.sin(f) * 0.2F);

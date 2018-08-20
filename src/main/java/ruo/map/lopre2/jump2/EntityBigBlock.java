@@ -12,7 +12,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.cmplus.CMPlusEvent;
+import ruo.cmplus.deb.CommandDeb;
+import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.EntityPreBlock;
+import ruo.minigame.action.ActionEvent;
 
 import java.util.List;
 
@@ -56,6 +60,11 @@ public class EntityBigBlock extends EntityPreBlock {
         System.out.println(getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
 
         return super.processInteract(player, hand, stack);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return super.getRenderBoundingBox().expandXyz(5);
     }
 
     @Override
@@ -130,8 +139,9 @@ public class EntityBigBlock extends EntityPreBlock {
             this.setLock(true);
             this.setSize(1, 1);
             this.setFalling(false);
-            System.out.println(getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+            DebAPI.msgText("사이즈가 변경됨 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
+
         if (!isLock() && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
                 || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
             this.setLock(true);
@@ -165,8 +175,6 @@ public class EntityBigBlock extends EntityPreBlock {
                     }
                 }
             }
-            if(downSpeed != 0)
-                System.out.println(isLock()+ " - "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
 
             this.setVelocity(0, downSpeed, 0);
         }

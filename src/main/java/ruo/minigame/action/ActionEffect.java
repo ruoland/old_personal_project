@@ -101,7 +101,6 @@ public class ActionEffect {
 	}
 
 	public static float getPitch() {
-		System.out.println(mapName);
 		return tpPitchMap.get(mapName);
 	}
 
@@ -115,7 +114,6 @@ public class ActionEffect {
 
 	public static void save() {
 		String worldName = ActionEffect.mapName;
-		System.out.println(worldName+"세이브 "+djList.contains(worldName));
 		if (!worldName.equalsIgnoreCase("noworld")) {
 			MiniGame.instance.minigameConfig.get(worldName, "crawl", false).set(crawlMapList.contains(worldName));
 			if(inWaterMap.containsKey(worldName))
@@ -145,7 +143,6 @@ public class ActionEffect {
 				tpYawMap.put(category, (float) action.get("tpYaw").getDouble());
 				tpPitchMap.put(category, (float) action.get("tpPitch").getDouble());
 			}
-			System.out.println(category+ action.get("doubleJump").getBoolean());
 		}
 	}
 }

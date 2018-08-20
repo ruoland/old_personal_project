@@ -68,15 +68,15 @@ public class EntityPreBlock extends EntityDefaultNPC {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        if(getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
-        setRotate(90,90,90);
+        if (getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
+            setRotate(90, 90, 90);
         this.setTeleport(true);
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
     public void setInv(boolean is) {
         dataManager.set(ISINV, is);
-        if(is){
+        if (is) {
             setLock(true);
         }
     }
@@ -135,12 +135,12 @@ public class EntityPreBlock extends EntityDefaultNPC {
                 return super.processInteract(player, hand, stack);
             }
 
-            if(CommandJB.downMode || CommandJB.upMode){
-                if(this instanceof EntityBigBlock){
+            if (CommandJB.downMode || CommandJB.upMode) {
+                if (this instanceof EntityBigBlock) {
                     System.out.println("업모드 다운모드 둘중 하나 활성화된상태");
                     EntityBigBlock bigBlock = (EntityBigBlock) this;
-                    List<EntityLavaBlock> list = worldObj.getEntitiesWithinAABB(EntityLavaBlock.class, getEntityBoundingBox().offset(1,0,1).expand(1,2,1));
-                    System.out.println(""+list.size()+" - "+list);
+                    List<EntityLavaBlock> list = worldObj.getEntitiesWithinAABB(EntityLavaBlock.class, getEntityBoundingBox().offset(1, 0, 1).expand(1, 2, 1));
+                    System.out.println("" + list.size() + " - " + list);
                 }
                 return super.processInteract(player, hand, stack);
 
@@ -169,7 +169,11 @@ public class EntityPreBlock extends EntityDefaultNPC {
             if (source.getEntity() != null && (source.getEntity().isSneaking() || WorldAPI.equalsHeldItem(Items.BONE) || WorldAPI.equalsHeldItem(Items.ARROW))) {
                 if (WorldAPI.equalsHeldItem(Items.ARROW)) {
                     List<EntityPreBlock> list = EntityAPI.getEntity(worldObj, this.getEntityBoundingBox().expand(5, 5, 5), EntityPreBlock.class);
+                    DebAPI.msgText("겹친 블럭 수" + list.size());
                     for (EntityPreBlock pre : list) {
+                        if (pre == this) {
+                            continue;
+                        }
                         pre.setDead();
                     }
                 }
@@ -192,14 +196,12 @@ public class EntityPreBlock extends EntityDefaultNPC {
 
 
     private int delayTick;
-
     @Override
     public void onLivingUpdate() {
         if (CommandJB.isLavaInvisible && !(this instanceof EntityBigBlock)) {
             setInvisible(!isInv());
         } else
             setInvisible(isInv());
-
         if (LooPre2Event.prevText != null) {
             String xyz = LooPre2Event.prevText;
             if (xyz.split(",").length > 2) {
@@ -234,6 +236,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
         this.rotationYaw = 0;
         this.renderYawOffset = 0;
     }
+
     protected void resetHeight() {
         float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;
         if (f > 1.0F) {
