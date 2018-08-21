@@ -122,6 +122,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
             targetPosition = null;
             return this;
         } else {
+            //TODO 여기서 오류남
             if (targetPosition.xCoord != x && targetPosition.yCoord != y && targetPosition.zCoord != z)
                 this.targetPosition = new Vec3d(x, y, z);
         }
