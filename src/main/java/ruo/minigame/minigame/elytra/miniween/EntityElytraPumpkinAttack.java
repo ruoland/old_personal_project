@@ -6,7 +6,7 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
 
     public EntityElytraPumpkinAttack(World worldIn) {
         super(worldIn);
-        this.setDeathTimer(600);
+        this.setAttack(true);
     }
 
     @Override

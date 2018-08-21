@@ -21,7 +21,8 @@ public class CommandUI extends CommandPlusBase {
         }
         String ui = args[0].toUpperCase();
         try {
-            RenderGameOverlayEvent.ElementType.valueOf(ui);
+            if (!ui.equalsIgnoreCase("hand") && !ui.equalsIgnoreCase("blocklayer"))
+                RenderGameOverlayEvent.ElementType.valueOf(ui);
         } catch (java.lang.IllegalArgumentException e) {
             t.addErrorMessage(ui);
             return;
@@ -38,7 +39,7 @@ public class CommandUI extends CommandPlusBase {
             ui = "EXPERIENCE";
         }
         CMManager.setUI(ui, Boolean.valueOf(args[1]));
-        t.addSettingMessage(args[0],  Boolean.valueOf(args[1]));
+        t.addSettingMessage(args[0], Boolean.valueOf(args[1]));
     }
 
     @Override

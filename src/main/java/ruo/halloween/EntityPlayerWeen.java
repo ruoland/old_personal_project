@@ -48,11 +48,12 @@ public class EntityPlayerWeen extends EntityDefaultNPC {
         Minecraft.getMinecraft().thePlayer.timeInPortal = 1F;
     }
 
-    public void setTarget(double taX, double taY, double taZ) {
+    public EntityDefaultNPC setTarget(double taX, double taY, double taZ) {
         x = taX;
         y = taY;
         z = taZ;
         tickc = 0;
+        return this;
     }
 
     @Override

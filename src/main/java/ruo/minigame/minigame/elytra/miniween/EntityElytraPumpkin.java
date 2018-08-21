@@ -16,38 +16,59 @@ import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
     private SpawnDirection spawnDirection;
+    protected int attackCooldown = 40;
+    //앞으로 이동함
+    private static final DataParameter<Boolean> FORWARD_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
+
     private static final DataParameter<Boolean> ATTACK_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FIRE_ATTACK = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
 
     public EntityElytraPumpkin(World world) {
         super(world);
         this.setBlockMode(Blocks.PUMPKIN);
-        this.setSize(1,5);
+        this.setSize(1, 5);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
+        dataManager.register(FORWARD_MODE, false);
         dataManager.register(ATTACK_MODE, true);
         dataManager.register(FIRE_ATTACK, false);
     }
 
     public boolean isAttackMode() {
-        return FakePlayerHelper.fakePlayer != null && dataManager.get(ATTACK_MODE);
+        return dataManager.get(ATTACK_MODE);
     }
 
-    public void setAttack(boolean fire) {
-        dataManager.set(ATTACK_MODE, fire);
+    public EntityElytraPumpkin setAttack(boolean attack) {
+        dataManager.set(ATTACK_MODE, attack);
+        return this;
     }
 
     public boolean isFireAttack() {
         return isAttackMode() && dataManager.get(FIRE_ATTACK);
     }
 
-    public void setFireAttack(boolean fire) {
+    public EntityElytraPumpkin setFireAttack(boolean fire) {
+        if (fire)
+            setAttack(true);
         dataManager.set(FIRE_ATTACK, fire);
+        return this;
     }
 
+    public boolean isForwardMode() {
+        return dataManager.get(FORWARD_MODE);
+    }
+
+    public EntityElytraPumpkin setForwardMode(boolean forwardMode) {
+        dataManager.set(FORWARD_MODE, forwardMode);
+        return this;
+    }
+
+    /**
+     * 플레이어 앞에 소환되는지 플레이어 옆에 소환 됐는지를 표시함
+     */
     public SpawnDirection getSpawnDirection() {
         return spawnDirection;
     }
@@ -61,28 +82,22 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     public void setDirection(SpawnDirection spawn) {
         spawnDirection = spawn;
+        System.out.println(spawnDirection);
     }
-
-    int attackCooldown = 40;
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-        if (fakePlayer != null && spawnDirection != null) {
-            if (spawnDirection == SpawnDirection.FORWARD) {
-                if (fakePlayer.getDistance(this.getPositionVector()) > 10) {
-                    this.setVelocity(getXZ(spawnDirection, 0.02, false));
-                    System.out.println("플레이어로부터 너무 멀어져 플레이어에게 이동 중" + fakePlayer.getDistance(getPositionVector()));
-                } else if (fakePlayer.getDistance(this.getPositionVector()) < 5) {
-                    this.setVelocity(getXZ(spawnDirection, -0.02, false));
-                    System.out.println("플레이어와 너무 가까워 멀리이동 중" + fakePlayer.getDistance(getPositionVector()));
-                }
-
-            }
-            faceEntity(fakePlayer, 360, 360);
-            this.motionY = 0;
+        if(FakePlayerHelper.fakePlayer == null)
+        {
+            this.setDead();
+            return;
         }
+        if (isServerWorld() && isForwardMode()) {
+            this.setVelocity(getXZ(getSpawnDirection().simple().reverse(), 0.03, false));
+        }
+        faceEntity(FakePlayerHelper.fakePlayer, 360, 360);
+        this.motionY = 0;
     }
 
     public EntityElytraBullet spawnBullet() {
@@ -102,6 +117,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         super.writeEntityToNBT(compound);
         compound.setBoolean("FIRE_ATTACK", isFireAttack());
         compound.setBoolean("ATTACK_MODE", isAttackMode());
+        compound.setBoolean("FORWARD_MODE", isForwardMode());
     }
 
     @Override
@@ -109,15 +125,16 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         super.readEntityFromNBT(compound);
         setFireAttack(compound.getBoolean("FIRE_ATTACK"));
         setAttack(compound.getBoolean("ATTACK_MODE"));
+        setForwardMode(compound.getBoolean("FORWARD_MODE"));
     }
 
     @Override
     protected void collideWithEntity(Entity entityIn) {
-        if(!(entityIn instanceof EntityElytraPumpkin) && !(entityIn instanceof EntityElytraBullet)){
+        if (!(entityIn instanceof EntityElytraPumpkin) && !(entityIn instanceof EntityElytraBullet)) {
             super.collideWithEntity(entityIn);
         }
-        if(entityIn instanceof EntityFakePlayer)
-        entityIn.attackEntityFrom(DamageSource.fallingBlock, 2);
+        if (entityIn instanceof EntityFakePlayer)
+            entityIn.attackEntityFrom(DamageSource.fallingBlock, 2);
     }
 
 }

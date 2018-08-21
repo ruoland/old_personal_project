@@ -172,6 +172,7 @@ public class EntityBigBlock extends EntityPreBlock {
                         setPosition(posX, getSpawnY(), posZ);
                         downSpeed  =0;
                         delay = getDefaultDelay();
+
                     }
                 }
             }

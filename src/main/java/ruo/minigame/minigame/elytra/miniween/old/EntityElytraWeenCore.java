@@ -38,12 +38,13 @@ public class EntityElytraWeenCore extends EntityDefaultNPC {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
     }
 
-    public void setTarget(double x, double y, double z){
+    public EntityDefaultNPC setTarget(double x, double y, double z){
         targetX = x;
         targetY = y;
         targetZ = z;
         vec = new Vec3d(targetX - posX, targetY - posY, targetZ - posZ);
         vec = vec.normalize();
+        return this;
     }
 
     public boolean noTarget(){

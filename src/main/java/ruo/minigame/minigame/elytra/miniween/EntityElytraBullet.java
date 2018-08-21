@@ -15,7 +15,6 @@ import ruo.minigame.map.EntityDefaultNPC;
 public class EntityElytraBullet extends EntityDefaultNPC {
 
     private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityElytraBullet.class, DataSerializers.FLOAT);
-    private Vec3d targetVec;
 
     public EntityElytraBullet(World world) {
         super(world);
@@ -31,8 +30,8 @@ public class EntityElytraBullet extends EntityDefaultNPC {
         dataManager.register(DAMAGE, 3F);
     }
 
-    public void setTarget(double x, double y, double z) {
-        targetVec = new Vec3d(x - posX, y - posY, z - posZ).normalize().scale(0.5);
+    @Override
+    public void targetArrive() {
     }
 
     public void setDamage(float damage) {
@@ -42,7 +41,6 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     public float getDamage() {
         return dataManager.get(DAMAGE);
     }
-
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -55,20 +53,9 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (targetVec != null)
-            this.setVelocity(targetVec.xCoord, targetVec.yCoord, targetVec.zCoord);
         motionY = 0;
     }
 
-    @Override
-    public boolean canBeCollidedWith() {
-        return super.canBeCollidedWith();
-    }
-
-    @Override
-    protected void collideWithNearbyEntities() {
-        super.collideWithNearbyEntities();
-    }
     @Override
     protected void collideWithEntity(Entity entityIn) {
         if(!(entityIn instanceof EntityElytraPumpkin)){

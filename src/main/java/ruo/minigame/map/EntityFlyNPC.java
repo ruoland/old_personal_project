@@ -32,7 +32,7 @@ public class EntityFlyNPC extends EntityDefaultNPC {
     }
 
     @Override
-    public void setTarget(double x, double y, double z, double speed) {
+    public EntityDefaultNPC setTarget(double x, double y, double z, double speed) {
         double targetX = x != 0 ? (x - posX) : 0;
         double targetY = y != 0 ? (y - posY) : 0;
         double targetZ = z != 0 ? (z - posZ) : 0;
@@ -40,11 +40,12 @@ public class EntityFlyNPC extends EntityDefaultNPC {
         {
             targetVec = null;
             target = null;
-            return;
+            return this;
         }
         targetVec = new Vec3d(targetX,targetY,targetZ).normalize().scale(speed);
         target = new Vec3d(x,y,z);
         setArrive(false);
+        return this;
     }
 
     @Override

@@ -100,15 +100,15 @@ public class ModelTest extends ModelBase {
         GlStateManager.translate(this.rbliend.rotationPointX * f5, this.rbliend.rotationPointY * f5, this.rbliend.rotationPointZ * f5);
         if (defaultNPC.eyeCloseReverse) {
             if (defaultNPC.eyeCloseScaleY <= 0) {
-                defaultNPC.random = defaultNPC.worldObj.rand.nextInt(100);
+                defaultNPC.eyeCloseTime = defaultNPC.worldObj.rand.nextInt(100);
                 defaultNPC.eyeCloseReverse = false;
                 defaultNPC.eyeCloseScaleY = 0;
             } else
                 defaultNPC.eyeCloseScaleY -= 0.1;
         }
-        else if (defaultNPC.random == 0) {
+        else if (defaultNPC.eyeCloseTime == 0) {
             if (defaultNPC.eyeCloseScaleY >= 1) {
-                defaultNPC.random = defaultNPC.worldObj.rand.nextInt(100);
+                defaultNPC.eyeCloseTime = defaultNPC.worldObj.rand.nextInt(100);
                 defaultNPC.eyeCloseReverse = true;
                 defaultNPC.eyeCloseScaleY = 1;
             } else

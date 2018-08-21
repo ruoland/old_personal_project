@@ -38,7 +38,6 @@ public class ElytraEvent {
         if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getEntityLiving() instanceof EntityFakePlayer) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiElytraGameOver(killCount));
             Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();
-            ;
         }
     }
 
@@ -50,7 +49,7 @@ public class ElytraEvent {
         }
     }
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public void event(MouseEvent event) {
         if (!MiniGame.elytra.isStart())
             return;
@@ -64,9 +63,8 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void login(PlayerInteractEvent event) {
-        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
+        if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
-            System.out.println(MiniGame.elytra.isStart() + "엘리트라 실행됨");
             EntityFakePlayer player = FakePlayerHelper.fakePlayer;
             float yaw = player.getHorizontalFacing().getHorizontalAngle();
             System.out.println("화살 YAW "+yaw);
@@ -92,10 +90,9 @@ public class ElytraEvent {
         arrow.setDamage(10);
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);
-        Random rand = new Random();
         elytraCooltime = 15;
         world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT,
-                SoundCategory.NEUTRAL, 1.0F, (float) (1.0F / (rand.nextFloat() * 0.4F + 1.2F) + 0.1666));
+                SoundCategory.NEUTRAL, 1.0F, (float) (1.0F / (player.worldObj.rand.nextFloat() * 0.4F + 1.2F) + 0.1666));
     }
 
     @SubscribeEvent

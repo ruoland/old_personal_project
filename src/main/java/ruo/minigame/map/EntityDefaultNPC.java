@@ -44,8 +44,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
             DataSerializers.FLOAT);
     private static final DataParameter<Float> LOCK_PITCH = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.FLOAT);
-    private static final DataParameter<Integer> DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
-            DataSerializers.VARINT);
     private static final DataParameter<Boolean> ON_DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);//데드 타이머가 켜져있는지 여부
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
@@ -56,20 +54,21 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private PosHelper posHelper;
     public boolean isFly;
     public TextEffect eft;
-    private Vec3d targetPosition;
+    private Vec3d targetPosition, targetVec;
     private double distance = 0.8;
     private double targetMoveSpeed;
-
-    public int random = 0;
+    private int deathTimer;
+    public int eyeCloseTime = 0;
     public double eyeCloseScaleY;
     public boolean eyeCloseReverse;
+
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
         this.eft = TextEffect.getHelper(this);
         posHelper = new PosHelper(this);
         this.setSize(0.6F, 1.95F);
         PathNavigateGround path = (PathNavigateGround) this.getNavigator();
-        this.setRotate(0,0,0);
+        this.setRotate(0, 0, 0);
         path.setEnterDoors(true);
         path.setBreakDoors(true);
         if (!worldIn.isRemote) {
@@ -77,13 +76,12 @@ public class EntityDefaultNPC extends EntityModelNPC {
             npcHash.put(getCustomNameTag(), this);
             uuidHash.put(getUniqueID().toString(), this);
         }
-        random = rand.nextInt(100);
+        eyeCloseTime = rand.nextInt(100);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(DEATH_TIMER, -1);
         this.dataManager.register(IS_STURN, false);
         this.dataManager.register(LOCK_YAW, 0F);
         this.dataManager.register(LOCK_PITCH, 0F);
@@ -111,26 +109,40 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
-        this.faceEntity(player, 360, 360);
-        random = rand.nextInt(100);
         return super.processInteract(player, hand, stack);
     }
 
-    public void setTarget(double x, double y, double z, double speed) {
+    public EntityDefaultNPC setTargetSpeed(double speed) {
+        this.targetMoveSpeed = speed;
+        return this;
+    }
+
+    public EntityDefaultNPC setTarget(double x, double y, double z, double speed) {
         if (x == 0 && y == 0 && z == 0) {
             targetPosition = null;
+            return this;
         } else {
-            this.targetPosition = new Vec3d(x, y, z);
+            if (targetPosition.xCoord != x && targetPosition.yCoord != y && targetPosition.zCoord != z)
+                this.targetPosition = new Vec3d(x, y, z);
         }
+        targetVec = this.targetPosition.subtract(this.getPositionVector()).normalize();
+
         this.targetMoveSpeed = speed;
+        return this;
     }
-    public void setTarget(double x, double y, double z) {
-        setTarget(x,y,z,0.4);
+
+    public EntityDefaultNPC setTarget(Vec3d vec3d) {
+        return setTarget(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 0.4);
     }
-    public void setTarget(@Nullable EntityLivingBase target, double speed) {
-        if(target == null)
-            setTarget(0,0,0,0);
-        this.setTarget(target.posX, target.posY, target.posZ, speed);
+
+    public EntityDefaultNPC setTarget(double x, double y, double z) {
+        return setTarget(x, y, z, 0.4);
+    }
+
+    public EntityDefaultNPC setTarget(@Nullable EntityLivingBase target, double speed) {
+        if (target == null)
+            return setTarget(0, 0, 0, 0);
+        return this.setTarget(target.posX, target.posY, target.posZ, speed);
     }
 
     public boolean noTarget() {
@@ -142,10 +154,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void targetArrive() {
-
+        setTarget(0, 0, 0, 0);
     }
 
-    public boolean isTargetArrive(){
+    public boolean isTargetArrive() {
         return getDistance(targetPosition) < distance;
     }
 
@@ -157,11 +169,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(getSpawnX() == 0 && getSpawnY() == 0 && getSpawnZ() == 0){
+        if (getSpawnX() == 0 && getSpawnY() == 0 && getSpawnZ() == 0) {
             setSpawnXYZ(posX, posY, posZ);
         }
-        if(random > 0 && getModel() == TypeModel.NPC){
-            random--;
+        if (eyeCloseTime > 0 && getModel() == TypeModel.NPC) {
+            eyeCloseTime--;
         }
         if (isSturn()) {
             this.rotationPitch = getDataManager().get(LOCK_PITCH);
@@ -169,11 +181,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
             this.rotationYawHead = getDataManager().get(LOCK_YAW);
         }
         if (targetPosition != null) {
-            setVelocity(this.targetPosition.subtract(this.getPositionVector()).normalize().scale(targetMoveSpeed));
-            System.out.println(this.targetPosition.subtract(this.getPositionVector()).normalize().scale(targetMoveSpeed));
+            setVelocity(targetVec.scale(targetMoveSpeed));
             if (getDistance(targetPosition) < distance) {
                 targetArrive();
-                setTarget(0, 0, 0, 0);
             }
         } else if (isFly) {
             motionY = 0;
@@ -188,12 +198,12 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
         }
         if (getDataManager().get(ON_DEATH_TIMER)) {
-            int deathTime = getDataManager().get(DEATH_TIMER);
             if (isServerWorld() && deathTime > 0) {
-                getDataManager().set(DEATH_TIMER, deathTime - 1);
+                deathTimer -= 1;
             }
             if (deathTime == 0) {
                 this.setDead();
+                System.out.println("시간이 지나 죽었음.");
             }
         }
     }
@@ -212,7 +222,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         compound.setDouble("distance", distance);
 
         compound.setTag("SPAWNXYZ", getSpawnXYZ().writeToNBT());
-        compound.setInteger("DEATH_TIMER", getDataManager().get(DEATH_TIMER));
+        compound.setInteger("DEATH_TIMER", deathTimer);
         compound.setBoolean("ON_DEATH_TIMER", getDataManager().get(ON_DEATH_TIMER));
 
         compound.setFloat("LOCKPITCH", getDataManager().get(LOCK_PITCH));
@@ -230,7 +240,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        getDataManager().set(DEATH_TIMER, compound.getInteger("DEATH_TIMER"));
+        deathTimer= compound.getInteger("DEATH_TIMER");
         getDataManager().set(ON_DEATH_TIMER, compound.getBoolean("ON_DEATH_TIMER"));
         getDataManager().set(SPAWN_XYZ, getRotations(compound, "SPAWNXYZ"));
         getDataManager().set(LOCK_YAW, compound.getFloat("STURNYAW"));
@@ -238,8 +248,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
         setCollision(compound.getBoolean("canCollision"));
         if (compound.getBoolean("ISSTURN"))
             setSturn(compound.getInteger("STURN_TICK"));
-        if(compound.hasKey("targetX"))
-        setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"), compound.getDouble("speed"));
+        if (compound.hasKey("targetX"))
+            setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"), compound.getDouble("speed"));
         setDistance(compound.getDouble("distance"));
 
     }
@@ -272,6 +282,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public void setSpawnXYZ(double x, double y, double z) {
         this.dataManager.set(SPAWN_XYZ, new Rotations((float) x, (float) y, (float) z));
     }
+
     public void setSpawnXYZ(Vec3d vec3d) {
         this.dataManager.set(SPAWN_XYZ, new Rotations((float) vec3d.xCoord, (float) vec3d.yCoord, (float) vec3d.yCoord));
     }
@@ -285,7 +296,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public void setDeathTimer(int deathTimer) {
         if (deathTimer > 0) {
-            dataManager.set(DEATH_TIMER, deathTimer);
+            this.deathTimer = deathTimer;
+
             dataManager.set(ON_DEATH_TIMER, true);
         } else
             dataManager.set(ON_DEATH_TIMER, false);

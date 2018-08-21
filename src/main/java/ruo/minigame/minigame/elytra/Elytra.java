@@ -1,10 +1,12 @@
 package ruo.minigame.minigame.elytra;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.camera.Camera;
+import ruo.cmplus.cm.CommandUI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
@@ -17,7 +19,8 @@ import ruo.minigame.minigame.AbstractMiniGame;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
-import ruo.minigame.minigame.elytra.miniween.old.EntityElytraWeenCore;
+
+import java.util.ArrayList;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
@@ -27,84 +30,106 @@ public class Elytra extends AbstractMiniGame {
     public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
     private EntityFakePlayer fakePlayer;
     private PosHelper spawnPosHelper;
+    private ArrayList<EntityElytraPumpkin> monsterList = new ArrayList<>();
 
     public Elytra() {
     }
 
     @Override
     public boolean start(Object... obj) {
+        WorldAPI.command("/display size 700 950");
         facing = WorldAPI.getPlayer().getHorizontalFacing();
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 55, WorldAPI.z());
+
         fakePlayer = FakePlayerHelper.spawnFakePlayer(true);
         playerSpawnX = fakePlayer.posX;
         playerSpawnY = fakePlayer.posY - 45;
         playerSpawnZ = fakePlayer.posZ;
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());
-        spawnPosHelper = new PosHelper(fakePlayer.getPositionVector(), fakePlayer.getHorizontalFacing());
         cameraSetting();
-        first();
         MiniGame.elytraEvent.elytraMode = true;
+        spawnPosHelper = new PosHelper(fakePlayer.getPositionVector(), fakePlayer.getHorizontalFacing());
 
+        TickRegister.register(new AbstractTick(200, true) {
+            @Override
+            public void run(Type type) {
+                if(absRunCount == 0)
+                    first();
+                if(absRunCount == 1){
+                    returnMonster();
+                    second();
+                }
+                if(absRunCount == 2){
+                    returnMonster();
+                    third();
+                    absLoop = false;
+                }
+            }
+        });
         return super.start();
     }
 
-    public void cameraSetting() {
-        String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
-        WorldAPI.command("/gamemode " + " 1");//게임모드 설정
-        WorldAPI.command("/ui hotbar false");//핫바 끔
-        WorldAPI.command("/ui hand false");//핸드 끔
-        Camera.getCamera().reset();
-        Camera.getCamera().setYP(true);
-        Camera.getCamera().lockCamera(true, 0, 0);
-        Camera.getCamera().moveCamera(0, -10, -5);
-        Camera.getCamera().rotateCamera(90, 180, 0);
-        if (facingName.equalsIgnoreCase("NORTH")) {
-            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
-        }
-        if (facingName.equalsIgnoreCase("SOUTH")) {
-            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
-        }
-        if (facingName.equalsIgnoreCase("WEST")) {
-            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
-        }
-        if (facingName.equalsIgnoreCase("EAST")) {
-            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
+    public void returnMonster(){
+        for(EntityElytraPumpkin elytraPumpkin : monsterList){
+            elytraPumpkin.setTarget(spawnPosHelper.getXZ(elytraPumpkin.getSpawnDirection().simple(), 15, true)).setTargetSpeed(0.7);
+            elytraPumpkin.setBlockMode(Blocks.STONE);
+            elytraPumpkin.setDeathTimer(40);
         }
     }
 
     public void first() {
-        TickRegister.register(new AbstractTick(30, false) {
-            @Override
-            public void run(Type type) {
-                //spawnPumpkinAttack(SpawnDirection.FORWARD);
-                for (int i = 1; i < 3; i++) {
-                    EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
-                    setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i);
-                }
-                for (int i = 1; i < 3; i++) {
-                    EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
-                    setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i);
-                }
-                spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
-            }
-        });
-
-        TickRegister.register(new AbstractTick(180, false) {
-            @Override
-            public void run(Type type) {
-                spawnPumpkinAttack(SpawnDirection.LEFT);
-                spawnPumpkinAttack(SpawnDirection.RIGHT);
-            }
-        });
+        System.out.println("퍼스ㅡㅌ");
+        for (int i = 1; i < 3; i++) {
+            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+            setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i+1);
+        }
+        for (int i = 1; i < 3; i++) {
+            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+            setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i+1);
+        }
+        spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
+        spawnPumpkinAttack(SpawnDirection.LEFT);
+        spawnPumpkinAttack(SpawnDirection.RIGHT);
     }
 
     public void second() {
-
+        System.out.println("세컨드");
+        for (int i = 1; i < 4; i++) {
+            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+            setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i+2);
+            elytraPumpkin.setHealth(2);
+        }
+        for (int i = 1; i < 4; i++) {
+            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
+            setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i+2);
+            elytraPumpkin.setHealth(2);
+        }
+        spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
     }
+
+    public void third() {
+        System.out.println("서드");
+        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT).setForwardMode(true).setAttack(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT).setForwardMode(true).setAttack(true).setTargetSpeed(0.4);
+    }
+    @Override
+    public boolean end(Object... obj) {
+        Camera.getCamera().reset();
+        if (MiniGame.elytraEvent instanceof ElytraEvent) {
+            ElytraEvent eve = (ElytraEvent) MiniGame.elytraEvent;
+            eve.spawnY = 0;
+            WorldAPI.command("/display size 854 480");
+            WorldAPI.command("/ui reset");
+            bossEnd = true;
+            WorldAPI.teleport(playerSpawnX, playerSpawnY, playerSpawnZ);
+        }
+        for(EntityElytraPumpkin pumpkin : monsterList)
+            pumpkin.setDead();
+        monsterList.clear();
+
+        return super.end();
+    }
+
 
 
     public EntityElytraPumpkinAttack spawnPumpkinAttack(SpawnDirection direction) {
@@ -114,6 +139,7 @@ public class Elytra extends AbstractMiniGame {
     }
 
     private void setPositionAndSpawn(SpawnDirection direction, EntityElytraPumpkin pumpkin, double rlplus) {
+        System.out.println("몬스터 소환됨");
         switch (direction) {
             case FORWARD:
                 pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD, 8, true));
@@ -132,33 +158,9 @@ public class Elytra extends AbstractMiniGame {
                 break;
         }
         pumpkin.setDirection(direction);
+        monsterList.add(pumpkin);
+
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
-    }
-
-
-    @Override
-    public boolean end(Object... obj) {
-        Camera.getCamera().reset();
-        if (MiniGame.elytraEvent instanceof ElytraEvent) {
-            ElytraEvent eve = (ElytraEvent) MiniGame.elytraEvent;
-            eve.spawnY = 0;
-            WorldAPI.command("/display size 854 480");
-            WorldAPI.command("/ui reset");
-            bossEnd = true;
-            WorldAPI.teleport(playerSpawnX, playerSpawnY, playerSpawnZ);
-        }
-
-        return super.end();
-    }
-
-
-    public static EntityElytraWeenCore spawnWeenElytra(double spawnPosX, double spawnPosY, double spawnPosZ, double targetPosX, double targetPosY, double targetPosZ) {
-        EntityElytraWeenCore ween = new EntityElytraWeenCore(WorldAPI.getWorld());
-        ween.setPosition(spawnPosX, spawnPosY, spawnPosZ);
-        WorldAPI.getWorld().spawnEntityInWorld(ween);
-        ween.setTarget(targetPosX, targetPosY, targetPosZ);
-
-        return ween;
     }
 
     public void a() {
@@ -194,49 +196,31 @@ public class Elytra extends AbstractMiniGame {
 
     }
 
-    /**
-     * 구버전 코드
-     * 쓸일 없을 것 같지만 혹시나 해서 남겨둠
-     */
-    private void spawnWeen() {
-        flyingWeen = new EntityFlyingWeen(WorldAPI.getWorld());
-        flyingWeen.setPosition(fakePlayer.getXZ(SpawnDirection.FORWARD, 20, true).addVector(0, -5, 0));
-        WorldAPI.getWorld().spawnEntityInWorld(flyingWeen);
-    }
-    /**
-     * 구버전 코드
-     * 쓸일 없을 것 같지만 혹시나 해서 남겨둠
-     */
-    private void firstPattern() {
-        TickRegister.register(new AbstractTick(60, true) {
-            @Override
-            public boolean stopCondition() {
-                return !flyingWeen.isEntityAlive() || !isStart() || flyingWeen.deadFalling;
-            }
-
-            @Override
-            public void run(Type type) {
-                if (!facing.getName().equalsIgnoreCase(WorldAPI.getPlayer().getHorizontalFacing().getName())) {
-                    facing = WorldAPI.getPlayer().getHorizontalFacing();
-                    cameraSetting();
-                }
-                double spawnPosX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
-                double spawnPosY = fakePlayer.posY;
-                double spawnPosZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
-
-                if (absRunCount == 0)
-                    absDefTick = 20;
-                if (absRunCount >= 8) {
-                    flyingWeen.secondPattern();
-                    absLoop = false;
-                    return;
-                }
-                for (int i = 0; i < 5; i++) {
-                    double rightX = fakePlayer.getX(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
-                    double rightZ = fakePlayer.getZ(SpawnDirection.RIGHT, WorldAPI.rand(5), false);
-                    spawnWeenElytra(spawnPosX + rightX, spawnPosY, spawnPosZ + rightZ, targetX + rightX, targetY, targetZ + rightZ);
-                }
-            }
-        });
+    public void cameraSetting() {
+        String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
+        WorldAPI.command("/gamemode " + "1");//게임모드 설정
+        WorldAPI.command("/ui hotbar false");//핫바 끔
+        WorldAPI.command("/ui hand false");//핸드 끔
+        Camera.getCamera().reset();
+        Camera.getCamera().setYP(true);
+        Camera.getCamera().lockCamera(true, 0, 0);
+        Camera.getCamera().moveCamera(0, -10, -5);
+        Camera.getCamera().rotateCamera(90, 180, 0);
+        if (facingName.equalsIgnoreCase("NORTH")) {
+            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
+        }
+        if (facingName.equalsIgnoreCase("SOUTH")) {
+            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
+        }
+        if (facingName.equalsIgnoreCase("WEST")) {
+            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
+        }
+        if (facingName.equalsIgnoreCase("EAST")) {
+            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
+            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
+        }
     }
 }
