@@ -122,9 +122,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
             targetPosition = null;
             return this;
         } else {
-            //TODO 여기서 오류남
-            if (targetPosition.xCoord != x && targetPosition.yCoord != y && targetPosition.zCoord != z)
-                this.targetPosition = new Vec3d(x, y, z);
+            this.targetPosition = new Vec3d(x, y, z);
         }
         targetVec = this.targetPosition.subtract(this.getPositionVector()).normalize();
 
@@ -241,7 +239,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        deathTimer= compound.getInteger("DEATH_TIMER");
+        deathTimer = compound.getInteger("DEATH_TIMER");
         getDataManager().set(ON_DEATH_TIMER, compound.getBoolean("ON_DEATH_TIMER"));
         getDataManager().set(SPAWN_XYZ, getRotations(compound, "SPAWNXYZ"));
         getDataManager().set(LOCK_YAW, compound.getFloat("STURNYAW"));

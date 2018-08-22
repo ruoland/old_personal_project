@@ -50,11 +50,6 @@ public class MineRunEvent {
                     e.player.motionY = (fakePlayer.posY + 3) - e.player.posY;
                     e.player.motionZ = MineRun.zCoord();
                     MineRun.setFakePositionUpdate();
-                    if (WorldAPI.equalsHeldItem(Items.APPLE)) {
-                        System.out.println("Y  " + (fakePlayer.posY) + " - " + MineRun.curY);
-                        //System.out.println("X  " + (e.player.posX + MineRun.curX + EntityAPI.lookX(e.player, 3)) + " - " + MineRun.curX + " - " + EntityAPI.lookX(e.player, 3));
-                        //System.out.println("Z " + (e.player.posZ + MineRun.curZ + EntityAPI.lookZ(e.player, 3)) + " - " + MineRun.curZ + " - " + EntityAPI.lookZ(e.player, 3));
-                    }
                     fakePlayer.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
                     fakePlayer.motionZ = MineRun.zCoord();
                 }
@@ -174,10 +169,8 @@ public class MineRunEvent {
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-
                 MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, lineLR * 1.5, false));
                 System.out.println(posHelper.getX(SpawnDirection.LEFT, lineLR * 1.5, false) + " - " + posHelper.getZ(SpawnDirection.LEFT, lineLR * 1.5, false));
-
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
