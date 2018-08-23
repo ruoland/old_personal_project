@@ -5,7 +5,7 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
-    private int attackCooldown = 40;
+    public int attackCooldown = 40, defaultCooldown = 40;
     public EntityElytraPumpkinAttack(World worldIn) {
         super(worldIn);
         this.setAttack(true);
@@ -20,7 +20,7 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
             }
             if (attackCooldown == 0) {
                 spawnBullet();
-                attackCooldown = 40;
+                attackCooldown = defaultCooldown;
             }
         }
     }
@@ -29,6 +29,7 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
         EntityElytraBullet elytraBullet = new EntityElytraBullet(worldObj);
         elytraBullet.setPosition(posX, posY, posZ);
         elytraBullet.setTarget(fakePlayer.posX, posY, fakePlayer.posZ);
+        if(isServerWorld())
         worldObj.spawnEntityInWorld(elytraBullet);
         elytraBullet.setDamage(5);
         if (isFireAttack())
@@ -38,6 +39,5 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
     @Override
     public void targetArrive() {
         super.targetArrive();
-        this.setDead();
     }
 }

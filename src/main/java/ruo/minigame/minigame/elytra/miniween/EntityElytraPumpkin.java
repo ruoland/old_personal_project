@@ -8,7 +8,9 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -16,6 +18,7 @@ import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
     private SpawnDirection spawnDirection;
+    private EnumFacing forwardFacing;
     //앞으로 이동함
     private static final DataParameter<Boolean> FORWARD_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
 
@@ -26,6 +29,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         super(world);
         this.setBlockMode(Blocks.PUMPKIN);
         this.setSize(1, 5);
+        this.setRotate(0,90,0);
     }
 
     @Override
@@ -62,7 +66,13 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     public EntityElytraPumpkin setForwardMode(boolean forwardMode) {
         dataManager.set(FORWARD_MODE, forwardMode);
+        forwardFacing = getHorizontalFacing();
         return this;
+    }
+
+    @Override
+    public EntityDefaultNPC setTarget(double x, double y, double z, double speed) {
+        return super.setTarget(x, y, z, speed);
     }
 
     /**
@@ -81,7 +91,6 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     public void setDirection(SpawnDirection spawn) {
         spawnDirection = spawn;
-        System.out.println(spawnDirection);
     }
 
     @Override
@@ -92,8 +101,11 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             this.setDead();
             return;
         }
+        if(isServerWorld() && noTarget() && !isForwardMode() && FakePlayerHelper.fakePlayer.getDistanceToEntity(this) > 10){
+            this.setVelocity(getX(SpawnDirection.FORWARD, 0.1, false), 0, getZ(SpawnDirection.FORWARD, 0.1, false));
+        }
         if (isServerWorld() && isForwardMode()) {
-            this.setVelocity(getXZ(getSpawnDirection().simple(), 0.1, false));
+            this.setVelocity(EntityAPI.lookX(forwardFacing, 0.1), 0, EntityAPI.lookZ(forwardFacing, 0.1));
         }
         faceEntity(FakePlayerHelper.fakePlayer, 360, 360);
         this.motionY = 0;

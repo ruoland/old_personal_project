@@ -46,6 +46,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
             DataSerializers.FLOAT);
     private static final DataParameter<Boolean> ON_DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);//데드 타이머가 켜져있는지 여부
+    private static final DataParameter<Integer> DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
+            DataSerializers.VARINT);
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
             .createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
 
@@ -57,7 +59,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private Vec3d targetPosition, targetVec;
     private double distance = 0.8;
     private double targetMoveSpeed;
-    private int deathTimer;
     public int eyeCloseTime = 0;
     public double eyeCloseScaleY;
     public boolean eyeCloseReverse;
@@ -87,6 +88,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
         this.dataManager.register(LOCK_PITCH, 0F);
         this.dataManager.register(COLLISION, false);
         this.dataManager.register(ON_DEATH_TIMER, false);
+        this.dataManager.register(DEATH_TIMER, -1);
+
         dataManager.register(SPAWN_XYZ, new Rotations(0, 0, 0));
     }
 
@@ -197,13 +200,18 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
         if (isServerWorld() && getDataManager().get(ON_DEATH_TIMER)) {
             if (deathTime > 0) {
-                deathTimer -= 1;
+                setDeathTimer(getDeathTime()-1);
             }
             if (deathTime == 0) {
                 this.setDead();
             }
         }
     }
+
+    public int getDeathTime(){
+        return dataManager.get(DEATH_TIMER);
+    }
+
 
 
     @Override
@@ -219,7 +227,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         compound.setDouble("distance", distance);
 
         compound.setTag("SPAWNXYZ", getSpawnXYZ().writeToNBT());
-        compound.setInteger("DEATH_TIMER", deathTimer);
+        compound.setInteger("DEATH_TIMER", getDeathTime());
         compound.setBoolean("ON_DEATH_TIMER", getDataManager().get(ON_DEATH_TIMER));
 
         compound.setFloat("LOCKPITCH", getDataManager().get(LOCK_PITCH));
@@ -237,7 +245,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        deathTimer = compound.getInteger("DEATH_TIMER");
+        if(compound.hasKey("DEATH_TIMER"))
+        setDeathTimer(compound.getInteger("DEATH_TIMER"));
         getDataManager().set(ON_DEATH_TIMER, compound.getBoolean("ON_DEATH_TIMER"));
         getDataManager().set(SPAWN_XYZ, getRotations(compound, "SPAWNXYZ"));
         getDataManager().set(LOCK_YAW, compound.getFloat("STURNYAW"));
@@ -293,7 +302,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public void setDeathTimer(int deathTimer) {
         if (deathTimer > 0) {
-            this.deathTimer = deathTimer;
+            dataManager.set(DEATH_TIMER, deathTimer);
             dataManager.set(ON_DEATH_TIMER, true);
         } else
             dataManager.set(ON_DEATH_TIMER, false);

@@ -1,6 +1,11 @@
 package ruo.minigame.minigame.minerun;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -12,10 +17,7 @@ import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
-import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
-import ruo.minigame.api.WorldAPI;
+import ruo.minigame.api.*;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
@@ -29,14 +31,35 @@ public class MineRunEvent {
     //line은 왼쪽라인 오른쪽라인으로 갈 수 있는 값을 담고 있음, FB는 Forward Back 앞뒤 값 말함 - 7월 14일
     protected double lineX, lineZ, lineFBX, lineFBZ;
 
+    private ItemStack stack = new ItemStack(Items.NETHER_STAR);
+    private int pickupCount;
     @SubscribeEvent
     public void playerTick(PlayerEvent.ItemPickupEvent e) {
-
+        if(e.pickedUp.getEntityItem().getItem() == Items.NETHER_STAR){
+            pickupCount++;
+        }
     }
+
     @SubscribeEvent
     public void playerTick(RenderGameOverlayEvent.Pre e) {
-        if(e.getType() == RenderGameOverlayEvent.ElementType.ALL){
-
+        if (MiniGame.minerun.isStart()) {
+            if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                Minecraft mc = Minecraft.getMinecraft();
+                int width = e.getResolution().getScaledWidth();
+                int height = e.getResolution().getScaledHeight();
+                RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+                itemRender.zLevel = 200.0F;
+                net.minecraft.client.gui.FontRenderer font = null;
+                if (stack != null) font = stack.getItem().getFontRenderer(stack);
+                if (font == null) font = mc.fontRendererObj;
+                if (stack != null) {
+                    RenderHelper.enableGUIStandardItemLighting();
+                    itemRender.renderItemAndEffectIntoGUI(stack, (width), (height));
+                    itemRender.renderItemOverlayIntoGUI(font, stack, (width), height, null);
+                    RenderHelper.disableStandardItemLighting();
+                }
+                itemRender.zLevel = 0.0F;
+            }
         }
     }
     @SubscribeEvent

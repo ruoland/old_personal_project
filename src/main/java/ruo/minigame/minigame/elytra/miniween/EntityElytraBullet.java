@@ -32,7 +32,6 @@ public class EntityElytraBullet extends EntityDefaultNPC {
 
     @Override
     public void targetArrive() {
-        this.setDead();
     }
 
     public void setDamage(float damage) {
@@ -60,6 +59,11 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     }
 
     @Override
+    public void setDead() {
+        super.setDead();
+    }
+
+    @Override
     protected void collideWithEntity(Entity entityIn) {
         if (!(entityIn instanceof EntityElytraPumpkin)) {
             super.collideWithEntity(entityIn);
@@ -73,7 +77,6 @@ public class EntityElytraBullet extends EntityDefaultNPC {
             }
             entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
             this.setDead();
-            System.out.println("부딪혀 죽음");
         }
     }
 

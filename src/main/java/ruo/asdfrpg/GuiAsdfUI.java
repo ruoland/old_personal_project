@@ -61,7 +61,6 @@ public class GuiAsdfUI extends GuiScreen {
                 itemRender.renderItemAndEffectIntoGUI(stack, (int) (width / 2 - hotbar.x) + (i * 20), (int) (height - hotbar.y));
                 itemRender.renderItemOverlayIntoGUI(font, stack, (int) (width / 2 - hotbar.x) + (i * 20), (int) (height - hotbar.y), null);
                 RenderHelper.disableStandardItemLighting();
-
             }
             itemRender.zLevel = 0.0F;
         }

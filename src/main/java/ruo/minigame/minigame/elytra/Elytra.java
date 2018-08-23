@@ -22,6 +22,7 @@ import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
@@ -51,7 +52,7 @@ public class Elytra extends AbstractMiniGame {
         MiniGame.elytraEvent.elytraMode = true;
         spawnPosHelper = new PosHelper(fakePlayer.getPositionVector(), fakePlayer.getHorizontalFacing());
 
-        TickRegister.register(new AbstractTick(100, true) {
+        TickRegister.register(new AbstractTick(200, true) {
             @Override
             public boolean stopCondition() {
                 return !isStart();
@@ -76,20 +77,28 @@ public class Elytra extends AbstractMiniGame {
     }
 
     public void returnMonster() {
-        for (EntityElytraPumpkin elytraPumpkin : monsterList) {
-            System.out.println(spawnPosHelper.getXZ(elytraPumpkin.getSpawnDirection().simple(), 15, true) + " - " + elytraPumpkin.getSpawnDirection().simple());
-            elytraPumpkin.setTarget(spawnPosHelper.getXZ(elytraPumpkin.getSpawnDirection().simple(), 15, true)).setTargetSpeed(0.2);
+        Iterator iterator = monsterList.iterator();
+        while(iterator.hasNext()) {
+            EntityElytraPumpkin elytraPumpkin = (EntityElytraPumpkin) iterator.next();
+            if(elytraPumpkin.isDead || elytraPumpkin.deathTime != 0) {
+                iterator.remove();
+                continue;
+            }
+            PosHelper posHelper = new PosHelper(elytraPumpkin);
+            elytraPumpkin.setTarget(posHelper.getXZ(elytraPumpkin.getSpawnDirection().simple().reverse(), 15, true)).setTargetSpeed(0.2);
             elytraPumpkin.setBlockMode(Blocks.STONE);
+            elytraPumpkin.setAttack(false);
+            elytraPumpkin.setDeathTimer(200);
         }
     }
 
     public void first() {
         System.out.println("퍼스ㅡㅌ");
         for (int i = 1; i < 3; i++) {
-            spawnPumpkinFire(SpawnDirection.FORWARD_RIGHT, i + 1);
+            spawnPumpkinFire(SpawnDirection.FORWARD_RIGHT, i + 1).attackCooldown = 10;
         }
         for (int i = 1; i < 3; i++) {
-            spawnPumpkinFire(SpawnDirection.FORWARD_LEFT, i + 1);
+            spawnPumpkinFire(SpawnDirection.FORWARD_LEFT, i + 1).defaultCooldown = 10;
         }
         spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
         spawnPumpkinAttack(SpawnDirection.LEFT);
@@ -99,14 +108,10 @@ public class Elytra extends AbstractMiniGame {
     public void second() {
         System.out.println("세컨드");
         for (int i = 1; i < 4; i++) {
-            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
-            setPositionAndSpawn(SpawnDirection.FORWARD_LEFT, elytraPumpkin, i + 2);
-            elytraPumpkin.setHealth(2);
+            spawnPumpkinFire(SpawnDirection.FORWARD_RIGHT, i + 3).setHealth(2);
         }
         for (int i = 1; i < 4; i++) {
-            EntityElytraPumpkinFire elytraPumpkin = new EntityElytraPumpkinFire(WorldAPI.getWorld());
-            setPositionAndSpawn(SpawnDirection.FORWARD_RIGHT, elytraPumpkin, i + 2);
-            elytraPumpkin.setHealth(2);
+            spawnPumpkinFire(SpawnDirection.FORWARD_LEFT, i + 3).setHealth(2);
         }
         spawnPumpkinAttack(SpawnDirection.FORWARD).setFireAttack(true);
     }
@@ -145,16 +150,15 @@ public class Elytra extends AbstractMiniGame {
         EntityElytraPumpkinAttack pumpkin = new EntityElytraPumpkinAttack(WorldAPI.getWorld());
         setPositionAndSpawn(direction, pumpkin, 20, rlPlus);
         pumpkin.setAttack(true);
-        pumpkin.setTarget(spawnPosHelper.getX(direction.simple().reverse(), 10, true), pumpkin.posY, spawnPosHelper.getZ(direction.simple().reverse(), 10, true));
+        pumpkin.setForwardMode(true);
         return pumpkin;
     }
 
     private void setPositionAndSpawn(SpawnDirection direction, EntityElytraPumpkin pumpkin, double rlplus) {
-        setPositionAndSpawn(direction, pumpkin, 8, rlplus);
+        setPositionAndSpawn(direction, pumpkin, 18, rlplus);
     }
 
     private void setPositionAndSpawn(SpawnDirection direction, EntityElytraPumpkin pumpkin, double plus, double rlplus) {
-        System.out.println("몬스터 소환됨");
         switch (direction) {
             case FORWARD:
                 pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD, plus, true));
