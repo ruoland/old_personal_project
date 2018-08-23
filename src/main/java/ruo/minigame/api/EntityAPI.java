@@ -18,6 +18,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.Move;
 import ruo.minigame.effect.TickRegister;
@@ -128,7 +129,7 @@ public class EntityAPI {
     }
 
     public static double getX(EntityLivingBase base, SpawnDirection spawnDirection, double plus, boolean pos) {
-        assert spawnDirection == SpawnDirection.FORWARD || spawnDirection == SpawnDirection.BACK || spawnDirection == SpawnDirection.RIGHT || spawnDirection == SpawnDirection.LEFT;
+        assert spawnDirection == SpawnDirection.FORWARD || spawnDirection == SpawnDirection.BACK || spawnDirection == SpawnDirection.RIGHT || spawnDirection == SpawnDirection.LEFT:"오류 발생";
         switch (spawnDirection) {
             case FORWARD:
                 return forwardX(base, plus, pos);
@@ -139,6 +140,7 @@ public class EntityAPI {
             case LEFT:
                 return leftX(base, plus, pos);
         }
+        DebAPI.msgText("주의! 해당하는 방향 없음!");
         return 0;
     }
 
@@ -153,6 +155,7 @@ public class EntityAPI {
             case BACK_RIGHT:
                 return backX(base, plus, pos)+rightX(base, rlplus, false);
         }
+        DebAPI.msgText("주의! 해당하는 방향 없음!");
         return 0;
     }
 
@@ -168,6 +171,7 @@ public class EntityAPI {
             case LEFT:
                 return leftZ(base, plus, pos);
         }
+        DebAPI.msgText("주의! 해당하는 방향 없음!");
         return 0;
     }
 
@@ -182,6 +186,7 @@ public class EntityAPI {
             case BACK_RIGHT:
                 return backZ(base, plus, pos)+rightZ(base, rlplus, false);
         }
+        DebAPI.msgText("주의! 해당하는 방향 없음!");
         return 0;
     }
 

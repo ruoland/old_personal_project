@@ -125,7 +125,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
             this.targetPosition = new Vec3d(x, y, z);
         }
         targetVec = this.targetPosition.subtract(this.getPositionVector()).normalize();
-
         this.targetMoveSpeed = speed;
         return this;
     }
@@ -196,13 +195,12 @@ public class EntityDefaultNPC extends EntityModelNPC {
             }
 
         }
-        if (getDataManager().get(ON_DEATH_TIMER)) {
-            if (isServerWorld() && deathTime > 0) {
+        if (isServerWorld() && getDataManager().get(ON_DEATH_TIMER)) {
+            if (deathTime > 0) {
                 deathTimer -= 1;
             }
             if (deathTime == 0) {
                 this.setDead();
-                System.out.println("시간이 지나 죽었음.");
             }
         }
     }
@@ -296,7 +294,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public void setDeathTimer(int deathTimer) {
         if (deathTimer > 0) {
             this.deathTimer = deathTimer;
-
             dataManager.set(ON_DEATH_TIMER, true);
         } else
             dataManager.set(ON_DEATH_TIMER, false);

@@ -1,9 +1,11 @@
 package ruo.minigame.minigame.elytra.miniween;
 
 import net.minecraft.world.World;
+import ruo.minigame.fakeplayer.EntityFakePlayer;
+import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
-
+    private int attackCooldown = 40;
     public EntityElytraPumpkinAttack(World worldIn) {
         super(worldIn);
         this.setAttack(true);
@@ -13,13 +15,29 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(isAttackMode()) {
-            if (attackCooldown > 0)
+            if (attackCooldown > 0) {
                 attackCooldown--;
+            }
             if (attackCooldown == 0) {
-                if (isServerWorld())
-                    spawnBullet();
+                spawnBullet();
                 attackCooldown = 40;
             }
         }
+    }
+    public EntityElytraBullet spawnBullet() {
+        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
+        EntityElytraBullet elytraBullet = new EntityElytraBullet(worldObj);
+        elytraBullet.setPosition(posX, posY, posZ);
+        elytraBullet.setTarget(fakePlayer.posX, posY, fakePlayer.posZ);
+        worldObj.spawnEntityInWorld(elytraBullet);
+        elytraBullet.setDamage(5);
+        if (isFireAttack())
+            elytraBullet.setFire(100);
+        return elytraBullet;
+    }
+    @Override
+    public void targetArrive() {
+        super.targetArrive();
+        this.setDead();
     }
 }

@@ -36,4 +36,9 @@ public class EntityElytraPumpkinFire extends EntityElytraPumpkin {
         }
     }
 
+    @Override
+    public void targetArrive() {
+        super.targetArrive();
+        setDead();
+    }
 }

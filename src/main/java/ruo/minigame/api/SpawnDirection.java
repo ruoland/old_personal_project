@@ -5,6 +5,14 @@ public enum SpawnDirection {
 
 
     public SpawnDirection reverse() {
+        if (this == FORWARD_LEFT)
+            return BACK_LEFT;
+        if (this == FORWARD_RIGHT)
+            return BACK_LEFT;
+        if (this == BACK_LEFT)
+            return FORWARD_LEFT;
+        if (this == BACK_RIGHT)
+            return FORWARD_RIGHT;
         if (this == FORWARD)
             return BACK;
         if (this == BACK)

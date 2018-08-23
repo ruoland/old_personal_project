@@ -1,6 +1,7 @@
 package ruo.minigame.minigame.minerun;
 
 import net.minecraft.init.Items;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -29,10 +30,15 @@ public class MineRunEvent {
     protected double lineX, lineZ, lineFBX, lineFBZ;
 
     @SubscribeEvent
-    public void playerTick(LivingEvent.LivingUpdateEvent e) {
+    public void playerTick(PlayerEvent.ItemPickupEvent e) {
 
     }
+    @SubscribeEvent
+    public void playerTick(RenderGameOverlayEvent.Pre e) {
+        if(e.getType() == RenderGameOverlayEvent.ElementType.ALL){
 
+        }
+    }
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
         if (!MiniGame.minerun.isStart())
@@ -47,7 +53,7 @@ public class MineRunEvent {
                 }
                 if (fakePlayer.isNotColliding() && !fakePlayer.isCollidedHorizontally) {//페이크 플레이어가 어딘가에 막힌 상태가 아닌 경우에만 - 7월 14일
                     e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
-                    e.player.motionY = (fakePlayer.posY + 3) - e.player.posY;
+                    e.player.motionY = ((fakePlayer.posY + 3 - (fakePlayer.isJumping() ? fakePlayer.motionY : 0)) - e.player.posY) * 0.3;
                     e.player.motionZ = MineRun.zCoord();
                     MineRun.setFakePositionUpdate();
                     fakePlayer.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
@@ -112,8 +118,7 @@ public class MineRunEvent {
             }
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-
-                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, lineLR, false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR() , false));
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
@@ -169,14 +174,15 @@ public class MineRunEvent {
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, lineLR * 1.5, false));
-                System.out.println(posHelper.getX(SpawnDirection.LEFT, lineLR * 1.5, false) + " - " + posHelper.getZ(SpawnDirection.LEFT, lineLR * 1.5, false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR() * 1.5, false));
             }
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, lineLR * 1.5, false));
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 1.5, false));
             }
-            System.out.println(lineLR+lineFB);
+            System.out.println("LINELR "+lineLR * 1.5);
+            System.out.println("LEFT "+posHelper.getXZ(SpawnDirection.LEFT, absLR() * 1.5, false));
+            System.out.println("RIGHT "+posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 1.5, false));
         }
         if (DebAPI.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.getEventKeyState()) {
             fakePlayer.jump();

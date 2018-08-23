@@ -22,8 +22,10 @@ import ruo.minigame.minigame.AbstractMiniGame;
 
 public class MineRun extends AbstractMiniGame {
     private static int elytra = 0;//1 = 위로 2 = 앞으로
-
+    private static double xCoord, zCoord;
+    protected static double curX, curY, curZ, playerStartY;
     private static EntityFakePlayer fakePlayer;
+    private static EntityPlayer player;
 
     public static int elytraMode() {
         return elytra;
@@ -37,7 +39,7 @@ public class MineRun extends AbstractMiniGame {
         double yaw = fakePlayer.getHorizontalFacing().getHorizontalAngle();
 
         if (elytraMode == 1 || elytraMode == 2) {
-            if(fakePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST) == null) {
+            if (fakePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST) == null) {
                 ItemStack itemstack = new ItemStack(Items.ELYTRA);
                 fakePlayer.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemstack);
             }
@@ -55,23 +57,20 @@ public class MineRun extends AbstractMiniGame {
             fakePlayer.setElytra(false);
         }
     }
-    private static double xCoord, zCoord, lookX, lookZ;
-    protected static double curX, curY, curZ, playerStartY;
 
-    public static double getCurY() {
-        return curY;
-    }
 
-    public static void setPosition(double x, double y, double z){
+    public static void setPosition(double x, double y, double z) {
         curX = x;
         curY = y;
         curZ = z;
-        System.out.println(curX+ " - "+curY+" - "+curZ);
+        System.out.println(curX + " - " + curY + " - " + curZ);
     }
-    public static void setPosition(BlockPos pos){
+
+    public static void setPosition(BlockPos pos) {
         setPosition(pos.getX(), pos.getY(), pos.getZ());
     }
-    public static void setPosition(Vec3d pos){
+
+    public static void setPosition(Vec3d pos) {
         setPosition(pos.xCoord, pos.yCoord, pos.zCoord);
     }
 
@@ -86,8 +85,8 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindJump.setKeyCode(Keyboard.KEY_POWER);
         KeyBinding.resetKeyBindingArrayAndHash();
         ICommandSender sender = (ICommandSender) obj[0];
-        EntityPlayer player = (EntityPlayer) sender;
-        WorldAPI.teleport(player.posX, player.posY, player.posZ,player.getHorizontalFacing().getHorizontalAngle(), 70);
+        player = (EntityPlayer) sender;
+        WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
         fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
         player.noClip = !player.noClip;
         player.capabilities.isFlying = true;
@@ -100,39 +99,42 @@ public class MineRun extends AbstractMiniGame {
         Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 70);
         Camera.getCamera().rotateX = -EntityAPI.lookZ(fakePlayer, 1) * 30;
         Camera.getCamera().rotateZ = -EntityAPI.lookX(fakePlayer, 1) * 30;
-
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineFB = 0;
         MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(fakePlayer.rotationYaw - 90);
         MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(fakePlayer.rotationYaw - 90);
         MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(fakePlayer, 1);
         MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(fakePlayer, 1);
-        xCoord =  EntityAPI.lookX(player, 0.3);
-        zCoord =  EntityAPI.lookZ(player, 0.3);
-        lookX = EntityAPI.lookX(player,3);
-        lookZ = EntityAPI.lookX(player,3);
-
-        System.out.println(xCoord+" - "+zCoord);
+        xCoord = EntityAPI.lookX(player, 0.3);
+        zCoord = EntityAPI.lookZ(player, 0.3);
         return super.start();
     }
 
-    public static double xCoord(){
+    public static double xCoord() {
         return xCoord;
     }
-    public static double zCoord(){
+
+    public static double zCoord() {
         return zCoord;
     }
 
-    public static void setFakePositionUpdate(){
+    public static void setFakePositionUpdate() {
         EntityPlayer player = WorldAPI.getPlayer();
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-        if(elytraMode() == 1){
-            fakePlayer.setPosition(player.posX + curX + lookX, player.posY + 8, player.posZ + curZ + lookZ);
-        }else
-        fakePlayer.setPosition(player.posX + curX + lookX, fakePlayer.posY + curY, player.posZ + curZ + lookZ);
+        if (elytraMode() == 1) {
+            fakePlayer.setPosition(player.posX + curX + getLookX(), player.posY + 8, player.posZ + curZ + getLookZ());
+        } else
+            fakePlayer.setPosition(player.posX + curX + getLookX(), fakePlayer.posY + curY, player.posZ + curZ + getLookZ());
         if (curY != 0) {
             curY = 0;
         }
+    }
+    public static double getLookX() {
+        return EntityAPI.lookX(player, 3);
+    }
+
+    public static double getLookZ() {
+        return EntityAPI.lookZ(player, 3);
     }
 
     public static float getYaw() {

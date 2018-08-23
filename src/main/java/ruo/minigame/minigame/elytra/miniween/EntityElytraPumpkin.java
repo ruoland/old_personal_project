@@ -16,7 +16,6 @@ import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
     private SpawnDirection spawnDirection;
-    protected int attackCooldown = 40;
     //앞으로 이동함
     private static final DataParameter<Boolean> FORWARD_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
 
@@ -94,23 +93,13 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             return;
         }
         if (isServerWorld() && isForwardMode()) {
-            this.setVelocity(getXZ(getSpawnDirection().simple().reverse(), 0.03, false));
+            this.setVelocity(getXZ(getSpawnDirection().simple(), 0.1, false));
         }
         faceEntity(FakePlayerHelper.fakePlayer, 360, 360);
         this.motionY = 0;
     }
 
-    public EntityElytraBullet spawnBullet() {
-        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-        EntityElytraBullet elytraBullet = new EntityElytraBullet(worldObj);
-        elytraBullet.setPosition(posX, posY, posZ);
-        elytraBullet.setTarget(fakePlayer.posX, posY, fakePlayer.posZ);
-        worldObj.spawnEntityInWorld(elytraBullet);
-        elytraBullet.setDamage(5);
-        if (isFireAttack())
-            elytraBullet.setFire(100);
-        return elytraBullet;
-    }
+
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {

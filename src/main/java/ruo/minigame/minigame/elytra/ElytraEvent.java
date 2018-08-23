@@ -23,6 +23,7 @@ import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.minigame.elytra.miniween.EntityElytraBullet;
 
 import java.util.Random;
 
@@ -49,7 +50,7 @@ public class ElytraEvent {
         }
     }
 
-    //@SubscribeEvent
+    @SubscribeEvent
     public void event(MouseEvent event) {
         if (!MiniGame.elytra.isStart())
             return;
@@ -86,7 +87,7 @@ public class ElytraEvent {
         World world = player.worldObj;
         EntityElytraArrow arrow = new EntityElytraArrow(world, player);
         arrow.setAim(player, player.rotationPitch, yaw, 0, 1.6F, 1F);
-        arrow.setPosition(player.posX, player.posY, player.posZ);
+        arrow.setPosition(player.posX+player.motionX, player.posY, player.posZ+player.motionZ);
         arrow.setDamage(10);
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);

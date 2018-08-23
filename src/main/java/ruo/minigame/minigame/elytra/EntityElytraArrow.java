@@ -20,7 +20,8 @@ public class EntityElytraArrow extends EntityTippedArrow {
         if (living instanceof EntityPlayer && living instanceof EntityElytraItem) {
             return;
         }
-        super.arrowHit(living);
+        super.arrowHit(living);this.setDead();
+
     }
 
     @Override
@@ -29,6 +30,7 @@ public class EntityElytraArrow extends EntityTippedArrow {
             return;
         }
         super.onHit(raytraceResultIn);
+        this.setDead();
     }
 
     int count = 0;
