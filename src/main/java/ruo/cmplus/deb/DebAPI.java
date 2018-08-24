@@ -61,8 +61,8 @@ public class DebAPI {
         this.dez = (float) z;
     }
 
-    public static void msgText(String msg) {
-        if(CommandDeb.debText) {
+    public static void msgText(String modid, String msg) {
+        if(CommandDeb.debMods.contains(modid)) {
             System.out.println("[디버그]텍스트-"+msg);
             if(CommandDeb.traceMethod) {
                 System.out.println("[디버그]메서드 추적 시작");

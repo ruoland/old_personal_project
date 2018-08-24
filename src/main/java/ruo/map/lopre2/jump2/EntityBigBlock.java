@@ -139,7 +139,7 @@ public class EntityBigBlock extends EntityPreBlock {
             this.setLock(true);
             this.setSize(1, 1);
             this.setFalling(false);
-            DebAPI.msgText("사이즈가 변경됨 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+            DebAPI.msgText("LoopPre2","사이즈가 변경됨 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
 
         if (!isLock() && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0

@@ -9,6 +9,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import ruo.minigame.MiniGame;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 
@@ -21,7 +22,7 @@ public class EntityElytraBullet extends EntityDefaultNPC {
         this.setBlockMode(Blocks.PUMPKIN);
         this.setScale(0.5F, 0.5F, 0.5F);
         this.setSize(0.5F, 0.5F);
-        this.setDeathTimer(200);
+        this.setDeathTimer(60);
     }
 
     @Override
@@ -56,6 +57,8 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         motionY = 0;
+        if(!MiniGame.elytra.isStart())
+            setDead();
     }
 
     @Override

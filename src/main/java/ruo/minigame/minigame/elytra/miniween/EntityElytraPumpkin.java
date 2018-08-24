@@ -10,7 +10,9 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -18,7 +20,6 @@ import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
     private SpawnDirection spawnDirection;
-    private EnumFacing forwardFacing;
     //앞으로 이동함
     private static final DataParameter<Boolean> FORWARD_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
 
@@ -66,7 +67,6 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     public EntityElytraPumpkin setForwardMode(boolean forwardMode) {
         dataManager.set(FORWARD_MODE, forwardMode);
-        forwardFacing = getHorizontalFacing();
         return this;
     }
 
@@ -101,11 +101,10 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             this.setDead();
             return;
         }
-        if(isServerWorld() && noTarget() && !isForwardMode() && FakePlayerHelper.fakePlayer.getDistanceToEntity(this) > 10){
-            this.setVelocity(getX(SpawnDirection.FORWARD, 0.1, false), 0, getZ(SpawnDirection.FORWARD, 0.1, false));
-        }
-        if (isServerWorld() && isForwardMode()) {
-            this.setVelocity(EntityAPI.lookX(forwardFacing, 0.1), 0, EntityAPI.lookZ(forwardFacing, 0.1));
+        if (isServerWorld() && isForwardMode() && noTarget() && getCurrentBlock() != Blocks.STONE)
+        {
+            PosHelper posHelper = MiniGame.elytra.spawnPosHelper;
+            this.setVelocity(posHelper.getX(spawnDirection.reverse().simple(), 0.1, false), 0, posHelper.getZ(spawnDirection.reverse().simple(), 0.1, false));
         }
         faceEntity(FakePlayerHelper.fakePlayer, 360, 360);
         this.motionY = 0;
@@ -119,6 +118,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         compound.setBoolean("FIRE_ATTACK", isFireAttack());
         compound.setBoolean("ATTACK_MODE", isAttackMode());
         compound.setBoolean("FORWARD_MODE", isForwardMode());
+        compound.setString("SPAWN_DIRECTION", spawnDirection.name());
     }
 
     @Override
@@ -127,6 +127,8 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         setFireAttack(compound.getBoolean("FIRE_ATTACK"));
         setAttack(compound.getBoolean("ATTACK_MODE"));
         setForwardMode(compound.getBoolean("FORWARD_MODE"));
+        spawnDirection = SpawnDirection.valueOf(compound.getString("SPAWN_DIRECTION"));
+
     }
 
     @Override

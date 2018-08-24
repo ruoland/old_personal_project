@@ -5,7 +5,7 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
-    public int attackCooldown = 40, defaultCooldown = 40;
+    public int attackCooldown = 200, defaultCooldown = 40;
     public EntityElytraPumpkinAttack(World worldIn) {
         super(worldIn);
         this.setAttack(true);
@@ -39,5 +39,6 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
     @Override
     public void targetArrive() {
         super.targetArrive();
+        this.attackCooldown = 40;
     }
 }

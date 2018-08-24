@@ -169,7 +169,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
             if (source.getEntity() != null && (source.getEntity().isSneaking() || WorldAPI.equalsHeldItem(Items.BONE) || WorldAPI.equalsHeldItem(Items.ARROW))) {
                 if (WorldAPI.equalsHeldItem(Items.ARROW)) {
                     List<EntityPreBlock> list = EntityAPI.getEntity(worldObj, this.getEntityBoundingBox().expand(5, 5, 5), EntityPreBlock.class);
-                    DebAPI.msgText("겹친 블럭 수" + list.size());
+                    DebAPI.msgText("LoopPre2","겹친 블럭 수" + list.size());
                     for (EntityPreBlock pre : list) {
                         if (pre == this) {
                             continue;

@@ -230,7 +230,7 @@ public class EntityBuildBlock extends EntityPreBlock {
     @Override
     public void setDead() {
         super.setDead();
-        DebAPI.msgText("빌드블럭 삭제됨" + getPosition());
+        DebAPI.msgText("LoopPre2","빌드블럭 삭제됨" + getPosition());
     }
 
     public BlockPos getPos1() {

@@ -62,6 +62,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public int eyeCloseTime = 0;
     public double eyeCloseScaleY;
     public boolean eyeCloseReverse;
+    private boolean isTargetArriveStop = true;//타겟에 도착하면 이동하지 않음
 
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
@@ -89,8 +90,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         this.dataManager.register(COLLISION, false);
         this.dataManager.register(ON_DEATH_TIMER, false);
         this.dataManager.register(DEATH_TIMER, -1);
-
-        dataManager.register(SPAWN_XYZ, new Rotations(0, 0, 0));
+        this.dataManager.register(SPAWN_XYZ, new Rotations(0, 0, 0));
     }
 
     protected void applyEntityAttributes() {
@@ -146,6 +146,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return this.setTarget(target.posX, target.posY, target.posZ, speed);
     }
 
+
+    public void setTargetArriveStop(boolean targetArriveStop) {
+        isTargetArriveStop = targetArriveStop;
+    }
+
     public boolean noTarget() {
         return targetPosition == null;
     }
@@ -155,7 +160,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void targetArrive() {
-        setTarget(0, 0, 0, 0);
+        if(isTargetArriveStop) setTarget(0, 0, 0, 0);
+        this.setVelocity(0,0,0);
     }
 
     public boolean isTargetArrive() {
@@ -199,10 +205,12 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
         }
         if (isServerWorld() && getDataManager().get(ON_DEATH_TIMER)) {
-            if (deathTime > 0) {
+            if (getDeathTime() > 0) {
                 setDeathTimer(getDeathTime()-1);
+                System.out.println("데스 타이머가 "+getDeathTime()+" 됨");
             }
-            if (deathTime == 0) {
+            if (getDeathTime() == 0) {
+                System.out.println("데스 타이머가 0이 됨");
                 this.setDead();
             }
         }
@@ -358,8 +366,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
         dataManager.set(IS_STURN, is);
         dataManager.set(LOCK_YAW, this.rotationYaw);
         dataManager.set(LOCK_PITCH, this.rotationPitch);
-        if (TickRegister.isAbsTickRun(getUniqueID().toString() + "-STURN"))
-            TickRegister.remove(TickRegister.getAbsTick(getUniqueID().toString() + "-STURN"));
+        String name = getUniqueID().toString() + "-STURN";
+        if (TickRegister.isAbsTickRun(name))
+            TickRegister.remove(TickRegister.getAbsTick(name));
         onSturn();
     }
 
@@ -478,22 +487,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public double getZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getZ(spawnDirection, plus, rlplus, pos);
-    }
-
-    public void look(EntityLivingBase mob2) {
-        EntityAPI.look(this, mob2);
-    }
-
-    public void look(double x, double y, double z) {
-        EntityAPI.look(this, x, y, z);
-    }
-
-    public void lookPlayer() {
-        EntityAPI.lookPlayer(this);
-    }
-
-    public void removeLook() {
-        EntityAPI.removeLook(this);
     }
 
     public void move(double x, double y, double z, double... xyz) {

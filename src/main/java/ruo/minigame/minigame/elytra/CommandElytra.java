@@ -1,4 +1,4 @@
-package ruo.minigame.command;
+package ruo.minigame.minigame.elytra;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -42,6 +42,7 @@ public class CommandElytra extends CommandBase{
 			FakePlayerHelper.spawnFakePlayer(true).setPosition(MiniGame.elytra.playerSpawnX, MiniGame.elytra.playerSpawnY, MiniGame.elytra.playerSpawnZ);
 			FakePlayerHelper.fakePlayer.setCustomNameTag("RESPAWN");
             WorldAPI.teleport(MiniGame.elytra.playerSpawnX, MiniGame.elytra.playerSpawnY+5, MiniGame.elytra.playerSpawnZ);
+            return;
         }
 		else if(args[0].equals("start"))
 			MiniGame.elytra.start();

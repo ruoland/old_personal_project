@@ -11,12 +11,14 @@ import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CommandDeb extends CommandPlusBase {
 
 	public static boolean cmdeb, traceMethod, debText, debKey = false, debFunction = false, debVar = false, debMove = false;
 	public static String str, funcName;//funcName
-
+	public static ArrayList<String> debMods = new ArrayList<>();
 	@Override
 	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
 		try {
@@ -48,6 +50,8 @@ public class CommandDeb extends CommandPlusBase {
 				if (args[0].equals("cmdeb")) {
 					cmdeb = parseBoolean(args[1]);
 				}
+				if(args[0].equalsIgnoreCase("deb"))
+					debMods.add(args[1]);
 				if (args[0].equals("trace")) {
 					traceMethod = parseBoolean(args[1]);
 				}

@@ -43,7 +43,7 @@ public class ActionEvent {
     public void rotate(LivingEvent.LivingJumpEvent e) {
         if (ActionEffect.canDoubleJump() && e.getEntityLiving() instanceof EntityPlayer) {
             isPlayerJump = true;
-            DebAPI.msgText("점프함"+e.getEntityLiving());
+            DebAPI.msgText("MiniGame","점프함"+e.getEntityLiving());
 
         }
 
@@ -53,7 +53,7 @@ public class ActionEvent {
         GameSettings gs = Minecraft.getMinecraft().gameSettings;
         if (ActionEffect.canDoubleJump()) {
             if (event.player instanceof EntityPlayerMP && !canDoubleJump && event.player.onGround) {
-                DebAPI.msgText(""+isPlayerJump+!canDoubleJump+event.player.onGround+event.player.motionY+event.player+"땅에 닿음");
+                DebAPI.msgText("MiniGame",""+isPlayerJump+!canDoubleJump+event.player.onGround+event.player.motionY+event.player+"땅에 닿음");
                 canDoubleJump = true;
             }
             if (canDoubleJump && gs.keyBindJump.isPressed() && (!event.player.onGround || forceJump) && isPlayerJump) {
@@ -62,7 +62,7 @@ public class ActionEvent {
                 forceJump = false;
                 event.player.motionY = 0.5F;
                 event.player.fallDistance = 0;
-                DebAPI.msgText("더블점프함");
+                DebAPI.msgText("MiniGame","더블점프함");
                 if (event.player.isSprinting()) {
                     float f = event.player.rotationYaw * 0.017453292F;
                     event.player.motionX -= (double) (MathHelper.sin(f) * 0.2F);
