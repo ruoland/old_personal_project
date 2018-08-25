@@ -15,7 +15,6 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.elytra.ElytraEvent;
-import ruo.minigame.minigame.elytra.EntityElytraItem;
 
 
 public class EntityElytraWeenCore extends EntityDefaultNPC {
@@ -89,8 +88,6 @@ public class EntityElytraWeenCore extends EntityDefaultNPC {
         super.onDeath(cause);
         ElytraEvent a = MiniGame.elytraEvent;
         if (canDropItem() && rand.nextInt(20) == 0 && isServerWorld()) {
-            EntityElytraItem elytraItem = new EntityElytraItem(worldObj, posX, posY, posZ);
-            worldObj.spawnEntityInWorld(elytraItem);
         }
         if (!MiniGame.elytra.isStart() || a == null)
             return;

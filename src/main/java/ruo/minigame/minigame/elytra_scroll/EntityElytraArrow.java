@@ -1,11 +1,10 @@
-package ruo.minigame.minigame.elytra;
+package ruo.minigame.minigame.elytra_scroll;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraBullet;
 
 public class EntityElytraArrow extends EntityTippedArrow {
     public EntityElytraArrow(World worldIn) {
@@ -18,18 +17,12 @@ public class EntityElytraArrow extends EntityTippedArrow {
 
     @Override
     protected void arrowHit(EntityLivingBase living) {
-        if (living instanceof EntityPlayer || living instanceof EntityElytraBullet) {
-            return;
-        }
         super.arrowHit(living);
         this.setDead();
     }
 
     @Override
     protected void onHit(RayTraceResult raytraceResultIn) {
-        if (raytraceResultIn.entityHit instanceof EntityPlayer || raytraceResultIn.entityHit instanceof EntityElytraBullet) {
-            return;
-        }
         super.onHit(raytraceResultIn);
         this.setDead();
     }

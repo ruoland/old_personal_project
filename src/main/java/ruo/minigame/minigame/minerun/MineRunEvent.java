@@ -53,7 +53,6 @@ public class MineRunEvent {
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-
             e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
             e.player.motionZ = MineRun.zCoord();
         }

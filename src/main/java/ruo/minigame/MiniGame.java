@@ -41,6 +41,9 @@ import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.bomber.EntityBomb;
 import ruo.minigame.minigame.elytra.*;
 import ruo.minigame.minigame.elytra.miniween.*;
+import ruo.minigame.minigame.elytra_scroll.CommandElytraScroll;
+import ruo.minigame.minigame.elytra_scroll.ElytraScroll;
+import ruo.minigame.minigame.elytra_scroll.ElytraScrollEvent;
 import ruo.minigame.minigame.minerun.*;
 import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
@@ -68,6 +71,9 @@ public class MiniGame {
 
     public static Elytra elytra;
     public static ElytraEvent elytraEvent;
+
+    public static ElytraScroll elytraScroll;
+    public static ElytraScrollEvent elytraScrollEvent;
     public Configuration minigameConfig;
     public MiniGame() {
         try {
@@ -93,6 +99,7 @@ public class MiniGame {
         MiniGame.scroll = new Scroll();
         MiniGame.bomber = new Bomber();
         MiniGame.elytra = new Elytra();
+        MiniGame.elytraScroll = new ElytraScroll();
         //ClientPlayerAPI.register("MiniGame", LoopPlayer.class);
     }
 
@@ -128,6 +135,8 @@ public class MiniGame {
         MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
         MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());
         MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
+        MinecraftForge.EVENT_BUS.register(elytraScrollEvent = new ElytraScrollEvent());
+
         ClientRegistry.registerKeyBinding(grab);
 
         ClientCommandHandler.instance.registerCommand(new CommandMg());
@@ -142,6 +151,7 @@ public class MiniGame {
         e.registerServerCommand(new CommandScroll());
         e.registerServerCommand(new CommandBomber());
         e.registerServerCommand(new CommandElytra());
+        e.registerServerCommand(new CommandElytraScroll());
         //e.registerCommand(new CommandMonologue());
         e.registerServerCommand(new CommandMineRun());
         e.registerServerCommand(new CommandNotification());

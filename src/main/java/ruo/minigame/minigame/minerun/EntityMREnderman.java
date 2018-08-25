@@ -13,6 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.map.lopre2.LoPre2;
+import ruo.map.lopre2.jump2.EntityTeleportBlock;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
@@ -47,7 +48,23 @@ public class EntityMREnderman extends EntityMR {
     }
 
     @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+        PosHelper posHelper = new PosHelper(player);
+        setMoveXZ(0);
+        float moveY = (float) posHelper.getY(1, false);
+        if (moveY != 0) {
+            setMoveY(moveY);
+            setMaxDelay(40);
+        } else {
+            setMoveX((float) posHelper.getX(SpawnDirection.FORWARD, 2, false));
+            setMoveZ((float) posHelper.getZ(SpawnDirection.FORWARD, 2, false));
+        }
+        return super.processInteract(player, hand, stack);
+    }
+
+    @Override
     public void onLivingUpdate() {
+
         super.onLivingUpdate();
         if (isServerWorld()) {
             moveDelay++;
