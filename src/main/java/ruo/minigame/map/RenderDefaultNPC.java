@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.resources.GrassColorReloadListener;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -15,6 +16,7 @@ import net.minecraftforge.client.model.pipeline.ForgeBlockModelRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import ruo.halloween.EntityWeen;
 import ruo.map.lopre2.EntityBuildBlock;
 import ruo.minigame.api.RenderAPI;
 
@@ -80,10 +82,16 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                     GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
                     RenderAPI.renderBlock(npc.getCurrentStack(), npc);
 
+                    if(npc instanceof EntityWeen &&  !npc.isSturn()) {
+                        EntityWeen ween = (EntityWeen) npc;
+                        RenderAPI.renderBlock(ween.shield_block, npc);
+                    }
+
                     if (flag1) {
                         GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
                     }
                     GlStateManager.popMatrix();
+
                 }
                 return;
             }

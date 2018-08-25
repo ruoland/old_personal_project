@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class EntityWeen extends EntityDefaultNPC {
-
+    public static ItemStack shield_block = new ItemStack(Blocks.GLASS);
     public static long startTime, endTime;
     private static final DataParameter<Boolean> ISJUMP = EntityDataManager.<Boolean>createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
@@ -65,7 +65,6 @@ public class EntityWeen extends EntityDefaultNPC {
         this.addScale(12);
         setCollision(true);
         setRotate(0, 0, 180);
-
         this.setBlock(Blocks.LIT_PUMPKIN);
     }
 

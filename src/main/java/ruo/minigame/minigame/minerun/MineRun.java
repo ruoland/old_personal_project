@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.input.Keyboard;
@@ -23,7 +24,7 @@ import ruo.minigame.minigame.AbstractMiniGame;
 public class MineRun extends AbstractMiniGame {
     private static int elytra = 0;//1 = 위로 2 = 앞으로
     private static double xCoord, zCoord;
-    protected static double curX, curY, curZ, playerStartY;
+    protected static double curX, curY, curZ;
     private static EntityFakePlayer fakePlayer;
     private static EntityPlayer player;
 
@@ -39,6 +40,13 @@ public class MineRun extends AbstractMiniGame {
         double yaw = fakePlayer.getHorizontalFacing().getHorizontalAngle();
 
         if (elytraMode == 1 || elytraMode == 2) {
+            if (fakePlayer == null) {
+                fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
+                player.noClip = !player.noClip;
+                player.capabilities.isFlying = true;
+                player.sendPlayerAbilities();
+                WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -2), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
+            }
             if (fakePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST) == null) {
                 ItemStack itemstack = new ItemStack(Items.ELYTRA);
                 fakePlayer.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemstack);
@@ -55,6 +63,21 @@ public class MineRun extends AbstractMiniGame {
         } else {
             System.out.println("엘리트라 취소됨");
             fakePlayer.setElytra(false);
+            player.noClip = !player.noClip;
+            player.capabilities.isFlying = false;
+            player.sendPlayerAbilities();
+            MiniGame.mineRunEvent.lineFB = 0;
+            MiniGame.mineRunEvent.lineX = 0;
+            MiniGame.mineRunEvent.lineZ = 0;
+            MiniGame.mineRunEvent.lineLR = 0;
+            MiniGame.mineRunEvent.lineUD = 0;
+            MiniGame.mineRunEvent.lineFBX = 0;
+            MiniGame.mineRunEvent.lineFBZ = 0;
+            setFakePositionUpdate();
+            WorldAPI.teleport(fakePlayer.posX, fakePlayer.posY, fakePlayer.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
+
+            fakePlayer = null;
+
         }
     }
 
@@ -64,6 +87,8 @@ public class MineRun extends AbstractMiniGame {
         curY = y;
         curZ = z;
         System.out.println(curX + " - " + curY + " - " + curZ);
+        WorldAPI.teleport(player.posX + curX, player.posY, player.posZ + curZ );
+
     }
 
     public static void setPosition(BlockPos pos) {
@@ -76,7 +101,6 @@ public class MineRun extends AbstractMiniGame {
 
     @Override
     public boolean start(Object... obj) {
-        this.setFakePlayerUse();
         GameSettings gs = Minecraft.getMinecraft().gameSettings;
         gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
         gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
@@ -87,24 +111,20 @@ public class MineRun extends AbstractMiniGame {
         ICommandSender sender = (ICommandSender) obj[0];
         player = (EntityPlayer) sender;
         WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
-        fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
-        player.noClip = !player.noClip;
-        player.capabilities.isFlying = true;
-
-        player.sendPlayerAbilities();
-        WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -2), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
-        playerStartY = player.posY;
 
         Camera.getCamera().reset();
-        Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 70);
-        Camera.getCamera().rotateX = -EntityAPI.lookZ(fakePlayer, 1) * 30;
-        Camera.getCamera().rotateZ = -EntityAPI.lookX(fakePlayer, 1) * 30;
+        Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
+        Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
+        Camera.getCamera().rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
+        Camera.getCamera().rotateZ = EntityAPI.lookX(player, 1) * 30;
+        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2),-1, EntityAPI.lookZ(player, 2));
+        Camera.getCamera().playerCamera(true);
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineFB = 0;
-        MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(fakePlayer.rotationYaw - 90);
-        MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(fakePlayer.rotationYaw - 90);
-        MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(fakePlayer, 1);
-        MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(fakePlayer, 1);
+        MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
+        MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
         xCoord = EntityAPI.lookX(player, 0.3);
         zCoord = EntityAPI.lookZ(player, 0.3);
         return super.start();
@@ -120,7 +140,6 @@ public class MineRun extends AbstractMiniGame {
 
     public static void setFakePositionUpdate() {
         EntityPlayer player = WorldAPI.getPlayer();
-        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (elytraMode() == 1) {
             fakePlayer.setPosition(player.posX + curX + getLookX(), player.posY + 8, player.posZ + curZ + getLookZ());
         } else
@@ -129,6 +148,7 @@ public class MineRun extends AbstractMiniGame {
             curY = 0;
         }
     }
+
     public static double getLookX() {
         return EntityAPI.lookX(player, 3);
     }
@@ -157,7 +177,6 @@ public class MineRun extends AbstractMiniGame {
         curZ = 0;
         xCoord = 0;
         zCoord = 0;
-        playerStartY = 0;
         MiniGame.mineRunEvent.lineFB = 0;
         MiniGame.mineRunEvent.lineX = 0;
         MiniGame.mineRunEvent.lineZ = 0;
