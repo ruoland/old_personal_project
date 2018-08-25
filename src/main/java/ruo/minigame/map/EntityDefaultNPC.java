@@ -48,6 +48,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
             DataSerializers.BOOLEAN);//데드 타이머가 켜져있는지 여부
     private static final DataParameter<Integer> DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.VARINT);
+    private static final DataParameter<Integer> STURN_TICK = EntityDataManager.createKey(EntityDefaultNPC.class,
+            DataSerializers.VARINT);
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
             .createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
 
@@ -90,6 +92,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         this.dataManager.register(COLLISION, false);
         this.dataManager.register(ON_DEATH_TIMER, false);
         this.dataManager.register(DEATH_TIMER, -1);
+        this.dataManager.register(STURN_TICK, -1);
         this.dataManager.register(SPAWN_XYZ, new Rotations(0, 0, 0));
     }
 
@@ -160,8 +163,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void targetArrive() {
-        if(isTargetArriveStop) setTarget(0, 0, 0, 0);
-        this.setVelocity(0,0,0);
+        if (isTargetArriveStop) setTarget(0, 0, 0, 0);
+        this.setVelocity(0, 0, 0);
     }
 
     public boolean isTargetArrive() {
@@ -204,22 +207,30 @@ public class EntityDefaultNPC extends EntityModelNPC {
             }
 
         }
-        if (isServerWorld() && getDataManager().get(ON_DEATH_TIMER)) {
-            if (getDeathTime() > 0) {
-                setDeathTimer(getDeathTime()-1);
-                System.out.println("데스 타이머가 "+getDeathTime()+" 됨");
+        if (isServerWorld()) {
+            if (getDataManager().get(ON_DEATH_TIMER)) {
+                if (getDeathTime() > 0) {
+                    setDeathTimer(getDeathTime() - 1);
+                    System.out.println("데스 타이머가 " + getDeathTime() + " 됨");
+                }
+                if (getDeathTime() == 0) {
+                    System.out.println("데스 타이머가 0이 됨");
+                    this.setDead();
+                }
             }
-            if (getDeathTime() == 0) {
-                System.out.println("데스 타이머가 0이 됨");
-                this.setDead();
+            if (isSturn()) {
+                int sturnTick = dataManager.get(STURN_TICK);
+                if (sturnTick > 0) {
+                    dataManager.set(STURN_TICK, sturnTick - 1);
+                } else
+                    setSturn(false);
             }
         }
     }
 
-    public int getDeathTime(){
+    public int getDeathTime() {
         return dataManager.get(DEATH_TIMER);
     }
-
 
 
     @Override
@@ -230,10 +241,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
             compound.setDouble("targetY", targetPosition.yCoord);
             compound.setDouble("targetZ", targetPosition.zCoord);
             compound.setDouble("speed", targetMoveSpeed);
-
         }
         compound.setDouble("distance", distance);
-
+        compound.setDouble("STURN_TICK", dataManager.get(STURN_TICK));
         compound.setTag("SPAWNXYZ", getSpawnXYZ().writeToNBT());
         compound.setInteger("DEATH_TIMER", getDeathTime());
         compound.setBoolean("ON_DEATH_TIMER", getDataManager().get(ON_DEATH_TIMER));
@@ -241,26 +251,22 @@ public class EntityDefaultNPC extends EntityModelNPC {
         compound.setFloat("LOCKPITCH", getDataManager().get(LOCK_PITCH));
         compound.setFloat("LOCKYAW", getDataManager().get(LOCK_YAW));
         compound.setBoolean("canCollision", canCollision());
-        compound.setBoolean("ISSTURN", isSturn());
-        AbstractTick absTick = TickRegister.getAbsTick(getUniqueID().toString() + "-STURN");
-        if (absTick != null) {
-            int sturnTick = absTick.getCurrentTick();
-            compound.setInteger("STURN_TICK", sturnTick);
-        }
+        compound.setBoolean("IS_STURN", isSturn());
+        compound.setInteger("STURN_TICK", dataManager.get(STURN_TICK));
         super.writeEntityToNBT(compound);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        if(compound.hasKey("DEATH_TIMER"))
-        setDeathTimer(compound.getInteger("DEATH_TIMER"));
+        if (compound.hasKey("DEATH_TIMER"))
+            setDeathTimer(compound.getInteger("DEATH_TIMER"));
         getDataManager().set(ON_DEATH_TIMER, compound.getBoolean("ON_DEATH_TIMER"));
         getDataManager().set(SPAWN_XYZ, getRotations(compound, "SPAWNXYZ"));
         getDataManager().set(LOCK_YAW, compound.getFloat("STURNYAW"));
         getDataManager().set(LOCK_PITCH, compound.getFloat("STURNPITCH"));
         setCollision(compound.getBoolean("canCollision"));
-        if (compound.getBoolean("ISSTURN"))
+        if (compound.getBoolean("IS_STURN"))
             setSturn(compound.getInteger("STURN_TICK"));
         if (compound.hasKey("targetX"))
             setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"), compound.getDouble("speed"));
@@ -349,6 +355,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public void setSturn(int tick) {
         setSturn(true);
+
         TickRegister.register(new AbstractTick(getUniqueID().toString() + "-STURN", Type.SERVER, tick, false) {
             @Override
             public boolean stopCondition() {
@@ -364,11 +371,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public void setSturn(boolean is) {
         dataManager.set(IS_STURN, is);
+        if (!is)
+            dataManager.set(STURN_TICK, -1);
         dataManager.set(LOCK_YAW, this.rotationYaw);
         dataManager.set(LOCK_PITCH, this.rotationPitch);
-        String name = getUniqueID().toString() + "-STURN";
-        if (TickRegister.isAbsTickRun(name))
-            TickRegister.remove(TickRegister.getAbsTick(name));
         onSturn();
     }
 

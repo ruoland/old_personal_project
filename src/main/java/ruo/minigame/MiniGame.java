@@ -40,14 +40,8 @@ import ruo.minigame.minigame.bomber.Bomber;
 import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.bomber.EntityBomb;
 import ruo.minigame.minigame.elytra.*;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraBullet;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
-import ruo.minigame.minigame.minerun.EntityMRCreeper;
-import ruo.minigame.minigame.minerun.EntityMRZombie;
-import ruo.minigame.minigame.minerun.MineRun;
-import ruo.minigame.minigame.minerun.MineRunEvent;
+import ruo.minigame.minigame.elytra.miniween.*;
+import ruo.minigame.minigame.minerun.*;
 import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
 
@@ -109,14 +103,15 @@ public class MiniGame {
         //마인런 게임용
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
-
+        DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
         //엘리트라 슈팅 게임용
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityFlyingWeen.class);
-        DebAPI.registerEntity(this, "NO-EGG-ElytraItem", EntityElytraItem.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraBullet", EntityElytraBullet.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraPumpkin", EntityElytraPumpkin.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeenAttack", EntityElytraPumpkinAttack.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeenFire", EntityElytraPumpkinFire.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraItem", EntityElytraChest.class);
+
         //폭탄게임용
         EntityRegistry.registerModEntity(EntityBomb.class, "bomb", 174, this, 80, 3, false);
         GameRegistry.register(bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));

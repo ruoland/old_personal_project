@@ -28,9 +28,8 @@ import java.util.Iterator;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
-    public static boolean bossEnd, arrowUpgrade;
-    public static int arrowDistance, bombCount;
-    private EnumFacing facing;
+    public static boolean bossEnd, tripleArrow;
+    public static int bombCount;
     public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
     private EntityFakePlayer fakePlayer;
     public PosHelper spawnPosHelper;
@@ -42,7 +41,6 @@ public class Elytra extends AbstractMiniGame {
     @Override
     public boolean start(Object... obj) {
         WorldAPI.command("/display size 700 950");
-        facing = WorldAPI.getPlayer().getHorizontalFacing();
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 55, WorldAPI.z());
 
         fakePlayer = FakePlayerHelper.spawnFakePlayer(true);
@@ -83,7 +81,6 @@ public class Elytra extends AbstractMiniGame {
             if (elytraPumpkin.isDead) {
                 continue;
             }
-            PosHelper posHelper = new PosHelper(elytraPumpkin);
             elytraPumpkin.setTarget(elytraPumpkin.getSpawnX(), elytraPumpkin.getSpawnY(), elytraPumpkin.getSpawnZ()).setTargetSpeed(0.5);
             elytraPumpkin.setBlockMode(Blocks.STONE);
             elytraPumpkin.setAttack(false);
@@ -118,7 +115,6 @@ public class Elytra extends AbstractMiniGame {
         spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setForwardMode(true).setAttack(true).setTargetSpeed(0.8);
         spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setForwardMode(true).setAttack(true).setTargetSpeed(0.4);
     }
-
     @Override
     public boolean end(Object... obj) {
         Camera.getCamera().reset();

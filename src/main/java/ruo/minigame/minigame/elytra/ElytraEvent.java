@@ -2,6 +2,7 @@ package ruo.minigame.minigame.elytra;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumHand;
@@ -12,6 +13,7 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,6 +22,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.PosHelper;
+import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -31,7 +35,7 @@ public class ElytraEvent {
     private GameSettings gamesettings = Minecraft.getMinecraft().gameSettings;
 
     boolean elytraMode;
-    int elytraCooltime = 0;
+    public int elytraCooltime = 0, defaultCooltime = 15;
     public int killCount, spawnY;
 
     @SubscribeEvent
@@ -63,35 +67,50 @@ public class ElytraEvent {
     }
 
     @SubscribeEvent
+    public void login(LivingEvent.LivingUpdateEvent event) {
+        event.getEntityLiving().hurtResistantTime = 0;
+        event.getEntityLiving().hurtTime = 0;
+        event.getEntityLiving().maxHurtResistantTime = 0;
+        event.getEntityLiving().arrowHitTimer = 0;
+
+    }
+    @SubscribeEvent
     public void login(PlayerInteractEvent event) {
         if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
-            EntityFakePlayer player = FakePlayerHelper.fakePlayer;
-            float yaw = player.getHorizontalFacing().getHorizontalAngle();
-            System.out.println("화살 YAW "+yaw);
             spawnArrow();
-            if (MiniGame.elytra.arrowUpgrade) {
-                spawnArrow(yaw + 30);
-                spawnArrow(yaw - 30);
+            if (Elytra.tripleArrow) {
+                spawnArrow(SpawnDirection.FORWARD_RIGHT);
+                spawnArrow(SpawnDirection.FORWARD_LEFT);
             }
         }
     }
 
     public void spawnArrow() {
-        EntityFakePlayer player = FakePlayerHelper.fakePlayer;
-        spawnArrow(player.getHorizontalFacing().getHorizontalAngle());
+        spawnArrow(SpawnDirection.FORWARD);
     }
 
-    public void spawnArrow(float yaw) {
+    public void spawnArrow(SpawnDirection direction){
+        spawnArrow(direction, FakePlayerHelper.fakePlayer.rotationYaw);
+    }
+
+    public void spawnArrow(float yaw){
+        spawnArrow(null, yaw);
+    }
+    public void spawnArrow(SpawnDirection direction, float yaw) {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
+        PosHelper posHelper = new PosHelper(player);
         World world = player.worldObj;
         EntityElytraArrow arrow = new EntityElytraArrow(world, player);
         arrow.setAim(player, player.rotationPitch, yaw, 0, 1.6F, 1F);
-        arrow.setPosition(player.posX+player.motionX, player.posY, player.posZ+player.motionZ);
+        if(direction != null)
+            arrow.setPosition(posHelper.getX(direction, 1, 1, true), player.posY, posHelper.getZ(direction, 1, 1, true));
+        else
+            arrow.setPosition(player.posX+player.motionX, player.posY, player.posZ+player.motionZ);
         arrow.setDamage(10);
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);
-        elytraCooltime = 15;
+        elytraCooltime = defaultCooltime;
         world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT,
                 SoundCategory.NEUTRAL, 1.0F, (float) (1.0F / (player.worldObj.rand.nextFloat() * 0.4F + 1.2F) + 0.1666));
     }

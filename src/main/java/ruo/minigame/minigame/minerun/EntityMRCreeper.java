@@ -11,7 +11,7 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.TypeModel;
 
-public class EntityMRCreeper extends EntityDefaultNPC {
+public class EntityMRCreeper extends EntityMR {
 
     public EntityMRCreeper(World worldIn) {
         super(worldIn);
@@ -19,37 +19,7 @@ public class EntityMRCreeper extends EntityDefaultNPC {
     }
 
     @Override
-    protected void collideWithEntity(Entity entityIn) {
-        super.collideWithEntity(entityIn);
-        if(entityIn instanceof EntityFakePlayer){
-            EntityMRCreeper mrcreeper = this;
-            if(getDistanceToEntity(entityIn) < 1) {
-                worldObj.createExplosion(this, posX, posY, posZ, 1.5F, false);
-                this.setDead();
-                TickRegister.register(new AbstractTick(200, false) {
-                    @Override
-                    public void run(TickEvent.Type type) {
-                        EntityMRCreeper creeper = new EntityMRCreeper(worldObj);
-                        creeper.copyLocationAndAnglesFrom(mrcreeper);
-                        worldObj.spawnEntityInWorld(creeper);
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-    }
-
-    @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getEntity() instanceof EntityPlayer){
-            if(source.getEntity().isSneaking()){
-                this.setDead();
-            }
-        }
-        return super.attackEntityFrom(source, amount);
+    public void collideAttack(Entity entityIn) {
+        worldObj.createExplosion(this,posX,posY,posZ,1.5F,false);
     }
 }
