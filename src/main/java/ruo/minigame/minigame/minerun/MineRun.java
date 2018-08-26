@@ -24,7 +24,7 @@ import ruo.minigame.minigame.AbstractMiniGame;
 public class MineRun extends AbstractMiniGame {
     private static int elytra = 0;//1 = 위로 2 = 앞으로
     private static double xCoord, zCoord;
-    protected static double curX, curY, curZ;
+    protected static double curX, curY, curZ, spawnX, spawnY, spawnZ;
     private static EntityFakePlayer fakePlayer;
     private static EntityPlayer player;
 
@@ -87,7 +87,8 @@ public class MineRun extends AbstractMiniGame {
         curY = y;
         curZ = z;
         System.out.println(curX + " - " + curY + " - " + curZ);
-        WorldAPI.teleport(player.posX + curX, player.posY, player.posZ + curZ );
+        WorldAPI.teleport(player.posX + curX, player.posY, player.posZ + curZ);
+
 
     }
 
@@ -111,24 +112,26 @@ public class MineRun extends AbstractMiniGame {
         ICommandSender sender = (ICommandSender) obj[0];
         player = (EntityPlayer) sender;
         WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
-
+        spawnX = player.posX;
+        spawnY = player.posY;
+        spawnZ = player.posZ;
         Camera.getCamera().reset();
         Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
         Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
         Camera.getCamera().rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
 
         Camera.getCamera().rotateZ = EntityAPI.lookX(player, 1) * 30;
-        if(player.getHorizontalFacing() == EnumFacing.NORTH ){
+        if (player.getHorizontalFacing() == EnumFacing.NORTH) {
             Camera.getCamera().rotateX = 30;
             Camera.getCamera().rotateY = 0;
-            Camera.getCamera().moveCamera(0,0,-2);
+            Camera.getCamera().moveCamera(0, 0, -2);
         }
-        if(player.getHorizontalFacing() == EnumFacing.EAST ){
+        if (player.getHorizontalFacing() == EnumFacing.EAST) {
             Camera.getCamera().rotateX = 30;
             Camera.getCamera().rotateY = 90;
             Camera.getCamera().rotateZ = 0;
         }
-        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2),-1, EntityAPI.lookZ(player, 2));
+        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), -1, EntityAPI.lookZ(player, 2));
         Camera.getCamera().playerCamera(true);
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineFB = 0;

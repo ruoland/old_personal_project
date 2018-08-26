@@ -179,15 +179,20 @@ public class MineRunEvent {
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
-                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR() * 1.5, false));
-                System.out.println("LINELR " + lineLR * 1.5);
-                System.out.println("LEFT " + posHelper.getXZ(SpawnDirection.LEFT, absLR() * 1.5, false));
+                if(lineLR == 0)
+                    lineLR++;
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR() * 2, false));
+                System.out.println("LINELR " + lineLR * 2);
+                System.out.println("LEFT " + posHelper.getXZ(SpawnDirection.LEFT, absLR() * 2, false));
             }
+
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
                 lineLR--;
-                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 1.5, false));
-                System.out.println("LINELR " + lineLR * 1.5);
-                System.out.println("RIGHT " + posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 1.5, false));
+                if(lineLR == 0)
+                    lineLR--;
+                MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
+                System.out.println("LINELR " + lineLR * 2);
+                System.out.println("RIGHT " + posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
             }
         }
         if (DebAPI.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.getEventKeyState()) {
