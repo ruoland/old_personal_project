@@ -164,7 +164,7 @@ public class DebAPI {
     }
 
     public static boolean isKeyDown(int keycode) {
-        return Keyboard.isKeyDown(keycode) && Minecraft.getMinecraft().currentScreen == null;
+            return Keyboard.isKeyDown(keycode) && Minecraft.getMinecraft().currentScreen == null;
     }
 
     public static DebAPI createDebAPI(String name, double x, double y, double z) {

@@ -45,6 +45,12 @@ public class MineRunEvent {
             EntityItem item = e.getItem();
             item.setPosition(item.posX, item.posY + 2, item.posZ);
         }
+        if (e.getItem().getEntityItem().getItem() == Items.POTIONITEM) {
+            e.setCanceled(true);
+            EntityItem item = e.getItem();
+            item.setPosition(item.posX, item.posY + 2, item.posZ);
+            e.getEntityPlayer().heal(3);
+        }
     }
 
     @SubscribeEvent
@@ -175,7 +181,6 @@ public class MineRunEvent {
 
             }
         }
-
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
                 lineLR++;
@@ -194,10 +199,9 @@ public class MineRunEvent {
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("RIGHT " + posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
             }
-        }
-        if (DebAPI.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.getEventKeyState()) {
 
         }
+
     }
 
     public int absFB() {

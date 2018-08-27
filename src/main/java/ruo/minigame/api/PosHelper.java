@@ -22,6 +22,7 @@ public class PosHelper {
     public Vec3d getXZ(SpawnDirection spawnDirection, double plus, boolean pos) {
         return new Vec3d(EntityAPI.getX(base, spawnDirection, plus, pos), pos ? base.posY : 0, EntityAPI.getZ(base, spawnDirection, plus, pos));
     }
+
     public Vec3d getXZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
         return new Vec3d(EntityAPI.getX(base, spawnDirection, plus, rlplus, pos), pos ? base.posY : 0, EntityAPI.getZ(base, spawnDirection, plus, rlplus, pos));
     }

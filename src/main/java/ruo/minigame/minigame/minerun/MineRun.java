@@ -37,7 +37,6 @@ public class MineRun extends AbstractMiniGame {
 
         if (fakePlayer == null)
             return;
-        double yaw = fakePlayer.getHorizontalFacing().getHorizontalAngle();
 
         if (elytraMode == 1 || elytraMode == 2) {
             if (fakePlayer == null) {
@@ -87,7 +86,7 @@ public class MineRun extends AbstractMiniGame {
         curY = y;
         curZ = z;
         System.out.println(curX + " - " + curY + " - " + curZ);
-        WorldAPI.teleport(player.posX + curX, player.posY, player.posZ + curZ);
+        WorldAPI.teleport(player.posX + curX + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
 
 
     }
@@ -107,7 +106,6 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
         gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
         gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
-        gs.keyBindJump.setKeyCode(Keyboard.KEY_POWER);
         KeyBinding.resetKeyBindingArrayAndHash();
         ICommandSender sender = (ICommandSender) obj[0];
         player = (EntityPlayer) sender;
@@ -182,7 +180,6 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindRight.setKeyCode(Keyboard.KEY_D);
         gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
         gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
-        gs.keyBindJump.setKeyCode(Keyboard.KEY_SPACE);
         gs.keyBindUseItem.resetKeyBindingArrayAndHash();
         setElytra(0);
         Camera.getCamera().reset();

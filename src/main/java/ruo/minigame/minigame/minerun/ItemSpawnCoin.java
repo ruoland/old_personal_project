@@ -15,9 +15,15 @@ public class ItemSpawnCoin extends Item {
 
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        EntityItem enderstar = new EntityItem(worldIn, hitX, hitY, hitZ, new ItemStack(Items.NETHER_STAR));
-        enderstar.setInfinitePickupDelay();
-        worldIn.spawnEntityInWorld(enderstar);
+        if(playerIn.isSneaking()) {
+            EntityItem enderstar = new EntityItem(worldIn, hitX, hitY, hitZ, new ItemStack(Items.NETHER_STAR));
+            enderstar.setInfinitePickupDelay();
+            worldIn.spawnEntityInWorld(enderstar);
+        }else {
+            EntityItem enderstar = new EntityItem(worldIn, hitX, hitY, hitZ, new ItemStack(Items.POTIONITEM));
+            enderstar.setInfinitePickupDelay();
+            worldIn.spawnEntityInWorld(enderstar);
+        }
         return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 }
