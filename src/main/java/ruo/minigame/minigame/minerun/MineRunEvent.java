@@ -59,8 +59,10 @@ public class MineRunEvent {
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-            e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
-            e.player.motionZ = MineRun.zCoord();
+            if(e.player.isInLava() || e.player.isInWater()) {
+                e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
+                e.player.motionZ = MineRun.zCoord();
+            }
         }
         if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
             if (MineRun.elytraMode() == 2) {
@@ -182,20 +184,31 @@ public class MineRunEvent {
             }
         }
         if (MineRun.elytraMode() == 0) {
-            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
+            System.out.println(lineLR+" - "+DebAPI.isKeyDown(Keyboard.KEY_A)+ " - "+DebAPI.isKeyDown(Keyboard.KEY_D));
+            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A)) {
                 lineLR++;
-                if(lineLR == 0)
+                boolean isLR = false;
+                if(lineLR == 0) {
                     lineLR++;
+                    isLR = true;
+                }
                 MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR() * 2, false));
+                if(isLR)
+                    lineLR --;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("LEFT " + posHelper.getXZ(SpawnDirection.LEFT, absLR() * 2, false));
             }
 
-            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
+            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
                 lineLR--;
-                if(lineLR == 0)
+                boolean isLR = false;
+                if(lineLR == 0) {//가운데로 보내기 위해서 1 깎음
                     lineLR--;
+                    isLR = true;
+                }
                 MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
+                if(isLR)
+                    lineLR ++;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("RIGHT " + posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
             }

@@ -117,7 +117,6 @@ public class MineRun extends AbstractMiniGame {
         Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
         Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
         Camera.getCamera().rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
-
         Camera.getCamera().rotateZ = EntityAPI.lookX(player, 1) * 30;
         if (player.getHorizontalFacing() == EnumFacing.NORTH) {
             Camera.getCamera().rotateX = 30;
@@ -129,7 +128,7 @@ public class MineRun extends AbstractMiniGame {
             Camera.getCamera().rotateY = 90;
             Camera.getCamera().rotateZ = 0;
         }
-        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 2), -1, EntityAPI.lookZ(player, 2));
+        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3), -1.5, EntityAPI.lookZ(player, 3));
         Camera.getCamera().playerCamera(true);
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineFB = 0;
