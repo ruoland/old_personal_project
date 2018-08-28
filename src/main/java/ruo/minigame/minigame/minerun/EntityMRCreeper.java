@@ -19,6 +19,11 @@ public class EntityMRCreeper extends EntityMR {
     }
 
     @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+    }
+
+    @Override
     public void collideAttack(Entity entityIn) {
         worldObj.createExplosion(this,posX,posY,posZ,1.5F,false);
     }

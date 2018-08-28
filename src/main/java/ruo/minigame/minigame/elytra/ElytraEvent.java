@@ -65,15 +65,6 @@ public class ElytraEvent {
             WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 0.5, WorldAPI.z());
         }
     }
-
-    @SubscribeEvent
-    public void login(LivingEvent.LivingUpdateEvent event) {
-        event.getEntityLiving().hurtResistantTime = 0;
-        event.getEntityLiving().hurtTime = 0;
-        event.getEntityLiving().maxHurtResistantTime = 0;
-        event.getEntityLiving().arrowHitTimer = 0;
-
-    }
     @SubscribeEvent
     public void login(PlayerInteractEvent event) {
         if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND

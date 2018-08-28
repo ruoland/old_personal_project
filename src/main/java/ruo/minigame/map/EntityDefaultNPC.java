@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -19,6 +20,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+import org.lwjgl.input.Keyboard;
+import ruo.cmplus.deb.DebAPI;
+import ruo.map.lopre2.EntityBuildBlock;
+import ruo.map.lopre2.EntityPreBlock;
+import ruo.map.lopre2.dummy.EntityBuildBlockMove;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
@@ -52,7 +58,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
             DataSerializers.VARINT);
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
             .createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
-
+    private static final DataParameter<Boolean> IS_TELEPORT = EntityDataManager.createKey(EntityDefaultNPC.class,
+            DataSerializers.BOOLEAN);
     private static HashMap<String, EntityDefaultNPC> npcHash = new HashMap<>();
     private static HashMap<String, EntityDefaultNPC> uuidHash = new HashMap<>();
     private PosHelper posHelper;
@@ -65,7 +72,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public double eyeCloseScaleY;
     public boolean eyeCloseReverse;
     private boolean isTargetArriveStop = true;//타겟에 도착하면 이동하지 않음
-
+    public static double ax = 3;
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
         this.eft = TextEffect.getHelper(this);
@@ -86,6 +93,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     protected void entityInit() {
         super.entityInit();
+        dataManager.register(IS_TELEPORT, false);
         this.dataManager.register(IS_STURN, false);
         this.dataManager.register(LOCK_YAW, 0F);
         this.dataManager.register(LOCK_PITCH, 0F);
@@ -115,9 +123,35 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
+        if (player.isSneaking()) {
+            setTeleport(true);
+            return super.processInteract(player, hand, stack);
+        }
         return super.processInteract(player, hand, stack);
     }
+    public void teleportEnd() {
 
+    }
+
+    public void teleport() {
+        if (WorldAPI.getPlayerMP() == null)
+            return;
+
+        Vec3d vec = WorldAPI.getPlayer().getLookVec();
+        this.setPositionAndRotationDirect(WorldAPI.x() + vec.xCoord * ax,
+                WorldAPI.y() + WorldAPI.getPlayer().getEyeHeight() + vec.yCoord * ax,
+                WorldAPI.z() + vec.zCoord * ax, 90, 90, 0, true);
+        this.setPosition((WorldAPI.x() + vec.xCoord * ax),
+                WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
+                WorldAPI.z() + vec.zCoord * ax);
+
+        if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_K)) {
+            setSpawnXYZ(posX, posY, posZ);
+            setPosition(posX, posY, posZ);
+            this.setTeleport(false);
+        }
+
+    }
     public EntityDefaultNPC setTargetSpeed(double speed) {
         this.targetMoveSpeed = speed;
         return this;
@@ -176,9 +210,19 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
 
+    public void setTeleport(boolean a) {
+        this.dataManager.set(IS_TELEPORT, a);
+    }
+
+    public boolean isTeleport() {
+        return dataManager.get(IS_TELEPORT);
+    }
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if (isTeleport()) {
+            teleport();
+        }
         if (getSpawnX() == 0 && getSpawnY() == 0 && getSpawnZ() == 0) {
             setSpawnXYZ(posX, posY, posZ);
         }

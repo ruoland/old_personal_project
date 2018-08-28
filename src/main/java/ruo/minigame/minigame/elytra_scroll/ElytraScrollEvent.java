@@ -55,15 +55,6 @@ public class ElytraScrollEvent {
     }
 
     @SubscribeEvent
-    public void login(LivingEvent.LivingUpdateEvent event) {
-        event.getEntityLiving().hurtResistantTime = 0;
-        event.getEntityLiving().maxHurtResistantTime = 0;
-        event.getEntityLiving().arrowHitTimer = 0;
-        if(WorldAPI.getPlayer() != null)
-        WorldAPI.getPlayer().renderYawOffset = 150;
-    }
-
-    @SubscribeEvent
     public void login(PlayerInteractEvent event) {
         if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {

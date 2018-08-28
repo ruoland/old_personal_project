@@ -32,7 +32,6 @@ import java.util.List;
 
 public class EntityPreBlock extends EntityDefaultNPC {
     protected static Block prevBlock = Blocks.STONE;
-    public static double ax = 3;
     private static final DataParameter<Boolean> ISINV = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FORCE_SPAWN = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
@@ -41,8 +40,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);//복사용 블럭인가
     private static final DataParameter<Boolean> LOCK = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ISTELEPORT = EntityDataManager.createKey(EntityPreBlock.class,
-            DataSerializers.BOOLEAN);
+
 
     public EntityPreBlock(World worldObj) {
         super(worldObj);
@@ -58,7 +56,6 @@ public class EntityPreBlock extends EntityDefaultNPC {
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(ISTELEPORT, false);
         dataManager.register(LOCK, false);
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
@@ -93,13 +90,6 @@ public class EntityPreBlock extends EntityDefaultNPC {
         return dataManager.get(COPY).booleanValue();
     }
 
-    public void setTeleport(boolean a) {
-        this.dataManager.set(ISTELEPORT, a);
-    }
-
-    public boolean isTeleport() {
-        return dataManager.get(ISTELEPORT);
-    }
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {

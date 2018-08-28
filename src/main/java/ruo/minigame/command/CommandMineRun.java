@@ -32,7 +32,6 @@ public class CommandMineRun extends CommandBase {
 				FakePlayerHelper.setFakeDead();
 				return;
 			}
-
 		}
 		if(args.length > 0 && (args[0].equalsIgnoreCase("end") || args[0].equalsIgnoreCase("stop")))
 			MiniGame.minerun.end();
