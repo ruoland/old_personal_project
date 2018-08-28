@@ -16,13 +16,22 @@ public class EntityMR extends EntityDefaultNPC {
 
     public EntityMR(World worldIn) {
         super(worldIn);
-        this.setCollision(true);
         isFly = true;
     }
 
     @Override
     public void knockBack(Entity entityIn, float strenght, double xRatio, double zRatio) {
         //super.knockBack(entityIn, strenght, xRatio, zRatio);
+    }
+
+    @Override
+    protected void collideWithNearbyEntities() {
+        //super.collideWithNearbyEntities();
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return !super.canBeCollidedWith();
     }
 
     @Override
