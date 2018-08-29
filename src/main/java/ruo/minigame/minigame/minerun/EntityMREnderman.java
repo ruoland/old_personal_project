@@ -56,6 +56,7 @@ public class EntityMREnderman extends EntityMR {
             setMoveY(moveY);
             setMaxDelay(40);
         } else {
+            setMoveXZ(0);
             setMoveX((float) posHelper.getX(SpawnDirection.FORWARD, 2, false));
             setMoveZ((float) posHelper.getZ(SpawnDirection.FORWARD, 2, false));
         }

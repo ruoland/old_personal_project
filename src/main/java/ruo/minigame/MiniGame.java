@@ -3,10 +3,13 @@ package ruo.minigame;
 import api.player.client.ClientPlayerAPI;
 import api.player.render.RenderPlayerAPI;
 import api.player.server.ServerPlayerAPI;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -53,7 +56,7 @@ import ruo.minigame.minigame.scroll.ScrollEvent;
 public class MiniGame {
     public static SimpleNetworkWrapper network;
     public static KeyBinding grab = new KeyBinding("액션-", Keyboard.KEY_R, "카카카테고리");
-
+    public static Block blockInvisible = new BlockInvisible(Material.ANVIL);
     @SidedProxy(clientSide = "ruo.minigame.ClientProxy", serverSide = "ruo.minigame.CommonProxy")
     public static CommonProxy proxy;
 
@@ -111,6 +114,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
         DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
+        GameRegistry.register(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
         //엘리트라 슈팅 게임용
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityFlyingWeen.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraBullet", EntityElytraBullet.class);
@@ -121,8 +125,8 @@ public class MiniGame {
 
         //폭탄게임용
         EntityRegistry.registerModEntity(EntityBomb.class, "bomb", 174, this, 80, 3, false);
-        GameRegistry.register(bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
-        reg(bomber.bombItem);
+        GameRegistry.register(Bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
+        reg(Bomber.bombItem);
 
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
         DebAPI.registerEntity(this, "DefaultNPC", EntityDefaultNPC.class);
