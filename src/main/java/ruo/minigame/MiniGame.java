@@ -114,7 +114,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
         DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
-        GameRegistry.register(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
+        GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
         //엘리트라 슈팅 게임용
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityFlyingWeen.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraBullet", EntityElytraBullet.class);

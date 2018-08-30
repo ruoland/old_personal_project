@@ -3,8 +3,10 @@ package ruo.minigame.command;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import ruo.minigame.MiniGame;
+import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class CommandMineRun extends CommandBase {
@@ -30,6 +32,18 @@ public class CommandMineRun extends CommandBase {
 			}
 			if(args[0].equals("dead")){
 				FakePlayerHelper.setFakeDead();
+				return;
+			}
+			if(args[0].equals("left")){
+				EntityPlayer player = (EntityPlayer) sender;
+				WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle()+90, 70);
+				MiniGame.minerun.start(sender, args);
+				return;
+			}
+			if(args[0].equals("right")){
+				EntityPlayer player = (EntityPlayer) sender;
+				WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle()-90, 70);
+				MiniGame.minerun.start(sender, args);
 				return;
 			}
 		}
