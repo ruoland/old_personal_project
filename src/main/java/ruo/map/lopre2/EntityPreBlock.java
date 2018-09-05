@@ -21,7 +21,6 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
-import ruo.map.lopre2.dummy.EntityBuildBlockMove;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
@@ -30,7 +29,7 @@ import ruo.minigame.map.EntityDefaultNPC;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityPreBlock extends EntityDefaultNPC {
+public abstract  class EntityPreBlock extends EntityDefaultNPC {
     protected static Block prevBlock = Blocks.STONE;
     private static final DataParameter<Boolean> ISINV = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
@@ -94,6 +93,11 @@ public class EntityPreBlock extends EntityDefaultNPC {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (CommandJB.isDebMode && hand == EnumHand.MAIN_HAND) {
+            System.out.println("1"+stack + (stack == null ? null : stack.getItem()));
+            if(stack != null && stack.getItem() == (LoPre2.itemCopy)) {
+                System.out.println("2"+stack + (stack == null ? null : stack.getItem()));
+                return false;
+            }
             if (WorldAPI.equalsHeldItem(LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(LoPre2.itemCopy)) {
                 List<EntityPreBlock> list = EntityAPI.getEntity(worldObj, this.getEntityBoundingBox(), EntityPreBlock.class);
                 System.out.println("카운트" + list.size());
@@ -312,7 +316,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
                     WorldAPI.z() + vec.zCoord * ax);
             lavaBlock.teleportEnd();
             lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-            if (this instanceof EntityBuildBlock || this instanceof EntityBuildBlockMove) {
+            if (this instanceof EntityBuildBlock) {
                 lavaBlock.setDead();
                 this.setTeleport(false);
                 this.setPositionAndUpdate(WorldAPI.x() + vec.xCoord * ax,
@@ -336,9 +340,7 @@ public class EntityPreBlock extends EntityDefaultNPC {
 
     }
 
-    public EntityPreBlock spawn(double x, double y, double z) {
-        return this;
-    }
+    public abstract EntityPreBlock spawn(double x, double y, double z);
 
     public void setLock(boolean a) {
         this.dataManager.set(LOCK, a);

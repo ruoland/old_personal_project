@@ -66,20 +66,28 @@ public class LooPre2Event {
                 }
             }
             if (dis.startsWith("bu")) {
+                CommandJB.isDebMode = true;
                 for(EntityPreBlock preBlock : ItemCopy.getPreBlockList()){
                     preBlock.setDead();
                 }
             }
             if (dis.startsWith("x:")) {
+                CommandJB.isDebMode = true;
                 ItemSpanner.debX = Double.valueOf(dis.replace("x:", ""));
             }
             if (dis.startsWith("z:")) {
                 ItemSpanner.debZ = Double.valueOf(dis.replace("z:", ""));
             }
             if (dis.startsWith("dis:")) {
+                CommandJB.isDebMode = true;
                 ItemCopy.setDistance(Integer.valueOf(dis.replace("dis:", "")));
             }
+            if (dis.startsWith("yinte:")) {
+                CommandJB.isDebMode = true;
+                ItemCopy.setYinterval(Double.valueOf(dis.replace("yinte:", "")));
+            }
             if (dis.startsWith("inte:")) {
+                CommandJB.isDebMode = true;
                 ItemCopy.setInterval(Double.valueOf(dis.replace("inte:", "")));
             }
         }

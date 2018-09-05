@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ItemCopy extends Item {
     private static ArrayList<EntityPreBlock> preBlockList = new ArrayList<EntityPreBlock>();
-    private static int distance = 0;
+    private static double distance = 0, yinterval, defaultYintevar;
     private static double interval = 1;
 
     @Override
@@ -34,16 +34,27 @@ public class ItemCopy extends Item {
                     for (double i = interval; i <= distance; i += interval) {
                         boolean pitchUpDown = false;
                         EntityPreBlock spawnLava = null;
-                        if (playerIn.rotationPitch <= -60 && playerIn.rotationPitch >= -90) {
-                            spawnLava = lavaBlock.spawn(lavaBlock.posX, lavaBlock.posY + i, lavaBlock.posZ);
-                            pitchUpDown = true;
+                        double lavaY = lavaBlock.posY;
+
+                        if(yinterval == 0) {
+                            if (playerIn.rotationPitch <= -60 && playerIn.rotationPitch >= -90) {
+                                spawnLava = lavaBlock.spawn(lavaBlock.posX, lavaBlock.posY + i, lavaBlock.posZ);
+                                pitchUpDown = true;
+                            }
+                            if (playerIn.rotationPitch >= 60 && playerIn.rotationPitch <= 90) {
+                                spawnLava = lavaBlock.spawn(lavaBlock.posX, lavaBlock.posY - i, lavaBlock.posZ);
+                                pitchUpDown = true;
+                            }
                         }
-                        if (playerIn.rotationPitch >= 60 && playerIn.rotationPitch <= 90) {
-                            spawnLava = lavaBlock.spawn(lavaBlock.posX, lavaBlock.posY - i, lavaBlock.posZ);
-                            pitchUpDown = true;
+                        if (yinterval != 0) {
+                            lavaY = lavaBlock.posY + yinterval;
+                            yinterval+=defaultYintevar;
+                            pitchUpDown = false;
+                            System.out.println("Y "+yinterval);
                         }
                         if (!pitchUpDown) {
-                            spawnLava = lavaBlock.spawn(lavaBlock.posX - EntityAPI.lookX(playerIn, i), lavaBlock.posY, lavaBlock.posZ - EntityAPI.lookZ(playerIn, i));
+                            System.out.println("Y "+ yinterval);
+                            spawnLava = lavaBlock.spawn(lavaBlock.posX - EntityAPI.lookX(playerIn, i),lavaY, lavaBlock.posZ - EntityAPI.lookZ(playerIn, i));
                         }
                         spawnLava.setPosition(spawnLava.getSpawnX(), spawnLava.getSpawnY(), spawnLava.getSpawnZ());
                         preBlockList.add(spawnLava);
@@ -61,6 +72,7 @@ public class ItemCopy extends Item {
                     }
                 }
             }
+            yinterval = defaultYintevar;
         }
 
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
@@ -125,7 +137,7 @@ public class ItemCopy extends Item {
                 ;
                 preBlock.setDead();
             }
-            preBlocks = new EntityPreBlock[distance];
+            preBlocks = new EntityPreBlock[(int)distance];
         }
     }
 
@@ -134,6 +146,10 @@ public class ItemCopy extends Item {
         preBlocks = new EntityPreBlock[distance];
     }
 
+    public static void setYinterval(double distance) {
+        ItemCopy.yinterval = distance;
+        defaultYintevar = distance;
+    }
     public static void setInterval(double interval) {
         ItemCopy.interval = interval;
     }

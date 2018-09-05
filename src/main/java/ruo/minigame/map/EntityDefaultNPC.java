@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -22,9 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
-import ruo.map.lopre2.EntityBuildBlock;
-import ruo.map.lopre2.EntityPreBlock;
-import ruo.map.lopre2.dummy.EntityBuildBlockMove;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.SpawnDirection;
@@ -123,10 +119,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
-        if (player.isSneaking()) {
-            setTeleport(true);
-            return super.processInteract(player, hand, stack);
-        }
         return super.processInteract(player, hand, stack);
     }
     public void teleportEnd() {

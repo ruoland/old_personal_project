@@ -1,5 +1,7 @@
 package ruo.minigame.minigame.minerun;
 
+import net.minecraft.client.renderer.entity.layers.LayerEndermanEyes;
+import net.minecraft.client.renderer.entity.layers.LayerSpiderEyes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

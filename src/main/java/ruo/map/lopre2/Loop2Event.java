@@ -5,12 +5,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.util.Sky;
-import ruo.map.lopre2.dummy.EntityBuildBlockMove;
-import ruo.map.lopre2.dummy.EntityMovingBlock;
-import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
-import ruo.minigame.effect.TickRegister;
 
 public class Loop2Event {
     static double currentY, currentZ;
@@ -32,16 +28,6 @@ public class Loop2Event {
 
     public static void blockSet(World worldObj, int xx, int yy, int zz, int x2, int y2, int z2) {
         EntityBuildBlock buildBlock = new EntityBuildBlock(worldObj);
-        buildBlock.setPosition(xx, yy, zz);
-        buildBlock.setLock(true);
-        buildBlock.setBlock(Blocks.STONE);
-        buildBlock.setTeleport(false);
-        worldObj.spawnEntityInWorld(buildBlock);
-        buildBlock.setBlock(xx,yy,zz,x2,y2,z2);
-    }
-
-    public static void blockSetMove(World worldObj, int xx, int yy, int zz, int x2, int y2, int z2) {
-        EntityBuildBlockMove buildBlock = new EntityBuildBlockMove(worldObj);
         buildBlock.setPosition(xx, yy, zz);
         buildBlock.setLock(true);
         buildBlock.setBlock(Blocks.STONE);
@@ -161,102 +147,11 @@ public class Loop2Event {
         }
     }
 
-    public static void upBlock() {
-        WorldAPI.command("/gamma set 1000");
-        TickRegister.register(new AbstractTick("upblock", Type.SERVER, 20, true) {
-            @Override
-            public void run(Type type) {
-                int x = 1885 + absRunCount;
-                EntityMovingBlock movingblock = new EntityMovingBlock(WorldAPI.getWorld(), 4, x, 4 + absRunCount, -199);
-                WorldAPI.getWorld().spawnEntityInWorld(movingblock);
-                EntityMovingBlock movingblock1 = new EntityMovingBlock(WorldAPI.getWorld(), 4, x, 4 + absRunCount, -198);
-                WorldAPI.getWorld().spawnEntityInWorld(movingblock1);
-                EntityMovingBlock movingblock11 = new EntityMovingBlock(WorldAPI.getWorld(), 4, x, 4 + absRunCount, -197);
-                WorldAPI.getWorld().spawnEntityInWorld(movingblock11);
-                EntityMovingBlock movingblock111 = new EntityMovingBlock(WorldAPI.getWorld(), 4, x, 4 + absRunCount, -196);
-                WorldAPI.getWorld().spawnEntityInWorld(movingblock111);
-                EntityMovingBlock movingblock1111 = new EntityMovingBlock(WorldAPI.getWorld(), 4, x, 4 + absRunCount, -195);
-                WorldAPI.getWorld().spawnEntityInWorld(movingblock1111);
-                if (absRunCount == 10) {
-                    absLoop = false;
-                    jumpStart();
-                }
-            }
-        });
-    }
-
-    public static void jumpStart() {
-        EntityAPI.position(1895, 15, -199, 0, new AbstractTick.Position() {
-            @Override
-            public boolean runCondition() {
-                return mob.posX < 1896 && mob.posX > 1894 && mob.posZ < -194 && mob.posZ > -199;
-            }
-
-            @Override
-            public void runPosition() {
-                WorldAPI.setBlock(mob.worldObj, 1895, 1884, 14, 14, -200, -195, Blocks.PLANKS);
-
-                TickRegister.register(new AbstractTick("upblock", Type.SERVER, 20, true) {
-                    @Override
-                    public void run(Type type) {
-                        WorldAPI.setBlock(1898 + absRunCount, 16 + absRunCount, -200, Blocks.AIR);
-                        EntityMovingBlock movingblock = new EntityMovingBlock(WorldAPI.getWorld(), 1898 + absRunCount,
-                                16 + absRunCount, -200 + WorldAPI.rand.nextInt(4));
-                        movingblock.setPosition(1898 + absRunCount, 16 + absRunCount, -201);
-                        movingblock.noClip = !movingblock.noClip;
-                        WorldAPI.getWorld().spawnEntityInWorld(movingblock);
-                        if (absRunCount == 10) {
-                            absLoop = false;
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    public static void mohazi() {
-        EntityMovingBlock movingblock = new EntityMovingBlock(WorldAPI.getWorld(), 1951.0, 15.0, -196.7);
-        movingblock.setPosition(1898, 16, -201);
-        movingblock.isRiding = true;
-        WorldAPI.getWorld().spawnEntityInWorld(movingblock);
-    }
-
     /**
      * 리메이크 시작
      */
     public static void start() {
         Sky.fogDistance(5);
-    }
-
-    public static void spawnCave() {
-        TickRegister.register(new AbstractTick("caveSetting", Type.SERVER, 20, true) {
-            @Override
-            public void run(Type type) {
-                for (int i = 0; i < 3; i++) {
-                    EntityMovingBlock movingblock = new EntityMovingBlock(WorldAPI.getWorld());
-                    movingblock.setPosition(2057 - 0.3, 5 + WorldAPI.rand(3), -164 - absRunCount);
-                    movingblock.addRotate(WorldAPI.rand(40), WorldAPI.rand(40), WorldAPI.rand(40));
-                    WorldAPI.getWorld().spawnEntityInWorld(movingblock);
-                }
-                if (absRunCount == 10) {
-                    absLoop = false;
-                }
-            }
-        });
-        TickRegister.register(new AbstractTick("caveSetting2", Type.SERVER, 20, false) {
-            @Override
-            public void run(Type type) {
-                for (int i = 0; i < 3; i++) {
-                    EntityMovingBlock movingblock = new EntityMovingBlock(WorldAPI.getWorld());
-                    movingblock.setPosition(2054 - 0.3, 5 + WorldAPI.rand(3), -164 - absRunCount);
-                    movingblock.addRotate(WorldAPI.rand(40), WorldAPI.rand(40), WorldAPI.rand(40));
-                    WorldAPI.getWorld().spawnEntityInWorld(movingblock);
-                }
-                if (absRunCount == 10) {
-                    absLoop = false;
-                }
-            }
-        });
     }
 
     public static void aa() {

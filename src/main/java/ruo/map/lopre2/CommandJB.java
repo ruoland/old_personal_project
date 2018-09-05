@@ -138,8 +138,6 @@ public class CommandJB extends CommandPlusBase {
 
             if (args[0].equalsIgnoreCase("block"))
                 Loop2Event.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
-            if (args[0].equalsIgnoreCase("blockmove"))
-                Loop2Event.blockSetMove(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
 
             if (args[0].equalsIgnoreCase("water")) {
                 ActionEffect.inWater(Boolean.valueOf(args[1]));

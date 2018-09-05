@@ -10,6 +10,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import ruo.map.lopre2.EntityPreBlock;
+import ruo.map.lopre2.jump3.EntityLavaSpawnBlock;
 import ruo.minigame.api.WorldAPI;
 
 public class EntityPlatBlock extends EntityPreBlock {
@@ -65,7 +66,7 @@ public class EntityPlatBlock extends EntityPreBlock {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (isTeleport() && source.getEntity() instanceof EntityPlayer) {
             setTeleport(false);
-            if(canKnockBack()) {
+            if (canKnockBack()) {
                 this.addVelocity(source.getEntity().getLookVec().xCoord * 4, source.getEntity().getLookVec().yCoord * 7, source.getEntity().getLookVec().zCoord * 4);
                 dataManager.set(ISKNOCKBACK, true);
             }
@@ -80,5 +81,26 @@ public class EntityPlatBlock extends EntityPreBlock {
     @Override
     public boolean canTeleportLock() {
         return false;
+    }
+
+    @Override
+    public EntityPreBlock spawn(double x, double y, double z) {
+        EntityPlatBlock lavaBlock = new EntityPlatBlock(worldObj);
+        lavaBlock.setLock(isLock());
+        lavaBlock.setSpawnXYZ(x, y, z);
+        lavaBlock.setTeleport(false);
+        lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
+        lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ(), 90, 90, 0, false);
+        lavaBlock.setBlockMode(getCurrentBlock());
+        this.copyModel(lavaBlock);
+        lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
+        lavaBlock.setBlockMetadata(getBlockMetadata());
+        lavaBlock.setInv(isInv());
+        lavaBlock.setInvisible(isInvisible());
+        lavaBlock.setCanKnockBack(canKnockBack());
+        if (isServerWorld() || canForceSpawn()) {
+            worldObj.spawnEntityInWorld(lavaBlock);
+        }
+        return lavaBlock;
     }
 }

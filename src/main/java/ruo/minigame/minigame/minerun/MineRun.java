@@ -136,8 +136,8 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
         MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
         MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
-        xCoord = EntityAPI.lookX(player, 0.5);
-        zCoord = EntityAPI.lookZ(player, 0.5);
+        xCoord = EntityAPI.lookX(player, 0.4);
+        zCoord = EntityAPI.lookZ(player, 0.4);
         return super.start();
     }
 

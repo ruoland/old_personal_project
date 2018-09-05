@@ -16,8 +16,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
-import ruo.map.lopre2.dummy.EntityDummyGuardLoop;
 import ruo.map.lopre2.jump2.*;
+import ruo.map.lopre2.jump3.EntityLavaSpawnBlock;
 import ruo.minigame.api.WorldAPI;
 
 @Mod(modid = "LoopPre2", name = "LoopPre2")
@@ -53,9 +53,10 @@ public class LoPre2 {
         ClientRegistry.registerKeyBinding(blockSetKey);
         ClientRegistry.registerKeyBinding(grab);
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
+        DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
+
         DebAPI.registerEntity(this, "TeleportBlock", EntityTeleportBlock.class);
         DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
-        DebAPI.registerEntity(this, "LoopGuard", EntityDummyGuardLoop.class);
         DebAPI.registerEntity(this, "BigBlockInvisible", EntityBigInvisibleBlock.class);
         DebAPI.registerEntity(this, "BigBlockMovejump", EntityBigBlockMove.class);
         DebAPI.registerEntity(this, "SmallBlockJump", EntitySmallBlock.class);
