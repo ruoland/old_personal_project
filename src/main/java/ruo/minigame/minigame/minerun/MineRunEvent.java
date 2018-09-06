@@ -67,7 +67,7 @@ public class MineRunEvent {
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-            BlockPos pos = e.player.getPosition().add(Camera.getCamera().traX,2, Camera.getCamera().traZ);
+            BlockPos pos = e.player.getPosition().add(-Camera.getCamera().traX,2, -Camera.getCamera().traZ);
             System.out.println("" + e.player.worldObj.getBlockState(pos).getBlock() + pos);
         }
         if (MineRun.elytraMode() == 0) {
