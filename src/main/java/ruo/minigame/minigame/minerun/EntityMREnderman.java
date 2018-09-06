@@ -51,6 +51,7 @@ public class EntityMREnderman extends EntityMR {
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         PosHelper posHelper = new PosHelper(player);
         setMoveXZ(0);
+        System.out.println("asdf");
         {
             setMoveXZ(0);
             setMoveX((float) posHelper.getX(SpawnDirection.FORWARD, 2, false));

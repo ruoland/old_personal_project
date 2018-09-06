@@ -55,13 +55,19 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(!isTeleport()) {
-            if (getSpawnDistance() < WorldAPI.getPlayer().getDistanceToEntity(this)) {
-                setVelocity(0, 0.1, 0);
+            if (getSpawnDistance() > WorldAPI.getPlayer().getDistanceToEntity(this)) {
+                setVelocity(0, 0.08, 0);
                 this.worldObj.setBlockState(getPosition(), Blocks.LAVA.getDefaultState());
             } else if (worldObj.getBlockState(getPosition()).getBlock() == Blocks.LAVA) {
+                if(worldObj.getBlockState(getPosition().add(0,1,0)).getBlock() == Blocks.LAVA)
+                this.worldObj.setBlockState(getPosition().add(0,1,0), Blocks.AIR.getDefaultState());
                 this.worldObj.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
+                if(worldObj.getBlockState(getPosition().add(0,-1,0)).getBlock() == Blocks.LAVA)
+                    this.worldObj.setBlockState(getPosition().add(0,-1,0), Blocks.AIR.getDefaultState());
+
                 this.setVelocity(0,0,0);
             }
+
         }
     }
     @Override

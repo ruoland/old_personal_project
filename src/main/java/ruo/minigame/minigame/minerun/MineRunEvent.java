@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.camera.Camera;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
@@ -39,7 +41,7 @@ public class MineRunEvent {
     private int pickupCount;
 
     @SubscribeEvent
-    public void playerTick(EntityItemPickupEvent e) {
+    public void itemPickup(EntityItemPickupEvent e) {
         if (e.getItem().getEntityItem().getItem() == Items.NETHER_STAR) {
             pickupCount++;
             e.setCanceled(true);
@@ -55,16 +57,21 @@ public class MineRunEvent {
     }
 
     @SubscribeEvent
-    public void playerTick(RenderBlockOverlayEvent e) {
+    public void renderBlockOverlay(RenderBlockOverlayEvent e) {
         e.setCanceled(MiniGame.minerun.isStart());
     }
+
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
         if (!MiniGame.minerun.isStart())
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-            if(!e.player.isInLava() && !e.player.isInWater()) {
+            BlockPos pos = e.player.getPosition().add(Camera.getCamera().traX,2, Camera.getCamera().traZ);
+            System.out.println("" + e.player.worldObj.getBlockState(pos).getBlock() + pos);
+        }
+        if (MineRun.elytraMode() == 0) {
+            if (!e.player.isInLava() && !e.player.isInWater()) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
             }
@@ -115,7 +122,7 @@ public class MineRunEvent {
             }
         }
         if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
-            if(MineRun.elytraMode() == 2) {
+            if (MineRun.elytraMode() == 2) {
                 if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
                     MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
                     lineUD++;
@@ -189,17 +196,17 @@ public class MineRunEvent {
             }
         }
         if (MineRun.elytraMode() == 0) {
-            System.out.println(lineLR+" - "+DebAPI.isKeyDown(Keyboard.KEY_A)+ " - "+DebAPI.isKeyDown(Keyboard.KEY_D));
+            System.out.println(lineLR + " - " + DebAPI.isKeyDown(Keyboard.KEY_A) + " - " + DebAPI.isKeyDown(Keyboard.KEY_D));
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A)) {
                 lineLR++;
                 boolean isLR = false;
-                if(lineLR == 0) {
+                if (lineLR == 0) {
                     lineLR++;
                     isLR = true;
                 }
                 MineRun.setPosition(posHelper.getXZ(SpawnDirection.LEFT, absLR() * 2, false));
-                if(isLR)
-                    lineLR --;
+                if (isLR)
+                    lineLR--;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("LEFT " + posHelper.getXZ(SpawnDirection.LEFT, absLR() * 2, false));
             }
@@ -207,13 +214,13 @@ public class MineRunEvent {
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
                 lineLR--;
                 boolean isLR = false;
-                if(lineLR == 0) {//가운데로 보내기 위해서 1 깎음
+                if (lineLR == 0) {//가운데로 보내기 위해서 1 깎음
                     lineLR--;
                     isLR = true;
                 }
                 MineRun.setPosition(posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
-                if(isLR)
-                    lineLR ++;
+                if (isLR)
+                    lineLR++;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("RIGHT " + posHelper.getXZ(SpawnDirection.RIGHT, absLR() * 2, false));
             }

@@ -27,16 +27,6 @@ public class EntityMR extends EntityDefaultNPC {
     }
 
     @Override
-    protected void collideWithNearbyEntities() {
-        //super.collideWithNearbyEntities();
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return !super.canBeCollidedWith();
-    }
-
-    @Override
     protected void collideWithEntity(Entity entityIn) {
         //super.collideWithEntity(entityIn);
         if (entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isCreative() && getDistanceToEntity(entityIn) < 1 && !isSturn()) {
@@ -52,7 +42,8 @@ public class EntityMR extends EntityDefaultNPC {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean attackEntityFrom(DamageSource source, float amount)
+    {
         if (source.getEntity() instanceof EntityPlayer) {
             if (source.getEntity().isSneaking()) {
                 this.setDead();
