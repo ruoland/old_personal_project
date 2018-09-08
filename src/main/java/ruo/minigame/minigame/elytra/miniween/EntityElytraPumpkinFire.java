@@ -11,7 +11,7 @@ public class EntityElytraPumpkinFire extends EntityElytraPumpkin {
         super(worldIn);
         setBlockMode(Blocks.PUMPKIN);
         this.setSize(1F, 1.5F);
-        this.setAttack(true);
+        this.setAttackMode(true);
     }
 
     @Override

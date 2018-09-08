@@ -8,6 +8,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -67,10 +69,10 @@ public class MineRunEvent {
             return;
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-            BlockPos pos = e.player.getPosition().add(-Camera.getCamera().traX,2, -Camera.getCamera().traZ);
+            PosHelper posHelper = new PosHelper(e.player);
+            Vec3d vec3i = posHelper.getXZ(SpawnDirection.BACK, 3, false);
+            BlockPos pos = e.player.getPosition().add(vec3i.xCoord, vec3i.yCoord+4, vec3i.zCoord);
             System.out.println("" + e.player.worldObj.getBlockState(pos).getBlock() + pos);
-        }
-        if (MineRun.elytraMode() == 0) {
             if (!e.player.isInLava() && !e.player.isInWater()) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();

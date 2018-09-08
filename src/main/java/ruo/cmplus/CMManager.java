@@ -13,6 +13,7 @@ import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CMManager implements Serializable {
     private static final ResourceLocation[] shaderResourceLocations = new ResourceLocation[]{
@@ -28,14 +29,13 @@ public class CMManager implements Serializable {
             new ResourceLocation("shaders/post/green.json"), new ResourceLocation("shaders/post/blur.json"),
             new ResourceLocation("shaders/post/wobble.json"), new ResourceLocation("shaders/post/blobs.json"),
             new ResourceLocation("shaders/post/antialias.json")};
-
     private static transient Minecraft mc = Minecraft.getMinecraft();
     private static EnumFacing sleepFacing;
     public static boolean norain, mouse, HAND = true, ALL = true, HELMET = true, PORTAL = true, CROSSHAIRS = true, BOSSHEALTH = true, ARMOR = true, HEALTH = true, FOOD = true, AIR = true, HOTBAR = true, EXPERIENCE = true, HEALTHMOUNT = true, JUMPBAR = true, CHAT = true, PLAYER_LIST = true, DEBUG = true;
     private static boolean moveLock, sit, sleep;
     private static GuiCGameOver gameover;
 
-    public static boolean isUI(String name) {
+    public static boolean isActiveUI(String name) {
         if (name.equalsIgnoreCase("HAND"))
             return HAND;
         if (name.equalsIgnoreCase("all"))

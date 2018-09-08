@@ -88,8 +88,8 @@ public class CMPlusEvent {
                 }
             }
             try {
-                if (args[i].startsWith("@") || args[i].indexOf("@플레이어") != -1) {
-                    Entity entity = args[i].indexOf("@플레이어") != -1 ? WorldAPI.getPlayer()
+                if (args[i].startsWith("@") || args[i].contains("@플레이어")) {
+                    Entity entity = args[i].contains("@플레이어") ? WorldAPI.getPlayer()
                             : CommandPlusBase.getPlusEntity(e.getSender().getServer(), e.getSender(),
                             key.split("[.]")[0].replace("@", ""));
                     args[i] = args[i].replace("@플레이어", "@" + WorldAPI.getPlayer().getName());
@@ -169,7 +169,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void login(RenderHandEvent event) {
-        event.setCanceled(!CMManager.isUI("HAND"));
+        event.setCanceled(!CMManager.isActiveUI("HAND"));
     }
 
 
@@ -229,7 +229,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void bgmStop(PlaySoundEvent e) {
-        if (e.getName().indexOf("music.") != -1) {
+        if (e.getName().contains("music.")) {
             e.getManager().stopSound(e.getSound());
             e.getManager().stopSound(e.getResultSound());
             Minecraft.getMinecraft().getSoundHandler().stopSound(e.getSound());
@@ -263,7 +263,7 @@ public class CMPlusEvent {
         if (event.getType() == ElementType.ALL)
             for (String s : uiList) {
                 if (event.getType() == ElementType.valueOf(s)) {
-                    if (!CMManager.isUI(s)) {
+                    if (!CMManager.isActiveUI(s)) {
                         event.setCanceled(true);
                     }
                 }

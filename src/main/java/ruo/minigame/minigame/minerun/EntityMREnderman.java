@@ -23,7 +23,6 @@ import ruo.minigame.minigame.minerun.EntityMR;
 public class EntityMREnderman extends EntityMR {
     private int moveDelay;
     private static DataParameter<Integer> MAX_DELAY = EntityDataManager.createKey(EntityMREnderman.class, DataSerializers.VARINT);
-
     private static DataParameter<Integer> MOVE_XZ = EntityDataManager.createKey(EntityMREnderman.class, DataSerializers.VARINT);
     private static DataParameter<Float> MOVE_X = EntityDataManager.createKey(EntityMREnderman.class, DataSerializers.FLOAT);
     private static DataParameter<Float> MOVE_Y = EntityDataManager.createKey(EntityMREnderman.class, DataSerializers.FLOAT);
@@ -52,11 +51,9 @@ public class EntityMREnderman extends EntityMR {
         PosHelper posHelper = new PosHelper(player);
         setMoveXZ(0);
         System.out.println("asdf");
-        {
-            setMoveXZ(0);
-            setMoveX((float) posHelper.getX(SpawnDirection.FORWARD, 2, false));
-            setMoveZ((float) posHelper.getZ(SpawnDirection.FORWARD, 2, false));
-        }
+        setMoveXZ(0);
+        setMoveX((float) posHelper.getX(SpawnDirection.FORWARD, 2, false));
+        setMoveZ((float) posHelper.getZ(SpawnDirection.FORWARD, 2, false));
         return super.processInteract(player, hand, stack);
     }
 
@@ -70,8 +67,9 @@ public class EntityMREnderman extends EntityMR {
                 moveDelay = 0;
                 if (!reverse)
                     addMoveXZ(1);
-                else if (reverse)
+                else {
                     addMoveXZ(-1);
+                }
 
                 if (getMoveXZ() == 3 || getMoveXZ() == -1) {
                     reverse = !reverse;

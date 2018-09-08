@@ -9,11 +9,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.minigame.MiniGame;
+import ruo.minigame.effect.AbstractTick;
+import ruo.minigame.effect.TickRegister;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultNPC;
 
-public class EntityElytraBullet extends EntityDefaultNPC {
+public class EntityElytraBullet extends EntityElytraPumpkinAttack {
 
     private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityElytraBullet.class, DataSerializers.FLOAT);
 
@@ -33,14 +36,10 @@ public class EntityElytraBullet extends EntityDefaultNPC {
 
     @Override
     public void targetArrive() {
-    }
-
-    public void setDamage(float damage) {
-        dataManager.set(DAMAGE, damage);
-    }
-
-    public float getDamage() {
-        return dataManager.get(DAMAGE);
+        if(isTNTMode()){
+            worldObj.createExplosion(this, posX, posY, posZ, 1.5F, true);
+            setDead();
+        }
     }
 
     @Override
@@ -57,6 +56,15 @@ public class EntityElytraBullet extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         motionY = 0;
+        if(isWaterMode()) {
+            this.worldObj.setBlockState(this.getPosition(), Blocks.WATER.getDefaultState());
+            TickRegister.register(new AbstractTick(20, false) {
+                @Override
+                public void run(TickEvent.Type type) {
+                    worldObj.setBlockToAir(getPosition());
+                }
+            });
+        }
         if(!MiniGame.elytra.isStart())
             setDead();
     }
@@ -78,9 +86,19 @@ public class EntityElytraBullet extends EntityDefaultNPC {
             if (isBurning()) {
                 entityIn.setFire(2);
             }
+            if(isTNTMode()){
+                worldObj.createExplosion(this, posX, posY, posZ, 1.5F, true);
+            }
             entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
             this.setDead();
         }
+    }
+    public void setDamage(float damage) {
+        dataManager.set(DAMAGE, damage);
+    }
+
+    public float getDamage() {
+        return dataManager.get(DAMAGE);
     }
 
 }

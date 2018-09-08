@@ -20,10 +20,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -262,7 +264,7 @@ public class SUAKGEEvent {
                             living.attackEntityFrom(event.getSource(), event.getAmount());
                         }
                     }
-                    if ((mob instanceof IMob && mob.getAttackTarget() instanceof EntityPlayer) || !(mob instanceof IMob)) {
+                    if (!(mob instanceof IMob) || mob.getAttackTarget() instanceof EntityPlayer) {
                         mob.attackEntityFrom(event.getSource(), event.getAmount());
                     }
                 }

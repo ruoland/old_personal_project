@@ -16,6 +16,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
@@ -230,11 +231,7 @@ public class DebAPI {
     }
 
     public static void removeRecipe(ItemStack stack) {
-        Iterator recipe = CraftingManager.getInstance().getRecipeList().iterator();
-        while (recipe.hasNext()) {
-            if (ItemStack.areItemStacksEqual(((IRecipe) (recipe.next())).getRecipeOutput(), stack))
-                recipe.remove();
-        }
+        CraftingManager.getInstance().getRecipeList().removeIf(o -> ItemStack.areItemStacksEqual(((IRecipe) (o)).getRecipeOutput(), stack));
     }
 
     public static void createJson(Item itemBlock, Item model) {
@@ -272,7 +269,6 @@ public class DebAPI {
             writerItem.write(gson.toJson(parent));
             writerItem.newLine();
             writerItem.close();
-            ;
             if (itemBlock instanceof ItemBlock) {
                 jsonBlockState.createNewFile();
                 jsonBlock.createNewFile();
@@ -304,7 +300,7 @@ public class DebAPI {
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
     }
 
-    public static void registerTileEntity(Block block, Class tileEntity, TileEntitySpecialRenderer renderer) {
+    public static void registerTileEntity(Block block, Class<? extends TileEntity> tileEntity, TileEntitySpecialRenderer<? super TileEntity> renderer) {
         GameRegistry.register(block);
         GameRegistry.register(new ItemBlock(block), block.getRegistryName());
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
@@ -315,14 +311,14 @@ public class DebAPI {
     }
 
     public static void registerEntity(Object mod, String name, Class entity) {
-        registerEntity(mod, name, "minigame:textures/entity/herobrine.png", entity, new ModelDefaultNPC());
+        registerEntity(mod, name, "minigame:textures/entity/steve.png", entity, new ModelDefaultNPC());
     }
 
     public static void registerEntity(Object mod, String name, String texture, Class entity) {
         registerEntity(mod, name, texture, entity, new ModelDefaultNPC());
     }
 
-    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class entity) {
+    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity> entity) {
         registerEntity(mod, name, texture, entity, new ModelDefaultNPC());
     }
 

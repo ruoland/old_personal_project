@@ -1,14 +1,10 @@
 package ruo.minigame.minigame.elytra;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.camera.Camera;
-import ruo.cmplus.cm.CommandUI;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.PosHelper;
@@ -21,10 +17,8 @@ import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.AbstractMiniGame;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinFire;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
@@ -82,10 +76,9 @@ public class Elytra extends AbstractMiniGame {
                 continue;
             }
             elytraPumpkin.setTarget(elytraPumpkin.getSpawnX(), elytraPumpkin.getSpawnY(), elytraPumpkin.getSpawnZ()).setTargetSpeed(0.5);
-            elytraPumpkin.setBlockMode(Blocks.STONE);
-            elytraPumpkin.setAttack(false);
+            elytraPumpkin.setAttackMode(false);
             elytraPumpkin.setDeathTimer(100);
-
+            elytraPumpkin.setReturn(true);
         }
         monsterList.clear();
     }
@@ -112,8 +105,18 @@ public class Elytra extends AbstractMiniGame {
 
     public void third() {
         System.out.println("서드");
-        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setForwardMode(true).setAttack(true).setTargetSpeed(0.8);
-        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setForwardMode(true).setAttack(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setForwardMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setForwardMode(true).setTargetSpeed(0.4);
+    }
+    public void four() {
+        System.out.println("네번째");
+        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setTNTMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setTNTMode(true).setTargetSpeed(0.4);
+    }
+    public void five() {
+        System.out.println("다섯번째");
+        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setWaterMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setTeleportMode(true).setTargetSpeed(0.4);
     }
     @Override
     public boolean end(Object... obj) {
@@ -138,7 +141,7 @@ public class Elytra extends AbstractMiniGame {
         pumpkin.setTarget(spawnPosHelper.getXZ(direction, plus, rlplus, true));
         pumpkin.setTargetSpeed(0.1);
         DebAPI.msgText("MiniGame",""+spawnPosHelper.getXZ(direction, plus, rlplus, true));
-        pumpkin.setAttack(true);
+        pumpkin.setAttackMode(true);
         return pumpkin;
     }
 
@@ -152,7 +155,7 @@ public class Elytra extends AbstractMiniGame {
             setPositionAndSpawn(direction, pumpkin, 6, rlPlus);
         else
             setPositionAndSpawn(direction, pumpkin, 20, rlPlus);
-        pumpkin.setAttack(true);
+        pumpkin.setAttackMode(true);
         pumpkin.setForwardMode(true);
         pumpkin.setBlock(Blocks.BRICK_BLOCK);
         return pumpkin;
@@ -239,7 +242,7 @@ public class Elytra extends AbstractMiniGame {
             Camera.getCamera().rotateCamera(0, 0, 50);
             Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
         }
-        ((ElytraEvent) MiniGame.elytraEvent).elytraMode = false;
+        MiniGame.elytraEvent.elytraMode = false;
 
     }
 
