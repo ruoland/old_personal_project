@@ -362,6 +362,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public BlockPos getSpawnPos() {
         return new BlockPos(getSpawnX(), getSpawnY(), getSpawnZ());
     }
+    public Vec3d getSpawnPosVec() {
+        return new Vec3d(getSpawnX(), getSpawnY(), getSpawnZ());
+    }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {

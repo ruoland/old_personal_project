@@ -116,7 +116,7 @@ public class Elytra extends AbstractMiniGame {
     public void five() {
         System.out.println("다섯번째");
         spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setWaterMode(true).setTargetSpeed(0.8);
-        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setTeleportMode(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setWaterMode(true).setTargetSpeed(0.4);
     }
     @Override
     public boolean end(Object... obj) {

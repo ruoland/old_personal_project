@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderPigZombie;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.ResourceLocation;
@@ -155,6 +156,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         if (entity.getModel() == TypeModel.NPC && !(mainModel instanceof ModelDefaultNPC)) {
             mainModel = new ModelDefaultNPC();
             DEFAULT_RES_LOC = new ResourceLocation("minigame:textures/entity/steve.png");
+        }
+        if ((entity.getModel() == TypeModel.PIG_ZOMBIE && !(mainModel instanceof ModelZombie))) {
+            mainModel = new ModelZombie();
+            DEFAULT_RES_LOC = new ResourceLocation("textures/entity/zombie_pigman.png");
         }
         if ((entity.getModel() == TypeModel.ZOMBIE && !(mainModel instanceof ModelZombie))) {
             mainModel = new ModelZombie();
