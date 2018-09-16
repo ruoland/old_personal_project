@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
-public class TileBreadCallRenderer extends TileEntitySpecialRenderer<TileBreadCall> {
+public class TileBreadCallRenderer<T> extends TileEntitySpecialRenderer<TileBreadCall> {
 	@Override
 	public void renderTileEntityAt(TileBreadCall te, double x, double y, double z, float partialTicks, int destroyStage) {
 		super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);

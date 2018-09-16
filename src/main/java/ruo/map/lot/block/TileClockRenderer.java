@@ -3,7 +3,7 @@ package ruo.map.lot.block;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
-public class TileClockRenderer extends TileEntitySpecialRenderer<TileClock> {
+public class TileClockRenderer<T> extends TileEntitySpecialRenderer<TileClock> {
 	ruo.map.lot.block.ModelClock clock = new ruo.map.lot.block.ModelClock();
 	@Override
 	public void renderTileEntityAt(TileClock te, double x, double y, double z, float partialTicks, int destroyStage) {

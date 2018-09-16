@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 
-public class TileArrowSpawnRenderer extends TileEntitySpecialRenderer<TileArrowSpawn> {
+public class TileArrowSpawnRenderer<T> extends TileEntitySpecialRenderer<TileArrowSpawn> {
 	ItemStack stack = new ItemStack(Blocks.STONE);
 	@Override
 	public void renderTileEntityAt(TileArrowSpawn te, double x, double y, double z, float partialTicks, int destroyStage) {

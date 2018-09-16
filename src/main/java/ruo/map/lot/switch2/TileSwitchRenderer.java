@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
 
-public class TileSwitchRenderer extends TileEntitySpecialRenderer<TileSwitch> {
+public class TileSwitchRenderer<T> extends TileEntitySpecialRenderer<TileSwitch> {
 	private static final ResourceLocation ZOMBIE_TEXTURES = new ResourceLocation("textures/entity/zombie/zombie.png");
 	ModelSwitch clock = new ModelSwitch();
 	ModelZombie zombie = new ModelZombie();

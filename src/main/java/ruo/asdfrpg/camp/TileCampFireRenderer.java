@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class TileCampFireRenderer extends TileEntitySpecialRenderer<TileCampFire> {
+public class TileCampFireRenderer<T> extends TileEntitySpecialRenderer<TileCampFire> {
     private ModelCampFire campFire = new ModelCampFire();
     private ResourceLocation resourceLocation = new ResourceLocation("textures/blocks/log_oak");
 	@Override

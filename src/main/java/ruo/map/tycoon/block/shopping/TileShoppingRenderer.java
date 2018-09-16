@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
-public class TileShoppingRenderer extends TileEntitySpecialRenderer<TileShopping> {
+public class TileShoppingRenderer<T> extends TileEntitySpecialRenderer<TileShopping> {
 
 	@Override
 	public void renderTileEntityAt(TileShopping te, double x, double y, double z, float partialTicks, int destroyStage) {

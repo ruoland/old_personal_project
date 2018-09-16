@@ -8,7 +8,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class TileBreadWorkbenchRenderer extends TileEntitySpecialRenderer<TileBreadWorkbench> {
+public class TileBreadWorkbenchRenderer<T> extends TileEntitySpecialRenderer<TileBreadWorkbench> {
     private static final EntityItem wheatItem = new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(Items.WHEAT));
     private static final EntityItem wheatDust = new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(Items.WHEAT));
     private static final EntityItem wheatComplete = new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(Items.WHEAT));

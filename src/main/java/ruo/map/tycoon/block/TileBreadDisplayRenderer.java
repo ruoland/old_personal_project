@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import ruo.minigame.api.RenderAPI;
 
-public class TileBreadDisplayRenderer extends TileEntitySpecialRenderer<TileBreadDisplay> {
+public class TileBreadDisplayRenderer<T> extends TileEntitySpecialRenderer<TileBreadDisplay> {
 
 	@Override
 	public void renderTileEntityAt(TileBreadDisplay te, double x, double y, double z, float partialTicks, int destroyStage) {
