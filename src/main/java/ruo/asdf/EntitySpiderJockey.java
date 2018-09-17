@@ -24,6 +24,7 @@ public class EntitySpiderJockey extends EntitySpider {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
         if (getAttackTarget() != null) {
             EntityLivingBase target = getAttackTarget();
             if (getPassengers().size() > 0 && getDistanceToEntity(target) < 5) {

@@ -53,7 +53,6 @@ class EntityModelNPC extends EntityMob {
     protected TypeModel typeModel = TypeModel.NPC;
     private ModelBase customModel;
     private ResourceLocation texture;
-    private RenderDefaultNPC asdfasdgasdgas;//렌더 디폴트 엔피씨 클래스 이동용
 
     public EntityModelNPC(World world) {
         super(world);
