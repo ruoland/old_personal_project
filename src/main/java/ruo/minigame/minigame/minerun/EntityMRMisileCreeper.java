@@ -8,13 +8,13 @@ import net.minecraft.world.World;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.TypeModel;
 
-public class EntityMRMissileCreeper extends EntityMR {
-    private static final DataParameter<Boolean> RUN_MISSILE = EntityDataManager.createKey(EntityMRMissileCreeper.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> END_MISSILE = EntityDataManager.createKey(EntityMRMissileCreeper.class, DataSerializers.BOOLEAN);
+public class EntityMRMisileCreeper extends EntityMR {
+    private static final DataParameter<Boolean> RUN_MISSILE = EntityDataManager.createKey(EntityMRMisileCreeper.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> END_MISSILE = EntityDataManager.createKey(EntityMRMisileCreeper.class, DataSerializers.BOOLEAN);
 
     private double targetX, targetY, targetZ;
 
-    public EntityMRMissileCreeper(World worldIn) {
+    public EntityMRMisileCreeper(World worldIn) {
         super(worldIn);
         this.setModel(TypeModel.CREEPER);
     }
@@ -26,22 +26,25 @@ public class EntityMRMissileCreeper extends EntityMR {
         dataManager.register(END_MISSILE, false);
     }
 
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (isRunMissle() && WorldAPI.getPlayer().getDistance(targetX, targetY, targetZ) < 4) {
-            setPosition(targetX, targetY + 4, targetZ);
-            dataManager.set(END_MISSILE, true);
-            this.setRotate(getRotateX(), getRotateY() + 180, getRotateZ());
-        }
-        if (isRunMissle()) {
-            this.setVelocity(0, 0.01, 0);
-        } else if(!isEndMissle()){
-            if (getDistanceToEntity(WorldAPI.getPlayer()) < 10) {
+        if(!isRunMissle() && !isEndMissle()){//플레이어를 기다리는 상태
+            if (getDistanceToEntity(WorldAPI.getPlayer()) < 16) {//플레이어 찾으면
                 dataManager.set(RUN_MISSILE, true);
                 targetX = MineRun.xCoord() * 10;
                 targetY = posY;
                 targetZ = MineRun.zCoord() * 10;
+                this.addRotate(MineRun.xCoord() * 90, 0, MineRun.zCoord() * 90);
+
+            }
+        }
+        if (isRunMissle()) {
+            this.setVelocity(-MineRun.xCoord(), 0, -MineRun.zCoord());
+            //플레이어와 거리가 멀어진 경우(플레이어가 크리퍼를 지나친 경우)
+            if (WorldAPI.getPlayer().getDistance(targetX, targetY, targetZ) < 20) {
+                dataManager.set(END_MISSILE, true);
             }
         }
     }
@@ -57,5 +60,7 @@ public class EntityMRMissileCreeper extends EntityMR {
     @Override
     public void collideAttack(Entity entityIn) {
         worldObj.createExplosion(this, posX, posY, posZ, 1.5F, false);
+        dataManager.set(RUN_MISSILE, false);
+        dataManager.set(END_MISSILE, true);
     }
 }

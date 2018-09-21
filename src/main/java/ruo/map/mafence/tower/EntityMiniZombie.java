@@ -1,6 +1,5 @@
 package ruo.map.mafence.tower;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.world.World;
 import ruo.map.mafence.EntityMonster;

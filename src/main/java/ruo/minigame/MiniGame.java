@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -114,7 +113,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
         DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
-        DebAPI.registerEntity(this, "MRMissileCreeper", EntityMRMissileCreeper.class);
+        DebAPI.registerEntity(this, "MRMissileCreeper", EntityMRRocketCreeper.class);
         DebAPI.registerEntity(this, "MRPigZombie", EntityMRPigZombie.class);
 
         GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
