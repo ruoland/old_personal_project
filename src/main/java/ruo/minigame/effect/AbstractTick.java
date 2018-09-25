@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.minigame.api.WorldAPI;
 
-import static ruo.minigame.api.WorldAPI.floor;
 import static ruo.minigame.api.WorldAPI.getWorld;
+import static ruo.minigame.api.WorldAPI.round;
 
 public abstract class AbstractTick {
 	protected String absName;
@@ -173,30 +173,30 @@ public abstract class AbstractTick {
 		private boolean checkX() {
 			double x2 = mob.posX;
 			for (double x : xArray) {
-				if(x == x2 || x == -12345 || (int) x == (int) x2 || floor(x) == floor(x2)){
+				if(x == x2 || x == -12345 || (int) x == (int) x2 || round(x) == round(x2)){
 					return true;
 				}
 			}
-			return posX == x2 || posX == -12345 || (int) posX == (int) x2 || floor(posX) == floor(x2);
+			return posX == x2 || posX == -12345 || (int) posX == (int) x2 || round(posX) == round(x2);
 		}
 
 		private boolean checkY() {
 			double y2 = mob.posY;
 			for (double y : yArray) {
-				if(y == y2 || y == -12345 || (int) y == (int) y2 || floor(y) == floor(y2))
+				if(y == y2 || y == -12345 || (int) y == (int) y2 || round(y) == round(y2))
 					return true;
 			}
-			return posY == y2 || posY == -12345 || (int) posY == (int) y2 || floor(posY) == floor(y2);
+			return posY == y2 || posY == -12345 || (int) posY == (int) y2 || round(posY) == round(y2);
 		}
 
 		private boolean checkZ() {
 			double z2 = mob.posZ;
 			for (double z : yArray) {
-				if(z == z2 || z == -12345 || (int) z == (int) z2 || floor(z) == floor(z2)) {
+				if(z == z2 || z == -12345 || (int) z == (int) z2 || round(z) == round(z2)) {
 					return true;
 				}
 			}
-			return posZ == z2 || posZ == -12345 || (int) posZ == (int) z2 || floor(posZ) == floor(z2);
+			return posZ == z2 || posZ == -12345 || (int) posZ == (int) z2 || round(posZ) == round(z2);
 		}
 	}
 

@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 
 import java.util.Random;
 
@@ -17,7 +17,7 @@ public class SkillBlockThrowAttack extends Skill {
         EntityPlayer player = playerSkill.getPlayer();
         PosHelper posHelper = new PosHelper(player);
         EntityAsdfBlock asdfBlock = new EntityAsdfBlock(player.worldObj);
-        asdfBlock.setPosition(posHelper.getXZ(SpawnDirection.FORWARD, 1, true).addVector(0, 5, 0));
+        asdfBlock.setPosition(posHelper.getXZ(Direction.FORWARD, 1, true).addVector(0, 5, 0));
         player.worldObj.spawnEntityInWorld(asdfBlock);
         for(int i = 0; i < 5;i++)
         getRandomBlock(player, asdfBlock);

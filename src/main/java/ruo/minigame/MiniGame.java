@@ -6,7 +6,10 @@ import api.player.server.ServerPlayerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -50,9 +53,14 @@ import ruo.minigame.minigame.minerun.*;
 import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
 
+import java.lang.reflect.Field;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 
 @Mod(modid = "MiniGame", name = "MiniGame")
 public class MiniGame {
+    public static Logger LOG = Logger.getLogger("MINIGAME");
     public static SimpleNetworkWrapper network;
     public static KeyBinding grab = new KeyBinding("액션-", Keyboard.KEY_R, "카카카테고리");
     public static Block blockInvisible = new BlockInvisible(Material.ANVIL);
@@ -91,7 +99,9 @@ public class MiniGame {
 
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
+
         proxy.pre(e);
+
         network();
         minigameConfig = new Configuration(e.getSuggestedConfigurationFile());
         minigameConfig.load();
@@ -109,12 +119,30 @@ public class MiniGame {
     public void init(FMLInitializationEvent e) {
         //스크롤 메이커용
         //DebAPI.registerEntity(this, "ScrollMouse", EntityScrollMouse.class);
+
         //마인런 게임용
+        try {
+            Field modelManagerField = Minecraft.class.getDeclaredField("modelManager");
+            modelManagerField.setAccessible(true);
+            ModelManager modelManager = (ModelManager) modelManagerField.get(Minecraft.getMinecraft());
+            Field blockRenderField = Minecraft.class.getDeclaredField("blockRenderDispatcher");
+            blockRenderField.setAccessible(true);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@"+modelManager+blockRenderField.get(Minecraft.getMinecraft()));
+            BlockRendererDispatcher blockRenderDispatcher = new BlockRendererDispatcherMineRun(modelManager.getBlockModelShapes(), Minecraft.getMinecraft().getBlockColors());
+            blockRenderField.set(Minecraft.getMinecraft(), blockRenderDispatcher);
+            ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(blockRenderDispatcher);
+            blockRenderDispatcher.onResourceManagerReload(null);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
         DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
-        DebAPI.registerEntity(this, "MRMissileCreeper", EntityMRRocketCreeper.class);
-        DebAPI.registerEntity(this, "MRPigZombie", EntityMRPigZombie.class);
+        DebAPI.registerEntity(this, "MRMissileCreeper", EntityMRMissileCreeper.class);
+        DebAPI.registerEntity(this, "MRRocketCreeper", EntityMRRocketCreeper.class);
+
+        DebAPI.registerEntity(this, "MRWalkingZombie", EntityMRWalkingZombie.class);
 
         GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
         //엘리트라 슈팅 게임용

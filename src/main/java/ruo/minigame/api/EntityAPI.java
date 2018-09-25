@@ -128,7 +128,7 @@ public class EntityAPI {
         return WorldAPI.getPlayer().posZ;
     }
 
-    public static double getX(EntityLivingBase base, SpawnDirection spawnDirection, double plus, boolean pos) {
+    public static double getX(EntityLivingBase base, Direction spawnDirection, double plus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD:
                 return forwardX(base, plus, pos);
@@ -143,7 +143,7 @@ public class EntityAPI {
         return 0;
     }
 
-    public static double getX(EntityLivingBase base, SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public static double getX(EntityLivingBase base, Direction spawnDirection, double plus, double rlplus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD_LEFT:
                 return forwardX(base, plus, pos)+leftX(base, rlplus, false);
@@ -158,7 +158,7 @@ public class EntityAPI {
         return getX(base, spawnDirection, plus, pos);
     }
 
-    public static double getZ(EntityLivingBase base, SpawnDirection spawnDirection, double plus, boolean pos) {
+    public static double getZ(EntityLivingBase base, Direction spawnDirection, double plus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD:
                 return forwardZ(base, plus, pos);
@@ -173,7 +173,7 @@ public class EntityAPI {
         return 0;
     }
 
-    public static double getZ(EntityLivingBase base, SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public static double getZ(EntityLivingBase base, Direction spawnDirection, double plus, double rlplus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD_LEFT:
                 return forwardZ(base, plus, pos)+leftZ(base, rlplus, false);

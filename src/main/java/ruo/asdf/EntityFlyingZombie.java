@@ -9,7 +9,7 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.map.TypeModel;
 
@@ -47,8 +47,8 @@ public class EntityFlyingZombie extends EntityDefaultNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        motionX+=this.getX(SpawnDirection.FORWARD, 0.01, false);
-        motionZ+=this.getZ(SpawnDirection.FORWARD, 0.01, false);
+        motionX+=this.getX(Direction.FORWARD, 0.01, false);
+        motionZ+=this.getZ(Direction.FORWARD, 0.01, false);
         motionY = 0;
         if(isAttackTargetPlayer()){
             if(getAttackTarget().getDistance(posX,getAttackTarget().posY, posZ) > 5) {

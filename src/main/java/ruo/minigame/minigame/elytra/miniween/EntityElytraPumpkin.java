@@ -11,14 +11,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
-    private SpawnDirection spawnDirection;
-    private static final DataParameter<Boolean> TNT_MODE = EntityDataManager.createKey(EntityElytraPumpkinAttack.class, DataSerializers.BOOLEAN);
+    private Direction spawnDirection;
+    private static final DataParameter<Boolean> TNT_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> WATER_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MOVE_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
@@ -66,7 +66,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(2000000000);
     }
 
-    public void setDirection(SpawnDirection spawn) {
+    public void setDirection(Direction spawn) {
         spawnDirection = spawn;
     }
 
@@ -84,11 +84,11 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             if (moveCooldown > 60)
                 moveCooldown = 0;
             if (moveCooldown < 20) {
-                this.setPosition(getX(SpawnDirection.RIGHT, 1, true), posY, getZ(SpawnDirection.RIGHT, 1, true));
+                this.setPosition(getX(Direction.RIGHT, 1, true), posY, getZ(Direction.RIGHT, 1, true));
             } else if (moveCooldown > 20 && moveCooldown < 40) {
                 this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
             } else if (moveCooldown > 40)
-                this.setPosition(getX(SpawnDirection.LEFT, 1, true), posY, getZ(SpawnDirection.LEFT, 1, true));
+                this.setPosition(getX(Direction.LEFT, 1, true), posY, getZ(Direction.LEFT, 1, true));
         }
 
         if (isMoveMode()) {
@@ -96,9 +96,9 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             if (moveCooldown == 40)
                 moveCooldown = 0;
             if (moveCooldown > 20) {
-                this.setVelocity(getX(SpawnDirection.RIGHT, 0.01, false), 0, getZ(SpawnDirection.RIGHT, 0.01, false));
+                this.setVelocity(getX(Direction.RIGHT, 0.01, false), 0, getZ(Direction.RIGHT, 0.01, false));
             } else {
-                this.setVelocity(getX(SpawnDirection.LEFT, 0.01, false), 0, getZ(SpawnDirection.LEFT, 0.01, false));
+                this.setVelocity(getX(Direction.LEFT, 0.01, false), 0, getZ(Direction.LEFT, 0.01, false));
             }
         }
         if (isServerWorld() && isForwardMode() && noTarget() && !isReturn())//페이크 뒤로 보냄
@@ -137,7 +137,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         setMoveMode(compound.getBoolean("MOVE_MODE"));
         setTeleportMode(compound.getBoolean("TELEPORT_MODE"));
         setWaterMode(compound.getBoolean("WATER_MODE"));
-        spawnDirection = SpawnDirection.valueOf(compound.getString("SPAWN_DIRECTION"));
+        spawnDirection = Direction.valueOf(compound.getString("SPAWN_DIRECTION"));
 
     }
 

@@ -8,7 +8,7 @@ import ruo.cmplus.camera.Camera;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
@@ -86,37 +86,37 @@ public class Elytra extends AbstractMiniGame {
     public void first() {
         System.out.println("퍼스ㅡㅌ");
         for (int i = 1; i < 3; i++) {
-            spawnPumpkinFire(SpawnDirection.FORWARD_RIGHT, i + 1).attackCooldown = 30;
-            spawnPumpkinFire(SpawnDirection.FORWARD_LEFT, i + 1).defaultCooldown = 30;
+            spawnPumpkinFire(Direction.FORWARD_RIGHT, i + 1).attackCooldown = 30;
+            spawnPumpkinFire(Direction.FORWARD_LEFT, i + 1).defaultCooldown = 30;
         }
-        spawnPumpkinAttack(SpawnDirection.FORWARD, 5, 0).setFireAttack(true);
-        spawnPumpkinAttack(SpawnDirection.LEFT, 5, 0);
-        spawnPumpkinAttack(SpawnDirection.RIGHT, 5, 0);
+        spawnPumpkinAttack(Direction.FORWARD, 5, 0).setFireAttack(true);
+        spawnPumpkinAttack(Direction.LEFT, 5, 0);
+        spawnPumpkinAttack(Direction.RIGHT, 5, 0);
     }
 
     public void second() {
         System.out.println("세컨드");
         for (int i = 1; i < 4; i++) {
-            spawnPumpkinFire(SpawnDirection.FORWARD_RIGHT, i + 3).setHealth(2);
-            spawnPumpkinFire(SpawnDirection.FORWARD_LEFT, i + 3).setHealth(2);
+            spawnPumpkinFire(Direction.FORWARD_RIGHT, i + 3).setHealth(2);
+            spawnPumpkinFire(Direction.FORWARD_LEFT, i + 3).setHealth(2);
         }
-        spawnPumpkinAttack(SpawnDirection.FORWARD, 5, 0).setFireAttack(true);
+        spawnPumpkinAttack(Direction.FORWARD, 5, 0).setFireAttack(true);
     }
 
     public void third() {
         System.out.println("서드");
-        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setForwardMode(true).setTargetSpeed(0.8);
-        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setForwardMode(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setForwardMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setForwardMode(true).setTargetSpeed(0.4);
     }
     public void four() {
         System.out.println("네번째");
-        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setTNTMode(true).setTargetSpeed(0.8);
-        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setTNTMode(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setTNTMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setTNTMode(true).setTargetSpeed(0.4);
     }
     public void five() {
         System.out.println("다섯번째");
-        spawnPumpkinAttack(SpawnDirection.FORWARD_RIGHT, 8, 2).setWaterMode(true).setTargetSpeed(0.8);
-        spawnPumpkinAttack(SpawnDirection.FORWARD_LEFT, 8, 2).setWaterMode(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setWaterMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setWaterMode(true).setTargetSpeed(0.4);
     }
     @Override
     public boolean end(Object... obj) {
@@ -135,7 +135,7 @@ public class Elytra extends AbstractMiniGame {
     }
 
 
-    public EntityElytraPumpkinAttack spawnPumpkinAttack(SpawnDirection direction, int plus, int rlplus) {
+    public EntityElytraPumpkinAttack spawnPumpkinAttack(Direction direction, int plus, int rlplus) {
         EntityElytraPumpkinAttack pumpkin = new EntityElytraPumpkinAttack(WorldAPI.getWorld());
         setPositionAndSpawn(direction, pumpkin, plus+20, rlplus+6);
         pumpkin.setTarget(spawnPosHelper.getXZ(direction, plus, rlplus, true));
@@ -149,9 +149,9 @@ public class Elytra extends AbstractMiniGame {
      * 플레이어 20블럭 앞에 불타는 호박을 소환함
      * 이 호박은 플레이어 뒤로 이동하면서 플레이어를 공격함
      */
-    public EntityElytraPumpkinAttack spawnPumpkinFire(SpawnDirection direction, int rlPlus) {
+    public EntityElytraPumpkinAttack spawnPumpkinFire(Direction direction, int rlPlus) {
         EntityElytraPumpkinAttack pumpkin = new EntityElytraPumpkinAttack(WorldAPI.getWorld());
-        if (direction == SpawnDirection.LEFT || direction == SpawnDirection.RIGHT)
+        if (direction == Direction.LEFT || direction == Direction.RIGHT)
             setPositionAndSpawn(direction, pumpkin, 6, rlPlus);
         else
             setPositionAndSpawn(direction, pumpkin, 20, rlPlus);
@@ -161,22 +161,22 @@ public class Elytra extends AbstractMiniGame {
         return pumpkin;
     }
 
-    private void setPositionAndSpawn(SpawnDirection direction, EntityElytraPumpkin pumpkin, double plus, double rlplus) {
+    private void setPositionAndSpawn(Direction direction, EntityElytraPumpkin pumpkin, double plus, double rlplus) {
         switch (direction) {
             case FORWARD:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD, plus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(Direction.FORWARD, plus, true));
                 break;
             case FORWARD_LEFT:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_LEFT, plus, rlplus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(Direction.FORWARD_LEFT, plus, rlplus, true));
                 break;
             case FORWARD_RIGHT:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.FORWARD_RIGHT, plus, rlplus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(Direction.FORWARD_RIGHT, plus, rlplus, true));
                 break;
             case LEFT:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.LEFT, plus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(Direction.LEFT, plus, true));
                 break;
             case RIGHT:
-                pumpkin.setPosition(spawnPosHelper.getXZ(SpawnDirection.RIGHT, plus, true));
+                pumpkin.setPosition(spawnPosHelper.getXZ(Direction.RIGHT, plus, true));
                 break;
         }
         pumpkin.setDirection(direction);
@@ -195,20 +195,20 @@ public class Elytra extends AbstractMiniGame {
         Camera.getCamera().moveCamera(0, -10, -5);
         Camera.getCamera().rotateCamera(90, 180, 0);
         if (facingName.equalsIgnoreCase("NORTH")) {
-            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
+            targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
+            targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
         }
         if (facingName.equalsIgnoreCase("SOUTH")) {
-            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
+            targetX = fakePlayer.getX(Direction.BACK, 20, true);
+            targetZ = fakePlayer.getZ(Direction.BACK, 20, true);
         }
         if (facingName.equalsIgnoreCase("WEST")) {
-            targetX = fakePlayer.getX(SpawnDirection.BACK, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.BACK, 20, true);
+            targetX = fakePlayer.getX(Direction.BACK, 20, true);
+            targetZ = fakePlayer.getZ(Direction.BACK, 20, true);
         }
         if (facingName.equalsIgnoreCase("EAST")) {
-            targetX = fakePlayer.getX(SpawnDirection.FORWARD, 20, true);
-            targetZ = fakePlayer.getZ(SpawnDirection.FORWARD, 20, true);
+            targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
+            targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
         }
     }
 

@@ -1,6 +1,7 @@
 package ruo.minigame.minigame.minerun;
 
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -21,7 +22,10 @@ import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.AbstractMiniGame;
 
+import java.util.List;
+
 public class MineRun extends AbstractMiniGame {
+    public static List<BlockPos> removeLavaPos = Lists.newArrayList();
     private static int elytra = 0;//1 = 위로 2 = 앞으로
     private static double xCoord, zCoord;
     protected static double curX, curY, curZ, spawnX, spawnY, spawnZ;
@@ -128,7 +132,7 @@ public class MineRun extends AbstractMiniGame {
             Camera.getCamera().rotateY = 90;
             Camera.getCamera().rotateZ = 0;
         }
-        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3), -1.5, EntityAPI.lookZ(player, 3));
+        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
         Camera.getCamera().playerCamera(true);
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineFB = 0;
@@ -136,8 +140,8 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
         MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
         MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
-        xCoord = EntityAPI.lookX(player, 0.4);
-        zCoord = EntityAPI.lookZ(player, 0.4);
+        xCoord = EntityAPI.lookX(player, 0.3);
+        zCoord = EntityAPI.lookZ(player, 0.3);
         return super.start();
     }
 

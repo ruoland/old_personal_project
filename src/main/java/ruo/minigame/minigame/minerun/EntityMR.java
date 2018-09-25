@@ -15,7 +15,7 @@ import ruo.minigame.map.EntityDefaultNPC;
 import scala.xml.dtd.EntityDef;
 
 public class EntityMR extends EntityDefaultNPC {
-
+    protected boolean isLookPlayer = true;
     public EntityMR(World worldIn) {
         super(worldIn);
         isFly = true;
@@ -61,7 +61,7 @@ public class EntityMR extends EntityDefaultNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (WorldAPI.getPlayer() != null)
+        if (isLookPlayer && WorldAPI.getPlayer() != null)
             this.faceEntity(WorldAPI.getPlayer(), 360, 360);
         this.setVelocity(0,0,0);
 

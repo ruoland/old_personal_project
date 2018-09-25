@@ -1,16 +1,11 @@
 package ruo.map.lopre2;
 
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -18,11 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
+import ruo.map.lopre2.jump1.EntityInvisibleBlock;
+import ruo.map.lopre2.jump1.EntityLavaBlock;
+import ruo.map.lopre2.jump1.EntityMoveBlock;
+import ruo.map.lopre2.jump1.EntityWaterBlockCreator;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.map.lopre2.jump2.EntityKnockbackBlock;
-import ruo.map.lopre2.jump2.EntityTeleportBlock;
-import ruo.minigame.action.ActionEffect;
-import ruo.minigame.api.WorldAPI;
 
 public class ItemSpanner extends Item {
     public static String renderText;

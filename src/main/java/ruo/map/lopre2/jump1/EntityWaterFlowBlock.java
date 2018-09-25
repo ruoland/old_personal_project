@@ -1,6 +1,5 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,16 +10,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
-import ruo.minigame.action.ActionEffect;
-import ruo.minigame.action.GrabHelper;
-import ruo.minigame.api.EntityAPI;
+import ruo.map.lopre2.EntityPreBlock;
+import ruo.map.lopre2.LoPre2;
 import ruo.minigame.api.WorldAPI;
-
-import java.util.List;
 
 //물에 흘러가는 블럭
 public class EntityWaterFlowBlock extends EntityPreBlock {

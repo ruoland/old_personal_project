@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
+import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
 

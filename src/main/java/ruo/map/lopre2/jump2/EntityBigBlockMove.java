@@ -4,7 +4,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import ruo.map.lopre2.EntityMoveBlock;
+import ruo.map.lopre2.jump1.EntityMoveBlock;
 
 public class EntityBigBlockMove extends EntityMoveBlock {
     public EntityBigBlockMove(World worldIn) {

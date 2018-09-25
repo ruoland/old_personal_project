@@ -1,4 +1,4 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.IEntityLivingData;
@@ -14,6 +14,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.map.lopre2.CommandJB;
+import ruo.map.lopre2.EntityPreBlock;
 
 //반복해서 떨어지는 블럭 - 6월 21일
 //1탄에서 용암에 떨어지는 블럭으로 쓰임

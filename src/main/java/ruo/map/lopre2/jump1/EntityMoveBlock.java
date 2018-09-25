@@ -1,6 +1,5 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -17,6 +16,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.map.lopre2.CommandJB;
+import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.action.GrabHelper;
 import ruo.minigame.api.EntityAPI;

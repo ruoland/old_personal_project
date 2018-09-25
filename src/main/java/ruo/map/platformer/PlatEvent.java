@@ -73,7 +73,7 @@ public class PlatEvent {
                         }
                     }
                     if (e.getTarget() instanceof EntityChicken) {
-                        if (WorldAPI.findItem(Plat.chickenRiding) > 0)
+                        if (WorldAPI.findInventoryItemCount(Plat.chickenRiding) > 0)
                             e.getTarget().startRiding(e.getEntityPlayer());
                     }
                 }

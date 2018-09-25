@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import ruo.map.lopre2.EntityMoveBlock;
+import ruo.map.lopre2.jump1.EntityMoveBlock;
 
 import java.util.List;
 

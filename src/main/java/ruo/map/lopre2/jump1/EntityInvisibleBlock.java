@@ -1,10 +1,11 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.map.lopre2.EntityPreBlock;
 
 //
 public class EntityInvisibleBlock extends EntityPreBlock {

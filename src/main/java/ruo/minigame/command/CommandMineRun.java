@@ -4,10 +4,13 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.minigame.minerun.MineRun;
 
 public class CommandMineRun extends CommandBase {
 
@@ -44,6 +47,12 @@ public class CommandMineRun extends CommandBase {
 				EntityPlayer player = (EntityPlayer) sender;
 				WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle()-90, 70);
 				MiniGame.minerun.start(sender, args);
+				return;
+			}
+			if(args[0].equals("lava")){
+				for(BlockPos pos : MineRun.removeLavaPos){
+					sender.getEntityWorld().setBlockState(pos, Blocks.LAVA.getDefaultState());
+				}
 				return;
 			}
 		}

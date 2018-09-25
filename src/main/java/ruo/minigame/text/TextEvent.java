@@ -43,8 +43,8 @@ public class TextEvent {
 	public void onUpdate(WorldTickEvent e){
 		if(e.phase == Phase.END){
 			if(move){
-				int[] mobPos = WorldAPI.floorPos(mob2);
-				int[] mobPos2 = WorldAPI.floorPos(x,y,z);
+				int[] mobPos = WorldAPI.roundPos(mob2);
+				int[] mobPos2 = WorldAPI.roundPos(x,y,z);
 
 				if(mobPos[0] == mobPos2[0] && mobPos[1] == mobPos2[1] && mobPos[2] == mobPos2[2]){
 					move = false;

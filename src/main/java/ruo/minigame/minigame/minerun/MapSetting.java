@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 
@@ -42,20 +42,20 @@ public class MapSetting {
         setBlockZ(lookZ);
 
         for(int i = 0;i<3;i++){
-            double forwardLX = posHelper.getX(SpawnDirection.LEFT, i, true);
-            double forwardLZ = posHelper.getZ(SpawnDirection.LEFT, i, true);
-            double forwardRX = posHelper.getX(SpawnDirection.RIGHT, i, true);
-            double forwardRZ = posHelper.getZ(SpawnDirection.RIGHT, i, true);
+            double forwardLX = posHelper.getX(Direction.LEFT, i, true);
+            double forwardLZ = posHelper.getZ(Direction.LEFT, i, true);
+            double forwardRX = posHelper.getX(Direction.RIGHT, i, true);
+            double forwardRZ = posHelper.getZ(Direction.RIGHT, i, true);
             world.setBlockState(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), Blocks.STONE.getDefaultState());
             world.setBlockState(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), Blocks.STONE.getDefaultState());
             setBlockX(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), lookX);
             setBlockZ(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), lookZ);
         }
         for(int i = -2;i<0;i++){
-            double forwardLX = posHelper.getX(SpawnDirection.LEFT, i, true);
-            double forwardLZ = posHelper.getZ(SpawnDirection.LEFT, i, true);
-            double forwardRX = posHelper.getX(SpawnDirection.RIGHT, i, true);
-            double forwardRZ = posHelper.getZ(SpawnDirection.RIGHT, i, true);
+            double forwardLX = posHelper.getX(Direction.LEFT, i, true);
+            double forwardLZ = posHelper.getZ(Direction.LEFT, i, true);
+            double forwardRX = posHelper.getX(Direction.RIGHT, i, true);
+            double forwardRZ = posHelper.getZ(Direction.RIGHT, i, true);
             world.setBlockState(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), Blocks.STONE.getDefaultState());
             world.setBlockState(new BlockPos(forwardRX, WorldAPI.getPlayer().posY, forwardRZ), Blocks.STONE.getDefaultState());
             setBlockX(new BlockPos(forwardLX, WorldAPI.getPlayer().posY, forwardLZ), lookX);

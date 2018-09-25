@@ -1,6 +1,5 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
-import net.minecraft.block.BlockBarrier;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -13,6 +12,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.WorldAPI;
 
 import java.util.List;

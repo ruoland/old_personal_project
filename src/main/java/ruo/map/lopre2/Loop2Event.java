@@ -5,6 +5,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.util.Sky;
+import ruo.map.lopre2.jump1.EntityBuildBlock;
+import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 
@@ -56,7 +58,7 @@ public class Loop2Event {
             if (currentY == 0) currentY++;
 
             currentZ += WorldAPI.rand.nextInt(4) + Double.valueOf("0." + WorldAPI.rand.nextInt(10));
-            miniween.setPosition(posX + WorldAPI.rand2(4), posY - 1 + currentY, posZ + currentZ);
+            miniween.setPosition(posX + WorldAPI.rand(4) / 10, posY - 1 + currentY, posZ + currentZ);
             worldObj.spawnEntityInWorld(miniween);
         }
     }
@@ -67,7 +69,7 @@ public class Loop2Event {
         double destinationX = posX;
         double destinationY = posY + maxY;
         double destinationZ = posZ + maxZ;
-        entityStarisSpawn(worldObj, posX + WorldAPI.rand2(4), posY - 1 + currentY, posZ + currentZ);
+        entityStarisSpawn(worldObj, posX + WorldAPI.rand(4) / 10, posY - 1 + currentY, posZ + currentZ);
         entityStarisSpawn(worldObj, destinationX, destinationY, destinationZ);
         for (int i = 0; i < maxZ; i++) {
         }
@@ -138,7 +140,7 @@ public class Loop2Event {
 
             }
             currentZ += plusZ;
-            miniween.setPosition(posX + WorldAPI.rand2(4), posY - 1 + currentY, posZ + currentZ);
+            miniween.setPosition(posX + WorldAPI.rand(4) / 10, posY - 1 + currentY, posZ + currentZ);
             worldObj.spawnEntityInWorld(miniween);
             miniween.onInitialSpawn(null, null);
             miniween.setTeleport(false);

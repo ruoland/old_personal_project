@@ -186,7 +186,7 @@ public class EntityWeen extends EntityDefaultNPC {
                         worldObj.spawnEntityInWorld(blockWeen);
                         blockWeen.setTarget(0, 0, 0, 0);
                         blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
-                        blockWeen.addVelocity(WorldAPI.rand2(8), rand.nextInt(3), WorldAPI.rand2(8));
+                        blockWeen.addVelocity(WorldAPI.rand(8), rand.nextInt(3), WorldAPI.rand(8));
                         blockList.add(blockWeen);
                         blockWeen.setDeathTimer(0);
                         System.out.println("소환됨" + blockWeen);
@@ -304,7 +304,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
                     @Override
                     public void run(Type type) {
-                        EntityAttackMiniWeen attackMiniWeen = summonAttackWeen(posHelper.getXZ(SpawnDirection.FORWARD, 8, true).add(posHelper.getXZ(SpawnDirection.RIGHT, WorldAPI.rand(3), false)).addVector(0, rand.nextInt(10), 0));
+                        EntityAttackMiniWeen attackMiniWeen = summonAttackWeen(posHelper.getXZ(Direction.FORWARD, 8, true).add(posHelper.getXZ(Direction.RIGHT, WorldAPI.rand(3), false)).addVector(0, rand.nextInt(10), 0));
                         attackMiniWeen.setTarget(WorldAPI.getPlayer().posX + WorldAPI.rand(1), WorldAPI.getPlayer().posY+ WorldAPI.getPlayer().getEyeHeight(), WorldAPI.getPlayer().posZ + WorldAPI.rand(1));
                         attackMiniWeen.setExplosionStrength(1F);
                         attackMiniWeen.setTargetExplosion(true);

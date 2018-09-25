@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 
@@ -42,7 +43,7 @@ public class CommandNPCModel extends CommandPlusBase {
 				nbttagcompound = JsonToNBT.getTagFromJson(itextcomponent.getUnformattedText());
 				nbttagcompound.setString("id", args[2]);
 				Entity entity = AnvilChunkLoader.readWorldEntityPos(nbttagcompound, WorldAPI.getWorld(), 0, 0, 0, true);
-				EntityDefaultNPC.getNPC(args[0]).setCustomModel(WorldAPI.getEntityModel(entity));
+				EntityDefaultNPC.getNPC(args[0]).setCustomModel(RenderAPI.getEntityModel(entity));
 			} catch (Exception e) {
 				
 				e.printStackTrace();

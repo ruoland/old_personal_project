@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
@@ -107,7 +108,7 @@ public class LOTEffect {
 	
 	
 	public static void openChest(BlockPos pos) {
-		LOTEffect.chestItem = WorldAPI.getChestInventory(pos).getStackInSlot(0);
+		LOTEffect.chestItem = ((TileEntityChest) WorldAPI.getWorld().getTileEntity(pos)).getStackInSlot(0);
 		if(chestItem == null)
 			chestItem = new ItemStack(Items.GOLDEN_APPLE);
 		WorldAPI.teleport(pos.getX()+0.5, pos.getY(), pos.getZ()-2);

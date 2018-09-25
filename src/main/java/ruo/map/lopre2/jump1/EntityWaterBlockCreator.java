@@ -1,4 +1,4 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.IEntityLivingData;
@@ -12,6 +12,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.map.lopre2.CommandJB;
+import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 

@@ -1,11 +1,6 @@
 package ruo.minigame.minigame.elytra.miniween;
 
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ruo.minigame.api.SpawnDirection;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
@@ -16,11 +11,6 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
     public EntityElytraPumpkinAttack(World worldIn) {
         super(worldIn);
         this.setAttackMode(true);
-    }
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
     }
 
     @Override

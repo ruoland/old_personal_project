@@ -1,10 +1,10 @@
 package ruo.minigame.api;
 
-public enum SpawnDirection {
+public enum Direction {
     FORWARD, BACK, RIGHT, LEFT, FORWARD_RIGHT, FORWARD_LEFT, BACK_RIGHT, BACK_LEFT;
 
 
-    public SpawnDirection reverse() {
+    public Direction reverse() {
         if (this == FORWARD_LEFT)
             return BACK_LEFT;
         if (this == FORWARD_RIGHT)
@@ -24,7 +24,7 @@ public enum SpawnDirection {
         return this;
     }
 
-    public SpawnDirection simple(){
+    public Direction simple(){
         if(this == FORWARD_LEFT || this == FORWARD_RIGHT)
             return FORWARD;
         if(this == BACK_LEFT || this == BACK_RIGHT)

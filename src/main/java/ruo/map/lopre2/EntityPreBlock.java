@@ -21,6 +21,8 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
+import ruo.map.lopre2.jump1.EntityBuildBlock;
+import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.map.lopre2.jump2.EntityBigBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;

@@ -2,7 +2,6 @@ package ruo.minigame.minigame.elytra;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumHand;
@@ -13,7 +12,6 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,13 +21,10 @@ import org.lwjgl.input.Keyboard;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
-import ruo.minigame.minigame.elytra.miniween.EntityElytraBullet;
-
-import java.util.Random;
 
 public class ElytraEvent {
     private GameSettings gamesettings = Minecraft.getMinecraft().gameSettings;
@@ -71,24 +66,24 @@ public class ElytraEvent {
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
             spawnArrow();
             if (Elytra.tripleArrow) {
-                spawnArrow(SpawnDirection.FORWARD_RIGHT);
-                spawnArrow(SpawnDirection.FORWARD_LEFT);
+                spawnArrow(Direction.FORWARD_RIGHT);
+                spawnArrow(Direction.FORWARD_LEFT);
             }
         }
     }
 
     public void spawnArrow() {
-        spawnArrow(SpawnDirection.FORWARD);
+        spawnArrow(Direction.FORWARD);
     }
 
-    public void spawnArrow(SpawnDirection direction){
+    public void spawnArrow(Direction direction){
         spawnArrow(direction, FakePlayerHelper.fakePlayer.rotationYaw);
     }
 
     public void spawnArrow(float yaw){
         spawnArrow(null, yaw);
     }
-    public void spawnArrow(SpawnDirection direction, float yaw) {
+    public void spawnArrow(Direction direction, float yaw) {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
         PosHelper posHelper = new PosHelper(player);
         World world = player.worldObj;

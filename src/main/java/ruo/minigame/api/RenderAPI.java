@@ -8,10 +8,12 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -28,6 +30,7 @@ import ruo.minigame.map.RenderDefaultNPC;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +41,20 @@ import static org.lwjgl.opengl.GL12.GL_RESCALE_NORMAL;
 public class RenderAPI {
 
     private static Minecraft mc = Minecraft.getMinecraft();
+    public static ModelBase getEntityModel(Entity entity) {
+        Render r = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
+        Field f;
+        try {
+            f = r.getClass().getDeclaredField("mainModel");
+            f.setAccessible(true);
+
+            return (ModelBase) f.get(r);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static ResourceLocation getDynamicTexture(String name, File file) {
         try {

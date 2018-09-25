@@ -41,7 +41,7 @@ public class WeenEffect {
 								EntityBlockWeen blockWeen = new EntityBlockWeen(worldObj);
 								blockWeen.setPosition(getPos());
 								blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
-								blockWeen.addVelocity(WorldAPI.rand2(9), rand.nextInt(3), WorldAPI.rand2(9));
+								blockWeen.addVelocity(WorldAPI.rand(9), rand.nextInt(3), WorldAPI.rand(9));
 								System.out.println("소환됨"+blockWeen);
 							}
 						}
@@ -85,9 +85,9 @@ public class WeenEffect {
 			miniween.isFly = true;
 
 			if(!minus)
-				miniween.setPosition(startX + WorldAPI.rand2(4), startY - 1 + currentY, startZ - 45 + currentZ);
+				miniween.setPosition(startX + WorldAPI.rand(4), startY - 1 + currentY, startZ - 45 + currentZ);
 			if(minus)
-				miniween.setPosition(startX + WorldAPI.rand2(4), startY - 1 + currentY, startZ + 45 + currentZ);
+				miniween.setPosition(startX + WorldAPI.rand(4), startY - 1 + currentY, startZ + 45 + currentZ);
 			WorldAPI.getWorld().spawnEntityInWorld(miniween);
 		}
 	}
@@ -187,9 +187,9 @@ public class WeenEffect {
 			miniween.ween = entity;
 
 			if(!minus)
-				miniween.setPosition(posX + WorldAPI.rand2(4), posY - 1 + currentY, posZ - 45 + currentZ);
+				miniween.setPosition(posX + WorldAPI.rand(4), posY - 1 + currentY, posZ - 45 + currentZ);
 			if(minus)
-				miniween.setPosition(posX + WorldAPI.rand2(4), posY - 1 + currentY, posZ + 45 + currentZ);
+				miniween.setPosition(posX + WorldAPI.rand(4), posY - 1 + currentY, posZ + 45 + currentZ);
 			entity.worldObj.spawnEntityInWorld(miniween);
 		}
 	}
@@ -233,9 +233,9 @@ public class WeenEffect {
 			miniween.ween = entity;
 
 			if(!minus)
-				miniween.setPosition(posX - 45 + currentX , posY - 1 + currentY, posZ + WorldAPI.rand2(5));
+				miniween.setPosition(posX - 45 + currentX , posY - 1 + currentY, posZ + WorldAPI.rand(5));
 			if(minus)
-				miniween.setPosition(posX + 45 + currentX, posY - 1 + currentY, posZ + WorldAPI.rand2(5));
+				miniween.setPosition(posX + 45 + currentX, posY - 1 + currentY, posZ + WorldAPI.rand(5));
 			entity.worldObj.spawnEntityInWorld(miniween);
 		}
 	}

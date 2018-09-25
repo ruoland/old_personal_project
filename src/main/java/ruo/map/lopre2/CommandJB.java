@@ -1,8 +1,6 @@
 package ruo.map.lopre2;
 
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -13,8 +11,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
-import ruo.cmplus.cm.v18.CommandFly;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.map.lopre2.jump1.EntityMoveBlock;
+import ruo.map.lopre2.jump1.EntityWaterBlockCreator;
 import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
 import ruo.minigame.action.ActionEffect;
@@ -44,21 +43,6 @@ public class CommandJB extends CommandPlusBase {
                 EntityJumpSpider spider = new EntityJumpSpider(WorldAPI.getWorld());
                 spider.setPosition(player.posX, player.posY, player.posZ);
                 WorldAPI.getWorld().spawnEntityInWorld(spider);
-            }
-            if (args[0].equalsIgnoreCase("loopmove")) {
-                Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
-                if (entity != null) {
-                    EntityDefaultNPC npc = EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
-                    if (npc instanceof EntityMoveBlock) {
-                        EntityMoveBlock loopMoveBlock = (EntityMoveBlock) npc;
-                        if (args[1].equalsIgnoreCase("add")) {
-                            loopMoveBlock.endPos[0] = loopMoveBlock.posX + EntityAPI.lookX(npc, Integer.valueOf(args[2]));
-                            loopMoveBlock.endPos[1] = loopMoveBlock.posY;
-                            loopMoveBlock.endPos[2] = loopMoveBlock.posZ + EntityAPI.lookZ(npc, Integer.valueOf(args[2]));
-                        }
-                    }
-
-                }
             }
             if (args[0].equalsIgnoreCase("crawl")) {
                 boolean var = t.findBoolean(args, 1, false);
@@ -156,7 +140,6 @@ public class CommandJB extends CommandPlusBase {
                     @Override
                     public void run(Type type) {
                         EntityWaterBlockCreator.downReset = false;
-
                     }
                 });
                 System.out.println("DOWNRESET " + EntityWaterBlockCreator.downReset);

@@ -19,17 +19,17 @@ public class PosHelper {
     public BlockPos getPosition(){
         return base.getPosition();
     }
-    public Vec3d getXZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+    public Vec3d getXZ(Direction spawnDirection, double plus, boolean pos) {
         return new Vec3d(EntityAPI.getX(base, spawnDirection, plus, pos), pos ? base.posY : 0, EntityAPI.getZ(base, spawnDirection, plus, pos));
     }
 
-    public Vec3d getXZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public Vec3d getXZ(Direction spawnDirection, double plus, double rlplus, boolean pos) {
         return new Vec3d(EntityAPI.getX(base, spawnDirection, plus, rlplus, pos), pos ? base.posY : 0, EntityAPI.getZ(base, spawnDirection, plus, rlplus, pos));
     }
-    public double getX(SpawnDirection spawnDirection, double plus, boolean pos) {
+    public double getX(Direction spawnDirection, double plus, boolean pos) {
         return EntityAPI.getX(base, spawnDirection, plus, pos);
     }
-    public double getX(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public double getX(Direction spawnDirection, double plus, double rlplus, boolean pos) {
         return EntityAPI.getX(base, spawnDirection, plus, rlplus, pos);
     }
     public double getY(double plus, boolean pos) {
@@ -41,21 +41,21 @@ public class PosHelper {
         }
         return pos ? base.posY : 0;
     }
-    public double getZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+    public double getZ(Direction spawnDirection, double plus, boolean pos) {
         return EntityAPI.getZ(base, spawnDirection, plus, pos);
     }
-    public double getZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public double getZ(Direction spawnDirection, double plus, double rlplus, boolean pos) {
         return EntityAPI.getZ(base, spawnDirection, plus, rlplus, pos);
     }
 
-    public EnumFacing getFacing(SpawnDirection spawnDirection){
-        if(spawnDirection == SpawnDirection.LEFT)
+    public EnumFacing getFacing(Direction spawnDirection){
+        if(spawnDirection == Direction.LEFT)
             return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() - 90);
-        if(spawnDirection == SpawnDirection.RIGHT)
+        if(spawnDirection == Direction.RIGHT)
             return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() + 90);
-        if(spawnDirection == SpawnDirection.FORWARD)
+        if(spawnDirection == Direction.FORWARD)
             return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle());
-        if(spawnDirection == SpawnDirection.BACK)
+        if(spawnDirection == Direction.BACK)
             return EnumFacing.fromAngle(base.getHorizontalFacing().getHorizontalAngle() + 180);
         return null;
     }

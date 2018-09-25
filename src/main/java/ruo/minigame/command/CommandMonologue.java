@@ -30,11 +30,9 @@ public class CommandMonologue extends CommandPlusBase{
 		if(text.indexOf("<next<") != -1)
 			splitNext = text.toString().split("<next<");
 		StringBuffer[] textBuffer = text(mono, args);
-		String[] str =WorldAPI.bufferToStringArray(textBuffer);
-		mono.addText(0, str);
+		mono.addText(0, textBuffer);
 		for(int i=1; i < splitNext.length; i++){
-			StringBuffer[] splitNextBuffer = new StringBuffer[5];
-			splitNextBuffer = text(mono, splitNext[i].trim().split(" "));
+			StringBuffer[] splitNextBuffer = text(mono, splitNext[i].trim().split(" "));
 			mono.addText(i, splitNextBuffer);
 		}
 		System.out.println("전체 내용 "+text);

@@ -1,24 +1,16 @@
 package ruo.minigame.minigame.minerun;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import ruo.map.lopre2.EntityPreBlock;
-import ruo.map.lopre2.LoPre2;
-import ruo.map.lopre2.jump2.EntityTeleportBlock;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
-import ruo.minigame.api.WorldAPI;
+import ruo.minigame.api.Direction;
 import ruo.minigame.map.TypeModel;
-import ruo.minigame.minigame.minerun.EntityMR;
 
 public class EntityMREnderman extends EntityMR {
     private int moveDelay;
@@ -52,8 +44,8 @@ public class EntityMREnderman extends EntityMR {
         setMoveXZ(0);
         System.out.println("asdf");
         setMoveXZ(0);
-        setMoveX((float) posHelper.getX(SpawnDirection.FORWARD, 2, false));
-        setMoveZ((float) posHelper.getZ(SpawnDirection.FORWARD, 2, false));
+        setMoveX((float) posHelper.getX(Direction.FORWARD, 2, false));
+        setMoveZ((float) posHelper.getZ(Direction.FORWARD, 2, false));
         return super.processInteract(player, hand, stack);
     }
 

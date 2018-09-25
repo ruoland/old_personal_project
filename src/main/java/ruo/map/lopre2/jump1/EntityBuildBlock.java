@@ -1,4 +1,4 @@
-package ruo.map.lopre2;
+package ruo.map.lopre2.jump1;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +17,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.cmplus.deb.DebAPI;
+import ruo.map.lopre2.CommandJB;
+import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 

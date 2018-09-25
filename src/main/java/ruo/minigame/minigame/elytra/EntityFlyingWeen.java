@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
@@ -190,10 +190,10 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
                 System.out.println("[세번째 패턴] "+absDefTick+"틱이 지나감");
                 int distance = 10;
                 String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
-                double leftX = fakePlayer.getX(SpawnDirection.LEFT, distance, true);
-                double leftZ =  fakePlayer.getZ(SpawnDirection.LEFT, distance, true);
-                double rightX = fakePlayer.getX(SpawnDirection.RIGHT, distance, true);
-                double rightZ = fakePlayer.getZ(SpawnDirection.RIGHT, distance, true);
+                double leftX = fakePlayer.getX(Direction.LEFT, distance, true);
+                double leftZ =  fakePlayer.getZ(Direction.LEFT, distance, true);
+                double rightX = fakePlayer.getX(Direction.RIGHT, distance, true);
+                double rightZ = fakePlayer.getZ(Direction.RIGHT, distance, true);
 
                 if (index.equalsIgnoreCase("NORTH") || index.equalsIgnoreCase("SOUTH")) {
                     for (int i = 0; i < absRunCount; i++) {//미니윈을 좌우에도 소환함
@@ -231,7 +231,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
     }
 
     private double[] forwardRandomXZ(int bound) {
-        return new double[]{FakePlayerHelper.fakePlayer.getX(SpawnDirection.FORWARD, worldObj.rand.nextInt(bound), false), FakePlayerHelper.fakePlayer.getZ(SpawnDirection.FORWARD, worldObj.rand.nextInt(5), false)};
+        return new double[]{FakePlayerHelper.fakePlayer.getX(Direction.FORWARD, worldObj.rand.nextInt(bound), false), FakePlayerHelper.fakePlayer.getZ(Direction.FORWARD, worldObj.rand.nextInt(5), false)};
     }
 
     public void fourPattern() {
@@ -252,14 +252,14 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
                 String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
                 if (index.equalsIgnoreCase("NORTH") || index.equalsIgnoreCase("SOUTH")) {
                     for (int i = 0; i < 5; i++) {
-                        spawnWeenTNT(posX + WorldAPI.rand(5),fakePlayer.getZ(SpawnDirection.BACK,20, true));
-                        spawnWeenTNT(posX - WorldAPI.rand(5), fakePlayer.getZ(SpawnDirection.BACK, 20, true));
+                        spawnWeenTNT(posX + WorldAPI.rand(5),fakePlayer.getZ(Direction.BACK,20, true));
+                        spawnWeenTNT(posX - WorldAPI.rand(5), fakePlayer.getZ(Direction.BACK, 20, true));
                     }
                 }
                 if (index.equalsIgnoreCase("WEST") || index.equalsIgnoreCase("EAST")) {
                     for (int i = 0; i < 5; i++) {
-                        spawnWeenTNT(fakePlayer.getX(SpawnDirection.BACK,20, true), posZ + WorldAPI.rand(5));
-                        spawnWeenTNT(fakePlayer.getX(SpawnDirection.BACK,20, true), posZ - WorldAPI.rand(5));
+                        spawnWeenTNT(fakePlayer.getX(Direction.BACK,20, true), posZ + WorldAPI.rand(5));
+                        spawnWeenTNT(fakePlayer.getX(Direction.BACK,20, true), posZ - WorldAPI.rand(5));
                     }
                 }
                 if (absRunCount > 2 || forceStageSkip) {
@@ -332,9 +332,9 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
                         System.out.println("[여섯번째 패턴] 앞 왼쪽 오른쪽"+i+(posX + vec3d[0])+ " - "+ (posZ+vec3d[1]));
                     }
                 } else {
-                    spawnWeen(posX, posZ, fakePlayer.getX(SpawnDirection.RIGHT, 15, true), fakePlayer.getZ(SpawnDirection.RIGHT,15, true));
-                    spawnWeen(fakePlayer.getX(SpawnDirection.BACK, 15, true), fakePlayer.getZ(SpawnDirection.BACK, 15, true));
-                    spawnWeen(posX, posZ, fakePlayer.getX(SpawnDirection.LEFT, 15, true), fakePlayer.getZ(SpawnDirection.LEFT, 15, true));
+                    spawnWeen(posX, posZ, fakePlayer.getX(Direction.RIGHT, 15, true), fakePlayer.getZ(Direction.RIGHT,15, true));
+                    spawnWeen(fakePlayer.getX(Direction.BACK, 15, true), fakePlayer.getZ(Direction.BACK, 15, true));
+                    spawnWeen(posX, posZ, fakePlayer.getX(Direction.LEFT, 15, true), fakePlayer.getZ(Direction.LEFT, 15, true));
                     System.out.println("[여섯번째 패턴] 앞 왼쪽 오른쪽이 아님");
 
                 }

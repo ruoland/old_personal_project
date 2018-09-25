@@ -8,7 +8,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import ruo.map.lopre2.EntityLavaBlock;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.WorldAPI;
 
@@ -67,7 +66,9 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
 
                 this.setVelocity(0,0,0);
             }
-
+            if (worldObj.getBlockState(getPosition().add(0,1,0)).getBlock() != Blocks.AIR) {
+                this.setVelocity(0,0,0);
+            }
         }
     }
     @Override

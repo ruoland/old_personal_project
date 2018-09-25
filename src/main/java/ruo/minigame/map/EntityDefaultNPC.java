@@ -23,7 +23,7 @@ import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.Move;
@@ -510,27 +510,27 @@ public class EntityDefaultNPC extends EntityModelNPC {
             eft.cancel();
     }
 
-    public Vec3d getXZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+    public Vec3d getXZ(Direction spawnDirection, double plus, boolean pos) {
         return posHelper.getXZ(spawnDirection, plus, pos);
     }
 
-    public Vec3d getXZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public Vec3d getXZ(Direction spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getXZ(spawnDirection, plus, rlplus, pos);
     }
 
-    public double getX(SpawnDirection spawnDirection, double plus, boolean pos) {
+    public double getX(Direction spawnDirection, double plus, boolean pos) {
         return posHelper.getX(spawnDirection, plus, pos);
     }
 
-    public double getX(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public double getX(Direction spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getX(spawnDirection, plus, rlplus, pos);
     }
 
-    public double getZ(SpawnDirection spawnDirection, double plus, boolean pos) {
+    public double getZ(Direction spawnDirection, double plus, boolean pos) {
         return posHelper.getZ(spawnDirection, plus, pos);
     }
 
-    public double getZ(SpawnDirection spawnDirection, double plus, double rlplus, boolean pos) {
+    public double getZ(Direction spawnDirection, double plus, double rlplus, boolean pos) {
         return posHelper.getZ(spawnDirection, plus, rlplus, pos);
     }
 

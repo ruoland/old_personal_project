@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Monologue {
 	private Minecraft mc = Minecraft.getMinecraft();
-	protected HashMap<Integer, MonologueText> mText = new HashMap<Integer, MonologueText>();
+	protected HashMap<Integer, MonologueText> mText = new HashMap<>();
 	protected boolean monoEnd = false;// �ٸ� ���Ǿ��� ��ȭ�ϴ� ��츦 �����ϱ� ����
 	protected int page;// ���°
 	
@@ -28,15 +28,6 @@ public class Monologue {
 		}
 		return this;
 	}
-	public Monologue addText(int page, String... s){
-		for(String text : s){
-			addText(page, text);
-			System.out.println("addText"+text);
-
-		}
-		return this;
-	}
-	
 	public Monologue addText(int page, String s){
 		if(!monoEnd){
 			if(!mText.containsKey(page))
@@ -145,9 +136,9 @@ public class Monologue {
 	 * 
 	 */
 	public class MonologueText {
-		protected ArrayList<String> textList = new ArrayList<String>();//줄 전체 내용
-		protected ArrayList<StringBuffer> line = new ArrayList<StringBuffer>();//현재 줄
-		protected ArrayList<Boolean> lineRenderList = new ArrayList<Boolean>();//줄을 숨겨놨다가 true로 되면 표시함
+		protected ArrayList<String> textList = new ArrayList<>();//줄 전체 내용
+		protected ArrayList<StringBuffer> line = new ArrayList<>();//현재 줄
+		protected ArrayList<Boolean> lineRenderList = new ArrayList<>();//줄을 숨겨놨다가 true로 되면 표시함
 		
 		public ArrayList<String>  getAllText() {
 			return textList;

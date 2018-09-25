@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.map.EntityDefaultNPC;
 
 import javax.annotation.Nullable;
@@ -38,15 +38,15 @@ public class EntityRPGWolf extends EntityDefaultNPC {
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(DIRECTION, SpawnDirection.FORWARD.name());
+        dataManager.register(DIRECTION, Direction.FORWARD.name());
     }
 
-    public void setDirection(SpawnDirection direction) {
+    public void setDirection(Direction direction) {
         dataManager.set(DIRECTION, direction.name());
     }
 
     public BlockPos getDirection(EntityLivingBase livingBase) {
-        SpawnDirection spawnDirection = SpawnDirection.valueOf(dataManager.get(DIRECTION));
+        Direction spawnDirection = Direction.valueOf(dataManager.get(DIRECTION));
         BlockPos pos = new BlockPos(EntityAPI.getX(livingBase, spawnDirection, 3, true),livingBase.posY,EntityAPI.getZ(livingBase, spawnDirection, 3, true));
 
         return pos;
@@ -59,13 +59,13 @@ public class EntityRPGWolf extends EntityDefaultNPC {
             EntityRPGWolf wolf = new EntityRPGWolf(worldObj);
             wolf.copyLocationAndAnglesFrom(this);
             worldObj.spawnEntityInWorld(wolf);
-            wolf.setDirection(SpawnDirection.LEFT);
+            wolf.setDirection(Direction.LEFT);
         }
         {
             EntityRPGWolf wolf = new EntityRPGWolf(worldObj);
             wolf.copyLocationAndAnglesFrom(this);
             worldObj.spawnEntityInWorld(wolf);
-            wolf.setDirection(SpawnDirection.RIGHT);
+            wolf.setDirection(Direction.RIGHT);
         }
         return super.onInitialSpawn(difficulty, livingdata);
     }

@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.map.EntityDefaultNPC;
@@ -41,7 +41,7 @@ public class EntityTrader extends EntityDefaultNPC {
         {
             addChat(0, "왜 상자가 없어졌지?");
             PosHelper posHelper = new PosHelper(this);
-            chestPos = new BlockPos(posHelper.getXZ(SpawnDirection.RIGHT, 1, true));
+            chestPos = new BlockPos(posHelper.getXZ(Direction.RIGHT, 1, true));
             this.worldObj.setBlockState(chestPos, Blocks.CHEST.getDefaultState());
         }
     }

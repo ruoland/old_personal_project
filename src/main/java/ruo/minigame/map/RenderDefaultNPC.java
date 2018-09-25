@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderPigZombie;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import ruo.halloween.EntityWeen;
-import ruo.map.lopre2.EntityBuildBlock;
+import ruo.map.lopre2.jump1.EntityBuildBlock;
 import ruo.minigame.api.RenderAPI;
 
 @SideOnly(Side.CLIENT)

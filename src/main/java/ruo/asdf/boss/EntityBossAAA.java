@@ -10,7 +10,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.EntityAPI;
-import ruo.minigame.api.SpawnDirection;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
 
@@ -141,13 +141,13 @@ public class EntityBossAAA extends EntityDefaultNPC {
 
         for (int i = 1; i <= 2; i++) {
             EntityKnockbackWall wall1 = new EntityKnockbackWall(worldObj);
-            wall1.setPosition(this.getPosition().add(getX(SpawnDirection.RIGHT, i, false), 0, 0));
+            wall1.setPosition(this.getPosition().add(getX(Direction.RIGHT, i, false), 0, 0));
             worldObj.spawnEntityInWorld(wall1);
             wall1.setForward(this.getHorizontalFacing());
         }
         for (int i = 1; i <= 2; i++) {
             EntityKnockbackWall wall1 = new EntityKnockbackWall(worldObj);
-            wall1.setPosition(this.getPosition().add(0, 0, getZ(SpawnDirection.RIGHT,i, false)));
+            wall1.setPosition(this.getPosition().add(0, 0, getZ(Direction.RIGHT,i, false)));
             worldObj.spawnEntityInWorld(wall1);
             wall1.setForward(this.getHorizontalFacing());
         }
