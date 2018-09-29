@@ -89,10 +89,7 @@ public class MineRun extends AbstractMiniGame {
         curX = x;
         curY = y;
         curZ = z;
-        System.out.println(curX + " - " + curY + " - " + curZ);
         WorldAPI.teleport(player.posX + curX + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
-
-
     }
 
     public static void setPosition(BlockPos pos) {
@@ -113,7 +110,7 @@ public class MineRun extends AbstractMiniGame {
         KeyBinding.resetKeyBindingArrayAndHash();
         ICommandSender sender = (ICommandSender) obj[0];
         player = (EntityPlayer) sender;
-        WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
+        WorldAPI.teleport(((int)player.posX) + 0.5, player.posY, ((int)player.posZ) + 0.5, player.getHorizontalFacing().getHorizontalAngle(), 70);
         spawnX = player.posX;
         spawnY = player.posY;
         spawnZ = player.posZ;
@@ -198,6 +195,7 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineUD = 0;
         MiniGame.mineRunEvent.lineFBX = 0;
         MiniGame.mineRunEvent.lineFBZ = 0;
+        WorldAPI.command("/minerun lava");
         return super.end();
     }
 }

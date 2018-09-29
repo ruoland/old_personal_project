@@ -11,6 +11,7 @@ import ruo.minigame.MiniGame;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.minerun.MineRun;
+import ruo.minigame.minigame.minerun.MineRunEvent;
 
 public class CommandMineRun extends CommandBase {
 
@@ -53,6 +54,11 @@ public class CommandMineRun extends CommandBase {
 				for(BlockPos pos : MineRun.removeLavaPos){
 					sender.getEntityWorld().setBlockState(pos, Blocks.LAVA.getDefaultState());
 				}
+				return;
+			}
+			if(args[0].equals("respawn")){
+				MineRunEvent.respawnTime = 61;
+				WorldAPI.command("/minerun lava");
 				return;
 			}
 		}

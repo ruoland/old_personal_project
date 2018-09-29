@@ -16,6 +16,7 @@ import scala.xml.dtd.EntityDef;
 
 public class EntityMR extends EntityDefaultNPC {
     protected boolean isLookPlayer = true;
+    protected boolean isHide;
     public EntityMR(World worldIn) {
         super(worldIn);
         isFly = true;
@@ -55,7 +56,7 @@ public class EntityMR extends EntityDefaultNPC {
     @Override
     public void onSturn() {
         setInvisible(!isSturn());
-        System.out.println("스턴"+isSturn());
+        System.out.println("스턴"+isSturn()+isInvisible());
     }
 
     @Override
@@ -64,6 +65,5 @@ public class EntityMR extends EntityDefaultNPC {
         if (isLookPlayer && WorldAPI.getPlayer() != null)
             this.faceEntity(WorldAPI.getPlayer(), 360, 360);
         this.setVelocity(0,0,0);
-
     }
 }

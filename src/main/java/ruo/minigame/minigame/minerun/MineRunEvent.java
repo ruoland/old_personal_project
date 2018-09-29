@@ -1,16 +1,25 @@
 package ruo.minigame.minigame.minerun;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
@@ -18,8 +27,10 @@ import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.*;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.minigame.elytra.GuiElytraGameOver;
 
 public class MineRunEvent {
+    public static short respawnTime;
     //엘리트라 모드1용 - 7월 14일
     public int lineLR = 0, lineFB = 0;
 
@@ -33,14 +44,28 @@ public class MineRunEvent {
     private int pickupCount;
 
     @SubscribeEvent
+    public void login(LivingHurtEvent event) {
+        if (MiniGame.minerun.isStart() && event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHealth() - event.getAmount() <= 0) {
+            if (respawnTime > 0) {
+                event.setCanceled(true);
+                return;
+            }
+            Minecraft.getMinecraft().displayGuiScreen(new GuiMRGameOver(pickupCount));
+            Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public void itemPickup(EntityItemPickupEvent e) {
-        if (e.getItem().getEntityItem().getItem() == Items.NETHER_STAR) {
+        Item pickupItem = e.getItem().getEntityItem().getItem();
+        if (pickupItem == Items.NETHER_STAR) {
             pickupCount++;
             e.setCanceled(true);
             EntityItem item = e.getItem();
             item.setPosition(item.posX, item.posY + 2, item.posZ);
         }
-        if (e.getItem().getEntityItem().getItem() == Items.POTIONITEM) {
+        if (pickupItem == Items.POTIONITEM) {
             e.setCanceled(true);
             EntityItem item = e.getItem();
             item.setPosition(item.posX, item.posY + 2, item.posZ);
@@ -55,13 +80,39 @@ public class MineRunEvent {
 
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
-        if (!MiniGame.minerun.isStart())
+        if (!MiniGame.minerun.isStart() || e.player.isDead)
             return;
+        if (e.player.isInWater()) {
+            e.player.attackEntityFrom(DamageSource.drown, 4);
+        }
+        if (e.side == Side.SERVER && e.phase == TickEvent.Phase.START && respawnTime > 0) {
+            respawnTime--;
+            if (respawnTime == 60) {
+                WorldAPI.addMessage("3초 뒤에 시작됩니다.");
+            }
+            if (respawnTime == 40) {
+                WorldAPI.addMessage("2초 뒤에 시작됩니다.");
+            }
+            if (respawnTime == 20) {
+                WorldAPI.addMessage("1초 뒤에 시작됩니다.");
+            }
+            if (respawnTime == 0) {
+                PosHelper posHelper = new PosHelper(WorldAPI.getPlayer());
+                e.player.setHealth(e.player.getMaxHealth());
+                WorldAPI.teleport(e.player.getBedLocation());
+                if (lineLR == 1) {
+
+                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, 1, false));
+                }
+                if (lineLR == -1)
+                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, 1, false));
+                lineLR = 0;
+                WorldAPI.command("minerun lava");
+            }
+            return;
+        }
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-            PosHelper posHelper = new PosHelper(e.player);
-            Vec3d vec3i = posHelper.getXZ(Direction.BACK, 3, false);
-            BlockPos pos = e.player.getPosition().add(vec3i.xCoord, vec3i.yCoord + 4, vec3i.zCoord);
             if (!e.player.isInLava() && !e.player.isInWater()) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
@@ -87,7 +138,6 @@ public class MineRunEvent {
                 MineRun.setFakePositionUpdate();
             }
         }
-
     }
 
     @SubscribeEvent
