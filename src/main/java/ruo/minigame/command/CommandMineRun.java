@@ -51,8 +51,8 @@ public class CommandMineRun extends CommandBase {
 				return;
 			}
 			if(args[0].equals("lava")){
-				for(BlockPos pos : MineRun.removeLavaPos){
-					sender.getEntityWorld().setBlockState(pos, Blocks.LAVA.getDefaultState());
+				for(int i = 0; i < MineRun.removeLavaState.size();i++){
+					sender.getEntityWorld().setBlockState(MineRun.removeLavaPos.get(i), MineRun.removeLavaState.get(i));
 				}
 				return;
 			}

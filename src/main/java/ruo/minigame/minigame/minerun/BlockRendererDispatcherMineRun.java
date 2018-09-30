@@ -28,12 +28,13 @@ public class BlockRendererDispatcherMineRun extends BlockRendererDispatcher {
 
     @Override
     public boolean renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, VertexBuffer worldRendererIn) {
-        if(MiniGame.minerun.isStart() && (state.getBlock() instanceof BlockLiquid) && pos.getZ()-3 > WorldAPI.getPlayer().posZ){
+        if (MiniGame.minerun.isStart() && (state.getBlock() instanceof BlockLiquid) && pos.getZ() >= WorldAPI.getPlayer().posZ) {
             BlockPos blockPos = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
-            if(pos.getY()+1 > WorldAPI.getPlayer().posY){
-                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(()-> {
-                        WorldAPI.getWorld().setBlockToAir(blockPos);
-                        MineRun.removeLavaPos.add(blockPos);
+            if (pos.getY() + 1 > WorldAPI.getPlayer().posY) {
+                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+                    MineRun.removeLavaPos.add(blockPos);
+                    MineRun.removeLavaState.add(WorldAPI.getWorld().getBlockState(blockPos));
+                    WorldAPI.getWorld().setBlockToAir(blockPos);
                 });
             }
             return false;

@@ -2,6 +2,7 @@ package ruo.minigame.minigame.minerun;
 
 
 import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -26,6 +27,8 @@ import java.util.List;
 
 public class MineRun extends AbstractMiniGame {
     public static List<BlockPos> removeLavaPos = Lists.newArrayList();
+    public static List<IBlockState> removeLavaState = Lists.newArrayList();
+
     private static int elytra = 0;//1 = 위로 2 = 앞으로
     private static double xCoord, zCoord;
     protected static double curX, curY, curZ, spawnX, spawnY, spawnZ;
