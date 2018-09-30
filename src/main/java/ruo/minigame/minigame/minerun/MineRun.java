@@ -97,9 +97,9 @@ public class MineRun extends AbstractMiniGame {
     }
 
     public static void setDummyPosition(){
-        dummyPlayer.setPosition(player.posX + curX + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
-
+        dummyPlayer.setPosition(player.posX + curX + dummyPlayer.motionX, player.posY, player.posZ + curZ + player.motionZ);
     }
+
     public static void setPosition(BlockPos pos) {
         setPosition(pos.getX(), pos.getY(), pos.getZ());
     }
