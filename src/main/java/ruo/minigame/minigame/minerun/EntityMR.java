@@ -30,10 +30,10 @@ public class EntityMR extends EntityDefaultNPC {
     @Override
     protected void collideWithEntity(Entity entityIn) {
         //super.collideWithEntity(entityIn);
-        if (entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isCreative() && getDistanceToEntity(entityIn) < 1 && !isSturn()) {
+        if (entityIn instanceof EntityDummyPlayer && !WorldAPI.getPlayer().isCreative() && getDistanceToEntity(entityIn) < 1 && !isSturn()) {
             this.swingArm();
             this.setLastAttacker(entityIn);
-            collideAttack(entityIn);
+            collideAttack(WorldAPI.getPlayer());
             this.setSturn(100);
         }
     }

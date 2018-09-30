@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.camera.Camera;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
@@ -85,6 +86,7 @@ public class MineRunEvent {
         if (e.player.isInWater()) {
             e.player.attackEntityFrom(DamageSource.drown, 4);
         }
+
         if (e.side == Side.SERVER && e.phase == TickEvent.Phase.START && respawnTime > 0) {
             respawnTime--;
             if (respawnTime == 60) {
@@ -116,6 +118,7 @@ public class MineRunEvent {
             if (!e.player.isInLava() && !e.player.isInWater()) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
+                MineRun.setDummyPosition();
             }
         }
         if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
@@ -259,6 +262,7 @@ public class MineRunEvent {
                     lineLR--;
                     isLR = true;
                 }
+
                 MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
                 if (isLR)
                     lineLR++;
@@ -269,7 +273,6 @@ public class MineRunEvent {
         }
 
     }
-
     public int absFB() {
         return Math.abs(lineFB);
     }
@@ -277,7 +280,9 @@ public class MineRunEvent {
     public int absLR() {
         return Math.abs(lineLR);
     }
-
+    public int getLR() {
+        return (lineLR);
+    }
     @SubscribeEvent
     public void logout(PlayerEvent.PlayerLoggedOutEvent e) {
         MiniGame.minerun.end();
