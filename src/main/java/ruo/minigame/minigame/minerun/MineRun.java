@@ -17,7 +17,9 @@ import net.minecraft.util.math.Vec3d;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
 import ruo.minigame.MiniGame;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -28,13 +30,14 @@ import java.util.List;
 public class MineRun extends AbstractMiniGame {
     public static List<BlockPos> removeLavaPos = Lists.newArrayList();
     public static List<IBlockState> removeLavaState = Lists.newArrayList();
-
+    public static PosHelper playerPosHelper;
     private static int elytra = 0;//1 = 위로 2 = 앞으로
     private static double xCoord, zCoord;
     protected static double curX, curY, curZ, spawnX, spawnY, spawnZ;
     private static EntityFakePlayer fakePlayer;
     private static EntityPlayer player;
-    private static EntityDummyPlayer dummyPlayer;
+    public static EntityDummyPlayer dummyPlayer;
+
     public static int elytraMode() {
         return elytra;
     }
@@ -85,6 +88,7 @@ public class MineRun extends AbstractMiniGame {
             fakePlayer = null;
 
         }
+
     }
 
 
@@ -92,13 +96,27 @@ public class MineRun extends AbstractMiniGame {
         curX = x;
         curY = y;
         curZ = z;
-        dummyPlayer.setPosition(player.posX + curX + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
-        //WorldAPI.teleport(player.posX + curX + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
+        setDummyPosition();
     }
 
-    public static void setDummyPosition(){
-        dummyPlayer.setPosition(player.posX + curX + dummyPlayer.motionX, player.posY, player.posZ + curZ + player.motionZ);
+    public static void setDummyPosition() {
+        if(player.getHorizontalFacing() == EnumFacing.SOUTH){
+            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getX(Direction.FORWARD, 1, false) + dummyPlayer.motionX, player.posY, player.posZ + curZ + dummyPlayer.getZ(Direction.FORWARD, 1, false) + player.motionZ);
+        }
+        if(player.getHorizontalFacing() == EnumFacing.NORTH){
+            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getX(Direction.FORWARD, -1, false) + dummyPlayer.motionX,
+                    player.posY, player.posZ + curZ + dummyPlayer.getZ(Direction.FORWARD, -1, false) + player.motionZ);
+        }
+        if(player.getHorizontalFacing() == EnumFacing.EAST){
+            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getZ(Direction.FORWARD, 1, false) + dummyPlayer.motionX,
+                    player.posY, player.posZ + curZ + dummyPlayer.getX(Direction.FORWARD, 1, false) + player.motionZ);
+        }
+        if(player.getHorizontalFacing() == EnumFacing.WEST){
+            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getZ(Direction.FORWARD, -1, false) + dummyPlayer.motionX,
+                    player.posY, player.posZ + curZ + dummyPlayer.getX(Direction.FORWARD, -1, false) + player.motionZ);
+        }
     }
+
 
     public static void setPosition(BlockPos pos) {
         setPosition(pos.getX(), pos.getY(), pos.getZ());
@@ -150,6 +168,7 @@ public class MineRun extends AbstractMiniGame {
         dummyPlayer = new EntityDummyPlayer(WorldAPI.getWorld());
         dummyPlayer.setPosition(WorldAPI.getPlayer().getPosition());
         WorldAPI.getWorld().spawnEntityInWorld(dummyPlayer);
+        playerPosHelper = new PosHelper(player);
         return super.start();
     }
 

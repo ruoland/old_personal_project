@@ -7,11 +7,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,6 +23,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.CMPlusCameraEvent;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
@@ -77,6 +80,23 @@ public class MineRunEvent {
     @SubscribeEvent
     public void renderBlockOverlay(RenderBlockOverlayEvent e) {
         e.setCanceled(MiniGame.minerun.isStart());
+    }
+
+    @SubscribeEvent
+    public void playerTick(LivingEvent.LivingUpdateEvent e) {
+        if (MiniGame.minerun.isStart() && MiniGame.minerun.getTimeSecond() > 3) {
+            if (e.getEntityLiving() instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) e.getEntityLiving();
+                if(MineRun.dummyPlayer.onGround){
+                    player.motionY = 0;
+                }
+                player.onGround = MineRun.dummyPlayer.onGround;
+                player.isCollidedVertically = MineRun.dummyPlayer.isCollidedVertically;
+                player.isCollidedHorizontally = MineRun.dummyPlayer.isCollidedHorizontally;
+                player.motionY = MineRun.dummyPlayer.motionY;
+                player.noClip = true;
+            }
+        }
     }
 
     @SubscribeEvent
@@ -141,13 +161,16 @@ public class MineRunEvent {
                 MineRun.setFakePositionUpdate();
             }
         }
+        e.player.onGround = MineRun.dummyPlayer.onGround;
+        e.player.isCollidedVertically = MineRun.dummyPlayer.isCollidedVertically;
+        e.player.isCollidedHorizontally = MineRun.dummyPlayer.isCollidedHorizontally;
     }
 
     @SubscribeEvent
     public void keyInput(KeyInputEvent e) {
         if (!MiniGame.minerun.isStart())
             return;
-        PosHelper posHelper = new PosHelper(WorldAPI.getPlayer());
+        PosHelper posHelper = MineRun.playerPosHelper;
         if (DebAPI.isKeyDown(Keyboard.KEY_V)) {//엘리트라 모드로 변경함
             if (MineRun.elytraMode() == 2) {
                 MineRun.setElytra(1);
@@ -240,32 +263,16 @@ public class MineRunEvent {
             }
         }
         if (MineRun.elytraMode() == 0) {
-            System.out.println(lineLR + " - " + DebAPI.isKeyDown(Keyboard.KEY_A) + " - " + DebAPI.isKeyDown(Keyboard.KEY_D));
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A)) {
                 lineLR++;
-                boolean isLR = false;
-                if (lineLR == 0) {
-                    lineLR++;
-                    isLR = true;
-                }
                 MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
-                if (isLR)
-                    lineLR--;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("LEFT " + posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
             }
 
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
                 lineLR--;
-                boolean isLR = false;
-                if (lineLR == 0) {//가운데로 보내기 위해서 1 깎음
-                    lineLR--;
-                    isLR = true;
-                }
-
                 MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
-                if (isLR)
-                    lineLR++;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("RIGHT " + posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
             }
@@ -273,6 +280,7 @@ public class MineRunEvent {
         }
 
     }
+
     public int absFB() {
         return Math.abs(lineFB);
     }
@@ -280,11 +288,14 @@ public class MineRunEvent {
     public int absLR() {
         return Math.abs(lineLR);
     }
+
     public int getLR() {
         return (lineLR);
     }
+
     @SubscribeEvent
     public void logout(PlayerEvent.PlayerLoggedOutEvent e) {
-        MiniGame.minerun.end();
+        if (MiniGame.minerun.isStart())
+            MiniGame.minerun.end();
     }
 }

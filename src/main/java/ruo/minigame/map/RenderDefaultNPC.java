@@ -92,7 +92,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 return;
             }
 
-            if (npc instanceof EntityDefaultBlock && !npc.isInvisible()) {
+            if (npc instanceof EntityDefaultBlock) {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableAlpha();
                 GlStateManager.enableBlend();
