@@ -10,6 +10,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -48,6 +49,23 @@ public class MineRunEvent {
     private int pickupCount;
 
     @SubscribeEvent
+    public void login(EntityViewRenderEvent.CameraSetup event) {
+        if (MiniGame.minerun.isStart() && MineRun.elytraMode() == 0) {
+            Camera.getCamera().moveCamera(EntityAPI.lookX(WorldAPI.getPlayer(), 3.5)
+                            + getX(lineLR < 0 ? Direction.RIGHT : Direction.LEFT),
+                    -1.5, EntityAPI.lookZ(WorldAPI.getPlayer(), 3.5)
+                            + getZ(lineLR < 0 ? Direction.RIGHT : Direction.LEFT));
+        }
+    }
+
+    public double getX(Direction direction) {
+        return EntityAPI.getX(WorldAPI.getPlayer(), direction, absLR() * 2, false);
+    }
+
+    public double getZ(Direction direction) {
+        return EntityAPI.getZ(WorldAPI.getPlayer(), direction, absLR() * 2, false);
+    }
+    @SubscribeEvent
     public void login(LivingHurtEvent event) {
         if (MiniGame.minerun.isStart() && event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHealth() - event.getAmount() <= 0) {
             if (respawnTime > 0) {
@@ -80,23 +98,6 @@ public class MineRunEvent {
     @SubscribeEvent
     public void renderBlockOverlay(RenderBlockOverlayEvent e) {
         e.setCanceled(MiniGame.minerun.isStart());
-    }
-
-    @SubscribeEvent
-    public void playerTick(LivingEvent.LivingUpdateEvent e) {
-        if (MiniGame.minerun.isStart() && MiniGame.minerun.getTimeSecond() > 3) {
-            if (e.getEntityLiving() instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) e.getEntityLiving();
-                if(MineRun.dummyPlayer.onGround){
-                    player.motionY = 0;
-                }
-                player.onGround = MineRun.dummyPlayer.onGround;
-                player.isCollidedVertically = MineRun.dummyPlayer.isCollidedVertically;
-                player.isCollidedHorizontally = MineRun.dummyPlayer.isCollidedHorizontally;
-                player.motionY = MineRun.dummyPlayer.motionY;
-                player.noClip = true;
-            }
-        }
     }
 
     @SubscribeEvent
@@ -138,7 +139,6 @@ public class MineRunEvent {
             if (!e.player.isInLava() && !e.player.isInWater()) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
-                MineRun.setDummyPosition();
             }
         }
         if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
@@ -161,9 +161,6 @@ public class MineRunEvent {
                 MineRun.setFakePositionUpdate();
             }
         }
-        e.player.onGround = MineRun.dummyPlayer.onGround;
-        e.player.isCollidedVertically = MineRun.dummyPlayer.isCollidedVertically;
-        e.player.isCollidedHorizontally = MineRun.dummyPlayer.isCollidedHorizontally;
     }
 
     @SubscribeEvent
@@ -265,14 +262,28 @@ public class MineRunEvent {
         if (MineRun.elytraMode() == 0) {
             if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A)) {
                 lineLR++;
+                boolean isLR = false;
+                if (lineLR == 0) {
+                    lineLR++;
+                    isLR = true;
+                }
                 MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
+                if (isLR)
+                    lineLR--;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("LEFT " + posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
             }
 
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
                 lineLR--;
+                boolean isLR = false;
+                if (lineLR == 0) {//가운데로 보내기 위해서 1 깎음
+                    lineLR--;
+                    isLR = true;
+                }
                 MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
+                if (isLR)
+                    lineLR++;
                 System.out.println("LINELR " + lineLR * 2);
                 System.out.println("RIGHT " + posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
             }

@@ -65,6 +65,20 @@ public class RenderAPI {
         return null;
     }
 
+    public static void renderItem(ItemStack stack, int x, int y){
+        RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+        itemRender.zLevel = 200.0F;
+        net.minecraft.client.gui.FontRenderer font = null;
+        if (stack != null) font = stack.getItem().getFontRenderer(stack);
+        if (font == null) font = Minecraft.getMinecraft().fontRendererObj;
+        if (stack != null) {
+            RenderHelper.enableGUIStandardItemLighting();
+            itemRender.renderItemAndEffectIntoGUI(stack, x,y);
+            itemRender.renderItemOverlayIntoGUI(font, stack, x,y, null);
+            RenderHelper.disableStandardItemLighting();
+        }
+        itemRender.zLevel = 0.0F;
+    }
     public void renderBlock(EntityLivingBase l, ItemStack item) {
         IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(item, l.worldObj,
                 l);

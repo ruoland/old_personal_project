@@ -36,7 +36,6 @@ public class MineRun extends AbstractMiniGame {
     protected static double curX, curY, curZ, spawnX, spawnY, spawnZ;
     private static EntityFakePlayer fakePlayer;
     private static EntityPlayer player;
-    public static EntityDummyPlayer dummyPlayer;
 
     public static int elytraMode() {
         return elytra;
@@ -96,27 +95,9 @@ public class MineRun extends AbstractMiniGame {
         curX = x;
         curY = y;
         curZ = z;
-        setDummyPosition();
-    }
 
-    public static void setDummyPosition() {
-        if(player.getHorizontalFacing() == EnumFacing.SOUTH){
-            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getX(Direction.FORWARD, 1, false) + dummyPlayer.motionX, player.posY, player.posZ + curZ + dummyPlayer.getZ(Direction.FORWARD, 1, false) + player.motionZ);
-        }
-        if(player.getHorizontalFacing() == EnumFacing.NORTH){
-            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getX(Direction.FORWARD, -1, false) + dummyPlayer.motionX,
-                    player.posY, player.posZ + curZ + dummyPlayer.getZ(Direction.FORWARD, -1, false) + player.motionZ);
-        }
-        if(player.getHorizontalFacing() == EnumFacing.EAST){
-            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getZ(Direction.FORWARD, 1, false) + dummyPlayer.motionX,
-                    player.posY, player.posZ + curZ + dummyPlayer.getX(Direction.FORWARD, 1, false) + player.motionZ);
-        }
-        if(player.getHorizontalFacing() == EnumFacing.WEST){
-            dummyPlayer.setPosition(player.posX + curX + dummyPlayer.getZ(Direction.FORWARD, -1, false) + dummyPlayer.motionX,
-                    player.posY, player.posZ + curZ + dummyPlayer.getX(Direction.FORWARD, -1, false) + player.motionZ);
-        }
+        WorldAPI.teleport(player.posX + curX  + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
     }
-
 
     public static void setPosition(BlockPos pos) {
         setPosition(pos.getX(), pos.getY(), pos.getZ());
@@ -165,9 +146,6 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
         xCoord = EntityAPI.lookX(player, 0.3);
         zCoord = EntityAPI.lookZ(player, 0.3);
-        dummyPlayer = new EntityDummyPlayer(WorldAPI.getWorld());
-        dummyPlayer.setPosition(WorldAPI.getPlayer().getPosition());
-        WorldAPI.getWorld().spawnEntityInWorld(dummyPlayer);
         playerPosHelper = new PosHelper(player);
         return super.start();
     }
@@ -226,7 +204,6 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineFBX = 0;
         MiniGame.mineRunEvent.lineFBZ = 0;
         WorldAPI.command("/minerun lava");
-        dummyPlayer.setDead();
         return super.end();
     }
 }

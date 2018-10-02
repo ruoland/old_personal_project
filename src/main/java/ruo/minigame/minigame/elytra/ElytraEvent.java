@@ -3,14 +3,12 @@ package ruo.minigame.minigame.elytra;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -19,52 +17,33 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.minigame.MiniGame;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 
-public class ElytraEvent {
-    private GameSettings gamesettings = Minecraft.getMinecraft().gameSettings;
+import static ruo.minigame.minigame.elytra.Elytra.defaultCooltime;
+import static ruo.minigame.minigame.elytra.Elytra.elytraCooltime;
 
-    boolean elytraMode;
-    public int elytraCooltime = 0, defaultCooltime = 15;
-    public int killCount, spawnY;
+public class ElytraEvent {
+
+    protected ItemStack bomberStack = new ItemStack(Blocks.TNT);
 
     @SubscribeEvent
     public void login(LivingDeathEvent event) {
-        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getEntityLiving() instanceof EntityFakePlayer) {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiElytraGameOver(killCount));
+        if (MiniGame.elytra.isStart() && event.getEntityLiving() instanceof EntityFakePlayer) {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiElytraGameOver(Elytra.killCount));
             Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();
         }
     }
 
     @SubscribeEvent
-    public void login(RenderGameOverlayEvent.Post event) {
-        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getType() == ElementType.ALL) {
-            Minecraft.getMinecraft().fontRendererObj.drawString("적 죽인 횟수:" + killCount, 0, 0, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("폭탄 갯수:" + Elytra.bombCount, 0, 10, 0xFFFFFF);
-        }
-    }
-
-    @SubscribeEvent
-    public void event(MouseEvent event) {
-        if (!MiniGame.elytra.isStart())
-            return;
-        if (event.getDwheel() == 120) {
-            WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() - 0.5, WorldAPI.z());
-        }
-        if (event.getDwheel() == -120) {
-            WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 0.5, WorldAPI.z());
-        }
-    }
-    @SubscribeEvent
     public void login(PlayerInteractEvent event) {
         if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
-            spawnArrow();
+            spawnArrow(Direction.FORWARD);
             if (Elytra.tripleArrow) {
                 spawnArrow(Direction.FORWARD_RIGHT);
                 spawnArrow(Direction.FORWARD_LEFT);
@@ -72,27 +51,24 @@ public class ElytraEvent {
         }
     }
 
-    public void spawnArrow() {
-        spawnArrow(Direction.FORWARD);
-    }
-
-    public void spawnArrow(Direction direction){
+    public void spawnArrow(Direction direction) {
         spawnArrow(direction, FakePlayerHelper.fakePlayer.rotationYaw);
     }
 
-    public void spawnArrow(float yaw){
+    public void spawnArrow(float yaw) {
         spawnArrow(null, yaw);
     }
+
     public void spawnArrow(Direction direction, float yaw) {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
         PosHelper posHelper = new PosHelper(player);
         World world = player.worldObj;
         EntityElytraArrow arrow = new EntityElytraArrow(world, player);
         arrow.setAim(player, player.rotationPitch, yaw, 0, 1.6F, 1F);
-        if(direction != null)
+        if (direction != null)
             arrow.setPosition(posHelper.getX(direction, 1, 1, true), player.posY, posHelper.getZ(direction, 1, 1, true));
         else
-            arrow.setPosition(player.posX+player.motionX, player.posY, player.posZ+player.motionZ);
+            arrow.setPosition(player.posX + player.motionX, player.posY, player.posZ + player.motionZ);
         arrow.setDamage(10);
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);
@@ -109,60 +85,45 @@ public class ElytraEvent {
 
     @SubscribeEvent
     public void login(PlayerTickEvent event) {
-        if (!MiniGame.elytra.isStart() || FakePlayerHelper.fakePlayer == null)
+        if (!MiniGame.elytra.isStart())
             return;
 
-        EntityPlayer player = event.player;
-        BlockPos pos = new BlockPos(player.posX, player.posY - 0.5, player.posZ);
-        if (!elytraMode) {
-            if (gamesettings.keyBindForward.isKeyDown()) {
-                player.setVelocity(player.getLookVec().xCoord * 0.45, 0.340, player.getLookVec().zCoord * 0.45);
-            } else if (gamesettings.keyBindBack.isKeyDown() && player.worldObj.isAirBlock(pos)) {
-                player.setVelocity(player.getLookVec().xCoord * 0.45, -0.240, player.getLookVec().zCoord * 0.45);
-            } else {
-                player.setVelocity(player.getLookVec().xCoord * 0.45, 0.04336579, player.getLookVec().zCoord * 0.45);
-            }
-        }
-        if (elytraMode) {
-            EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-            fakePlayer.rotationPitch = player.rotationPitch;
-            fakePlayer.rotationYaw = player.rotationYaw;
-            fakePlayer.rotationYawHead = player.rotationYawHead;
-            FakePlayerHelper.fakePlayer.rotationYaw = WorldAPI.getPlayer().getHorizontalFacing().getHorizontalAngle();
 
-            double veloX = 0, veloZ = 0, speed = 0.2;
-            if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-                if (Elytra.bombCount > 0) {
-                    Elytra.bombCount--;
-                    for (int i = 0; i < 360; i += 30) {
-                        spawnArrow(player.rotationYaw + i);
-                    }
+        if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+            if (bomberStack.stackSize > 0) {
+                bomberStack.stackSize--;
+                for (int i = 0; i < 360; i += 30) {
+                    spawnArrow(event.player.rotationYaw + i);
                 }
             }
-
-            if (gamesettings.keyBindLeft.isKeyDown()) {
-                veloX += EntityAPI.lookX(fakePlayer, -90, speed);
-                veloZ += EntityAPI.lookZ(fakePlayer, -90, speed);
-            } else if (gamesettings.keyBindRight.isKeyDown()) {
-                veloX += EntityAPI.lookX(fakePlayer, 90, speed);
-                veloZ += EntityAPI.lookZ(fakePlayer, 90, speed);
-            }
-            if (gamesettings.keyBindForward.isKeyDown()) {
-                veloX += EntityAPI.lookX(fakePlayer, speed);
-                veloZ += EntityAPI.lookZ(fakePlayer, speed);
-            } else if (gamesettings.keyBindBack.isKeyDown()) {
-                veloX += EntityAPI.lookX(fakePlayer, -speed);
-                veloZ += EntityAPI.lookZ(fakePlayer, -speed);
-            }
-            if (!gamesettings.keyBindLeft.isKeyDown() && !gamesettings.keyBindRight.isKeyDown()
-                    && !gamesettings.keyBindForward.isKeyDown()
-                    && !gamesettings.keyBindBack.isKeyDown()) {
-                veloZ = 0;
-                veloX = 0;
-            }
-            FakePlayerHelper.fakePlayer.setVelocity(veloX, 0, veloZ);
-            event.player.setVelocity(0, 0, 0);
         }
+
+        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
+        GameSettings gamesettings = Minecraft.getMinecraft().gameSettings;
+        double veloX = 0, veloZ = 0, speed = 0.2;
+
+        if (gamesettings.keyBindLeft.isKeyDown()) {
+            veloX += EntityAPI.lookX(fakePlayer, -90, speed);
+            veloZ += EntityAPI.lookZ(fakePlayer, -90, speed);
+        } else if (gamesettings.keyBindRight.isKeyDown()) {
+            veloX += EntityAPI.lookX(fakePlayer, 90, speed);
+            veloZ += EntityAPI.lookZ(fakePlayer, 90, speed);
+        }
+        if (gamesettings.keyBindForward.isKeyDown()) {
+            veloX += EntityAPI.lookX(fakePlayer, speed);
+            veloZ += EntityAPI.lookZ(fakePlayer, speed);
+        } else if (gamesettings.keyBindBack.isKeyDown()) {
+            veloX += EntityAPI.lookX(fakePlayer, -speed);
+            veloZ += EntityAPI.lookZ(fakePlayer, -speed);
+        }
+        if (!gamesettings.keyBindLeft.isKeyDown() && !gamesettings.keyBindRight.isKeyDown()
+                && !gamesettings.keyBindForward.isKeyDown()
+                && !gamesettings.keyBindBack.isKeyDown()) {
+            veloZ = 0;
+            veloX = 0;
+        }
+        FakePlayerHelper.fakePlayer.setVelocity(veloX, 0, veloZ);
+        event.player.setVelocity(0, 0, 0);
         if (event.side == Side.SERVER && elytraCooltime > 0) {
             elytraCooltime--;
         }

@@ -23,8 +23,10 @@ import java.util.ArrayList;
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
     public static boolean bossEnd, tripleArrow;
-    public static int bombCount;
+    public static int killCount, score;
     public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
+    public static int elytraCooltime = 0, defaultCooltime = 15;
+
     private EntityFakePlayer fakePlayer;
     public PosHelper spawnPosHelper;
     private ArrayList<EntityElytraPumpkin> monsterList = new ArrayList<>();
@@ -32,8 +34,12 @@ public class Elytra extends AbstractMiniGame {
     public Elytra() {
     }
 
+    public void addBombCount(){
+        MiniGame.elytraEvent.bomberStack.stackSize++;
+    }
     @Override
     public boolean start(Object... obj) {
+        this.setFakePlayerUse();
         WorldAPI.command("/display size 700 950");
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 55, WorldAPI.z());
 
@@ -43,7 +49,6 @@ public class Elytra extends AbstractMiniGame {
         playerSpawnZ = fakePlayer.posZ;
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());
         cameraSetting();
-        MiniGame.elytraEvent.elytraMode = true;
         spawnPosHelper = new PosHelper(fakePlayer.getPositionVector(), fakePlayer.getHorizontalFacing());
 
         TickRegister.register(new AbstractTick(200, true) {
@@ -95,7 +100,7 @@ public class Elytra extends AbstractMiniGame {
     }
 
     public void second() {
-        System.out.println("세컨드");
+        System.out.println("둘");
         for (int i = 1; i < 4; i++) {
             spawnPumpkinFire(Direction.FORWARD_RIGHT, i + 3).setHealth(2);
             spawnPumpkinFire(Direction.FORWARD_LEFT, i + 3).setHealth(2);
@@ -104,7 +109,7 @@ public class Elytra extends AbstractMiniGame {
     }
 
     public void third() {
-        System.out.println("서드");
+        System.out.println("셋");
         spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setForwardMode(true).setTargetSpeed(0.8);
         spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setForwardMode(true).setTargetSpeed(0.4);
     }
@@ -122,7 +127,6 @@ public class Elytra extends AbstractMiniGame {
     public boolean end(Object... obj) {
         Camera.getCamera().reset();
         ElytraEvent eve = MiniGame.elytraEvent;
-        eve.spawnY = 0;
         WorldAPI.command("/display size 854 480");
         WorldAPI.command("/ui reset");
         bossEnd = true;
@@ -210,40 +214,6 @@ public class Elytra extends AbstractMiniGame {
             targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
             targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
         }
-    }
-
-
-    public void a() {
-        String facingName = null;
-        WorldAPI.getPlayer().inventory.armorInventory[2] = new ItemStack(Items.ELYTRA);
-        Camera.getCamera().reset();
-        if (facingName.equalsIgnoreCase("NORTH")) {
-            Camera.getCamera().lockCamera(true, 0, 180);
-            Camera.getCamera().playerCamera(true);
-            Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
-            Camera.getCamera().rotateCamera(0, -60, 0);
-        }
-        if (facingName.equalsIgnoreCase("WEST")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().playerCamera(true);
-            Camera.getCamera().moveCamera(0, -5, 0);
-            Camera.getCamera().rotateCamera(0, 0, -50);
-        }
-        if (facingName.equalsIgnoreCase("SOUTH")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().playerCamera(true);
-            Camera.getCamera().moveCamera(0, -5, 0);
-            Camera.getCamera().rotateCamera(-50, 0, 0);
-        }
-        if (facingName.equalsIgnoreCase("EAST")) {
-            Camera.getCamera().lockCamera(true, 0, 0);
-            Camera.getCamera().playerCamera(true);
-            Camera.getCamera().moveCamera(0, -5, 0);
-            Camera.getCamera().rotateCamera(0, 0, 50);
-            Camera.getCamera().moveCamera(-11.7, 0.199, 4.5);
-        }
-        MiniGame.elytraEvent.elytraMode = false;
-
     }
 
 }

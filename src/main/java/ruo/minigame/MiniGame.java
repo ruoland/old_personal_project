@@ -141,7 +141,6 @@ public class MiniGame {
         DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
         DebAPI.registerEntity(this, "MRMissileCreeper", EntityMRMissileCreeper.class);
         DebAPI.registerEntity(this, "MRRocketCreeper", EntityMRRocketCreeper.class);
-
         DebAPI.registerEntity(this, "MRWalkingZombie", EntityMRWalkingZombie.class);
 
         GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
@@ -152,6 +151,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeenAttack", EntityElytraPumpkinAttack.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeenFire", EntityElytraPumpkinFire.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraItem", EntityElytraChest.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraScore", EntityElytraScore.class);
 
         //폭탄게임용
         EntityRegistry.registerModEntity(EntityBomb.class, "bomb", 174, this, 80, 3, false);
