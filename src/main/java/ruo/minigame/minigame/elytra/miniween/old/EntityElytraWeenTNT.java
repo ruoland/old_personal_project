@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.minigame.elytra.Elytra;
 import ruo.minigame.minigame.elytra.ElytraEvent;
 
 
@@ -34,10 +35,9 @@ public class EntityElytraWeenTNT extends EntityElytraWeenCore {
     @Override
     public void onDeath(DamageSource cause) {
         super.onDeath(cause);
-        ElytraEvent a = MiniGame.elytraEvent;
-        if (!MiniGame.elytra.isStart() || a == null)
+        if (!MiniGame.elytra.isStart())
             return;
-        a.killCount++;
+        Elytra.killCount++;
 
         String index = WorldAPI.getPlayer().getHorizontalFacing().getName();
         if (index.equalsIgnoreCase("WEST") || index.equalsIgnoreCase("EAST")) {

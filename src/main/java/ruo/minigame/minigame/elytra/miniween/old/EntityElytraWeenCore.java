@@ -14,6 +14,7 @@ import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
+import ruo.minigame.minigame.elytra.Elytra;
 import ruo.minigame.minigame.elytra.ElytraEvent;
 
 
@@ -91,7 +92,7 @@ public class EntityElytraWeenCore extends EntityDefaultNPC {
         }
         if (!MiniGame.elytra.isStart() || a == null)
             return;
-        a.killCount++;
+        Elytra.killCount++;
 
     }
 
