@@ -15,6 +15,9 @@ public class ItemLock extends Item {
             System.out.println("포션 제거됨"+target);
         } else {
             target.setCustomNameTag("잠금");
+            target.getEntityData().setDouble("LPX", target.posX);
+            target.getEntityData().setDouble("LPY", target.posY);
+            target.getEntityData().setDouble("LPZ", target.posZ);
             target.addPotionEffect(new PotionEffect(MoJaYo.lockPotion, 400));
             System.out.println("포션 적용됨"+target);
         }

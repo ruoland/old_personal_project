@@ -7,6 +7,8 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,19 +16,39 @@ import ruo.map.mafence.tower.EntityCreeperTower;
 
 public class MoJaeEvent {
     @SubscribeEvent
-    public void event(LivingEvent.LivingUpdateEvent event){
-        if(event.getEntityLiving().isPotionActive(MoJaYo.lockPotion) || event.getEntityLiving().getCustomNameTag().equalsIgnoreCase("잠금")){
-            event.getEntityLiving().setVelocity(0,0,0);
+    public void event(LivingEvent.LivingUpdateEvent event) {
+        String name = event.getEntityLiving().getCustomNameTag();
+        if (event.getEntityLiving().isPotionActive(MoJaYo.lockPotion) || name.startsWith("잠금")) {
+            event.getEntityLiving().setVelocity(0, 0, 0);
+            NBTTagCompound tag = event.getEntityLiving().getEntityData();
+            event.getEntityLiving().setPosition(tag.getDouble("LPX"), tag.getDouble("LPY")
+                    , tag.getDouble("LPZ"));
+
+        }
+    }
+
+    @SubscribeEvent
+    public void join(EntityJoinWorldEvent event){
+        if(event.getEntity() instanceof EntityWither && !(event.getEntity() instanceof EntityWitherYout))
+        {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            EntityWither wither = (EntityWither) event.getEntity();
+            EntityWitherYout yout = new EntityWitherYout(event.getWorld());
+            wither.writeToNBT(tagCompound);
+            yout.readFromNBT(tagCompound);
+            event.getWorld().spawnEntityInWorld(yout);
+            event.getEntity().setDead();
         }
     }
     @SubscribeEvent
-    public void event(LivingSpawnEvent event){
-        if(event.getEntityLiving() instanceof EntityMob){
+    public void event(LivingSpawnEvent event) {
+        if (event.getEntityLiving() instanceof EntityMob) {
             EntityMob mob = (EntityMob) event.getEntityLiving();
-            mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[] {EntityPigZombie.class}));
+            mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[]{EntityPigZombie.class}));
             mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityDragon.class, false));
             mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityWither.class, false));
             mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityLiving.class, false));
         }
+
     }
 }
