@@ -1,4 +1,4 @@
-package ruo.minigame.minigame.elytra;
+package ruo.minigame.minigame.elytra.playerarrow;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

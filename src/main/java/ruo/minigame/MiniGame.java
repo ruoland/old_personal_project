@@ -46,6 +46,8 @@ import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.bomber.EntityBomb;
 import ruo.minigame.minigame.elytra.*;
 import ruo.minigame.minigame.elytra.miniween.*;
+import ruo.minigame.minigame.elytra.playerarrow.EntityHomingTNT;
+import ruo.minigame.minigame.elytra.playerarrow.EntityTNTArrow;
 import ruo.minigame.minigame.elytra_scroll.CommandElytraScroll;
 import ruo.minigame.minigame.elytra_scroll.ElytraScroll;
 import ruo.minigame.minigame.elytra_scroll.ElytraScrollEvent;
@@ -54,7 +56,6 @@ import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
 
 import java.lang.reflect.Field;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 
@@ -152,6 +153,9 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraWeenFire", EntityElytraPumpkinFire.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraItem", EntityElytraChest.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraScore", EntityElytraScore.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraTNTArrow", EntityTNTArrow.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraHoamingTNT", EntityHomingTNT.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraCreeper", EntityElytraCreeper.class);
 
         //폭탄게임용
         EntityRegistry.registerModEntity(EntityBomb.class, "bomb", 174, this, 80, 3, false);

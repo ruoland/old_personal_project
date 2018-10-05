@@ -10,37 +10,40 @@ import java.util.Random;
 public class Android {
     private DatagramSocket datagramSocket;
     private Socket socket;
-    private String ip;
-    public boolean login = ip != null;
+    private String androidIP;
+    public boolean isLogin = androidIP != null;
 
-    public Android() {
-        if (!login) login();
+    public Android(String password) {
+        if (!isLogin) login(password);
     }
 
-    public void login() {
+    private void login(String password) {
         try {
-            datagramSocket = new DatagramSocket(50008);
-
-            String password = "" + new Random().nextInt(10);
-
-            InetAddress local = InetAddress.getByAddress(new byte[]{-1, -1, -1, -1});
-            DatagramPacket loginPacket = new DatagramPacket(("login:" + password).getBytes(),
-                    ("login:" + password).length(), local, 50008);
-            datagramSocket.send(loginPacket);
-
-            System.out.println(password);
-
-            byte[] message = new byte[1500];
-            DatagramPacket ipPacket = new DatagramPacket(message, message.length);
+            InetAddress serverAddress = InetAddress.getByAddress(new byte[]{-1, -1, -1, -1});
+            datagramSocket = new DatagramSocket();
+            DatagramPacket loginPacket, ipPacket;
+            String inPassword = password;
+            byte[] msg = new byte[10];
+            byte[] ip = new byte[100];
+            DatagramPacket passwordPacket = new DatagramPacket(inPassword.getBytes(), inPassword.getBytes().length, serverAddress, 50008);
+            loginPacket = new DatagramPacket(msg, msg.length);
+            ipPacket = new DatagramPacket(ip, ip.length);
+            datagramSocket.send(passwordPacket);
+            datagramSocket.receive(loginPacket);
             datagramSocket.receive(ipPacket);
-            System.out.println(new String(message, 0, ipPacket.getLength()));
-
-            if (new String(message, 0, ipPacket.getLength()).startsWith("login:"))
-                datagramSocket.receive(ipPacket);
-            ip = new String(message, 0, ipPacket.getLength()).replace("IP:", "");
-            System.out.println(new String(message, 0, ipPacket.getLength()));
-            tcp(ip);
-            datagramSocket.close();
+            if (!isLogin) {
+                String inMessage = new String(loginPacket.getData()).trim();
+                if (inMessage.equalsIgnoreCase("1")) {
+                    isLogin = true;
+                    androidIP = new String(ipPacket.getData()).trim();
+                } else {
+                    System.out.println("클라+로그인 실패했습니다. " + inMessage);
+                }
+            }
+            System.out.println("로그인" + androidIP);
+            if (isLogin) {
+                tcp(androidIP);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +52,7 @@ public class Android {
     public void tcp(String ip) {
         try {
             InetAddress local = InetAddress.getByName(ip);
-            socket = new Socket(local, 25790);
+            socket = new Socket(local, 12345);
             InputStream in = socket.getInputStream();
             final DataInputStream dis = new DataInputStream(in);
             new Thread(new Runnable() {
@@ -103,7 +106,7 @@ public class Android {
 
     private void send(String... message) {
         try {
-            InetAddress local = InetAddress.getByName(ip);
+            InetAddress local = InetAddress.getByName(androidIP);
             OutputStream out = socket.getOutputStream();
             DataOutputStream dos = new DataOutputStream(out);
             dos.writeInt(message.length);

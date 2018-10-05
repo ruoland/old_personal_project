@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class Elytra extends AbstractMiniGame {
     public static EntityFlyingWeen flyingWeen;
-    public static boolean bossEnd, tripleArrow;
+    public static boolean bossEnd, tripleArrow, tntArrow;
     public static int killCount, score;
     public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
-    public static int elytraCooltime = 0, defaultCooltime = 15;
+    public static int elytraCooltime = 0, defaultCooltime = 5, tntCooltime = 0;
 
     private EntityFakePlayer fakePlayer;
     public PosHelper spawnPosHelper;

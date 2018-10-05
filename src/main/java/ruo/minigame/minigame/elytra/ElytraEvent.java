@@ -2,12 +2,9 @@ package ruo.minigame.minigame.elytra;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -20,12 +17,12 @@ import ruo.minigame.MiniGame;
 import ruo.minigame.api.Direction;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
+import ruo.minigame.minigame.elytra.playerarrow.EntityTNTArrow;
+import ruo.minigame.minigame.elytra.playerarrow.EntityElytraArrow;
 
-import static ruo.minigame.minigame.elytra.Elytra.defaultCooltime;
-import static ruo.minigame.minigame.elytra.Elytra.elytraCooltime;
+import static ruo.minigame.minigame.elytra.Elytra.*;
 
 public class ElytraEvent {
 
@@ -73,8 +70,22 @@ public class ElytraEvent {
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);
         elytraCooltime = defaultCooltime;
-        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT,
-                SoundCategory.NEUTRAL, 1.0F, (float) (1.0F / (player.worldObj.rand.nextFloat() * 0.4F + 1.2F) + 0.1666));
+        if (tntArrow && Elytra.tntCooltime == 0) {
+            spawnTNT();
+        }
+
+    }
+
+    public void spawnTNT() {
+        EntityFakePlayer player = FakePlayerHelper.fakePlayer;
+        PosHelper posHelper = new PosHelper(player);
+        EntityTNTArrow arrow = new EntityTNTArrow(player.worldObj);
+        arrow.setPosition(posHelper.getX(Direction.RIGHT, 1, 1, true), player.posY, posHelper.getZ(Direction.RIGHT, 1, 1, true));
+        player.worldObj.spawnEntityInWorld(arrow);
+        arrow = new EntityTNTArrow(player.worldObj);
+        arrow.setPosition(posHelper.getX(Direction.LEFT, 1, 1, true), player.posY, posHelper.getZ(Direction.LEFT, 1, 1, true));
+        player.worldObj.spawnEntityInWorld(arrow);
+        Elytra.tntCooltime = 30;
     }
 
     @SubscribeEvent
@@ -87,8 +98,6 @@ public class ElytraEvent {
     public void login(PlayerTickEvent event) {
         if (!MiniGame.elytra.isStart())
             return;
-
-
         if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
             if (bomberStack.stackSize > 0) {
                 bomberStack.stackSize--;
@@ -124,8 +133,11 @@ public class ElytraEvent {
         }
         FakePlayerHelper.fakePlayer.setVelocity(veloX, 0, veloZ);
         event.player.setVelocity(0, 0, 0);
-        if (event.side == Side.SERVER && elytraCooltime > 0) {
-            elytraCooltime--;
+        if (event.side == Side.SERVER) {
+            if (elytraCooltime > 0)
+                elytraCooltime--;
+            if (tntCooltime > 0)
+                tntCooltime--;
         }
     }
 }
