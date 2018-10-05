@@ -17,6 +17,9 @@ public class Android {
         if (!isLogin) login(password);
     }
 
+    public Android() {
+    }
+
     private void login(String password) {
         try {
             InetAddress serverAddress = InetAddress.getByAddress(new byte[]{-1, -1, -1, -1});
@@ -55,30 +58,26 @@ public class Android {
             socket = new Socket(local, 12345);
             InputStream in = socket.getInputStream();
             final DataInputStream dis = new DataInputStream(in);
-            new Thread(new Runnable() {
+            new Thread(() -> {
 
-                @Override
-                public void run() {
-
-                    while (true) {
-                        try {
-                            String message = dis.readUTF();
-                            if (message.equals("call")) {
-                                connectCall = true;
-                                call.call();
-                            }
-                            if (message.equals("end")) {
-                                connectCall = false;
-                                call.end();
-                            }
-                            if (message.equals("dial")) {
-                                call.dial();
-                            }
-                        } catch (IOException e) {
-
-                            e.printStackTrace();
-                            break;
+                while (true) {
+                    try {
+                        String message = dis.readUTF();
+                        if (message.equals("call")) {
+                            connectCall = true;
+                            call.call();
                         }
+                        if (message.equals("end")) {
+                            connectCall = false;
+                            call.end();
+                        }
+                        if (message.equals("dial")) {
+                            call.dial();
+                        }
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                        break;
                     }
                 }
             }).start();

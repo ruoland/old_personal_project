@@ -38,7 +38,7 @@ public class CommandCall extends CommandBase{
 			public void call() {
 			}
 		};
-		if(android.login){
+		if(android.isLogin){
 			android.sendCall(call, args[0]);
 		}
 	}

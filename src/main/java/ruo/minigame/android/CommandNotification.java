@@ -22,7 +22,7 @@ public class CommandNotification extends CommandBase{
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		Android android = new Android();
-		if(android.login){
+		if(android.isLogin){
 			android.sendNotification(Integer.valueOf(args[0]), args[1], args[2], args[3]);
 	        notifyCommandListener(sender, this, "asdf");
 

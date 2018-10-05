@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.skill.PotionFly;
 
-@Mod(modid =  "ModoYoutube")
+//@Mod(modid =  "ModoYoutube")
 public class MoJaYo {
     public static final PotionLock lockPotion = new PotionLock(false, 0);
     public static final Item itemLock = new ItemLock();

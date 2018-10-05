@@ -4,21 +4,61 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import ruo.minigame.action.ActionEvent;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.map.EntityDefaultNPC;
 
 import javax.annotation.Nullable;
 
 public class EntityFakePlayer extends EntityDefaultNPC {
-    private PosHelper posHelper;
     private int respawnTime;//무적 타임
+    private static double boundingX, boundingY, boundingZ;
     public EntityFakePlayer(World worldIn) {
         super(worldIn);
         initEntityAI();
         this.setHealth(getMaxHealth());
         respawnTime = 40;
+    }
+
+    @Override
+    public void setElytra(boolean ely) {
+        super.setElytra(ely);
+        setElytraSize(getHorizontalFacing());
+    }
+
+    public void setElytraSize(EnumFacing facing){
+        double min = 1.5;
+        float tra = 0.28F;
+        if(!isElytra())
+        {
+            boundingY = 0;
+            boundingX = 0;
+            boundingZ = 0;
+            return;
+        }
+        if(facing == EnumFacing.EAST) {
+            boundingX = min;
+            boundingZ = 0;
+        }
+        if(facing == EnumFacing.WEST) {
+            boundingX = -min;
+            boundingZ = 0;
+        }
+        if(facing == EnumFacing.SOUTH){
+            boundingX = 0;
+            boundingZ = min;
+        }
+        if(facing == EnumFacing.NORTH){
+            boundingX = 0;
+            boundingZ = -min;
+        }
+        setTra(0,tra, 0);
+
     }
 
     protected void applyEntityAttributes() {
@@ -50,6 +90,12 @@ public class EntityFakePlayer extends EntityDefaultNPC {
         super.onLivingUpdate();
         if(respawnTime > 0)
             respawnTime--;
+        setEntityBoundingBox(new AxisAlignedBB(getEntityBoundingBox().minX,
+                getEntityBoundingBox().minY,
+                getEntityBoundingBox().minZ,
+                getEntityBoundingBox().minX + width+boundingX,
+                getEntityBoundingBox().minY + height+boundingY,
+                getEntityBoundingBox().minZ + width+boundingZ));
     }
 
     @Override

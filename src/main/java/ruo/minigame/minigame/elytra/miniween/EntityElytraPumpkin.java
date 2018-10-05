@@ -19,7 +19,6 @@ import ruo.minigame.map.EntityDefaultNPC;
 public class EntityElytraPumpkin extends EntityDefaultNPC {
     private Direction spawnDirection;
     private static final DataParameter<Boolean> TNT_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
-
     private static final DataParameter<Boolean> WATER_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MOVE_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TELEPORT_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
@@ -79,35 +78,37 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             this.setDead();
             return;
         }
-        if (isTeleportMode()) {
-            moveCooldown++;
-            if (moveCooldown > 60)
-                moveCooldown = 0;
-            if (moveCooldown < 20) {
-                this.setPosition(getX(Direction.RIGHT, 1, true), posY, getZ(Direction.RIGHT, 1, true));
-            } else if (moveCooldown > 20 && moveCooldown < 40) {
-                this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-            } else if (moveCooldown > 40)
-                this.setPosition(getX(Direction.LEFT, 1, true), posY, getZ(Direction.LEFT, 1, true));
-        }
-
-        if (isMoveMode()) {
-            moveCooldown++;
-            if (moveCooldown == 40)
-                moveCooldown = 0;
-            if (moveCooldown > 20) {
-                this.setVelocity(getX(Direction.RIGHT, 0.01, false), 0, getZ(Direction.RIGHT, 0.01, false));
-            } else {
-                this.setVelocity(getX(Direction.LEFT, 0.01, false), 0, getZ(Direction.LEFT, 0.01, false));
+        if(getHealth() > 0) {
+            if (isTeleportMode()) {
+                moveCooldown++;
+                if (moveCooldown > 60)
+                    moveCooldown = 0;
+                if (moveCooldown < 20) {
+                    this.setPosition(getX(Direction.RIGHT, 1, true), posY, getZ(Direction.RIGHT, 1, true));
+                } else if (moveCooldown > 20 && moveCooldown < 40) {
+                    this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+                } else if (moveCooldown > 40)
+                    this.setPosition(getX(Direction.LEFT, 1, true), posY, getZ(Direction.LEFT, 1, true));
             }
+
+            if (isMoveMode()) {
+                moveCooldown++;
+                if (moveCooldown == 40)
+                    moveCooldown = 0;
+                if (moveCooldown > 20) {
+                    this.setVelocity(getX(Direction.RIGHT, 0.01, false), 0, getZ(Direction.RIGHT, 0.01, false));
+                } else {
+                    this.setVelocity(getX(Direction.LEFT, 0.01, false), 0, getZ(Direction.LEFT, 0.01, false));
+                }
+            }
+            if (isServerWorld() && isForwardMode() && noTarget() && !isReturn())//페이크 뒤로 보냄
+            {
+                PosHelper posHelper = MiniGame.elytra.spawnPosHelper;
+                this.setVelocity(posHelper.getX(spawnDirection.reverse().simple(), 0.1, false), 0, posHelper.getZ(spawnDirection.reverse().simple(), 0.1, false));
+            }
+            faceEntity(FakePlayerHelper.fakePlayer, 360, 360);
+            this.motionY = 0;
         }
-        if (isServerWorld() && isForwardMode() && noTarget() && !isReturn())//페이크 뒤로 보냄
-        {
-            PosHelper posHelper = MiniGame.elytra.spawnPosHelper;
-            this.setVelocity(posHelper.getX(spawnDirection.reverse().simple(), 0.1, false), 0, posHelper.getZ(spawnDirection.reverse().simple(), 0.1, false));
-        }
-        faceEntity(FakePlayerHelper.fakePlayer, 360, 360);
-        this.motionY = 0;
     }
 
 
@@ -122,7 +123,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         compound.setBoolean("MOVE_MODE", isMoveMode());
         compound.setBoolean("TELEPORT_MODE", isTeleportMode());
         compound.setBoolean("WATER_MODE", isWaterMode());
-
+        if(spawnDirection != null)
         compound.setString("SPAWN_DIRECTION", spawnDirection.name());
     }
 

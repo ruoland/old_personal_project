@@ -1,5 +1,6 @@
 package ruo.minigame.api;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -60,4 +61,36 @@ public class PosHelper {
         return null;
     }
 
+    public Direction getDirection(EntityLivingBase entity){
+        PosHelper posHelper = new PosHelper(entity);
+        double baseX=  getX(Direction.FORWARD, 1, false);
+        double baseZ=  getZ(Direction.FORWARD, 1, false);
+        double entityX=  posHelper.getX(Direction.FORWARD, 1, false);
+        double entityZ=  posHelper.getZ(Direction.FORWARD, 1, false);
+        if(baseX < entity.posX && baseZ > entity.posZ){
+            return Direction.FORWARD_RIGHT;
+        }
+        if(baseX > entity.posX && baseZ > entity.posZ){
+            return Direction.FORWARD_LEFT;
+        }
+        if(baseX < entity.posX && baseZ < entity.posZ){
+            return Direction.BACK_RIGHT;
+        }
+        if(baseX > entity.posX && baseZ < entity.posZ){
+            return Direction.BACK_LEFT;
+        }
+        if(baseX < entityX){
+            return Direction.RIGHT;
+        }
+        if(baseX > entityX){
+            return Direction.LEFT;
+        }
+        if(baseZ > entityZ){
+            return Direction.FORWARD;
+        }
+        if(baseZ < entityZ){
+            return Direction.BACK;
+        }
+        return null;
+    }
 }

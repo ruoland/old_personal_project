@@ -158,7 +158,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraCreeper", EntityElytraCreeper.class);
 
         //폭탄게임용
-        EntityRegistry.registerModEntity(EntityBomb.class, "bomb", 174, this, 80, 3, false);
+        DebAPI.registerEntity(this, "bomb",EntityBomb.class);
         GameRegistry.register(Bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
         reg(Bomber.bombItem);
 

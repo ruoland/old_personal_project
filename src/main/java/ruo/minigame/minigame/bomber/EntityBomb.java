@@ -2,6 +2,7 @@ package ruo.minigame.minigame.bomber;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
 
 public class EntityBomb extends Entity
 {
-    private static final DataParameter<Integer> FUSE = EntityDataManager.<Integer>createKey(EntityBomb.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FUSE = EntityDataManager.createKey(EntityBomb.class, DataSerializers.VARINT);
     private EntityLivingBase tntPlacedBy;
     /** How long the fuse is */
     private int fuse;
@@ -163,6 +164,7 @@ public class EntityBomb extends Entity
         this.fuse = fuseIn;
     }
 
+
     public void notifyDataManagerChange(DataParameter<?> key)
     {
         if (FUSE.equals(key))
@@ -176,7 +178,7 @@ public class EntityBomb extends Entity
      */
     public int getFuseDataManager()
     {
-        return ((Integer)this.dataManager.get(FUSE)).intValue();
+        return (this.dataManager.get(FUSE)).byteValue();
     }
 
     public int getFuse()

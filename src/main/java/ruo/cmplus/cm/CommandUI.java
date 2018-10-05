@@ -21,10 +21,12 @@ public class CommandUI extends CommandPlusBase {
         }
         String ui = args[0].toUpperCase();
         try {
-            if (!ui.equalsIgnoreCase("hand") && !ui.equalsIgnoreCase("blocklayer"))
-                RenderGameOverlayEvent.ElementType.valueOf(ui);
+            if (!ui.equalsIgnoreCase("reset") && !ui.equalsIgnoreCase("hand") && !ui.equalsIgnoreCase("blocklayer")) {
+                ElementType.valueOf(ui);
+            }
         } catch (java.lang.IllegalArgumentException e) {
             t.addErrorMessage(ui);
+            e.printStackTrace();
             return;
         }
         if (args[0].equalsIgnoreCase("reset")) {

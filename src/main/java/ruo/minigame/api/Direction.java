@@ -4,6 +4,12 @@ public enum Direction {
     FORWARD, BACK, RIGHT, LEFT, FORWARD_RIGHT, FORWARD_LEFT, BACK_RIGHT, BACK_LEFT;
 
 
+    public boolean isBack(){
+        return this == BACK || this == BACK_LEFT || this == BACK_RIGHT;
+    }
+    public boolean isForward(){
+        return this == FORWARD || this == FORWARD_LEFT || this == FORWARD_RIGHT;
+    }
     public Direction reverse() {
         if (this == FORWARD_LEFT)
             return BACK_LEFT;
