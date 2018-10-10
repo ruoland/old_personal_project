@@ -176,6 +176,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
 
+    /**
+     * 목적지에 도착했을 때 이동을 계속 할 건지 말 건지 설정하는 메서드
+     * true로 하면 목적지 도착시 멈춤, false로 하면 목적지에 도착해도 계속 뒤로 이동함
+     * @param targetArriveStop
+     */
     public void setTargetArriveStop(boolean targetArriveStop) {
         isTargetArriveStop = targetArriveStop;
     }
@@ -194,7 +199,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public boolean isTargetArrive() {
-        return getDistance(targetPosition) < distance;
+        return !noTarget() && getDistance(targetPosition) < distance;
     }
 
     public void setDistance(double distance) {
@@ -247,11 +252,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
             if (getDataManager().get(ON_DEATH_TIMER)) {
                 if (getDeathTime() > 0) {
                     setDeathTimer(getDeathTime() - 1);
-                    System.out.println("데스 타이머가 " + getDeathTime() + " 됨");
                 }
                 if (getDeathTime() == 0) {
-                    System.out.println("데스 타이머가 0이 됨");
                     this.setDead();
+                    onTimerDeath();
                 }
             }
             if (isSturn()) {
@@ -262,6 +266,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
                     setSturn(false);
             }
         }
+    }
+
+    public void onTimerDeath(){
+
     }
 
     public int getDeathTime() {
@@ -315,7 +323,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return !super.canDespawn();
     }
 
-    public void setSpawnPosition() {
+    public void updateSpawnPosition() {
+        setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+    }
+    public void teleportSpawnPos() {
         setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
     }
 

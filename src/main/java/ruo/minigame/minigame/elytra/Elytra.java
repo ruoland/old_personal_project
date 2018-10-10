@@ -25,7 +25,7 @@ public class Elytra extends AbstractMiniGame {
     public static boolean bossEnd, tripleArrow, tntArrow;
     public static int killCount, score;
     public double playerSpawnX, playerSpawnY, playerSpawnZ, targetX, targetY, targetZ;
-    public static int elytraCooltime = 0, defaultCooltime = 5, tntCooltime = 0;
+    public static int elytraCooltime = 0, defaultCooltime = 10, bombCooltime = 0, tntCooltime = 0;
 
     private EntityFakePlayer fakePlayer;
     public PosHelper spawnPosHelper;
@@ -62,16 +62,34 @@ public class Elytra extends AbstractMiniGame {
             @Override
             public void run(Type type) {
                 if (absRunCount == 0){
-                    first();
+                    String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
+
+                    if (facingName.equalsIgnoreCase("NORTH")) {
+                        targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
+                        targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
+                    }
+                    if (facingName.equalsIgnoreCase("SOUTH")) {
+                        targetX = fakePlayer.getX(Direction.BACK, 20, true);
+                        targetZ = fakePlayer.getZ(Direction.BACK, 20, true);
+                    }
+                    if (facingName.equalsIgnoreCase("WEST")) {
+                        targetX = fakePlayer.getX(Direction.BACK, 20, true);
+                        targetZ = fakePlayer.getZ(Direction.BACK, 20, true);
+                    }
+                    if (facingName.equalsIgnoreCase("EAST")) {
+                        targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
+                        targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
+                    }
+                    four();
                     absDefTick = 300;
                 }
                 if (absRunCount == 1) {
                     returnMonster();
-                    second();
+                    five();
                 }
                 if (absRunCount == 2) {
                     returnMonster();
-                    third();
+                    six();
                 }
                 if (absRunCount == 3) {
                     returnMonster();
@@ -113,8 +131,8 @@ public class Elytra extends AbstractMiniGame {
         for (int i = 1; i < 4; i++) {
             spawnPumpkinAttack(Direction.FORWARD, 5+i, 0).setForwardMode(true).setTargetSpeed(0.2F);
         }
-        spawnPumpkinAttack(Direction.LEFT, 5, 0);
-        spawnPumpkinAttack(Direction.RIGHT, 5, 0);
+        //spawnPumpkinAttack(Direction.LEFT, 5, 0);
+        //spawnPumpkinAttack(Direction.RIGHT, 5, 0);
     }
 
     public void second() {
@@ -134,6 +152,10 @@ public class Elytra extends AbstractMiniGame {
         WorldAPI.addMessage("셋");
         spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setForwardMode(true).setTargetSpeed(0.8);
         spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setForwardMode(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(Direction.FORWARD_RIGHT, 9, 3).setForwardMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(Direction.FORWARD_LEFT, 9, 3).setForwardMode(true).setTargetSpeed(0.4);
+        spawnPumpkinAttack(Direction.FORWARD_RIGHT, 9, 4).setForwardMode(true).setTargetSpeed(0.8);
+        spawnPumpkinAttack(Direction.FORWARD_LEFT, 9, 4).setForwardMode(true).setTargetSpeed(0.4);
     }
     public void four() {
         WorldAPI.addMessage("네번째");
@@ -147,10 +169,10 @@ public class Elytra extends AbstractMiniGame {
     }
     public void six() {
         WorldAPI.addMessage("여섯번째");
-        spawnPumpkinAttack(Direction.FORWARD, 4, 0).setTeleportMode(true);
-        spawnPumpkinAttack(Direction.FORWARD, 6, 0).setTeleportMode(true);
-        spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setWaterMode(true);
-        spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setWaterMode(true);
+        spawnPumpkinAttack(Direction.FORWARD, 8, 0).setTeleportMode(true);
+        spawnPumpkinAttack(Direction.FORWARD, 10, 0).setTeleportMode(true);
+        //spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setWaterMode(true);
+        //spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setWaterMode(true);
     }
     @Override
     public boolean end(Object... obj) {
@@ -219,7 +241,6 @@ public class Elytra extends AbstractMiniGame {
     }
 
     public void cameraSetting() {
-        String facingName = WorldAPI.getPlayer().getHorizontalFacing().getName();
         WorldAPI.command("/gamemode " + "1");//게임모드 설정
         WorldAPI.command("/ui hotbar false");//핫바 끔
         WorldAPI.command("/ui hand false");//핸드 끔
@@ -228,22 +249,7 @@ public class Elytra extends AbstractMiniGame {
         Camera.getCamera().lockCamera(true, 0, 0);
         Camera.getCamera().moveCamera(0, -10, -5);
         Camera.getCamera().rotateCamera(90, 180, 0);
-        if (facingName.equalsIgnoreCase("NORTH")) {
-            targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
-            targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
-        }
-        if (facingName.equalsIgnoreCase("SOUTH")) {
-            targetX = fakePlayer.getX(Direction.BACK, 20, true);
-            targetZ = fakePlayer.getZ(Direction.BACK, 20, true);
-        }
-        if (facingName.equalsIgnoreCase("WEST")) {
-            targetX = fakePlayer.getX(Direction.BACK, 20, true);
-            targetZ = fakePlayer.getZ(Direction.BACK, 20, true);
-        }
-        if (facingName.equalsIgnoreCase("EAST")) {
-            targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
-            targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
-        }
+
     }
 
 }

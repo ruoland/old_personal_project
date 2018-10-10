@@ -1,5 +1,7 @@
 package ruo.minigame.minigame.elytra.miniween;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -7,6 +9,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -25,7 +29,7 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
         this.setBlockMode(Blocks.PUMPKIN);
         this.setScale(0.5F, 0.5F, 0.5F);
         this.setSize(0.5F, 0.5F);
-        this.setDeathTimer(60);
+        this.setDeathTimer(100);
     }
 
     @Override
@@ -36,7 +40,7 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
 
     @Override
     public void targetArrive() {
-        if(isTNTMode()){
+        if (isTNTMode()) {
             worldObj.createExplosion(this, posX, posY, posZ, 1.5F, true);
             setDead();
         }
@@ -46,7 +50,6 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source.getEntity() instanceof EntityArrow || source.isProjectile() || source.getDamageType().equalsIgnoreCase("arrow")) {
             this.setDead();
-            System.out.println("화살에 맞아 죽음");
         }
 
         return false;
@@ -56,22 +59,33 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         motionY = 0;
-        if(isWaterMode()) {
-            this.worldObj.setBlockState(this.getPosition(), Blocks.WATER.getDefaultState());
-            TickRegister.register(new AbstractTick(20, false) {
+        if (isWaterMode()) {
+
+            BlockPos waterPosition = getPosition();
+            this.worldObj.setBlockState(waterPosition, Blocks.WATER.getDefaultState());
+            worldObj.getBlockState(waterPosition.offset(EnumFacing.SOUTH));
+            TickRegister.register(new AbstractTick(5, true) {
+
                 @Override
                 public void run(TickEvent.Type type) {
-                    worldObj.setBlockToAir(getPosition());
+                    for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+                        BlockPos waterPos = waterPosition.offset(facing);
+                        Block block = worldObj.getBlockState(waterPos).getBlock();
+                        worldObj.setBlockToAir(waterPosition.add(0,-1,0));
+
+                        if(block instanceof BlockLiquid && worldObj.getBlockState(waterPos).getValue(BlockLiquid.LEVEL) > 0) {
+                            worldObj.setBlockToAir(waterPos);
+                        }
+                        if(absRunCount > 5){
+                            worldObj.setBlockToAir(waterPosition);
+                            absLoop = false;
+                        }
+                    }
                 }
             });
         }
-        if(!MiniGame.elytra.isStart())
+        if (!MiniGame.elytra.isStart())
             setDead();
-    }
-
-    @Override
-    public void setDead() {
-        super.setDead();
     }
 
     @Override
@@ -86,13 +100,16 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
             if (isBurning()) {
                 entityIn.setFire(2);
             }
-            if(isTNTMode()){
+            if (isTNTMode()) {
                 worldObj.createExplosion(this, posX, posY, posZ, 1.5F, true);
-            }
-            entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
+                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage() * 1.5F);
+
+            } else
+                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), getDamage());
             this.setDead();
         }
     }
+
     public void setDamage(float damage) {
         dataManager.set(DAMAGE, damage);
     }

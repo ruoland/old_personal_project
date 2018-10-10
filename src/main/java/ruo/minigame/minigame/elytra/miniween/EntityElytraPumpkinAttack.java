@@ -19,13 +19,14 @@ public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
         if (isAttackMode()) {
             if (attackCooldown > 0) {
                 attackCooldown--;
             }
             if (attackCooldown == 0) {
                 Direction direction = MiniGame.elytra.spawnPosHelper.getDirection(this);
-                if (direction.isBack())//페이크 플레이어가 뒤에 있을 떄만 공격하게
+                if (!direction.isBack())//페이크 플레이어가 뒤에 있을 떄만 공격하게
                     spawnBullet();
                 attackCooldown = defaultCooldown;
             }

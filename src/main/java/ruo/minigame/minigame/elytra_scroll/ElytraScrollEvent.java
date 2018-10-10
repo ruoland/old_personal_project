@@ -31,7 +31,7 @@ public class ElytraScrollEvent {
 
     @SubscribeEvent
     public void login(RenderGameOverlayEvent.Post event) {
-        if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getType() == ElementType.ALL) {
+        if (MiniGame.elytraScroll.isStart() && FakePlayerHelper.fakePlayer != null && event.getType() == ElementType.ALL) {
             Minecraft.getMinecraft().fontRendererObj.drawString("적 죽인 횟수:" + killCount, 0, 0, 0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("폭탄 갯수:" + ElytraScroll.bombCount, 0, 10, 0xFFFFFF);
         }
@@ -39,7 +39,7 @@ public class ElytraScrollEvent {
 
     @SubscribeEvent
     public void event(MouseEvent event) {
-        if (!MiniGame.elytra.isStart())
+        if (!MiniGame.elytraScroll.isStart())
             return;
         if (event.getDwheel() == 120) {
             WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() - 0.5, WorldAPI.z());
@@ -51,7 +51,7 @@ public class ElytraScrollEvent {
 
     @SubscribeEvent
     public void login(PlayerInteractEvent event) {
-        if (MiniGame.elytra.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
+        if (MiniGame.elytraScroll.isStart() && (event instanceof PlayerInteractEvent.RightClickItem || event instanceof PlayerInteractEvent.RightClickEmpty) && elytraCooltime == 0 && event.getHand() == EnumHand.MAIN_HAND
                 && event.getSide() == Side.SERVER && !event.getWorld().isRemote) {
             spawnArrow();
             if (ElytraScroll.tripleArrow) {

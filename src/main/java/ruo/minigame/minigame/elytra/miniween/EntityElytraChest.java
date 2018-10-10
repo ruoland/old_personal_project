@@ -2,6 +2,7 @@ package ruo.minigame.minigame.elytra.miniween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.WorldAPI;
@@ -14,26 +15,24 @@ public class EntityElytraChest extends EntityDefaultNPC {
         super(worldIn);
         this.setBlockMode(Blocks.CHEST);
         this.setRotate(0, 0, 90);
+        isFly = true;
     }
 
     @Override
-    protected void collideWithEntity(Entity entityIn) {
-        super.collideWithEntity(entityIn);
-        if (entityIn instanceof EntityFakePlayer) {
-            if (Elytra.defaultCooltime == 15) {
-                Elytra.defaultCooltime = 7;
-                WorldAPI.addMessage("공격 속도가 상승하였습니다!");
-                return;
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (source.getEntity() instanceof EntityFakePlayer) {
+            if (isServerWorld()) {
+                upgrade();
+                this.setDead();
             }
-
-            if (!Elytra.tripleArrow) {
-                Elytra.tripleArrow = true;
-                WorldAPI.addMessage("화살이 3발씩 나갑니다!");
-                return;
-            }
-
-            MiniGame.elytra.addBombCount();
         }
+        return super.attackEntityFrom(source, amount);
+    }
+
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+        teleportSpawnPos();
     }
 
     public void upgrade() {
@@ -58,9 +57,19 @@ public class EntityElytraChest extends EntityDefaultNPC {
                 WorldAPI.addMessage("화살 폭탄이 1개 추가됐습니다!(B키를 누르면 사용할 수 있음)");
                 break;
             case 3:
-                Elytra.tntArrow = true;
-                WorldAPI.addMessage("이제 작은 미사일이 같이 발사됩니다!");
+                if (!Elytra.tntArrow) {
+                    Elytra.tntArrow = true;
+                    WorldAPI.addMessage("이제 작은 미사일이 같이 발사됩니다!");
+                    break;
+                } else upgrade();
+            case 4:
+                if (Elytra.defaultCooltime == 10) {
+                    Elytra.defaultCooltime = 5;
+                    WorldAPI.addMessage("화살이 더 많이 발사됩니다.");
+                    break;
+                } else upgrade();
                 break;
+
         }
     }
 }

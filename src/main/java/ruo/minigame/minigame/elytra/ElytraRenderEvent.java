@@ -30,8 +30,9 @@ public class ElytraRenderEvent {
     @SubscribeEvent
     public void login(RenderGameOverlayEvent.Post event) {
         if (MiniGame.elytra.isStart() && FakePlayerHelper.fakePlayer != null && event.getType() == ElementType.ALL) {
-            Minecraft.getMinecraft().fontRendererObj.drawString("점수:" + Elytra.killCount+Elytra.score, 0, 0, 0xFFFFFF);
-            RenderAPI.renderItem(MiniGame.elytraEvent.bomberStack, 0, 20);
+            Minecraft.getMinecraft().fontRendererObj.drawString("점수:" + (Elytra.killCount+Elytra.score), 0, 0, 0xFFFFFF);
+            for(int i = 0; i < MiniGame.elytraEvent.bomberStack.stackSize;i++)
+            RenderAPI.renderItem(MiniGame.elytraEvent.bomberStack, i*20, 20, false);
         }
     }
 

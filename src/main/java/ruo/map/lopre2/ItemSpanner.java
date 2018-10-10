@@ -128,18 +128,18 @@ public class ItemSpanner extends Item {
                 lavaBlock.setWidth(0.5F);
                 lavaBlock.setHeight(1F);
                 lavaBlock.setScale(0.5F, 1F, 0.5F);
-                lavaBlock.setSpawnPosition();
+                lavaBlock.teleportSpawnPos();
 
             }else if(lavaBlock.getWidth() == 0.5F && lavaBlock.getHeight() == 1F){
                 lavaBlock.setWidth(1F);
                 lavaBlock.setHeight(0.3F);
                 lavaBlock.setScale(1,0.3F,1);
-                lavaBlock.setSpawnPosition();
+                lavaBlock.teleportSpawnPos();
             }else{
                 lavaBlock.setWidth(1F);
                 lavaBlock.setHeight(1F);
                 lavaBlock.setScale(1,1,1);
-                lavaBlock.setSpawnPosition();
+                lavaBlock.teleportSpawnPos();
             }
         }
         if (target instanceof EntityInvisibleBlock) {

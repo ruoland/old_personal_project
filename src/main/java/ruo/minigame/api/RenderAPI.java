@@ -65,7 +65,7 @@ public class RenderAPI {
         return null;
     }
 
-    public static void renderItem(ItemStack stack, int x, int y){
+    public static void renderItem(ItemStack stack, int x, int y, boolean stackSize){
         RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
         itemRender.zLevel = 200.0F;
         net.minecraft.client.gui.FontRenderer font = null;
@@ -74,7 +74,8 @@ public class RenderAPI {
         if (stack != null) {
             RenderHelper.enableGUIStandardItemLighting();
             itemRender.renderItemAndEffectIntoGUI(stack, x,y);
-            itemRender.renderItemOverlayIntoGUI(font, stack, x,y, null);
+            if(stackSize)
+                itemRender.renderItemOverlayIntoGUI(font, stack, x,y, null);
             RenderHelper.disableStandardItemLighting();
         }
         itemRender.zLevel = 0.0F;

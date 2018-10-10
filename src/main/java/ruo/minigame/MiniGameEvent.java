@@ -1,6 +1,9 @@
 package ruo.minigame;
 
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -9,6 +12,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.LoginEvent;
+import ruo.minigame.api.WorldAPI;
+import ruo.minigame.effect.AbstractTick;
+import ruo.minigame.effect.TickRegister;
 
 public class MiniGameEvent {
 
@@ -20,7 +26,7 @@ public class MiniGameEvent {
 
     @SubscribeEvent
     public void gameoverlay(ServerChatEvent e) {
-        if(DebAPI.debAPI.size() > 0) {
+        if (DebAPI.debAPI.size() > 0) {
             if (e.getMessage().startsWith("s:")) {
                 DebAPI.activeName = e.getMessage().replace("s:", "");
             }
@@ -35,6 +41,7 @@ public class MiniGameEvent {
             }
         }
     }
+
     //Login 이벤트
     @SubscribeEvent
     public void event(EntityJoinWorldEvent event2) {

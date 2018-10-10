@@ -2,11 +2,13 @@ package ruo.minigame.minigame.elytra;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,7 +28,7 @@ import static ruo.minigame.minigame.elytra.Elytra.*;
 
 public class ElytraEvent {
 
-    protected ItemStack bomberStack = new ItemStack(Blocks.TNT);
+    protected static ItemStack bomberStack = new ItemStack(Blocks.TNT);
 
     @SubscribeEvent
     public void login(LivingDeathEvent event) {
@@ -48,20 +50,20 @@ public class ElytraEvent {
         }
     }
 
-    public void spawnArrow(Direction direction) {
-        spawnArrow(direction, FakePlayerHelper.fakePlayer.rotationYaw);
+    public EntityElytraArrow spawnArrow(Direction direction) {
+        return spawnArrow(direction, FakePlayerHelper.fakePlayer.rotationYaw);
     }
 
-    public void spawnArrow(float yaw) {
-        spawnArrow(null, yaw);
+    public EntityElytraArrow spawnArrow(float yaw) {
+        return spawnArrow(null, yaw);
     }
 
-    public void spawnArrow(Direction direction, float yaw) {
+    public EntityElytraArrow spawnArrow(Direction direction, float yaw) {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
         PosHelper posHelper = new PosHelper(player);
         World world = player.worldObj;
         EntityElytraArrow arrow = new EntityElytraArrow(world, player);
-        arrow.setAim(player, player.rotationPitch, yaw, 0, 1.6F, 1F);
+        arrow.setAim(player, player.rotationPitch, yaw, 0, 0.7F, 1F);
         if (direction != null)
             arrow.setPosition(posHelper.getX(direction, 1, 1, true), player.posY, posHelper.getZ(direction, 1, 1, true));
         else
@@ -73,6 +75,7 @@ public class ElytraEvent {
         if (tntArrow && Elytra.tntCooltime == 0) {
             spawnTNT();
         }
+        return arrow;
 
     }
 
@@ -80,12 +83,16 @@ public class ElytraEvent {
         EntityFakePlayer player = FakePlayerHelper.fakePlayer;
         PosHelper posHelper = new PosHelper(player);
         EntityTNTArrow arrow = new EntityTNTArrow(player.worldObj);
-        arrow.setPosition(posHelper.getX(Direction.RIGHT, 1, 1, true), player.posY, posHelper.getZ(Direction.RIGHT, 1, 1, true));
+        arrow.setPosition(posHelper.getX(Direction.RIGHT, 1, 1, true), player.posY+2, posHelper.getZ(Direction.RIGHT, 1, 1, true));
         player.worldObj.spawnEntityInWorld(arrow);
+        arrow.setTarget(arrow.getX(Direction.FORWARD, 10, 1, true), player.posY+2, arrow.getZ(Direction.FORWARD, 10, 1, true));
+
         arrow = new EntityTNTArrow(player.worldObj);
-        arrow.setPosition(posHelper.getX(Direction.LEFT, 1, 1, true), player.posY, posHelper.getZ(Direction.LEFT, 1, 1, true));
+        arrow.setPosition(posHelper.getX(Direction.LEFT, 1, 1, true), player.posY+2, posHelper.getZ(Direction.LEFT, 1, 1, true));
         player.worldObj.spawnEntityInWorld(arrow);
-        Elytra.tntCooltime = 30;
+        arrow.setTarget(arrow.getX(Direction.FORWARD, 10, 1, true), player.posY+2, arrow.getZ(Direction.FORWARD, 10, 1, true));
+
+        Elytra.tntCooltime = 50;
     }
 
     @SubscribeEvent
@@ -95,14 +102,27 @@ public class ElytraEvent {
     }
 
     @SubscribeEvent
+    public void login(LivingEvent.LivingUpdateEvent event) {
+        if(!MiniGame.elytra.isStart())
+            return;
+        if(event.getEntityLiving() instanceof EntityLiving) {
+            EntityLiving living = (EntityLiving) event.getEntityLiving();
+            living.hurtTime = 0;
+            living.hurtResistantTime = 0;
+            living.maxHurtResistantTime = 0;
+            living.maxHurtTime = 0;
+        }
+    }
+    @SubscribeEvent
     public void login(PlayerTickEvent event) {
         if (!MiniGame.elytra.isStart())
             return;
-        if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_B) && bombCooltime == 0) {
             if (bomberStack.stackSize > 0) {
                 bomberStack.stackSize--;
-                for (int i = 0; i < 360; i += 30) {
-                    spawnArrow(event.player.rotationYaw + i);
+                bombCooltime = 40;
+                for (int i = 0; i < 360; i += 20) {
+                    spawnArrow(event.player.rotationYaw + i).setDamage(50);
                 }
             }
         }
@@ -138,6 +158,8 @@ public class ElytraEvent {
                 elytraCooltime--;
             if (tntCooltime > 0)
                 tntCooltime--;
+            if (bombCooltime > 0)
+                bombCooltime--;
         }
     }
 }

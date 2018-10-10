@@ -15,6 +15,7 @@ import ruo.minigame.api.Direction;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.map.EntityDefaultNPC;
+import scala.xml.dtd.EntityDef;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
     private Direction spawnDirection;
@@ -56,17 +57,40 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     }
 
+    @Override
+    public boolean handleWaterMovement() {
+        return false;
+    }
 
+    @Override
+    public boolean isPushedByWater() {
+        return false;
+    }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20);
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
         getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(2000000000);
     }
 
     public void setDirection(Direction spawn) {
         spawnDirection = spawn;
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(getHealth() - amount <= 0){
+            if(rand.nextInt(5) == 0) {
+                EntityElytraChest elytraChest = new EntityElytraChest(worldObj);
+                elytraChest.setPosition(getPositionVector());
+                elytraChest.updateSpawnPosition();
+                if(isServerWorld())
+                worldObj.spawnEntityInWorld(elytraChest);
+            }
+        }
+        return super.attackEntityFrom(source, amount);
+
     }
 
     private int moveCooldown;
@@ -79,16 +103,21 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             return;
         }
         if(getHealth() > 0) {
-            if (isTeleportMode()) {
+            if (isTeleportMode() && noTarget()) {
+                System.out.println("타겟");
                 moveCooldown++;
                 if (moveCooldown > 60)
                     moveCooldown = 0;
                 if (moveCooldown < 20) {
+                    System.out.println("오른쪽으로 1 이동함");
                     this.setPosition(getX(Direction.RIGHT, 1, true), posY, getZ(Direction.RIGHT, 1, true));
                 } else if (moveCooldown > 20 && moveCooldown < 40) {
                     this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-                } else if (moveCooldown > 40)
+                    System.out.println("가운데로 이동함");
+                } else if (moveCooldown > 40) {
                     this.setPosition(getX(Direction.LEFT, 1, true), posY, getZ(Direction.LEFT, 1, true));
+                    System.out.println("왼쪽으로 1 이동함");
+                }
             }
 
             if (isMoveMode()) {
@@ -111,7 +140,11 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         }
     }
 
-
+    @Override
+    public void targetArrive() {
+        super.targetArrive();
+        updateSpawnPosition();
+    }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {

@@ -65,6 +65,7 @@ public class MiniGame {
     public static SimpleNetworkWrapper network;
     public static KeyBinding grab = new KeyBinding("액션-", Keyboard.KEY_R, "카카카테고리");
     public static Block blockInvisible = new BlockInvisible(Material.ANVIL);
+
     @SidedProxy(clientSide = "ruo.minigame.ClientProxy", serverSide = "ruo.minigame.CommonProxy")
     public static CommonProxy proxy;
 
@@ -100,9 +101,7 @@ public class MiniGame {
 
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
-
         proxy.pre(e);
-
         network();
         minigameConfig = new Configuration(e.getSuggestedConfigurationFile());
         minigameConfig.load();
@@ -173,6 +172,8 @@ public class MiniGame {
         MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
         MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());
         MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
+
+        MinecraftForge.EVENT_BUS.register(new ElytraRenderEvent());
         MinecraftForge.EVENT_BUS.register(elytraScrollEvent = new ElytraScrollEvent());
 
         ClientRegistry.registerKeyBinding(grab);

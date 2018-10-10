@@ -31,6 +31,7 @@ public class EntityElytraArrow extends EntityTippedArrow {
             return;
         }
         super.onHit(raytraceResultIn);
+
         this.setDead();
     }
 
