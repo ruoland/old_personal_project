@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+import org.lwjgl.Sys;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
@@ -80,20 +81,20 @@ public class Elytra extends AbstractMiniGame {
                         targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
                         targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
                     }
-                    four();
+                    five();
                     absDefTick = 300;
                 }
                 if (absRunCount == 1) {
                     returnMonster();
-                    five();
+                    six();
                 }
                 if (absRunCount == 2) {
                     returnMonster();
-                    six();
+                    five();
                 }
                 if (absRunCount == 3) {
                     returnMonster();
-                    four();
+                    six();
                 }
                 if (absRunCount == 4) {
                     returnMonster();
@@ -114,10 +115,11 @@ public class Elytra extends AbstractMiniGame {
             if (elytraPumpkin.isDead) {
                 continue;
             }
-            elytraPumpkin.setTarget(elytraPumpkin.getSpawnX(), elytraPumpkin.getSpawnY(), elytraPumpkin.getSpawnZ()).setTargetSpeed(0.5);
+            elytraPumpkin.setTarget(elytraPumpkin.getReturnX(), elytraPumpkin.getReturnY(), elytraPumpkin.getReturnZ()).setTargetSpeed(0.5);
             elytraPumpkin.setAttackMode(false);
             elytraPumpkin.setDeathTimer(100);
             elytraPumpkin.setReturn(true);
+            System.out.println(elytraPumpkin.getReturnX()+ " - "+elytraPumpkin.getReturnY() + " - "+elytraPumpkin.getReturnZ());
         }
         monsterList.clear();
     }
@@ -198,6 +200,7 @@ public class Elytra extends AbstractMiniGame {
         DebAPI.msgText("MiniGame",""+spawnPosHelper.getXZ(direction, plus, rlplus, true));
         pumpkin.setAttackMode(true);
         pumpkin.setDirection(direction);
+
         return pumpkin;
     }
 
@@ -237,6 +240,8 @@ public class Elytra extends AbstractMiniGame {
         }
         pumpkin.setDirection(direction);
         monsterList.add(pumpkin);
+        pumpkin.updateSpawnPosition();
+        pumpkin.setReturnPosition();
         WorldAPI.getWorld().spawnEntityInWorld(pumpkin);
     }
 

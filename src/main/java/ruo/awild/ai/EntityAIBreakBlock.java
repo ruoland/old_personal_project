@@ -5,6 +5,8 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -63,16 +65,8 @@ public class EntityAIBreakBlock extends net.minecraft.entity.ai.EntityAIBase {
             }
         }
         if(blockPosList.size() > 0) {
-            for(BlockPos pos : blockPosList)
-            {
-                System.out.println("전 "+theEntity.getPositionVector().distanceTo(new Vec3d(pos)));
-            }
             Collections.sort(blockPosList, new FindBlockComparator(theEntity));
             breakPos = blockPosList.get(0);
-            for(BlockPos pos : blockPosList)
-            {
-                System.out.println("후 "+theEntity.getPositionVector().distanceTo(new Vec3d(pos)));
-            }
         }
     }
     public boolean continueExecuting() {

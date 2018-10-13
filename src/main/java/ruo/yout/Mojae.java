@@ -11,16 +11,23 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.skill.PotionFly;
+import ruo.yout.mojaelab.LabEvent;
 
-//@Mod(modid =  "ModoYoutube")
-public class MoJaYo {
+//@Mod(modid =  "MoJaeYoutube")
+public class Mojae {
+    public static boolean dog_pan, skelreeper, arrow_reeper;
+    public static int arrow_count= 1;
+
     public static final PotionLock lockPotion = new PotionLock(false, 0);
     public static final Item itemLock = new ItemLock();
     @Mod.EventHandler
     public  void init(FMLInitializationEvent e){
         MinecraftForge.EVENT_BUS.register(new MoJaeEvent());
+        MinecraftForge.EVENT_BUS.register(new LabEvent());
+
         Potion.REGISTRY.register(30, new ResourceLocation("lock"), lockPotion);
         GameRegistry.register(itemLock.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("lock").setUnlocalizedName("lock"));
     }
@@ -32,5 +39,8 @@ public class MoJaYo {
     public  void init(FMLPostInitializationEvent e){
 
     }
-
+    @Mod.EventHandler
+    public  void init(FMLServerStartingEvent e){
+        e.registerServerCommand(new CommandMoJae());
+    }
 }

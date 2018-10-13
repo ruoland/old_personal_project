@@ -1,4 +1,4 @@
-package ruo.halloween;
+package ruo.helloween;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -8,9 +8,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import ruo.cmplus.deb.DebAPI;
-import ruo.halloween.miniween.*;
+import ruo.helloween.miniween.*;
 
-//@Mod(modid = "Halloween")
+@Mod(modid = "Halloween")
 public class HelloWeen {
 	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("Halloween");
 	@EventHandler

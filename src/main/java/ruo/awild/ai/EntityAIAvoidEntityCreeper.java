@@ -15,9 +15,10 @@ public class EntityAIAvoidEntityCreeper extends EntityAIAvoidEntity {
     public boolean shouldExecute() {
         if(super.shouldExecute()) {
             EntityCreeper creeper = (EntityCreeper) closestLivingEntity;
-            if (creeper.hasIgnited() && !creeper.isDead) {
+            if (creeper != creature && (creeper.getAttackTarget() != null  || creeper.hasIgnited()) && !creeper.isDead ) {
                 return true;
-            }
+            }else
+                return false;
         }
         return false;
     }
@@ -25,10 +26,10 @@ public class EntityAIAvoidEntityCreeper extends EntityAIAvoidEntity {
     @Override
     public void updateTask() {
         EntityCreeper  creeper = (EntityCreeper) closestLivingEntity;
-        System.out.println(creeper.getCustomNameTag()+creeper.isServerWorld()+creeper.hasIgnited());
-        if(creeper.hasIgnited() && !creeper.isDead) {
+        if(creeper != this.creature && (creeper.getAttackTarget() != null || creeper.hasIgnited()) && !creeper.isDead) {
             super.updateTask();
-            System.out.println(creature+"크리퍼 터짐");
+            System.out.println("크리퍼 터짐");
         }
+
     }
 }

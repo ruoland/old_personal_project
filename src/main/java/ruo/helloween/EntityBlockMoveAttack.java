@@ -1,4 +1,4 @@
-package ruo.halloween;
+package ruo.helloween;
 
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;

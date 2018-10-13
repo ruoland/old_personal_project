@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import ruo.halloween.EntityWeen;
+import ruo.helloween.EntityWeen;
 import ruo.map.lopre2.jump1.EntityBuildBlock;
 import ruo.minigame.api.RenderAPI;
 

@@ -37,8 +37,7 @@ import java.util.UUID;
 
 public class EntityDefaultNPC extends EntityModelNPC {
 
-    private static final DataParameter<Rotations> SPAWN_XYZ = EntityDataManager.createKey(EntityDefaultNPC.class,
-            DataSerializers.ROTATIONS);
+
     //스턴 관련 코드. 스턴 상태로 설정하면  얼굴회전 그리고 이동을 멈춤
     private static final DataParameter<Boolean> IS_STURN = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);
@@ -68,7 +67,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public double eyeCloseScaleY;
     public boolean eyeCloseReverse;
     private boolean isTargetArriveStop = true;//타겟에 도착하면 이동하지 않음
+    private PosHelper spawnPosHelper;
+    private double spawnX, spawnY, spawnZ;
     public static double ax = 3;
+
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
         this.eft = TextEffect.getHelper(this);
@@ -97,7 +99,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
         this.dataManager.register(ON_DEATH_TIMER, false);
         this.dataManager.register(DEATH_TIMER, -1);
         this.dataManager.register(STURN_TICK, -1);
-        this.dataManager.register(SPAWN_XYZ, new Rotations(0, 0, 0));
     }
 
     protected void applyEntityAttributes() {
@@ -121,6 +122,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
         return super.processInteract(player, hand, stack);
     }
+
     public void teleportEnd() {
 
     }
@@ -144,6 +146,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
 
     }
+
     public EntityDefaultNPC setTargetSpeed(double speed) {
         this.targetMoveSpeed = speed;
         return this;
@@ -179,7 +182,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     /**
      * 목적지에 도착했을 때 이동을 계속 할 건지 말 건지 설정하는 메서드
      * true로 하면 목적지 도착시 멈춤, false로 하면 목적지에 도착해도 계속 뒤로 이동함
-     * @param targetArriveStop
      */
     public void setTargetArriveStop(boolean targetArriveStop) {
         isTargetArriveStop = targetArriveStop;
@@ -214,6 +216,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public boolean isTeleport() {
         return dataManager.get(IS_TELEPORT);
     }
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
@@ -268,7 +271,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
     }
 
-    public void onTimerDeath(){
+    public void onTimerDeath() {
 
     }
 
@@ -288,7 +291,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
         compound.setDouble("distance", distance);
         compound.setDouble("STURN_TICK", dataManager.get(STURN_TICK));
-        compound.setTag("SPAWNXYZ", getSpawnXYZ().writeToNBT());
+        compound.setDouble("spawnX", spawnX);
+        compound.setDouble("spawnY", spawnY);
+        compound.setDouble("spawnZ", spawnZ);
         compound.setInteger("DEATH_TIMER", getDeathTime());
         compound.setBoolean("ON_DEATH_TIMER", getDataManager().get(ON_DEATH_TIMER));
 
@@ -305,8 +310,15 @@ public class EntityDefaultNPC extends EntityModelNPC {
         super.readEntityFromNBT(compound);
         if (compound.hasKey("DEATH_TIMER"))
             setDeathTimer(compound.getInteger("DEATH_TIMER"));
+        if (compound.hasKey("SPAWNXYZ")) {
+            Rotations rotations = getRotations(compound, "SPAWNXYZ");
+            setSpawnXYZ(rotations.getX(), rotations.getY(), rotations.getZ());//스폰 XYZ를 float에서 double로 바꿈. 구버전 호환을 위해서 넣음
+        } else {
+            setSpawnXYZ(compound.getDouble("spawnX"), compound.getDouble("spawnY"), compound.getDouble("spawnZ"));
+        }
+
         getDataManager().set(ON_DEATH_TIMER, compound.getBoolean("ON_DEATH_TIMER"));
-        getDataManager().set(SPAWN_XYZ, getRotations(compound, "SPAWNXYZ"));
+
         getDataManager().set(LOCK_YAW, compound.getFloat("STURNYAW"));
         getDataManager().set(LOCK_PITCH, compound.getFloat("STURNPITCH"));
         setCollision(compound.getBoolean("canCollision"));
@@ -324,34 +336,43 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void updateSpawnPosition() {
-        setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+        setSpawnXYZ(posX, posY, posZ);
     }
+
     public void teleportSpawnPos() {
         setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
     }
 
-    public Rotations getSpawnXYZ() {
-        return dataManager.get(SPAWN_XYZ);
-    }
-
     public double getSpawnX() {
-        return getSpawnXYZ().getX();
+        return spawnX;
     }
 
     public double getSpawnY() {
-        return getSpawnXYZ().getY();
+        return spawnY;
     }
 
     public double getSpawnZ() {
-        return getSpawnXYZ().getZ();
+        return spawnZ;
     }
 
     public void setSpawnXYZ(double x, double y, double z) {
-        this.dataManager.set(SPAWN_XYZ, new Rotations((float) x, (float) y, (float) z));
+        spawnX = x;
+        spawnY = y;
+        spawnZ = z;
+    }
+
+    public PosHelper getSpawnPosHelper() {
+        if (spawnPosHelper == null || (spawnPosHelper.getPosX() != getSpawnX()
+                || spawnPosHelper.getPosY() != getSpawnY()
+                || spawnPosHelper.getPosZ() != getSpawnZ())) {
+            spawnPosHelper = new PosHelper(getSpawnX(), getSpawnY(), getSpawnZ(), getHorizontalFacing());
+        }
+
+        return spawnPosHelper;
     }
 
     public void setSpawnXYZ(Vec3d vec3d) {
-        this.dataManager.set(SPAWN_XYZ, new Rotations((float) vec3d.xCoord, (float) vec3d.yCoord, (float) vec3d.yCoord));
+        setSpawnXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
     @Nullable
@@ -373,6 +394,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public BlockPos getSpawnPos() {
         return new BlockPos(getSpawnX(), getSpawnY(), getSpawnZ());
     }
+
     public Vec3d getSpawnPosVec() {
         return new Vec3d(getSpawnX(), getSpawnY(), getSpawnZ());
     }
@@ -404,25 +426,18 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void setSturn(int tick) {
+        dataManager.set(STURN_TICK, tick);
         setSturn(true);
-
-        TickRegister.register(new AbstractTick(getUniqueID().toString() + "-STURN", Type.SERVER, tick, false) {
-            @Override
-            public boolean stopCondition() {
-                return isDead;
-            }
-
-            @Override
-            public void run(Type type) {
-                setSturn(false);
-            }
-        });
     }
 
     public void setSturn(boolean is) {
         dataManager.set(IS_STURN, is);
         if (!is)
             dataManager.set(STURN_TICK, -1);
+        else if(dataManager.get(STURN_TICK) <= 0){
+            dataManager.set(STURN_TICK, 20);
+            System.out.println("[경고] "+this+"의 엔티티의 스턴 틱이 설정되지 않아 20틱으로 설정했습니다.");
+        }
         dataManager.set(LOCK_YAW, this.rotationYaw);
         dataManager.set(LOCK_PITCH, this.rotationPitch);
         onSturn();

@@ -1,4 +1,4 @@
-package ruo.halloween;
+package ruo.helloween;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -25,10 +25,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.util.Sky;
-import ruo.halloween.miniween.EntityAttackMiniWeen;
-import ruo.halloween.miniween.EntityDefenceMiniWeen;
-import ruo.halloween.miniween.EntityMiniWeen;
-import ruo.halloween.miniween.EntityNightMiniWeen;
+import ruo.helloween.miniween.EntityAttackMiniWeen;
+import ruo.helloween.miniween.EntityDefenceMiniWeen;
+import ruo.helloween.miniween.EntityMiniWeen;
+import ruo.helloween.miniween.EntityNightMiniWeen;
 import ruo.minigame.api.*;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.CMEffect;
@@ -39,17 +39,18 @@ import ruo.minigame.map.TypeModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EntityWeen extends EntityDefaultNPC {
     public static ItemStack shield_block = new ItemStack(Blocks.GLASS);
     public static long startTime, endTime;
-    private static final DataParameter<Boolean> ISJUMP = EntityDataManager.<Boolean>createKey(EntityWeen.class,
+    private static final DataParameter<Boolean> ISJUMP = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ISROTATE = EntityDataManager.<Boolean>createKey(EntityWeen.class,
+    private static final DataParameter<Boolean> ISROTATE = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ISCOMPLETEY = EntityDataManager.<Boolean>createKey(EntityWeen.class,
+    private static final DataParameter<Boolean> ISCOMPLETEY = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LOOK_PLAYER = EntityDataManager.<Boolean>createKey(EntityWeen.class,
+    private static final DataParameter<Boolean> LOOK_PLAYER = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Float> PATTERN = EntityDataManager.createKey(EntityWeen.class, DataSerializers.FLOAT);
     //1 = 점프 후 추락, 2 = 미니윈, 2.5 = 회전하면서 미니윈 던짐, 3 = 빅윈, 4 = 밤모드 텔레포트 상태, 5 = 밤모드 다음 빅윈 소환후 계단, 6 = 마지막 점프
@@ -77,9 +78,11 @@ public class EntityWeen extends EntityDefaultNPC {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source.getEntity() instanceof EntityAttackMiniWeen && pattern() <= 5) {//패턴6 상태에서 미니윈 폭발에 윈이 죽는 경우가 있음
+            System.out.println("어택 미니윈에게 공격받음");
             return super.attackEntityFrom(source, 5);
         }
         if (source.getEntity() instanceof EntityBigWeen) {
+            System.out.println("빅윈에게 공격받음");
             EntityBigWeen ween = (EntityBigWeen) source.getEntity();
             if (ween.isFivePattern) {
                 TickRegister.register(new AbstractTick(100, false) {
@@ -97,8 +100,11 @@ public class EntityWeen extends EntityDefaultNPC {
             System.out.println("빅윈이 폭파해 스턴됨");
             return super.attackEntityFrom(source, 15);
         }
-        if (!isSturn())
+        if (!isSturn()) {
+            System.out.println("스턴이 아님");
             return false;
+        }
+        System.out.println(source+"에게 공격받음");
         return super.attackEntityFrom(source, 5);
     }
 
@@ -165,7 +171,7 @@ public class EntityWeen extends EntityDefaultNPC {
     }
 
     private static ArrayList<EntityAttackMiniWeen> blockList = new ArrayList<>();
-    private int firstEndHP = 240, secondEndHP = 160, fourEndHP = 110;
+    private final int firstEndHP = 240, secondEndHP = 160, fourEndHP = 110;
     private boolean forceSkip, patternHold;
 
     public void jumpWeenFall() {
@@ -212,8 +218,7 @@ public class EntityWeen extends EntityDefaultNPC {
             forceSkip = false;
             twoPatternAttackMiniWeen();
         } else {
-            System.out.println("" + !patternHold + forceSkip + (getHealth() < firstEndHP) + "[첫패턴]체력이 " + firstEndHP + " 넘은채 추락해 스턴걸림");
-
+            System.out.println("[첫패턴]체력이 " + firstEndHP + " 넘은채 추락해 스턴걸림");
         }
         setSturn(130);
 
@@ -230,6 +235,7 @@ public class EntityWeen extends EntityDefaultNPC {
             System.out.println("스턴 걸림");
             this.bossHealth.setName(new TextComponentString("윈 (기절한 상태)" + getHealth()));
         } else {
+            System.out.println("스턴 풀림");
             this.bossHealth.setName(new TextComponentString("윈" + getHealth()));
         }
     }
@@ -311,7 +317,6 @@ public class EntityWeen extends EntityDefaultNPC {
                         if (absRunCount >= 5 && !patternHold && (forceSkip || (getHealth() < secondEndHP))) {
                             absLoop = false;
                             threePattern();
-                            return;
                         }
                     }
                 });
@@ -491,21 +496,18 @@ public class EntityWeen extends EntityDefaultNPC {
                     return;
                 }
                 if (absRunCount % 4 == 0) {
-                    summonPlayerWeen(worldObj, WorldAPI.rand(10), WorldAPI.rand(10), WorldAPI.rand(10),
-                            WorldAPI.rand(10));
-                    summonPlayerWeen(worldObj, WorldAPI.rand(10), WorldAPI.rand(10), WorldAPI.rand(10),
-                            WorldAPI.rand(10));
-                    summonPlayerWeen(worldObj, WorldAPI.rand(10), WorldAPI.rand(10), WorldAPI.rand(10),
-                            WorldAPI.rand(10));
-                    summonPlayerWeen(worldObj, WorldAPI.rand(20), WorldAPI.rand(20), WorldAPI.rand(20), WorldAPI.rand(20));
-                    summonPlayerWeen(worldObj, WorldAPI.rand(20), WorldAPI.rand(20), WorldAPI.rand(20), WorldAPI.rand(20));
-                    summonPlayerWeen(worldObj, WorldAPI.rand(20), WorldAPI.rand(20), WorldAPI.rand(20), WorldAPI.rand(20));
+                    summonPlayerWeen(worldObj, WorldAPI.rand(10), WorldAPI.rand(10));
+                    summonPlayerWeen(worldObj, WorldAPI.rand(10), WorldAPI.rand(10));
+                    summonPlayerWeen(worldObj, WorldAPI.rand(10), WorldAPI.rand(10));
+                    summonPlayerWeen(worldObj, WorldAPI.rand(20), WorldAPI.rand(20));
+                    summonPlayerWeen(worldObj, WorldAPI.rand(20), WorldAPI.rand(20));
+                    summonPlayerWeen(worldObj, WorldAPI.rand(20), WorldAPI.rand(20));
                 }
             }
         });
     }
 
-    public void summonPlayerWeen(World worldObj, double x, double z, double x2, double z2) {
+    public void summonPlayerWeen(World worldObj, double x, double z) {
         EntityPlayerWeen ween = new EntityPlayerWeen(worldObj);
         ween.setPosition(WorldAPI.x() + x, WorldAPI.y() + 5, WorldAPI.z() + z);
         worldObj.spawnEntityInWorld(ween);
@@ -542,7 +544,7 @@ public class EntityWeen extends EntityDefaultNPC {
                             EntityMiniWeen miniween = new EntityNightMiniWeen(WorldAPI.getWorld(), ween);
                             miniween.setTarget(posX + x, posY - 60, posZ + z);
                             miniween.setPosition(posX + x, posY, posZ + z);
-                            WorldAPI.getWorld().spawnEntityInWorld(miniween);
+                            Objects.requireNonNull(WorldAPI.getWorld()).spawnEntityInWorld(miniween);
                             miniween.setVelocity(motionX, motionY, motionZ);
                         }
                         getDataManager().set(ISJUMP, true);

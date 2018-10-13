@@ -28,7 +28,6 @@ public class EntityBigInvisibleBlock extends EntityPreBlock {
 
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-        setSpawnXYZ(posX, posY, posZ);
         this.setTeleport(true);
         return super.onInitialSpawn(difficulty, livingdata);
     }

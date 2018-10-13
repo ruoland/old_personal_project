@@ -2,11 +2,12 @@ package ruo.awild.ai;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIFindSound extends net.minecraft.entity.ai.EntityAIBase {
     private EntityLiving theEntity;
     private BlockPos soundPos;
-
+    private Vec3d soundVec3d;
     public EntityAIFindSound(EntityLiving entityIn) {
         theEntity = entityIn;
         this.setMutexBits(3);
@@ -15,7 +16,6 @@ public class EntityAIFindSound extends net.minecraft.entity.ai.EntityAIBase {
     @Override
     public void startExecuting() {
         super.startExecuting();
-        System.out.println(soundPos+"추적중");
     }
 
     @Override
@@ -35,6 +35,7 @@ public class EntityAIFindSound extends net.minecraft.entity.ai.EntityAIBase {
 
     public void setSoundPos(BlockPos soundPos) {
         this.soundPos = soundPos;
+        soundVec3d = new Vec3d(soundPos.getX(), soundPos.getY()+1, soundPos.getZ());
     }
 
     /**
@@ -44,10 +45,15 @@ public class EntityAIFindSound extends net.minecraft.entity.ai.EntityAIBase {
         super.updateTask();
         double distance = theEntity.getDistance(soundPos.getX(), soundPos.getY(), soundPos.getZ());
         this.theEntity.getLookHelper().setLookPosition(soundPos.getX(), soundPos.getY(), soundPos.getZ(), theEntity.getHorizontalFaceSpeed(), this.theEntity.getVerticalFaceSpeed());
-        if (distance < 1.5) {
+        if (distance < 5 && canSee()) {
             soundPos = null;
         } else {
             this.theEntity.getNavigator().tryMoveToXYZ(soundPos.getX(), soundPos.getY(), soundPos.getZ(), 1.0D);
         }
+    }
+
+    public boolean canSee(){
+        return theEntity.worldObj.rayTraceBlocks(new Vec3d(theEntity.posX, theEntity.posY, theEntity.posZ),soundVec3d, false, true, false) == null;
+
     }
 }

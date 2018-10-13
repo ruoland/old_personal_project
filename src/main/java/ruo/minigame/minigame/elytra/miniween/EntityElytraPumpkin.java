@@ -9,6 +9,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.Direction;
@@ -18,6 +19,8 @@ import ruo.minigame.map.EntityDefaultNPC;
 import scala.xml.dtd.EntityDef;
 
 public class EntityElytraPumpkin extends EntityDefaultNPC {
+    public int attackCooldown = 200, defaultCooldown = 30;
+    private double returnX, returnY, returnZ;
     private Direction spawnDirection;
     private static final DataParameter<Boolean> TNT_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> WATER_MODE = EntityDataManager.createKey(EntityElytraPumpkin.class, DataSerializers.BOOLEAN);
@@ -93,7 +96,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     }
 
-    private int moveCooldown;
+    private int moveCooldown, teleportXZ;
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
@@ -103,19 +106,23 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
             return;
         }
         if(getHealth() > 0) {
-            if (isTeleportMode() && noTarget()) {
-                System.out.println("타겟");
+            if (isServerWorld() && isTeleportMode() && noTarget()) {
                 moveCooldown++;
-                if (moveCooldown > 60)
+                if (moveCooldown >= 20) {
+                    teleportXZ++;
                     moveCooldown = 0;
-                if (moveCooldown < 20) {
+                    System.out.println("무브 XZ ++");
+                }
+                if(teleportXZ >= 3)
+                    teleportXZ = 0;
+                if (teleportXZ == 0) {
                     System.out.println("오른쪽으로 1 이동함");
-                    this.setPosition(getX(Direction.RIGHT, 1, true), posY, getZ(Direction.RIGHT, 1, true));
-                } else if (moveCooldown > 20 && moveCooldown < 40) {
+                    this.setPosition(getSpawnPosHelper().getX(Direction.RIGHT, 1, true), posY, getSpawnPosHelper().getZ(Direction.RIGHT, 1, true));
+                } else if (teleportXZ == 1) {
                     this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
                     System.out.println("가운데로 이동함");
-                } else if (moveCooldown > 40) {
-                    this.setPosition(getX(Direction.LEFT, 1, true), posY, getZ(Direction.LEFT, 1, true));
+                } else if (teleportXZ == 2) {
+                    this.setPosition(getSpawnPosHelper().getX(Direction.LEFT, 1, true), posY, getSpawnPosHelper().getZ(Direction.LEFT, 1, true));
                     System.out.println("왼쪽으로 1 이동함");
                 }
             }
@@ -144,8 +151,31 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
     public void targetArrive() {
         super.targetArrive();
         updateSpawnPosition();
+        if(isReturn())
+            setDead();
     }
 
+    public double getReturnX() {
+        return returnX;
+    }
+
+    public double getReturnY() {
+        return returnY;
+    }
+
+    public double getReturnZ() {
+        return returnZ;
+    }
+
+    public void setReturnPosition(double x, double y, double z) {
+        returnX = x;
+        returnY = y;
+        returnZ = z;
+    }
+
+    public void setReturnPosition() {
+        setReturnPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+    }
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
@@ -171,6 +201,7 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
         setMoveMode(compound.getBoolean("MOVE_MODE"));
         setTeleportMode(compound.getBoolean("TELEPORT_MODE"));
         setWaterMode(compound.getBoolean("WATER_MODE"));
+        if(compound.hasKey("SPAWN_DIRECTION"))
         spawnDirection = Direction.valueOf(compound.getString("SPAWN_DIRECTION"));
 
     }
@@ -213,6 +244,9 @@ public class EntityElytraPumpkin extends EntityDefaultNPC {
 
     public EntityElytraPumpkin setWaterMode(boolean mode) {
         dataManager.set(WATER_MODE, mode);
+        if(mode){
+            defaultCooldown = defaultCooldown * 2;
+        }
         return this;
     }
 

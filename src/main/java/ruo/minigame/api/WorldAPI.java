@@ -474,7 +474,7 @@ public class WorldAPI {
     }
 
     public static World getWorld() {
-        return getPlayer().worldObj;
+        return getPlayer() != null ? getPlayer().worldObj : null;
     }
 
     public static String getCurrentWorldName() {

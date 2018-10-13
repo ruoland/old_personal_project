@@ -17,6 +17,12 @@ public class PosHelper {
         ((EntityDefaultNPC) base).setPosition(vec3d);
         base.rotationYaw = facing.getHorizontalAngle();
     }
+    public PosHelper(double x, double y, double z, EnumFacing facing){
+        base = new EntityDefaultNPC(WorldAPI.getWorld());
+        base.setPosition(x,y,z);
+        ((EntityDefaultNPC) base).setSpawnXYZ(x,y,z);
+        base.rotationYaw = facing.getHorizontalAngle();
+    }
     public BlockPos getPosition(){
         return base.getPosition();
     }
@@ -92,5 +98,15 @@ public class PosHelper {
             return Direction.BACK;
         }
         return null;
+    }
+
+    public double getPosX(){
+        return base.posX;
+    }
+    public double getPosY(){
+        return base.posY;
+    }
+    public double getPosZ(){
+        return base.posZ;
     }
 }

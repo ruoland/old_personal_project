@@ -1,12 +1,12 @@
-package ruo.halloween.miniween;
+package ruo.helloween.miniween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import ruo.halloween.EntityBigWeen;
-import ruo.halloween.EntityWeen;
+import ruo.helloween.EntityBigWeen;
+import ruo.helloween.EntityWeen;
 import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityMiniWeen extends EntityDefaultNPC {

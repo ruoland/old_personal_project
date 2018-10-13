@@ -61,7 +61,7 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
         motionY = 0;
         if (isWaterMode()) {
 
-            BlockPos waterPosition = getPosition();
+            BlockPos waterPosition = getPosition().add(0,-1,0);
             this.worldObj.setBlockState(waterPosition, Blocks.WATER.getDefaultState());
             worldObj.getBlockState(waterPosition.offset(EnumFacing.SOUTH));
             TickRegister.register(new AbstractTick(5, true) {

@@ -1,4 +1,4 @@
-package ruo.halloween;
+package ruo.helloween;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

@@ -1,4 +1,4 @@
-package ruo.halloween.miniween;
+package ruo.helloween.miniween;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;

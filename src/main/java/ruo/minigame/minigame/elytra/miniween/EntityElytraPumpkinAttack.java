@@ -9,7 +9,6 @@ import ruo.minigame.fakeplayer.FakePlayerHelper;
 
 public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {
 
-    public int attackCooldown = 200, defaultCooldown = 30;
 
     public EntityElytraPumpkinAttack(World worldIn) {
         super(worldIn);

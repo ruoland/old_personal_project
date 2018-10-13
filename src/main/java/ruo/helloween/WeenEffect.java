@@ -1,4 +1,4 @@
-package ruo.halloween;
+package ruo.helloween;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import ruo.cmplus.util.Sky;
-import ruo.halloween.miniween.EntityBlockWeen;
-import ruo.halloween.miniween.EntityMiniWeen;
+import ruo.helloween.miniween.EntityBlockWeen;
+import ruo.helloween.miniween.EntityMiniWeen;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;

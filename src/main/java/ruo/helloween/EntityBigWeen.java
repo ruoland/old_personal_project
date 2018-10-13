@@ -1,4 +1,4 @@
-package ruo.halloween;
+package ruo.helloween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import ruo.halloween.miniween.EntityMiniWeen;
+import ruo.helloween.miniween.EntityMiniWeen;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;

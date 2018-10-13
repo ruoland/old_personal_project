@@ -1,6 +1,7 @@
 package ruo.awild;
 
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -14,6 +15,7 @@ import net.minecraft.entity.passive.HorseType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -38,18 +40,22 @@ import java.util.Random;
 public class WildEvent {
     @SubscribeEvent
     public void findSound(PlaySoundEvent event) {
-        if (event.getSound().getSound() != null) {
-            System.out.println(event.getName() + event.getSound().getVolume());
-            ISound iSound = event.getSound();
-            float expand = 5 * (event.getSound().getVolume() * 0.6F);
+        if (WorldAPI.getWorld() != null  && event.getSound().getCategory() != SoundCategory.MUSIC
+                && event.getSound().getCategory() != SoundCategory.WEATHER
+                && event.getSound().getCategory() != SoundCategory.AMBIENT
+                &&( event.getName().contains("player") || event.getName().contains("block"))) {
+            ISound iSound = event.getResultSound();
+            float expand = 5;
+
             List<EntityMob> livings = EntityAPI.getEntity(WorldAPI.getWorld(), new AxisAlignedBB(iSound.getXPosF() - expand, iSound.getYPosF() - expand, iSound.getZPosF() - expand,
                     iSound.getXPosF() + expand, iSound.getYPosF() + expand, iSound.getZPosF() + expand), EntityMob.class);
             for (EntityMob mob : livings) {
-                for (EntityAITasks.EntityAITaskEntry task : mob.tasks.taskEntries) {
-                    if (task.action instanceof EntityAIFindSound) {
-                        EntityAIFindSound findSound = (EntityAIFindSound) task.action;
-                        findSound.setSoundPos(new BlockPos(iSound.getXPosF(), iSound.getYPosF(), iSound.getZPosF()));
-                        System.out.println(mob + "이 근처 소리를 들었음");
+                if(mob.getAttackTarget() == null) {
+                    for (EntityAITasks.EntityAITaskEntry task : mob.tasks.taskEntries) {
+                        if (task.action instanceof EntityAIFindSound) {
+                            EntityAIFindSound findSound = (EntityAIFindSound) task.action;
+                            findSound.setSoundPos(new BlockPos(iSound.getXPosF(), iSound.getYPosF(), iSound.getZPosF()));
+                        }
                     }
                 }
             }
@@ -96,7 +102,7 @@ public class WildEvent {
     public void livingSpawn(EntityJoinWorldEvent event) {
         Random rand = event.getWorld().rand;
         World world = event.getWorld();
-        if (event.getEntity() instanceof EntityCreature && event.getEntity() instanceof IMob && event.getEntity().onGround) {
+        if (event.getEntity() instanceof EntityCreature && event.getEntity() instanceof IMob) {
             EntityCreature mob = (EntityCreature) event.getEntity();
             mob.tasks.addTask(0, new EntityAIAvoidEntityCreeper(mob, 6.0F, 1.0D, 2.2D));
             mob.tasks.addTask(5, new EntityAIFindSound(mob));
@@ -106,9 +112,9 @@ public class WildEvent {
     public void livingSpawn(LivingSpawnEvent event) {
         Random rand = event.getWorld().rand;
         World world = event.getWorld();
-        if (event.getEntityLiving() instanceof EntityCreature && event.getEntityLiving() instanceof IMob && event.getEntityLiving().onGround) {
+        if (event.getEntityLiving() instanceof EntityCreature && event.getEntityLiving() instanceof IMob) {
             EntityCreature mob = (EntityCreature) event.getEntityLiving();
-            mob.tasks.addTask(0, new EntityAIAvoidEntityCreeper(mob,  6.0F, 1.0D, 1.2D));
+            mob.tasks.addTask(0, new EntityAIAvoidEntityCreeper(mob,  6.0F, 1.3D, 1.5D));
             mob.tasks.addTask(5, new EntityAIFindSound(mob));
             mob.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128);
             if (event.getEntityLiving() instanceof EntityZombie && !(event.getEntityLiving() instanceof EntityWildZombie)) {

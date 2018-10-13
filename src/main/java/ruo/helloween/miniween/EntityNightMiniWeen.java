@@ -1,9 +1,9 @@
-package ruo.halloween.miniween;
+package ruo.helloween.miniween;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import ruo.halloween.EntityWeen;
+import ruo.helloween.EntityWeen;
 
 public class EntityNightMiniWeen extends EntityMiniWeen {
 	public EntityNightMiniWeen(World worldIn) {

@@ -1,4 +1,4 @@
-package ruo.halloween.miniween;
+package ruo.helloween.miniween;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,7 +8,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import ruo.halloween.EntityWeen;
+import ruo.helloween.EntityWeen;
 
 import javax.annotation.Nullable;
 import java.util.List;

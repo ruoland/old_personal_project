@@ -59,15 +59,18 @@ public class ElytraEvent {
     }
 
     public EntityElytraArrow spawnArrow(Direction direction, float yaw) {
-        EntityFakePlayer player = FakePlayerHelper.fakePlayer;
-        PosHelper posHelper = new PosHelper(player);
-        World world = player.worldObj;
-        EntityElytraArrow arrow = new EntityElytraArrow(world, player);
-        arrow.setAim(player, player.rotationPitch, yaw, 0, 0.7F, 1F);
+        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
+        PosHelper posHelper = new PosHelper(fakePlayer);
+        World world = fakePlayer.worldObj;
+        EntityElytraArrow arrow = new EntityElytraArrow(world, fakePlayer);
+        System.out.println(fakePlayer.rotationPitch+" - "+yaw);
+        arrow.setAim(fakePlayer, fakePlayer.rotationPitch, yaw, 0, 0.7F, 1F);
+        arrow.motionX -= fakePlayer.motionX;
+        arrow.motionZ -= fakePlayer.motionZ;
         if (direction != null)
-            arrow.setPosition(posHelper.getX(direction, 1, 1, true), player.posY, posHelper.getZ(direction, 1, 1, true));
+            arrow.setPosition(posHelper.getX(direction, 1, 1, true), fakePlayer.posY, posHelper.getZ(direction, 1, 1, true));
         else
-            arrow.setPosition(player.posX + player.motionX, player.posY, player.posZ + player.motionZ);
+            arrow.setPosition(fakePlayer.posX + fakePlayer.motionX, fakePlayer.posY, fakePlayer.posZ + fakePlayer.motionZ);
         arrow.setDamage(10);
         arrow.setNoGravity(true);
         world.spawnEntityInWorld(arrow);

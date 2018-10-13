@@ -4,6 +4,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import ruo.awild.ai.EntityAIAvoidEntityCreeper;
 import ruo.awild.ai.EntityAIBreakBlock;
 import ruo.awild.ai.EntityAIFindSound;
 
@@ -15,12 +16,13 @@ public class EntityWildZombie extends EntityZombie {
     public EntityWildZombie(World world){
         super(world);
         this.tasks.addTask(4, new EntityAIBreakBlock(this));
+
         //this.tasks.addTask(4, new EntityAIBreakFarm(this));
     }
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
-        //this.tasks.addTask(0, new EntityAIAvoidEntityCreeper(this,  6.0F, 1.0D, 1.2D));
+        this.tasks.addTask(0, new EntityAIAvoidEntityCreeper(this,  6.0F, 1.3D, 1.5D));
         this.tasks.addTask(5, new EntityAIFindSound(this));
 
         //this.tasks.addTask(2, new EntityAIBlockPlace(this));

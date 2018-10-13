@@ -1,4 +1,4 @@
-package ruo.halloween.miniween;
+package ruo.helloween.miniween;
 
 import net.minecraft.world.World;
 import ruo.minigame.map.EntityDefaultNPC;
