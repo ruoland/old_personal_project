@@ -17,7 +17,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
     private boolean isAttackReverse;
     private float explosionStrength = 1.5F;
     private boolean targetExplosion;
-    private boolean targetStop;//타겟에 도착하면 멈춤
+    public boolean targetDead = true;//타겟에 도착하면  죽음
 
     public EntityAttackMiniWeen(World worldIn) {
         super(worldIn);
@@ -46,9 +46,6 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         this.targetExplosion = targetExplosion;
     }
 
-    public void setTargetStop(boolean targetStop) {
-        this.targetStop = targetStop;
-    }
 
     public void setExplosionStrength(float explosionStrength) {
         this.explosionStrength = explosionStrength;
@@ -84,6 +81,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         if (targetExplosion) {
             explosion();
         }
+        if(targetDead)
         setDead();
     }
 

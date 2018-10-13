@@ -269,6 +269,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
                         attackMiniWeen.setTarget(attackMiniWeen.posX, posY + 8,
                                 attackMiniWeen.posZ);
+                        attackMiniWeen.targetDead = false;
                         attackMiniWeen.setTargetExplosion(false);
                         attackMiniWeen.setSpawnXYZ(attackMiniWeen.getTargetPosition());
                         attackMiniWeen.setDeathTimer(300);
@@ -279,6 +280,7 @@ public class EntityWeen extends EntityDefaultNPC {
                                         WorldAPI.z() + WorldAPI.rand(3));
                                 attackMiniWeen.setTargetExplosion(true);
                                 attackMiniWeen.setExplosionStrength(3F);
+                                attackMiniWeen.targetDead = true;
                             }
                         });
 
