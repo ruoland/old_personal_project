@@ -155,6 +155,8 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraTNTArrow", EntityTNTArrow.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraHoamingTNT", EntityHomingTNT.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraCreeper", EntityElytraCreeper.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraBoss", EntityElytraBossWeen.class);
+        DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityElytraBossMini.class);
 
         //폭탄게임용
         DebAPI.registerEntity(this, "bomb",EntityBomb.class);

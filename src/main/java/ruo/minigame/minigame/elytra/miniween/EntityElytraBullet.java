@@ -2,6 +2,7 @@ package ruo.minigame.minigame.elytra.miniween;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -70,10 +71,11 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
                 public void run(TickEvent.Type type) {
                     for(EnumFacing facing : EnumFacing.HORIZONTALS) {
                         BlockPos waterPos = waterPosition.offset(facing);
-                        Block block = worldObj.getBlockState(waterPos).getBlock();
+                        IBlockState waterState = worldObj.getBlockState(waterPos);
+                        Block block = waterState.getBlock();
                         worldObj.setBlockToAir(waterPosition.add(0,-1,0));
 
-                        if(block instanceof BlockLiquid && worldObj.getBlockState(waterPos).getValue(BlockLiquid.LEVEL) > 0) {
+                        if(block instanceof BlockLiquid && waterState.getValue(BlockLiquid.LEVEL) > 0) {
                             worldObj.setBlockToAir(waterPos);
                         }
                         if(absRunCount > 5){

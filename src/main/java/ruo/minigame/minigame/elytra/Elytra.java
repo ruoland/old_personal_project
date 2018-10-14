@@ -3,6 +3,7 @@ package ruo.minigame.minigame.elytra;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.Sys;
 import ruo.cmplus.camera.Camera;
@@ -16,6 +17,7 @@ import ruo.minigame.effect.TickRegister;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.AbstractMiniGame;
+import ruo.minigame.minigame.elytra.miniween.EntityElytraBossWeen;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkin;
 import ruo.minigame.minigame.elytra.miniween.EntityElytraPumpkinAttack;
 
@@ -81,8 +83,8 @@ public class Elytra extends AbstractMiniGame {
                         targetX = fakePlayer.getX(Direction.FORWARD, 20, true);
                         targetZ = fakePlayer.getZ(Direction.FORWARD, 20, true);
                     }
-                    five();
-                    absDefTick = 300;
+                    boss();
+                    absLoop = false;
                 }
                 if (absRunCount == 1) {
                     returnMonster();
@@ -175,6 +177,12 @@ public class Elytra extends AbstractMiniGame {
         spawnPumpkinAttack(Direction.FORWARD, 10, 0).setTeleportMode(true);
         //spawnPumpkinAttack(Direction.FORWARD_RIGHT, 8, 2).setWaterMode(true);
         //spawnPumpkinAttack(Direction.FORWARD_LEFT, 8, 2).setWaterMode(true);
+    }
+    public void boss() {
+        WorldAPI.addMessage("보스");
+        EntityElytraBossWeen bossWeen = new EntityElytraBossWeen(WorldAPI.getWorld());
+        setPositionAndSpawn(Direction.FORWARD, bossWeen, 13, 0);
+        WorldAPI.getWorld().spawnEntityInWorld(bossWeen);
     }
     @Override
     public boolean end(Object... obj) {
