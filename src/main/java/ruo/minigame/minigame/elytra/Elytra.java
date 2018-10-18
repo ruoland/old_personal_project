@@ -208,7 +208,6 @@ public class Elytra extends AbstractMiniGame {
         DebAPI.msgText("MiniGame",""+spawnPosHelper.getXZ(direction, plus, rlplus, true));
         pumpkin.setAttackMode(true);
         pumpkin.setDirection(direction);
-
         return pumpkin;
     }
 

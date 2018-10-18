@@ -1,4 +1,4 @@
-package ruo.scroll;
+package ruo.minigame.minigame;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,10 +20,6 @@ public class GuiUnder extends GuiScreen {
     private boolean attackMode;
     private int select;
 
-    public void setMonster(EntityLivingBase base){
-        updateMessage(base.getCustomNameTag()+"가 나타났다.");
-        mobHealth = base.getHealth();
-    }
 
     public void selectButton(){
         if (select == 0) {
@@ -38,7 +34,7 @@ public class GuiUnder extends GuiScreen {
     }
 
     private static final ResourceLocation location = new ResourceLocation("scroll:textures/darkscreen.png");
-    private String currentText = "가 나타났다.";
+    private StringBuffer currentText = new StringBuffer(), monsterName;
     private StringBuffer renderText = new StringBuffer("");
     private int messageTick = 10;
     private boolean updateMessage;
@@ -47,11 +43,16 @@ public class GuiUnder extends GuiScreen {
     private float mobTextureAlpha = 1F, mobHealth = 20;
     private boolean isDead = false;
 
-    public void updateMessage(String um){
+    public void updateMessage(String monsterName, String um){
         renderText = new StringBuffer("");
         updateMessage = true;
-        currentText = um;
+        currentText.append(monsterName).append(um);
         messageTick = 10;
+    }
+    public void setMonster(EntityLivingBase base){
+        updateMessage(base.getCustomNameTag(), "가 나타났다.");
+        mobHealth = base.getHealth();
+        monsterName = new StringBuffer(base.getCustomNameTag());
     }
 
     public void resetBox(){
@@ -64,7 +65,7 @@ public class GuiUnder extends GuiScreen {
         textBoxHeight = 88;
         textBoxX = 10;
         textBoxY = 120;
-        updateMessage("크리퍼는 사라졌다.");
+        updateMessage(monsterName.toString(), "는(은) 사라졌다.");
     }
 
 
@@ -82,7 +83,6 @@ public class GuiUnder extends GuiScreen {
         VertexBuffer vertexbuffer = tessellator.getBuffer();
         this.mc.getTextureManager().bindTexture(location);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        float f = 32.0F;
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         vertexbuffer.pos(0.0D, (double) this.height, 0.0D).tex(0.0D, (double) (float) this.height / 32.0F)
                 .color(0, 0, 0, 255).endVertex();
@@ -103,11 +103,11 @@ public class GuiUnder extends GuiScreen {
                     updateMessage = false;
             }
 
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(2, 2, 2);
-            RenderAPI.drawString(renderText.toString(), 13, 65, 0xFFFFFF);
-            GlStateManager.popMatrix();
         }
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(2, 2, 2);
+        RenderAPI.drawString(renderText.toString(), 13, 65, 0xFFFFFF);
+        GlStateManager.popMatrix();
         //RenderAPI.drawModel(CREEPER_TEXTURES, new ModelCreeper(), 220, 30, 0, 180, 0.9F, 1);
         if (attackMode) {
             if (textBoxWidth <= 162) {

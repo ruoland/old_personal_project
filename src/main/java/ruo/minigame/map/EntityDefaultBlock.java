@@ -20,6 +20,7 @@ import org.lwjgl.input.Keyboard;
 import ruo.asdfrpg.skill.SkillHelper;
 import ruo.asdfrpg.skill.Skills;
 import ruo.cmplus.deb.DebAPI;
+import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 
@@ -94,6 +95,26 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
 
     public void addBlock(Block block, BlockPos pos) {
         blockList.add(new BlockData(Block.getIdFromBlock(block), pos.getX(), pos.getY(), pos.getZ()));
+    }
+    public void addBlock(BlockPos start, BlockPos end) {
+        int x = start.getX(), x2 = end.getX();
+        int y = start.getY(), y2 = end.getY();
+        int z = start.getZ(), z2 = end.getZ();
+
+        int minX = Math.min(x, x2);
+        int maxX = Math.max(x, x2);
+        int minY = Math.min(y, y2);
+        int maxY = Math.max(y, y2);
+        int minZ = Math.min(z, z2);
+        int maxZ = Math.max(z, z2);
+        for (x = minX; x <= maxX; x++) {
+            for (y = minY; y <= maxY; y++) {
+                for (z = minZ; z <= maxZ; z++) {
+                    blockList.add(new BlockData(Block.getIdFromBlock(WorldAPI.getBlock(x,y,z).getBlock()),x,y,z));
+
+                }
+            }
+        }
     }
 
     public void addBlock(int block, BlockPos pos) {

@@ -33,6 +33,9 @@ public class FunctionFor {
 				absLoop = !isStop;
 				if(absLoop)
 					WorldAPI.command(command.replace("@카운트", ""+absRunCount));
+				if(absRunCount >= maxCount){
+					absLoop = false;
+				}
 			}
 		});
 	}

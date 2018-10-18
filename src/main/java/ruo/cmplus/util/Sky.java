@@ -27,11 +27,15 @@ public class Sky {
 		instance = this;
 	}
 	
-	public static void fogDistance(float x){
-		if(x == -1)
-			fogDistance = (5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F) * (1.0F - (float)0 / 20.0F));
-		else
-			fogDistance = x;
+	public static void fogDistance(float fog){
+		if(fog == -1) {
+			fogDistance = (5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F) * (1.0F - (float) 0 / 20.0F));
+			fogOn = false;
+		}
+		else {
+			fogDistance = fog;
+			fogOn = true;
+		}
 	}
 	public static void fogOnOff(boolean on){
 		fogOn = on;

@@ -1,5 +1,7 @@
 package ruo.minigame.api;
 
+import java.util.Random;
+
 public enum Direction {
     FORWARD, BACK, RIGHT, LEFT, FORWARD_RIGHT, FORWARD_LEFT, BACK_RIGHT, BACK_LEFT;
 
@@ -36,5 +38,10 @@ public enum Direction {
         if(this == BACK_LEFT || this == BACK_RIGHT)
             return BACK;
         return this;
+    }
+
+    public static Direction random(){
+        Random random = new Random();
+        return values()[random.nextInt(values().length)];
     }
 }

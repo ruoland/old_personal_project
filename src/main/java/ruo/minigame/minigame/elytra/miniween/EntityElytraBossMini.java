@@ -21,7 +21,7 @@ public class EntityElytraBossMini extends EntityElytraPumpkin {
     }
 
     private int targetCount = 0, absRunCount;
-    private boolean secondPhase;
+    private boolean phase360, threePhase;
 
     @Override
     public void targetArrive() {
@@ -29,7 +29,10 @@ public class EntityElytraBossMini extends EntityElytraPumpkin {
         targetCount++;
         if (targetCount == 1) {
             EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-            if (secondPhase) {
+            if(threePhase){
+                setTarget(posX, posY+10, posZ);
+            }
+            else if (phase360) {
                 double[] vec3d = WorldAPI.getVecXZ(rotationPitch, rotationYaw + (absRunCount * 35), 15);
                 setTarget(posX + vec3d[0], posY, posZ + vec3d[1]);
             } else
@@ -39,11 +42,14 @@ public class EntityElytraBossMini extends EntityElytraPumpkin {
             setDead();
     }
 
-    public void setSecondPhase(boolean secondPhase, int absRunCount) {
-        this.secondPhase = secondPhase;
+    public void setPhase360(boolean phase360, int absRunCount) {
+        this.phase360 = phase360;
         this.absRunCount = absRunCount;
     }
-
+    public void setThreePhase(boolean secondPhase, int absRunCount) {
+        this.threePhase = secondPhase;
+        this.absRunCount = absRunCount;
+    }
     @Override
     protected void collideWithEntity(Entity entityIn) {
         super.collideWithEntity(entityIn);

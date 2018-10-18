@@ -27,7 +27,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.CommandClassLoader;
@@ -48,9 +47,9 @@ import ruo.minigame.minigame.elytra.*;
 import ruo.minigame.minigame.elytra.miniween.*;
 import ruo.minigame.minigame.elytra.playerarrow.EntityHomingTNT;
 import ruo.minigame.minigame.elytra.playerarrow.EntityTNTArrow;
-import ruo.minigame.minigame.elytra_scroll.CommandElytraScroll;
-import ruo.minigame.minigame.elytra_scroll.ElytraScroll;
-import ruo.minigame.minigame.elytra_scroll.ElytraScrollEvent;
+import ruo.minigame.minigame.starmine.CommandStarMine;
+import ruo.minigame.minigame.starmine.StarMine;
+import ruo.minigame.minigame.starmine.StarMineEvent;
 import ruo.minigame.minigame.minerun.*;
 import ruo.minigame.minigame.scroll.Scroll;
 import ruo.minigame.minigame.scroll.ScrollEvent;
@@ -84,8 +83,8 @@ public class MiniGame {
     public static Elytra elytra;
     public static ElytraEvent elytraEvent;
 
-    public static ElytraScroll elytraScroll;
-    public static ElytraScrollEvent elytraScrollEvent;
+    public static StarMine starMine;
+    public static StarMineEvent starMineEvent;
     public Configuration minigameConfig;
     public MiniGame() {
         try {
@@ -111,7 +110,7 @@ public class MiniGame {
         MiniGame.scroll = new Scroll();
         MiniGame.bomber = new Bomber();
         MiniGame.elytra = new Elytra();
-        MiniGame.elytraScroll = new ElytraScroll();
+        MiniGame.starMine = new StarMine();
         //ClientPlayerAPI.register("MiniGame", LoopPlayer.class);
     }
 
@@ -176,7 +175,7 @@ public class MiniGame {
         MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
 
         MinecraftForge.EVENT_BUS.register(new ElytraRenderEvent());
-        MinecraftForge.EVENT_BUS.register(elytraScrollEvent = new ElytraScrollEvent());
+        MinecraftForge.EVENT_BUS.register(starMineEvent = new StarMineEvent());
 
         ClientRegistry.registerKeyBinding(grab);
 
@@ -192,7 +191,7 @@ public class MiniGame {
         e.registerServerCommand(new CommandScroll());
         e.registerServerCommand(new CommandBomber());
         e.registerServerCommand(new CommandElytra());
-        e.registerServerCommand(new CommandElytraScroll());
+        e.registerServerCommand(new CommandStarMine());
         //e.registerCommand(new CommandMonologue());
         e.registerServerCommand(new CommandMineRun());
         e.registerServerCommand(new CommandNotification());

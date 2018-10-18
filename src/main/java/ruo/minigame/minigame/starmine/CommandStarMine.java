@@ -1,4 +1,4 @@
-package ruo.minigame.minigame.elytra_scroll;
+package ruo.minigame.minigame.starmine;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -6,19 +6,16 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import ruo.minigame.MiniGame;
-import ruo.minigame.api.WorldAPI;
-import ruo.minigame.fakeplayer.FakePlayerHelper;
 
-public class CommandElytraScroll extends CommandBase{
+public class CommandStarMine extends CommandBase{
 
 	@Override
 	public String getCommandName() {
-		return "elytrascroll";
+		return "starmine";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		
 		return "";
 	}
 
@@ -27,9 +24,9 @@ public class CommandElytraScroll extends CommandBase{
 		EntityPlayer player = (EntityPlayer) sender;
 
 		if(args[0].equals("start"))
-			MiniGame.elytraScroll.start();
+			MiniGame.starMine.start();
 		else
-			MiniGame.elytraScroll.end();
+			MiniGame.starMine.end();
 		
 	}
 

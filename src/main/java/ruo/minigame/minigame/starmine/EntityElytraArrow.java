@@ -1,7 +1,6 @@
-package ruo.minigame.minigame.elytra_scroll;
+package ruo.minigame.minigame.starmine;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
