@@ -3,6 +3,9 @@ package ruo.helloween.miniween;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import ruo.helloween.EntityBigWeen;
@@ -11,16 +14,23 @@ import ruo.minigame.map.EntityDefaultNPC;
 
 public class EntityMiniWeen extends EntityDefaultNPC {
 	public EntityWeen ween;
-
+    private static final DataParameter<Float> PATTEN_LEVEL = EntityDataManager.createKey(EntityMiniWeen.class, DataSerializers.FLOAT);
 	public EntityMiniWeen(World worldIn) {
 		super(worldIn);
 		setBlockMode(Blocks.PUMPKIN);
 		setCollision(true);
 		this.setDeathTimer(400);
+		this.setSize(0.8F,0.8F);
 		this.isFly = true;
 	}
 
-	@Override
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        dataManager.register(PATTEN_LEVEL, 1F);
+    }
+
+    @Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(200000);
@@ -43,6 +53,13 @@ public class EntityMiniWeen extends EntityDefaultNPC {
 		super.onLivingUpdate();
 	}
 
+	public void setPattern(float i){
+	    dataManager.set(PATTEN_LEVEL, i);
+    }
+
+    public float getPattern(){
+	    return dataManager.get(PATTEN_LEVEL);
+    }
 	public boolean isDefenceMiniWeen() {
 		return this instanceof EntityDefenceMiniWeen;
 	}

@@ -30,6 +30,8 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
         super(world);
         addScale(14, 14, 14);
         setSize(15, 15);
+        this.setRotate(0, 90, 0);
+
     }
 
     @Override

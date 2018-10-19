@@ -16,6 +16,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
@@ -183,7 +185,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
             @Override
             public void run(Type type) {
-                if (blockList.size() < 80) {
+                if (blockList.size() < 50) {
                     if (absRunCount == 10)
                         absLoop = false;
                     for (int i = 0; i < 2; i++) {
@@ -192,9 +194,11 @@ public class EntityWeen extends EntityDefaultNPC {
                         worldObj.spawnEntityInWorld(blockWeen);
                         blockWeen.setTarget(0, 0, 0, 0);
                         blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
-                        blockWeen.addVelocity(WorldAPI.rand(8), rand.nextInt(3), WorldAPI.rand(8));
+                        blockWeen.addVelocity(WorldAPI.rand(3), WorldAPI.minRand2(1, 3), WorldAPI.rand(3));
+                        blockWeen.setPattern(1);
                         blockList.add(blockWeen);
                         blockWeen.setDeathTimer(0);
+                        blockWeen.isFly = false;
                         System.out.println("소환됨" + blockWeen);
                     }
                 }
@@ -221,11 +225,12 @@ public class EntityWeen extends EntityDefaultNPC {
             System.out.println("[첫패턴]체력이 " + firstEndHP + " 넘은채 추락해 스턴걸림");
         }
         setSturn(130);
+        this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, posX,posY,posZ, 1.0D, 0.0D, 0.0D, new int[0]);
+        this.worldObj.playSound((EntityPlayer)null,posX,posY,posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 
         dataManager.set(ISJUMP, false);
         dataManager.set(ISCOMPLETEY, false);
         dataManager.set(ISROTATE, false);
-
     }
 
     @Override
@@ -267,12 +272,16 @@ public class EntityWeen extends EntityDefaultNPC {
                         if (attackMiniWeen.isDead)//만약 미니윈이 시간이 지나 죽거나 폭발해서 사라진 경우 다음으로 넘김
                             return;
 
-                        attackMiniWeen.setTarget(attackMiniWeen.posX, posY + 8,
+                        attackMiniWeen.setTarget(attackMiniWeen.posX, posY + 12,
                                 attackMiniWeen.posZ);
                         attackMiniWeen.targetDead = false;
                         attackMiniWeen.setTargetExplosion(false);
+                        attackMiniWeen.setTargetSpeed(1.5);
                         attackMiniWeen.setSpawnXYZ(attackMiniWeen.getTargetPosition());
+                        attackMiniWeen.isFly = true;
                         attackMiniWeen.setDeathTimer(300);
+                        attackMiniWeen.setDistance(1);
+                        attackMiniWeen.setPattern(2F);
                         TickRegister.register(new AbstractTick(40, false) {
                             @Override
                             public void run(Type type) {
@@ -312,10 +321,13 @@ public class EntityWeen extends EntityDefaultNPC {
 
                     @Override
                     public void run(Type type) {
+
                         EntityAttackMiniWeen attackMiniWeen = summonAttackWeen(posHelper.getXZ(Direction.FORWARD, 8, true).add(posHelper.getXZ(Direction.RIGHT, WorldAPI.rand(3), false)).addVector(0, rand.nextInt(10), 0));
                         attackMiniWeen.setTarget(WorldAPI.getPlayer().posX + WorldAPI.rand(1), WorldAPI.getPlayer().posY+ WorldAPI.getPlayer().getEyeHeight(), WorldAPI.getPlayer().posZ + WorldAPI.rand(1));
                         attackMiniWeen.setExplosionStrength(1F);
                         attackMiniWeen.setTargetExplosion(true);
+                        attackMiniWeen.setPattern(2.5F);
+
                         if (absRunCount >= 5 && !patternHold && (forceSkip || (getHealth() < secondEndHP))) {
                             absLoop = false;
                             threePattern();
@@ -370,6 +382,7 @@ public class EntityWeen extends EntityDefaultNPC {
                         miniween.setPosition(posX + WorldAPI.rand(20), posY + 10 + rand.nextInt(4),
                                 posZ + WorldAPI.rand(20));
                         worldObj.spawnEntityInWorld(miniween);
+                        miniween.setPattern(3);
                         miniween.setTarget(WorldAPI.x() + v.xCoord * 1.5, WorldAPI.y() + player.eyeHeight + v.yCoord * 1.5, WorldAPI.z() + v.zCoord * 1.5);
                         TickRegister.register(new AbstractTick(300, false) {
                             @Override
@@ -414,6 +427,7 @@ public class EntityWeen extends EntityDefaultNPC {
                             miniween.setTarget(WorldAPI.x(), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
                                     WorldAPI.z());
                             System.out.println("미니윈 소환");
+                            miniween.setPattern(4);
                         }
                         if (!patternHold && (getHealth() < fourEndHP && absRunCount > 7 || forceSkip)) {
                             absLoop = false;
@@ -548,6 +562,7 @@ public class EntityWeen extends EntityDefaultNPC {
                             miniween.setPosition(posX + x, posY, posZ + z);
                             Objects.requireNonNull(WorldAPI.getWorld()).spawnEntityInWorld(miniween);
                             miniween.setVelocity(motionX, motionY, motionZ);
+                            miniween.setPattern(6);
                         }
                         getDataManager().set(ISJUMP, true);
                         dataManager.set(ISCOMPLETEY, true);

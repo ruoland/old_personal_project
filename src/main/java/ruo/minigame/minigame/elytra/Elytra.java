@@ -181,8 +181,10 @@ public class Elytra extends AbstractMiniGame {
     public void boss() {
         WorldAPI.addMessage("보스");
         EntityElytraBossWeen bossWeen = new EntityElytraBossWeen(WorldAPI.getWorld());
-        setPositionAndSpawn(Direction.FORWARD, bossWeen, 13, 0);
+        setPositionAndSpawn(Direction.FORWARD, bossWeen, 26, 0);
         WorldAPI.getWorld().spawnEntityInWorld(bossWeen);
+        bossWeen.setTarget(spawnPosHelper.getXZ(Direction.FORWARD, 6, 0, true));
+        bossWeen.setTargetSpeed(0.2);
     }
     @Override
     public boolean end(Object... obj) {

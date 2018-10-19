@@ -263,6 +263,7 @@ public class CMEffect {
                     float y = (WorldAPI.rand(randomi + 1) / 1000) - (absRunCount / 10000);
                     float z = (WorldAPI.rand(randomi + 1) / 100) - (absRunCount / 1000);
                     Camera.getCamera().moveCamera(x, y, z);
+                    System.out.println("카메라 흔드는 중");
                 } else {
                     this.absLoop = false;
                     Camera.getCamera().reset();

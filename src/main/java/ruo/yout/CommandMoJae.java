@@ -3,6 +3,7 @@ package ruo.yout;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.EntityList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import ruo.cmplus.util.CommandPlusBase;
@@ -15,6 +16,10 @@ public class CommandMoJae extends CommandPlusBase {
         if(args[0].equalsIgnoreCase("dog")){
             Mojae.dog_pan = Boolean.valueOf(args[1]);
         }
+        if(args[0].equalsIgnoreCase("attack")){
+            Mojae.monterAttack.put(args[1], args[2]);
+            System.out.println(args[1]+" - "+args[2]);
+        }
         if(args[0].equalsIgnoreCase("SKELREEPER")){
             Mojae.skelreeper = Boolean.valueOf(args[1]);
         }
@@ -24,10 +29,18 @@ public class CommandMoJae extends CommandPlusBase {
         if(args[0].equalsIgnoreCase("ARROWCount")){
             Mojae.arrow_count = Integer.valueOf(args[1]);
         }
+        if(args[0].equalsIgnoreCase("ARROWRIDING")){
+            Mojae.arrow_riding = Boolean.valueOf(args[1]);
+        }
     }
 
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
-        return getListOfStringsMatchingLastWord(args, "dog", "skelreeper", "arrowreper", "arrowcount");
+        if(args.length == 1)
+        return getListOfStringsMatchingLastWord(args, "dog", "skelreeper", "arrowreper", "arrowcount", "arrowriding", "attack");
+        else if(args[0].equalsIgnoreCase("attack")){
+            return getListOfStringsMatchingLastWord(args, EntityList.getEntityNameList());
+        }
+        return super.getTabCompletionOptions(server, sender, args, pos);
     }
 }

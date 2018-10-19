@@ -13,18 +13,14 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class MoJaeEvent {
+
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();
-        if (event.getEntityLiving().isPotionActive(Mojae.lockPotion) || name.startsWith("잠금")) {
-            event.getEntityLiving().setVelocity(0, 0, 0);
-            NBTTagCompound tag = event.getEntityLiving().getEntityData();
-            event.getEntityLiving().setPosition(tag.getDouble("LPX"), tag.getDouble("LPY")
-                    , tag.getDouble("LPZ"));
-
+        if (event.getEntityLiving().isPotionActive(Mojae.godPotion) || name.startsWith("무적 상태")) {
+           event.setCanceled(true);
         }
     }
-
     @SubscribeEvent
     public void event(LivingEvent.LivingUpdateEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();
