@@ -122,12 +122,9 @@ public class LabEvent {
                     mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityLiving.class, false));
                 }
             }
-            if (!monsterName.equalsIgnoreCase("Bat"))
-                System.out.println(Mojae.monterAttack.containsKey(monsterName) + monsterName);
             if (Mojae.monterAttack.containsKey(monsterName)) {
                 String attackKey = Mojae.monterAttack.get(monsterName);
                 Class entityClass = EntityList.NAME_TO_CLASS.get(attackKey);
-                System.out.println(Mojae.monterAttack.get(monsterName) + entityClass);
 
                 if (living instanceof EntityMob) {
                     EntityMob mob = (EntityMob) living;

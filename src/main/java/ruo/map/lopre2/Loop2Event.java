@@ -19,7 +19,7 @@ public class Loop2Event {
             public void run(Type type) {
                     EntityLavaBlock lavaBlock = new EntityLavaBlock(worldObj);
                     lavaBlock.setPosition(x, y - 1 + 0.2 + Math.random(), z);
-                    lavaBlock.setLock(true);
+                    lavaBlock.setTeleportLock(true);
                     lavaBlock.setBlock(Blocks.STONE);
                     lavaBlock.setTeleport(false);
                     worldObj.spawnEntityInWorld(lavaBlock);
@@ -31,7 +31,7 @@ public class Loop2Event {
     public static void blockSet(World worldObj, int xx, int yy, int zz, int x2, int y2, int z2) {
         EntityBuildBlock buildBlock = new EntityBuildBlock(worldObj);
         buildBlock.setPosition(xx, yy, zz);
-        buildBlock.setLock(true);
+        buildBlock.setTeleportLock(true);
         buildBlock.setBlock(Blocks.STONE);
         buildBlock.setTeleport(false);
         worldObj.spawnEntityInWorld(buildBlock);
@@ -43,7 +43,7 @@ public class Loop2Event {
         currentZ = 0;
         for (int i = 0; i < maxCount; i++) {
             EntityLavaBlock miniween = new EntityLavaBlock(worldObj);
-            miniween.setLock(true);
+            miniween.setTeleportLock(true);
             if (currentY == 0 && currentZ == 0) {
                 miniween.setPosition(posX, posY + currentY, posZ + currentZ);
                 worldObj.spawnEntityInWorld(miniween);
@@ -77,7 +77,7 @@ public class Loop2Event {
 
     private static void entityStarisSpawn(World worldObj, double posX, double posY, double posZ) {
         EntityLavaBlock miniween = new EntityLavaBlock(worldObj);
-        miniween.setLock(true);
+        miniween.setTeleportLock(true);
         miniween.setPosition(posX, posY, posZ);//시작 좌표
         worldObj.spawnEntityInWorld(miniween);
         miniween.onInitialSpawn(null, null);
@@ -104,7 +104,7 @@ public class Loop2Event {
 
         for (int i = 0; i < maxZ; i++) {
             EntityLavaBlock miniween = new EntityLavaBlock(worldObj);
-            miniween.setLock(true);
+            miniween.setTeleportLock(true);
             int ypath = MathHelper.floor_double(maxY - (posY + currentY));//목적 Y까지 남은 거리
             int zpath = MathHelper.floor_double((posZ + maxZ) - (posZ + currentZ));//목적Z까지 남은 거리
             double distance = getDistance(posX, posY + currentY, posZ + currentZ, destinationX, destinationY, destinationZ);

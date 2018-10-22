@@ -36,7 +36,7 @@ public class ItemSpanner extends Item {
             }
             if (target instanceof EntityLavaBlock && hand == EnumHand.MAIN_HAND) {
                 EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
-                lavaBlock.setLock(!lavaBlock.isLock());
+                lavaBlock.setTeleportLock(!lavaBlock.canTeleportLock());
                 System.out.println("대상 위치" + lavaBlock.posX + " - " + lavaBlock.posY + " - " + lavaBlock.posZ);
             }
             if (target instanceof EntityInvisibleBlock) {

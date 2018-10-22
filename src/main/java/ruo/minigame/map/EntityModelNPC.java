@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Rotations;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 
@@ -351,6 +352,23 @@ class EntityModelNPC extends EntityMob {
         npc.setRGB(getRed(), getGreen(), getBlue());
     }
 
+    public void printModel(){
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println("TypeModel" + getModel());
+        if(getModel() == TypeModel.BLOCK){
+            System.out.println("Block" + getCurrentBlock());
+            System.out.println("Stack" + getCurrentStack());
+            System.out.println("BlockID" + dataManager.get(BLOCK_ID));
+        }
+        System.out.println("Texture" + getTexture());
+
+        System.out.println("Translate" + getTraX()+" - "+getTraY()+" - "+getTraZ());
+        System.out.println("Rotate" + getRotateX()+" - "+getRotateY()+" - "+getRotateZ());
+        System.out.println("Scale" + getScaleX()+" - "+getScaleY()+" - "+getScaleZ());
+        System.out.println("getTransparency" + getTransparency());
+        System.out.println("RGB" + getRed()+ " - "+getGreen()+" - "+getBlue());
+        System.out.println("-------------------------------------------------------------------");
+    }
     public void setSleep(boolean isSleep, int rotate) {
         setSleep(isSleep);
         setSleepRotate(rotate);

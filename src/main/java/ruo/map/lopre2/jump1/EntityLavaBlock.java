@@ -5,13 +5,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.WorldAPI;
 
@@ -25,7 +28,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     private static final DataParameter<Float> HEIGHT = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> DEB_MOVE = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.BOOLEAN);
 
-    protected double downSpeed = 0.005;
+    protected double downSpeed = 0.01;
     public EntityLavaBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
@@ -37,7 +40,7 @@ public class EntityLavaBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "LavaBlock 고정:"+isLock()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
+        return "LavaBlock 고정:"+canTeleportLock()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
     }
 
     @Override
@@ -47,32 +50,18 @@ public class EntityLavaBlock extends EntityPreBlock {
         dataManager.register(HEIGHT, 0F);
         dataManager.register(DEB_MOVE, false);
     }
-    public float getWidth() {
-        return dataManager.get(WIDTH);
-    }
 
-    public float getHeight() {
-        return dataManager.get(HEIGHT);
-    }
-
-    public void setWidth(float width){
-        dataManager.set(WIDTH, width);
-        if(getWidth() != 0 && getHeight() != 0){
-            this.setSize(getWidth(), getHeight());
-        }
-    }
-
-    public void setHeight(float height){
-        dataManager.set(HEIGHT, height);
-        if(getWidth() != 0 && getHeight() != 0){
-            this.setSize(getWidth(), getHeight());
-        }
-    }
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
         setSpawnXYZ(posX, posY, posZ);
         this.setTeleport(true);
         return super.onInitialSpawn(difficulty, livingdata);
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+        return super.processInteract(player, hand, stack);
+
     }
 
     @Override
@@ -83,7 +72,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
         EntityLavaBlock lavaBlock = new EntityLavaBlock(worldObj);
-        lavaBlock.setLock(isLock());
+        lavaBlock.setTeleportLock(canTeleportLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
@@ -118,11 +107,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         if (canTeleportLock()) {
             setVelocity(0, 0, 0);
         }
-        if(getScaleX() != 1 && getScaleZ() != 1 && getWidth() != 0 && getHeight() != 0 && (getWidth() != width || getHeight() != height)){
-            this.setSize(getWidth(), getHeight());
-            this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-        }
-        if (WorldAPI.getPlayer() != null && !isLock()) {
+        if (WorldAPI.getPlayer() != null && !canTeleportLock()) {
             boolean isFly = true;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
@@ -130,30 +115,43 @@ public class EntityLavaBlock extends EntityPreBlock {
                 for (Entity entity : list) {
                     if ((entity instanceof EntityPlayer) && !entity.noClip) {
                         isFly = false;
-                    } else
-                        isFly = true;
+                    }
                 }
-            }
+            }else
+                isFly = true;
             if (isFly) {
                 if(posY < getSpawnY()) {
                     setVelocity(0, downSpeed, 0);
                 }
-                else
-                    setVelocity(0,0,0);
+                else {
+                    setVelocity(0, 0, 0);
+                }
             }
             if (!isFly) {
                 setVelocity(0, -downSpeed, 0);
             }
-            if (inWater && this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, 0.5D, 0.0D).contract(0.001D), Material.WATER, this)) {
-                this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-            }
         }
-
+    }
+    public float getWidth() {
+        return dataManager.get(WIDTH);
     }
 
-    @Override
-    public boolean canTeleportLock() {
-        return isLock();
+    public float getHeight() {
+        return dataManager.get(HEIGHT);
+    }
+
+    public void setWidth(float width){
+        dataManager.set(WIDTH, width);
+        if(getWidth() != 0 && getHeight() != 0){
+            this.setSize(getWidth(), getHeight());
+        }
+    }
+
+    public void setHeight(float height){
+        dataManager.set(HEIGHT, height);
+        if(getWidth() != 0 && getHeight() != 0){
+            this.setSize(getWidth(), getHeight());
+        }
     }
 
     @Override
@@ -170,7 +168,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         super.readEntityFromNBT(compound);
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
-        downSpeed = compound.getDouble("downSpeed");
+        downSpeed = 0.05;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
     }
 

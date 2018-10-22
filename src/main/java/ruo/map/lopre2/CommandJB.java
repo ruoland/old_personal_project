@@ -1,6 +1,12 @@
 package ruo.map.lopre2;
 
+import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGameOver;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -8,7 +14,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.world.storage.ISaveFormat;
+import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.util.CommandPlusBase;
@@ -108,9 +118,32 @@ public class CommandJB extends CommandPlusBase {
                 System.out.println((endTime - startTime) / 1000 + "초.");
                 WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
                 WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
-                WorldAPI.teleport(1114.6, 240.0, -61.6);
+                if(WorldAPI.equalsWorldName("JumpMap")) {
+                    WorldAPI.teleport(1114.6, 240.0, -61.6);
+                    WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 2탄으로 넘어갈까요?");
+                    TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.]");
+                    Style style = new Style();
+                    textComponent.setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb jump2")));
+                    sender.addChatMessage(textComponent);
+                }
             }
+            if (args[0].equalsIgnoreCase("jump2")) {
+                if(WorldAPI.equalsWorldName("JumpMap")) {
+                    WorldAPI.addMessage("난이도를 선택해주세요.");
+                    TextComponentString textComponent = new TextComponentString("");
 
+                    TextComponentString normal = new TextComponentString("[보통 난이도]");
+                    normal.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb normal")));
+                    TextComponentString hard = new TextComponentString("[어려운 난이도]");
+                    hard.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb hard")));
+                    textComponent = (TextComponentString) textComponent.appendSibling(normal).appendSibling(hard);
+
+                    sender.addChatMessage(textComponent);
+                }
+            }
+            if (args[0].equalsIgnoreCase("normal") || args[0].equalsIgnoreCase("hard")) {
+                worldLoad(args[0]);
+            }
             if (args[0].equalsIgnoreCase("pos1")) {
                 pos1 = WorldAPI.changePosArrayInt((EntityLivingBase) sender);
             }
@@ -164,5 +197,33 @@ public class CommandJB extends CommandPlusBase {
                 WorldAPI.teleport(vec.xCoord, vec.yCoord + 1, vec.zCoord);
             }
         }
+    }
+
+    public void worldLoad(String diffu) {
+        Minecraft mc = Minecraft.getMinecraft();
+        TickRegister.register(new AbstractTick(Type.CLIENT, 1, false) {
+            @Override
+            public void run(Type type) {
+                mc.theWorld.sendQuittingDisconnectingPacket();
+                mc.loadWorld((WorldClient) null); ISaveFormat isaveformat = mc.getSaveLoader();
+                StringBuffer worldName = new StringBuffer("JumpMap Sea2 - ");
+                worldName.append(diffu);
+
+                if (isaveformat.canLoadWorld(worldName.toString())) {
+                    try {
+                        for (WorldSummary summary : isaveformat.getSaveList()) {
+                            if (summary.getDisplayName().equalsIgnoreCase(worldName.toString())) {
+                                net.minecraftforge.fml.client.FMLClientHandler.instance().tryLoadExistingWorld(new GuiWorldSelection(new GuiMainMenu()), summary);
+                                break;
+                            }
+                        }
+                    } catch (AnvilConverterException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
     }
 }

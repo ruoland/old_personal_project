@@ -1,6 +1,6 @@
 ﻿
-item.blockmove.name=item.blockmove
-item.spanner.name=도구
+item.blockmove.name=모드 블럭 복사
+item.spanner.name=모드 블럭 도구
 entity.LoopPre2.lavablock.name=밟음 블럭
 entity.LoopPre2.BigBlockInvisible.name=큰 투명 블럭
 entity.LoopPre2.BigBlockMovejump.name=큰 이동 블럭

@@ -13,6 +13,7 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -112,13 +113,16 @@ public class MiniGame {
         MiniGame.elytra = new Elytra();
         MiniGame.starMine = new StarMine();
         //ClientPlayerAPI.register("MiniGame", LoopPlayer.class);
+
     }
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
         //스크롤 메이커용
         //DebAPI.registerEntity(this, "ScrollMouse", EntityScrollMouse.class);
-
+        GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("minigame:blockInvisible"));
+        //reg(new ItemBlock(blockInvisible));
+        DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //마인런 게임용
         try {
             Field modelManagerField = Minecraft.class.getDeclaredField("modelManager");
@@ -142,7 +146,6 @@ public class MiniGame {
         DebAPI.registerEntity(this, "MRRocketCreeper", EntityMRRocketCreeper.class);
         DebAPI.registerEntity(this, "MRWalkingZombie", EntityMRWalkingZombie.class);
 
-        GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("blockInvisible"));
         //엘리트라 슈팅 게임용
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityFlyingWeen.class);
         DebAPI.registerEntity(this, "NO-EGG-ElytraBullet", EntityElytraBullet.class);

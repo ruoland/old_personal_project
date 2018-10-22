@@ -110,11 +110,6 @@ public class EntityBuildBlock extends EntityPreBlock {
     }
 
     @Override
-    public boolean canTeleportLock() {
-        return isLock();
-    }
-
-    @Override
     protected void entityInit() {
         super.entityInit();
         dataManager.register(BLOCK_POS1, BlockPos.ORIGIN);
@@ -165,9 +160,9 @@ public class EntityBuildBlock extends EntityPreBlock {
                     setInv(true);
                 }
             }
-            eBlock.setLock(false);
-            nBlock.setLock(false);
-            dBlock.setLock(false);
+            eBlock.setTeleportLock(false);
+            nBlock.setTeleportLock(false);
+            dBlock.setTeleportLock(false);
             eBlock.setInv(false);
             nBlock.setInv(false);
             dBlock.setInv(false);

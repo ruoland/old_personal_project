@@ -86,7 +86,7 @@ public class EntityPlatBlock extends EntityPreBlock {
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
         EntityPlatBlock lavaBlock = new EntityPlatBlock(worldObj);
-        lavaBlock.setLock(isLock());
+        lavaBlock.setTeleportLock(canTeleportLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

@@ -39,7 +39,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);//클라이언트 월드에서 엔티티가 스폰 될 수 있게 함, 가짜 블럭 생성용
     private static final DataParameter<Boolean> COPY = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);//복사용 블럭인가
-    private static final DataParameter<Boolean> LOCK = EntityDataManager.createKey(EntityPreBlock.class,
+    private static final DataParameter<Boolean> TELEPORT_LOCK = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
 
 
@@ -57,7 +57,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(LOCK, false);
+        dataManager.register(TELEPORT_LOCK, false);
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(COPY, false);
@@ -75,7 +75,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     public void setInv(boolean is) {
         dataManager.set(ISINV, is);
         if (is) {
-            setLock(true);
+            setTeleportLock(true);
         }
     }
 
@@ -95,9 +95,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (CommandJB.isDebMode && hand == EnumHand.MAIN_HAND) {
-            System.out.println("1"+stack + (stack == null ? null : stack.getItem()));
             if(stack != null && stack.getItem() == (LoPre2.itemCopy)) {
-                System.out.println("2"+stack + (stack == null ? null : stack.getItem()));
                 return false;
             }
             if (WorldAPI.equalsHeldItem(LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(LoPre2.itemCopy)) {
@@ -111,7 +109,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
             if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
                 setInv(!isInv());
                 setInvisible(isInv());
-                setLock(true);
+                setTeleportLock(true);
                 System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨(락 걸림)");
 
                 return super.processInteract(player, hand, stack);
@@ -121,8 +119,8 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
                 return super.processInteract(player, hand, stack);
             }
             if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
-                setLock(!isLock());
-                System.out.println("isLock이" + isLock() + "으로 설정됨");
+                setTeleportLock(!canTeleportLock());
+                System.out.println("isLock이" + canTeleportLock() + "으로 설정됨");
                 return super.processInteract(player, hand, stack);
             }
             if (stack != null && Block.getBlockFromItem(stack.getItem()) != null) {
@@ -194,26 +192,13 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     private int delayTick;
     @Override
     public void onLivingUpdate() {
+        if(getScaleX() == 0 || getScaleY() == 0 || getScaleZ() == 0)
+            setScale(1,1,1);
         if (CommandJB.isLavaInvisible && !(this instanceof EntityBigBlock)) {
             setInvisible(!isInv());
         } else
             setInvisible(isInv());
-        if (LooPre2Event.prevText != null) {
-            String xyz = LooPre2Event.prevText;
-            if (xyz.split(",").length > 2) {
-                try {
-                    String xyzarray[] = xyz.split(",");
-                    float x = Float.valueOf(xyzarray[0]);
-                    float y = Float.valueOf(xyzarray[1]);
-                    float z = Float.valueOf(xyzarray[2]);
-                    setRotate(x, y, z);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    LooPre2Event.prevText = null;
-                }
-            }
-        }
+
         this.rotationYaw = 0;
         this.renderYawOffset = 0;
         if (delayTick > 0) {
@@ -242,7 +227,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public boolean canTeleportLock() {
-        return true;
+        return dataManager.get(TELEPORT_LOCK);
 
     }
 
@@ -344,12 +329,8 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
 
     public abstract EntityPreBlock spawn(double x, double y, double z);
 
-    public void setLock(boolean a) {
-        this.dataManager.set(LOCK, a);
-    }
-
-    public boolean isLock() {
-        return dataManager.get(LOCK);
+    public void setTeleportLock(boolean a) {
+        this.dataManager.set(TELEPORT_LOCK, a);
     }
 
     public void setForceSpawn(boolean a) {
@@ -373,7 +354,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        compound.setBoolean("falling", isLock());
+        compound.setBoolean("falling", canTeleportLock());
         compound.setBoolean("isInv", isInv());
 
     }
@@ -381,7 +362,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        setLock(compound.getBoolean("falling"));
+        setTeleportLock(compound.getBoolean("falling"));
         setSize(compound.getFloat("widthl"), compound.getFloat("heightl"));
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));

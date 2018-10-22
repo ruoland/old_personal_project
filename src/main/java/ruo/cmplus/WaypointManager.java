@@ -18,7 +18,7 @@ public class WaypointManager {
         CMPlus.cmPlusConfig.getCategory("waypoint").remove(name);
     }
     public static double[] get(String name){
-        return CMPlus.cmPlusConfig.get("waypoint", name, (double[]) null).getDoubleList();
+        return CMPlus.cmPlusConfig.get("waypoint", name, new double[3]).getDoubleList();
     }
     public static boolean has(String name){
         return CMPlus.cmPlusConfig.hasKey("waypoint", name);

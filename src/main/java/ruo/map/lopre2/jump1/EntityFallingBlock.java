@@ -67,7 +67,7 @@ public class EntityFallingBlock extends EntityPreBlock {
 
 	@Override
 	public String getCustomNameTag() {
-		return super.getCustomNameTag()+" - "+lavaY;
+		return "폴링 블럭"+lavaY;
 	}
 
 	@Override

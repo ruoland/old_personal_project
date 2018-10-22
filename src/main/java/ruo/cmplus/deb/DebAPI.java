@@ -63,9 +63,9 @@ public class DebAPI {
     }
 
     public static void msgText(String modid, String msg) {
-        if(CommandDeb.debMods.contains(modid)) {
-            System.out.println("[디버그]텍스트-"+msg);
-            if(CommandDeb.traceMethod) {
+        if (CommandDeb.debMods.contains(modid)) {
+            System.out.println("[디버그]텍스트-" + msg);
+            if (CommandDeb.traceMethod) {
                 System.out.println("[디버그]메서드 추적 시작");
                 StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
                 for (StackTraceElement stackTraceElement : stackTraceElements) {
@@ -78,30 +78,31 @@ public class DebAPI {
     }
 
     public static void msgMove(String msg) {
-        if(CommandDeb.debMove) {
-            System.out.println("[디버그]이동-"+msg);
+        if (CommandDeb.debMove) {
+            System.out.println("[디버그]이동-" + msg);
         }
     }
 
     public static void msgfunc(String funcName, String msg) {
-        if(CommandDeb.debFunction) {
-            if(CommandDeb.funcName == null || (CommandDeb.funcName != null && CommandDeb.funcName.equalsIgnoreCase(funcName)))
-                System.out.println("[디버그]펑션"+funcName+" 이벤트: "+msg);
+        if (CommandDeb.debFunction) {
+            if (CommandDeb.funcName == null || (CommandDeb.funcName != null && CommandDeb.funcName.equalsIgnoreCase(funcName)))
+                System.out.println("[디버그]펑션" + funcName + " 이벤트: " + msg);
         }
     }
 
     public static void msgKey(String msg) {
 
-        if(CommandDeb.debKey) {
-            System.out.println("[디버그]키-"+msg);
+        if (CommandDeb.debKey) {
+            System.out.println("[디버그]키-" + msg);
         }
     }
 
     public static void msgVar(String string) {
-        if(CommandDeb.debVar) {
-            System.out.println("[디버그]변수-"+string);
+        if (CommandDeb.debVar) {
+            System.out.println("[디버그]변수-" + string);
         }
     }
+
     public static RenderManager getRenderManager() {
         return Minecraft.getMinecraft().getRenderManager();
     }
@@ -165,7 +166,7 @@ public class DebAPI {
     }
 
     public static boolean isKeyDown(int keycode) {
-            return Keyboard.isKeyDown(keycode) && Minecraft.getMinecraft().currentScreen == null;
+        return Keyboard.isKeyDown(keycode) && Minecraft.getMinecraft().currentScreen == null;
     }
 
     public static DebAPI createDebAPI(String name, double x, double y, double z) {
@@ -235,8 +236,12 @@ public class DebAPI {
     }
 
     public static void createJson(Item itemBlock, Item model) {
+        createJson(itemBlock, model instanceof ItemBlock ? ((ItemBlock) model).getBlock().getRegistryName().toString() : model.getRegistryName().toString());
+    }
+
+    public static void createJson(Item itemBlock, String model) {
         ResourceLocation resourceLocation = itemBlock instanceof ItemBlock ? ((ItemBlock) itemBlock).getBlock().getRegistryName() : itemBlock.getRegistryName();
-        ResourceLocation resourceLocationModel = model instanceof ItemBlock ? ((ItemBlock) model).getBlock().getRegistryName() : model.getRegistryName();
+        ResourceLocation resourceLocationModel = new ResourceLocation(model);
 
         String modid = resourceLocation.getResourceDomain();
         String modelBlock = model == null ? "stone" : resourceLocationModel.getResourcePath();
@@ -248,16 +253,14 @@ public class DebAPI {
         if (itemBlock instanceof ItemBlock) {
             parent.add("textures", texture);
         }
-        File jsonFolder = new File("D:/OneDrive/src/main/resources/assets/" + modid + "");
+        File jsonFolder = new File("C:/Users/opron/Desktop/mdk/src/main/resources/assets/" + modid + "");
         File blockStateFolder = new File(jsonFolder + "/blockstates/");
         File blockFolder = new File(jsonFolder + "/models/block/");
         File itemFolder = new File(jsonFolder + "/models/item/");
         File jsonBlockState = new File(blockStateFolder + "/" + itemName + ".json");
         File jsonBlock = new File(blockFolder + "/" + itemName + ".json");
         File jsonItem = new File(itemFolder + "/" + itemName + ".json");
-        if (jsonItem.isFile() || jsonBlock.isFile() || jsonBlockState.isFile())
-            return;
-        if (!jsonFolder.isDirectory())
+        if (jsonItem.isFile() || jsonBlock.isFile() || jsonBlockState.isFile() || !jsonFolder.isDirectory())
             return;
         try {
             jsonFolder.mkdirs();
@@ -265,10 +268,7 @@ public class DebAPI {
             blockFolder.mkdirs();
             itemFolder.mkdirs();
             jsonItem.createNewFile();
-            BufferedWriter writerItem = Files.newWriter(jsonItem, Charset.forName("UTF-8"));
-            writerItem.write(gson.toJson(parent));
-            writerItem.newLine();
-            writerItem.close();
+
             if (itemBlock instanceof ItemBlock) {
                 jsonBlockState.createNewFile();
                 jsonBlock.createNewFile();
@@ -280,6 +280,11 @@ public class DebAPI {
                 writerBlockState.write("{ \"variants\": { \"normal\": {\"model\": \"" + modelBlock + "\" } } }");
                 writerBlockState.newLine();
                 writerBlockState.close();
+            } else {
+                BufferedWriter writerItem = Files.newWriter(jsonItem, Charset.forName("UTF-8"));
+                writerItem.write(gson.toJson(parent));
+                writerItem.newLine();
+                writerItem.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -325,7 +330,9 @@ public class DebAPI {
     public static void registerEntity(Object mod, String name, String texture, Class entity, ModelBase model) {
         registerEntity(mod, name, new ResourceLocation(texture), entity, model);
     }
+
     private static int id = 140;
+
     public static void registerEntity(Object mod, String name, Class<? extends Entity> entity, Render<? extends Entity> r) {
         boolean sendsVelocity = name.contains("VELOCITY-");
         boolean noEgg = name.contains("NO-EGG-");
@@ -341,7 +348,7 @@ public class DebAPI {
         id++;
     }
 
-    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity>  entity, ModelBase model) {
+    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity> entity, ModelBase model) {
         boolean sendsVelocity = name.contains("VELOCITY-");
         boolean noEgg = name.contains("NO-EGG-");
         name = name.replace("NO-EGG-", "").replace("VELOCITY-", "");

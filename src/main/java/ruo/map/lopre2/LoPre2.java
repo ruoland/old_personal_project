@@ -25,16 +25,22 @@ import ruo.minigame.api.WorldAPI;
 public class LoPre2 {
     //점프맵 2 코드
     public static KeyBinding grab = new KeyBinding("액션", Keyboard.KEY_R, "카카카테고리");
-    public static Item itemCopy = new ItemCopy().setUnlocalizedName("copy").setRegistryName("looppre2:copy").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Item itemCopy = new ItemCopy().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 
-    public static Item itemSpanner = new ItemSpanner().setUnlocalizedName("spanner").setRegistryName("looppre2:spanner").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Item itemBlockMove = new ItemBlockMove().setUnlocalizedName("blockmove").setRegistryName("looppre2:blockmove").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Item itemSpanner = new ItemSpanner().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Item itemBlockMove = new ItemBlockMove().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static KeyBinding blockSetKey = new KeyBinding("BLOCKSET", Keyboard.KEY_K, "LP2");
     @Instance("LoopPre2")
     public static LoPre2 instance;
 
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
+        GameRegistry.register(itemSpanner.setUnlocalizedName("spanner").setRegistryName("looppre2:spanner"));
+        GameRegistry.register(itemBlockMove.setUnlocalizedName("blockmove").setRegistryName("looppre2:blockmove"));
+        GameRegistry.register(itemCopy.setUnlocalizedName("copy").setRegistryName("looppre2:copy"));
+        DebAPI.createJson(itemSpanner, Items.NETHER_STAR);
+        DebAPI.createJson(itemBlockMove, Items.NETHER_STAR);
+        DebAPI.createJson(itemCopy, Items.NETHER_STAR);
     }
 
     @EventHandler
@@ -75,13 +81,7 @@ public class LoPre2 {
 
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
-        GameRegistry.register(itemSpanner);
-        GameRegistry.register(itemBlockMove);
-        GameRegistry.register(itemCopy);
-        DebAPI.createJson(itemSpanner, Items.NETHER_STAR);
 
-        DebAPI.createJson(itemSpanner, Items.NETHER_STAR);
-        DebAPI.createJson(itemBlockMove, Items.NETHER_STAR);
         MinecraftForge.EVENT_BUS.register(new LooPre2Event());
     }
 

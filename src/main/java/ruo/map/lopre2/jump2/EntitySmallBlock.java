@@ -11,7 +11,7 @@ public class EntitySmallBlock extends EntityBigBlock {
         super(world);
         this.setSize(1,1);
         this.setScale(1,1,1);
-        this.setLock(true);
+        this.setTeleportLock(true);
         this.setBlock(new ItemStack(Blocks.WOOL,1,11));
     }
 
@@ -23,7 +23,7 @@ public class EntitySmallBlock extends EntityBigBlock {
     @Override
     public EntitySmallBlock spawn(double x, double y, double z) {
         EntitySmallBlock lavaBlock = new EntitySmallBlock(worldObj);
-        lavaBlock.setLock(isLock());
+        lavaBlock.setTeleportLock(canTeleportLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

@@ -32,14 +32,14 @@ public class EntityBigBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
-        this.setLock(false);
+        this.setTeleportLock(false);
         this.noClip = !noClip;
     }
 
     @Override
     public EntityBigBlock spawn(double x, double y, double z) {
         EntityBigBlock lavaBlock = new EntityBigBlock(worldObj);
-        lavaBlock.setLock(isLock());
+        lavaBlock.setTeleportLock(canTeleportLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
@@ -91,7 +91,7 @@ public class EntityBigBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "BigBlock " + " 잠금:" + isLock()+ " 딜레이:"+getDefaultDelay();
+        return "BigBlock " + " 잠금:" + canTeleportLock()+ " 딜레이:"+getDefaultDelay();
     }
 
     @Override
@@ -112,10 +112,10 @@ public class EntityBigBlock extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if ((getCurrentBlock() == Blocks.WOOL && (getBlockMetadata() == 11 || getBlockMetadata() == 5))) {
-            this.setLock(true);
+            this.setTeleportLock(true);
             setBlockMetadata(5);
         }else if(getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0){
-            setLock(false);
+            setTeleportLock(false);
         }
         if (getCustomNameTag().indexOf("SmallBlock") != -1) {
             if (getScaleX() == 3) {
@@ -123,7 +123,7 @@ public class EntityBigBlock extends EntityPreBlock {
                 this.setScale(1, 1, 1);
                 this.setBlock(new ItemStack(Blocks.WOOL, 1, 11));
             }
-            setLock(false);
+            setTeleportLock(false);
         }
         if(getRotateZ() == 0 && getRotateY() == 0 && getRotateX() == 0){
             this.setRotate(0,0,0);
@@ -136,18 +136,18 @@ public class EntityBigBlock extends EntityPreBlock {
         }
         if (!isServerWorld() && Float.compare(width, 3F) == 0 && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
                 || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
-            this.setLock(true);
+            this.setTeleportLock(true);
             this.setSize(1, 1);
             this.setFalling(false);
             DebAPI.msgText("LoopPre2","사이즈가 변경됨 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
 
-        if (!isLock() && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
+        if (!canTeleportLock() && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
                 || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
-            this.setLock(true);
+            this.setTeleportLock(true);
             this.setFalling(false);
         }
-        if (isLock()) {
+        if (canTeleportLock()) {
             setVelocity(0, 0, 0);
         } else {
             float size = 2.5F;

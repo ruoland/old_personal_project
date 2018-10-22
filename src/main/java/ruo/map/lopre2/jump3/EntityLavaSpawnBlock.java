@@ -74,7 +74,7 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
         EntityLavaSpawnBlock lavaBlock = new EntityLavaSpawnBlock(worldObj);
-        lavaBlock.setLock(isLock());
+        lavaBlock.setTeleportLock(canTeleportLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());

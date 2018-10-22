@@ -41,6 +41,10 @@ public class Mojae {
         Potion.REGISTRY.register(30, new ResourceLocation("lock"), lockPotion);
         Potion.REGISTRY.register(31, new ResourceLocation("godPotion"), godPotion);
 
+    }
+    @Mod.EventHandler
+    public  void init(FMLPreInitializationEvent e){
+
         GameRegistry.register(itemLock.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("lock").setUnlocalizedName("lock"));
         GameRegistry.register(itemRiding.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("riding").setUnlocalizedName("riding"));
         GameRegistry.register(itemGod.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("god").setUnlocalizedName("god"));
@@ -49,10 +53,6 @@ public class Mojae {
         ModelLoader.setCustomModelResourceLocation(itemRiding, 0, new ModelResourceLocation(itemRiding.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(itemGod, 0, new ModelResourceLocation(itemGod.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(itemOneShot, 0, new ModelResourceLocation(itemOneShot.getRegistryName(), "inventory"));
-
-    }
-    @Mod.EventHandler
-    public  void init(FMLPreInitializationEvent e){
 
     }
     @Mod.EventHandler

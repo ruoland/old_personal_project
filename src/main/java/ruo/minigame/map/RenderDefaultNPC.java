@@ -78,11 +78,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                     GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
                     RenderAPI.renderBlock(npc.getCurrentStack(), npc);
 
-                    if(npc instanceof EntityWeen &&  !npc.isSturn()) {
+                    if(npc instanceof EntityWeen && !npc.isSturn()) {
                         EntityWeen ween = (EntityWeen) npc;
                         RenderAPI.renderBlock(ween.shield_block, npc);
                     }
-
                     if (flag1) {
                         GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
                     }

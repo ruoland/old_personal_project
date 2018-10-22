@@ -12,18 +12,19 @@ public class ItemRiding extends Item {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if(playerIn.isSneaking())
-        {
-            playerIn.startRiding(target);
-            return false;
-        }
-        if (firstEntity == null)
-            firstEntity = target;
-        else {
-            secondEntity = target;
-            firstEntity.startRiding(secondEntity);
-            firstEntity = null;
-            secondEntity = null;
+        if(hand == EnumHand.MAIN_HAND) {
+            if (playerIn.isSneaking()) {
+                playerIn.startRiding(target);
+                return false;
+            }
+            if (firstEntity == null)
+                firstEntity = target;
+            else if(!firstEntity.getUniqueID().equals(target.getUniqueID())){
+                secondEntity = target;
+                firstEntity.startRiding(secondEntity);
+                firstEntity = null;
+                secondEntity = null;
+            }
         }
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }
