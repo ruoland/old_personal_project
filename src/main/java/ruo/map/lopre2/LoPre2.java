@@ -2,13 +2,18 @@ package ruo.map.lopre2;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -23,28 +28,51 @@ import ruo.minigame.api.WorldAPI;
 
 @Mod(modid = "LoopPre2", name = "LoopPre2")
 public class LoPre2 {
-    //점프맵 2 코드
-    public static KeyBinding grab = new KeyBinding("액션", Keyboard.KEY_R, "카카카테고리");
-    public static Item itemCopy = new ItemCopy().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Achievement achievementApple = new Achievement("achievement.apple", "apple", 0, 1, new ItemStack(Items.GOLDEN_APPLE), LoPre2.achievementNoGameMode1);
+    public static Achievement achievementNoDie1 = new Achievement("achievement.nodie1", "nodie1", 0, 2, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode1);
+    public static Achievement achievementNoGameMode1 = new Achievement("achievement.nogamemode1", "nogamemode1", 0, 0, Items.GOLDEN_APPLE, null);
+    public static Achievement achievementNoDie2 = new Achievement("achievement.nodie2", "nodie2", 1, 2, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode2);
+    public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 2, 0, Items.GOLDEN_APPLE, null);
 
+    public static Achievement achievementOneClear = new Achievement("achievement.oneclear", "oneclear", 0, 3, Items.FIREWORK_CHARGE, null);
+    public static Achievement achievementTwoClear = new Achievement("achievement.twoclear", "twoclear", 1, 3, Items.FIREWORKS, null);
+    public static Achievement achievementHidePath1= new Achievement("achievement.hidepath1", "hidepath1", 0, 6, Items.FEATHER, null);
+    public static Achievement achievementHidePath2= new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
+
+    //점프맵 2 코드
+    public static Item itemCopy = new ItemCopy().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Item itemDifficulty = new ItemDifficulty().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Item itemSpanner = new ItemSpanner().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Item itemBlockMove = new ItemBlockMove().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static KeyBinding blockSetKey = new KeyBinding("BLOCKSET", Keyboard.KEY_K, "LP2");
     @Instance("LoopPre2")
     public static LoPre2 instance;
 
+    @SidedProxy(serverSide = "ruo.map.lopre2.CommonProxy", clientSide = "ruo.map.lopre2.ClientProxy")
+    public static CommonProxy proxy;
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
         GameRegistry.register(itemSpanner.setUnlocalizedName("spanner").setRegistryName("looppre2:spanner"));
         GameRegistry.register(itemBlockMove.setUnlocalizedName("blockmove").setRegistryName("looppre2:blockmove"));
         GameRegistry.register(itemCopy.setUnlocalizedName("copy").setRegistryName("looppre2:copy"));
-        DebAPI.createJson(itemSpanner, Items.NETHER_STAR);
-        DebAPI.createJson(itemBlockMove, Items.NETHER_STAR);
-        DebAPI.createJson(itemCopy, Items.NETHER_STAR);
+        GameRegistry.register(itemDifficulty.setUnlocalizedName("difficulty").setRegistryName("looppre2:difficulty"));
     }
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
+        proxy.init();
+        achievementApple.registerStat();
+        achievementNoDie1.registerStat();
+        achievementNoGameMode1.registerStat();
+        achievementNoDie2.registerStat();
+        achievementNoGameMode2.registerStat();
+        achievementOneClear.registerStat();
+        achievementTwoClear.registerStat();
+        achievementHidePath1.registerStat();
+        achievementHidePath2.registerStat();
+        AchievementPage.registerAchievementPage(new AchievementPage("모드 점프맵 도전과제", new Achievement[]{
+                achievementHidePath1, achievementHidePath2,
+                achievementTwoClear, achievementOneClear, achievementNoGameMode1,achievementNoDie1,achievementNoGameMode2,achievementNoDie2,achievementApple, achievementHidePath1, achievementHidePath2
+        }));
         //더미로간 클래스
         //        DebAPI.registerEntity(this, "LoopUpDownWaterBlock", EntityLoopUpDownWaterBlock.class);
         //        DebAPI.registerEntity(this, "DebBlock", EntityDebBlock.class, new RenderDebBlock(new ModelDebBlock(), 0.5F));
@@ -57,9 +85,10 @@ public class LoPre2 {
         //        DebAPI.registerEntity(this, "BeltBlock", EntityBeltBlock.class);
         //DebAPI.registerEntity(this, "ridingBlock", EntityRidingBlock.class);
         //점프맵 2 코드
-        ClientRegistry.registerKeyBinding(blockSetKey);
-        ClientRegistry.registerKeyBinding(grab);
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
+        MinecraftForge.EVENT_BUS.register(new LooPre2Event());
+
+
         DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
 
         DebAPI.registerEntity(this, "TeleportBlock", EntityTeleportBlock.class);
@@ -69,7 +98,7 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "SmallBlockJump", EntitySmallBlock.class);
         DebAPI.registerEntity(this, "BigBlockjump", EntityBigBlock.class);
         DebAPI.registerEntity(this, "KnockbackBlock", EntityKnockbackBlock.class);
-        DebAPI.registerEntity(this, "JumpSpider", EntityJumpSpider.class, new RenderJumpSpider());
+        //DebAPI.registerEntity(this, "JumpSpider", EntityJumpSpider.class, new RenderJumpSpider());
         DebAPI.registerEntity(this, "VELOCITY-lavablock", EntityLavaBlock.class);
         DebAPI.registerEntity(this, "VELOCITY-loopFallingBlock", EntityFallingBlock.class);
         DebAPI.registerEntity(this, "VELOCITY-LoopMoveBlock", EntityMoveBlock.class);
@@ -82,7 +111,6 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
 
-        MinecraftForge.EVENT_BUS.register(new LooPre2Event());
     }
 
     @EventHandler
@@ -97,6 +125,7 @@ public class LoPre2 {
 
     public static boolean checkWorld() {
         String worldName = WorldAPI.getCurrentWorldName();
-        return worldName.equalsIgnoreCase("JumpMap") || worldName.equalsIgnoreCase("JumpMap2");
+        return worldName.equalsIgnoreCase("JumpMap")
+                || worldName.equalsIgnoreCase("JumpMap Sea2");
     }
 }

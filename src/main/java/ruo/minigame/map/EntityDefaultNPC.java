@@ -18,17 +18,12 @@ import net.minecraft.util.math.Rotations;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import org.lwjgl.input.Keyboard;
-import ruo.cmplus.deb.DebAPI;
+import ruo.minigame.api.Direction;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
-import ruo.minigame.api.Direction;
 import ruo.minigame.api.WorldAPI;
-import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.Move;
 import ruo.minigame.effect.TextEffect;
-import ruo.minigame.effect.TickRegister;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -127,26 +122,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     }
 
-    public void teleport() {
-        if (WorldAPI.getPlayerMP() == null)
-            return;
-
-        Vec3d vec = WorldAPI.getPlayer().getLookVec();
-        this.setPositionAndRotationDirect(WorldAPI.x() + vec.xCoord * ax,
-                WorldAPI.y() + WorldAPI.getPlayer().getEyeHeight() + vec.yCoord * ax,
-                WorldAPI.z() + vec.zCoord * ax, 90, 90, 0, true);
-        this.setPosition((WorldAPI.x() + vec.xCoord * ax),
-                WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
-                WorldAPI.z() + vec.zCoord * ax);
-
-        if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_K)) {
-            setSpawnXYZ(posX, posY, posZ);
-            setPosition(posX, posY, posZ);
-            this.setTeleport(false);
-        }
-
-    }
-
     public EntityDefaultNPC setTargetSpeed(double speed) {
         this.targetMoveSpeed = speed;
         return this;
@@ -220,9 +195,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (isTeleport()) {
-            teleport();
-        }
         if (getSpawnX() == 0 && getSpawnY() == 0 && getSpawnZ() == 0) {
             setSpawnXYZ(posX, posY, posZ);
         }

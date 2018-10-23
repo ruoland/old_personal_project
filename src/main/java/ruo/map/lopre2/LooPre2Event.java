@@ -1,10 +1,13 @@
 package ruo.map.lopre2;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.CommandBlockBaseLogic;
+import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
@@ -25,7 +28,6 @@ import ruo.minigame.api.WorldAPI;
 
 
 public class LooPre2Event {
-    public static String prevText;
     private int currentStage;
     public static int deathCount, gamemodeCount, spawnCount, healCount;
     private double startY;
@@ -105,17 +107,21 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void gamemode(CommandEvent event) {
-        if (LoPre2.checkWorld() && event.getSender() instanceof EntityPlayer) {
-            if (event.getCommand().getCommandName().equalsIgnoreCase("gamemode") && event.getParameters()[0].equalsIgnoreCase("1")) {
-                gamemodeCount++;
+        if (LoPre2.checkWorld())
+        {
+            ICommand command = event.getCommand();
+            String name = command.getCommandName();
+            if(event.getSender() instanceof EntityPlayer) {
+                if (name.equalsIgnoreCase("gamemode") && event.getParameters()[0].equalsIgnoreCase("1")) {
+                    gamemodeCount++;
+                }
+                if (name.equalsIgnoreCase("spawnpoint")) {
+                    spawnCount++;
+                }
+                if (name.equalsIgnoreCase("heal")) {
+                    healCount++;
+                }
             }
-            if (event.getCommand().getCommandName().equalsIgnoreCase("spawnpoint")) {
-                spawnCount++;
-            }
-            if (event.getCommand().getCommandName().equalsIgnoreCase("heal")) {
-                healCount++;
-            }
-            //System.out.println(gamemodeCount+" - "+spawnCount+ " - "+ healCount);
         }
     }
 

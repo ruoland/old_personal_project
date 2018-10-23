@@ -28,7 +28,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     private static final DataParameter<Float> HEIGHT = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> DEB_MOVE = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.BOOLEAN);
 
-    protected double downSpeed = 0.01;
+    protected double downSpeed = 0.001;
     public EntityLavaBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
@@ -168,7 +168,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         super.readEntityFromNBT(compound);
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
-        downSpeed = 0.05;
+        downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
     }
 

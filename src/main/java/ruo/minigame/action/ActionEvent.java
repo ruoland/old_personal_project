@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import ruo.cmplus.deb.DebAPI;
+import ruo.minigame.ClientProxy;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.LoginEvent;
@@ -91,7 +92,7 @@ public class ActionEvent {
             }
         }
         if (ActionEffect.canCrawl()) {
-            if (MiniGame.grab.isKeyDown()) {
+            if (ClientProxy.grab.isKeyDown()) {
                 GrabHelper.wallGrabCheck(event.player, GrabHelper.wallGrab);
                 if (GrabHelper.wallGrab) {
                     KeyBinding bind = Minecraft.getMinecraft().gameSettings.keyBindForward;
@@ -107,7 +108,7 @@ public class ActionEvent {
             }else if(GrabHelper.wallGrab){
                 GrabHelper.ungrab(event.player);
             }
-            if (GrabHelper.wallGrab && (MiniGame.grab.isKeyDown() || MiniGame.grab.isPressed())
+            if (GrabHelper.wallGrab && (ClientProxy.grab.isKeyDown() || ClientProxy.grab.isPressed())
                     && (gs.keyBindSneak.isKeyDown() || gs.keyBindSneak.isPressed())) {
                 WorldAPI.getPlayer().setAIMoveSpeed(WorldAPI.getPlayer().getAIMoveSpeed() / 2);
                 if (event.player.height != 1.8F || event.player.getEyeHeight() != event.player.getDefaultEyeHeight()) {

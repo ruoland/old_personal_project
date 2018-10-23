@@ -41,7 +41,8 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);//복사용 블럭인가
     private static final DataParameter<Boolean> TELEPORT_LOCK = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
-
+    private static final DataParameter<Integer> DIFFICULTY = EntityDataManager.createKey(EntityPreBlock.class,
+            DataSerializers.VARINT);
 
     public EntityPreBlock(World worldObj) {
         super(worldObj);
@@ -61,6 +62,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(COPY, false);
+        dataManager.register(DIFFICULTY, 2);
     }
 
     @Nullable
@@ -143,6 +145,14 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         return super.processInteract(player, hand, stack);
     }
 
+    public int getDifficulty(){
+        return dataManager.get(DIFFICULTY);
+    }
+
+    public void setDifficulty(int i){
+        dataManager.set(DIFFICULTY, i);
+
+    }
     @Override
     public void applyEntityCollision(Entity entityIn) {
     }
@@ -238,10 +248,6 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     public void teleport() {
         if (WorldAPI.getPlayerMP() == null)
             return;
-        if (DebAPI.isKeyDown(Keyboard.KEY_HOME)) {
-            System.out.println(WorldAPI.getPlayer().getDistanceToEntity(this));
-        }
-
         Vec3d vec = WorldAPI.getPlayer().getLookVec();
         this.setPositionAndRotationDirect(WorldAPI.x() + vec.xCoord * ax,
                 WorldAPI.y() + WorldAPI.getPlayer().getEyeHeight() + vec.yCoord * ax,
@@ -303,6 +309,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
                     WorldAPI.z() + vec.zCoord * ax);
             lavaBlock.teleportEnd();
             lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
+
             if (this instanceof EntityBuildBlock) {
                 lavaBlock.setDead();
                 this.setTeleport(false);
@@ -312,7 +319,9 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
                 this.setSpawnXYZ(posX, posY, posZ);
                 System.out.println(posX + " - " + posY + " - " + posZ + " 소환됨");
             } else {
-                this.setDead();
+                setDead();
+                setTeleport(false);
+                System.out.println(isDead+" - "+isTeleport()+" - "+lavaBlock.isTeleport());
             }
         }
 
@@ -356,7 +365,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         super.writeEntityToNBT(compound);
         compound.setBoolean("falling", canTeleportLock());
         compound.setBoolean("isInv", isInv());
-
+        compound.setInteger("difficulty", getDifficulty());
     }
 
     @Override

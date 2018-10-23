@@ -36,31 +36,6 @@ import java.util.List;
 public class CMPlusEvent {
     private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
             .split(",");
-    private Camera cm = Camera.getCamera();
-    private Minecraft mc = Minecraft.getMinecraft();
-    private double prevDistance;
-
-    @SubscribeEvent
-    public void event(RenderFogEvent e) {
-        if (Sky.isFogOn()) {
-            if (Sky.getFogDistance() == -1) {
-                Sky.fogDistance(5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F)
-                        * (1.0F - (float) 0 / 20.0F));
-            }
-            if (Sky.getFogDistance() != -1) {
-                GlStateManager.enableFog();
-                GlStateManager.setFogStart(Sky.getFogDistance());
-                GlStateManager.setFogEnd(Sky.getFogDistance() + 1);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void event(DrawBlockHighlightEvent e) {
-        if (!Sky.isLayer()) {
-            e.setCanceled(true);
-        }
-    }
 
     @SubscribeEvent
     public void event(CommandEvent e) {
@@ -168,12 +143,6 @@ public class CMPlusEvent {
     }
 
     @SubscribeEvent
-    public void login(RenderHandEvent event) {
-        event.setCanceled(!CMManager.isActiveUI("HAND"));
-    }
-
-
-    @SubscribeEvent
     public void worldLoad(WorldEvent.Load e) {
         GameRules rules = e.getWorld().getGameRules();
         if (!rules.hasRule("noHunger"))
@@ -181,13 +150,6 @@ public class CMPlusEvent {
         if (!rules.hasRule("weatherChange"))
             rules.addGameRule("weatherChange", "true", GameRules.ValueType.BOOLEAN_VALUE);
 
-    }
-
-    @SubscribeEvent
-    public void mouse(MouseEvent event) {
-        if (Minecraft.getMinecraft().currentScreen == null) {
-            event.setCanceled(CMManager.isMouse());
-        }
     }
 
     @SubscribeEvent
@@ -228,61 +190,9 @@ public class CMPlusEvent {
     }
 
     @SubscribeEvent
-    public void bgmStop(PlaySoundEvent e) {
-        if (e.getName().contains("music.")) {
-            e.getManager().stopSound(e.getSound());
-            e.getManager().stopSound(e.getResultSound());
-            Minecraft.getMinecraft().getSoundHandler().stopSound(e.getSound());
-            Minecraft.getMinecraft().getSoundHandler().stopSound(e.getResultSound());
-        }
-    }
-
-
-    @SubscribeEvent
     public void playerTick(TickEvent.WorldTickEvent e) {
         if (CMManager.norain)
             e.world.setRainStrength(0);
-    }
-
-    @SubscribeEvent
-    public void playerTick(PlayerTickEvent e) {
-        if (Keyboard.isKeyDown(Keyboard.KEY_INSERT)) {
-            Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
-            if (entity != null) {
-                System.out.println(entity.getCustomNameTag() + entity.getPosition());
-            } else if (WorldAPI.getLookBlock() != null) {
-                System.out.println(WorldAPI.getLookBlock().getX() + "," + WorldAPI.getLookBlock().getY() + ","
-                        + WorldAPI.getLookBlock().getZ());
-                System.out.println(WorldAPI.getBlock(WorldAPI.getLookBlock()).getLocalizedName());
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void renderUI(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() == ElementType.ALL)
-            for (String s : uiList) {
-                if (event.getType() == ElementType.valueOf(s)) {
-                    if (!CMManager.isActiveUI(s)) {
-                        event.setCanceled(true);
-                    }
-                }
-            }
-    }
-
-    @SubscribeEvent
-    public void event(PlayerRespawnEvent event) {
-        if (CMManager.getGameOver() != null) {
-            Minecraft.getMinecraft().currentScreen = null;
-        }
-    }
-
-    @SubscribeEvent
-    public void event(GuiOpenEvent event) {
-        if (CMManager.getGameOver() != null && event.getGui() instanceof GuiGameOver) {
-            event.setGui(CMManager.getGameOver());
-            CMManager.setGameOverNull();
-        }
     }
 
 }

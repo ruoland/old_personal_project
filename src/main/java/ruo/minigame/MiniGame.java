@@ -14,10 +14,12 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -29,7 +31,9 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opencl.CL;
 import ruo.cmplus.deb.CommandClassLoader;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.action.ActionEffect;
@@ -63,7 +67,6 @@ import java.util.logging.Logger;
 public class MiniGame {
     public static Logger LOG = Logger.getLogger("MINIGAME");
     public static SimpleNetworkWrapper network;
-    public static KeyBinding grab = new KeyBinding("액션-", Keyboard.KEY_R, "카카카테고리");
     public static Block blockInvisible = new BlockInvisible(Material.ANVIL);
 
     @SidedProxy(clientSide = "ruo.minigame.ClientProxy", serverSide = "ruo.minigame.CommonProxy")
@@ -91,8 +94,10 @@ public class MiniGame {
         try {
             Class.forName("api.player.server.ServerPlayerAPI");
             ServerPlayerAPI.register("MiniGame", MiniGameServerPlayer.class);
-            ClientPlayerAPI.register("MiniGame", MiniGameClientPlayer.class);
-            RenderPlayerAPI.register("MiniGame", MiniGameRenderPlayer.class);
+            if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+                ClientPlayerAPI.register("MiniGame", MiniGameClientPlayer.class);
+                RenderPlayerAPI.register("MiniGame", MiniGameRenderPlayer.class);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,11 +112,13 @@ public class MiniGame {
         minigameConfig.load();
         ActionEffect.load();
         minigameConfig.save();
-        MiniGame.minerun = new MineRun();
-        MiniGame.scroll = new Scroll();
-        MiniGame.bomber = new Bomber();
-        MiniGame.elytra = new Elytra();
-        MiniGame.starMine = new StarMine();
+        if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            MiniGame.minerun = new MineRun();
+            MiniGame.scroll = new Scroll();
+            MiniGame.bomber = new Bomber();
+            MiniGame.elytra = new Elytra();
+            MiniGame.starMine = new StarMine();
+        }
         //ClientPlayerAPI.register("MiniGame", LoopPlayer.class);
 
     }
@@ -124,20 +131,6 @@ public class MiniGame {
         //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //마인런 게임용
-        try {
-            Field modelManagerField = Minecraft.class.getDeclaredField("modelManager");
-            modelManagerField.setAccessible(true);
-            ModelManager modelManager = (ModelManager) modelManagerField.get(Minecraft.getMinecraft());
-            Field blockRenderField = Minecraft.class.getDeclaredField("blockRenderDispatcher");
-            blockRenderField.setAccessible(true);
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@"+modelManager+blockRenderField.get(Minecraft.getMinecraft()));
-            BlockRendererDispatcher blockRenderDispatcher = new BlockRendererDispatcherMineRun(modelManager.getBlockModelShapes(), Minecraft.getMinecraft().getBlockColors());
-            blockRenderField.set(Minecraft.getMinecraft(), blockRenderDispatcher);
-            ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(blockRenderDispatcher);
-            blockRenderDispatcher.onResourceManagerReload(null);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
         DebAPI.registerEntity(this, "MRDummy", EntityDummyPlayer.class);
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
@@ -172,17 +165,17 @@ public class MiniGame {
         MinecraftForge.EVENT_BUS.register(new ActionEvent());
         MinecraftForge.EVENT_BUS.register(new TickRegister.TickRegisterEvent());
         MinecraftForge.EVENT_BUS.register(new MiniGameEvent());
-        MinecraftForge.EVENT_BUS.register(mineRunEvent = new MineRunEvent());
-        MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
-        MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());
-        MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
+        if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            MinecraftForge.EVENT_BUS.register(mineRunEvent = new MineRunEvent());
+            MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
+            MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());
+            MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
 
-        MinecraftForge.EVENT_BUS.register(new ElytraRenderEvent());
-        MinecraftForge.EVENT_BUS.register(starMineEvent = new StarMineEvent());
 
-        ClientRegistry.registerKeyBinding(grab);
+            MinecraftForge.EVENT_BUS.register(new ElytraRenderEvent());
+            MinecraftForge.EVENT_BUS.register(starMineEvent = new StarMineEvent());
+        }
 
-        ClientCommandHandler.instance.registerCommand(new CommandMg());
     }
 
     @EventHandler

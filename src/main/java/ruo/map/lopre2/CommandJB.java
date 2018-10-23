@@ -12,11 +12,13 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
@@ -76,7 +78,7 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("help")) {
                 sender.addChatMessage(new TextComponentString("1.블럭이 보이지 않는 경우는 나갔다 들어오기"));
                 sender.addChatMessage(new TextComponentString("2.체력과 배고픔 회복은 /heal"));
-                sender.addChatMessage(new TextComponentString("3.스폰 포인트가 잘못 설정되어 계속 공중에서 떨어지는 경우 /fly true 를 입력하면 하늘을 날 수 있습니다"));
+                sender.addChatMessage(new TextComponentString("3./fly true 를 입력하면 하늘을 날 수 있습니다"));
                 sender.addChatMessage(new TextComponentString("4.중간저장을 하려면 /spawnpoint"));
                 sender.addChatMessage(new TextComponentString("5.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
 
@@ -108,7 +110,12 @@ public class CommandJB extends CommandPlusBase {
                 isLavaInvisible = !isLavaInvisible;
                 System.out.println(isLavaInvisible);
             }
-
+            if(args[0].equalsIgnoreCase("hidepath1")){
+                WorldAPI.getPlayer().addStat(LoPre2.achievementHidePath1);
+            }
+            if(args[0].equalsIgnoreCase("hidepath2")){
+                WorldAPI.getPlayer().addStat(LoPre2.achievementHidePath2);
+            }
             if (args[0].equalsIgnoreCase("end")) {
                 endTime = System.currentTimeMillis();
                 long se = endTime - startTime;
@@ -118,26 +125,41 @@ public class CommandJB extends CommandPlusBase {
                 System.out.println((endTime - startTime) / 1000 + "초.");
                 WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
                 WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
-                if(WorldAPI.equalsWorldName("JumpMap")) {
-                    WorldAPI.teleport(1114.6, 240.0, -61.6);
-                    WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 2탄으로 넘어갈까요?");
+                if (WorldAPI.equalsWorldName("JumpMap")) {
+                    WorldAPI.getPlayer().addStat(LoPre2.achievementOneClear);
+                    if (WorldAPI.findInventoryItemCount(Items.APPLE) > 1) {
+                        WorldAPI.getPlayer().addStat(LoPre2.achievementApple);
+                    }
+                    if (LooPre2Event.deathCount == 0) {
+                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoDie1);
+                    }
+                    if (LooPre2Event.gamemodeCount == 0) {
+                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoGameMode1);
+                    }
+                    WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 플레이 해주셔서 감사합니다?");
                     TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.]");
                     Style style = new Style();
                     textComponent.setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb jump2")));
                     sender.addChatMessage(textComponent);
+                }else if(WorldAPI.equalsWorldName("JumpMap Sea2")){
+                    WorldAPI.getPlayer().addStat(LoPre2.achievementTwoClear);
+                    if (LooPre2Event.deathCount == 0) {
+                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoDie2);
+                    }
+                    if (LooPre2Event.gamemodeCount == 0) {
+                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoGameMode2);
+                    }
                 }
             }
             if (args[0].equalsIgnoreCase("jump2")) {
-                if(WorldAPI.equalsWorldName("JumpMap")) {
+                if (WorldAPI.equalsWorldName("JumpMap")) {
                     WorldAPI.addMessage("난이도를 선택해주세요.");
                     TextComponentString textComponent = new TextComponentString("");
-
                     TextComponentString normal = new TextComponentString("[보통 난이도]");
                     normal.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb normal")));
                     TextComponentString hard = new TextComponentString("[어려운 난이도]");
                     hard.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb hard")));
                     textComponent = (TextComponentString) textComponent.appendSibling(normal).appendSibling(hard);
-
                     sender.addChatMessage(textComponent);
                 }
             }
@@ -205,15 +227,23 @@ public class CommandJB extends CommandPlusBase {
             @Override
             public void run(Type type) {
                 mc.theWorld.sendQuittingDisconnectingPacket();
-                mc.loadWorld((WorldClient) null); ISaveFormat isaveformat = mc.getSaveLoader();
-                StringBuffer worldName = new StringBuffer("JumpMap Sea2 - ");
-                worldName.append(diffu);
+                mc.loadWorld((WorldClient) null);
+                ISaveFormat isaveformat = mc.getSaveLoader();
+                String worldName = "JumpMap Sea2";
+                if(diffu.equalsIgnoreCase("normal"))
+                    mc.gameSettings.difficulty = EnumDifficulty.NORMAL;
+                else if(diffu.equalsIgnoreCase("hard"))
+                    mc.gameSettings.difficulty = EnumDifficulty.HARD;
 
-                if (isaveformat.canLoadWorld(worldName.toString())) {
+                if (isaveformat.canLoadWorld(worldName)) {
                     try {
                         for (WorldSummary summary : isaveformat.getSaveList()) {
-                            if (summary.getDisplayName().equalsIgnoreCase(worldName.toString())) {
+                            if (summary.getDisplayName().equalsIgnoreCase(worldName)) {
                                 net.minecraftforge.fml.client.FMLClientHandler.instance().tryLoadExistingWorld(new GuiWorldSelection(new GuiMainMenu()), summary);
+                                LooPre2Event.spawnCount = 0;
+                                LooPre2Event.healCount = 0;
+                                LooPre2Event.gamemodeCount = 0;
+                                LooPre2Event.deathCount = 0;
                                 break;
                             }
                         }
@@ -221,9 +251,7 @@ public class CommandJB extends CommandPlusBase {
                         e.printStackTrace();
                     }
                 }
-
             }
         });
-
     }
 }

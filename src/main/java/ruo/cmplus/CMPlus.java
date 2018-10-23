@@ -9,6 +9,7 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -52,15 +53,17 @@ import java.util.zip.ZipInputStream;
 
 @Mod(modid = "CommandPlus", name = "CommandPlus", version = "1.8")
 public class CMPlus {
-    @SidedProxy(clientSide = "ruo.cmplus.ClientProxy", serverSide = "cm.cmplus.CommonProxy")
+    @SidedProxy(clientSide = "ruo.cmplus.ClientProxy", serverSide = "ruo.cmplus.CommonProxy")
     public static CommonProxy proxy;
 
     public CMPlus() {
-        if(Loader.isModLoaded("PlayerAPI")) {
+        if (Loader.isModLoaded("PlayerAPI")) {
             ServerPlayerAPI.register("CommandPlus", CMServerPlayer.class);
-            ClientPlayerAPI.register("CommandPlus", CMClientPlayer.class);
-            RenderPlayerAPI.register("CommandPlus", CMRenderPlayer.class);
-            ModelPlayerAPI.register("CommandPlus", CMModelPlayer.class);
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+                ClientPlayerAPI.register("CommandPlus", CMClientPlayer.class);
+                RenderPlayerAPI.register("CommandPlus", CMRenderPlayer.class);
+                ModelPlayerAPI.register("CommandPlus", CMModelPlayer.class);
+            }
             System.out.println("플레이어 API 찾음");
         }
     }
@@ -77,12 +80,15 @@ public class CMPlus {
         cmPlusConfig.load();
         cmPlusConfig.save();
         proxy.pre(event);
-        CustomClient.preInit(event);
         MinecraftForge.EVENT_BUS.register(new DebEvent());
         MinecraftForge.EVENT_BUS.register(new CMPlusEvent());
-        MinecraftForge.EVENT_BUS.register(new CMPlusCameraEvent());
-        MinecraftForge.EVENT_BUS.register(new KeyEvent());
-        MinecraftForge.EVENT_BUS.register(new FunctionEvent());
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            CustomClient.preInit(event);
+            MinecraftForge.EVENT_BUS.register(new FunctionEvent());
+            MinecraftForge.EVENT_BUS.register(new CMPlusCameraEvent());
+            MinecraftForge.EVENT_BUS.register(new KeyEvent());
+            MinecraftForge.EVENT_BUS.register(new CMPlusClientEvent());
+        }
     }
 
     @EventHandler
