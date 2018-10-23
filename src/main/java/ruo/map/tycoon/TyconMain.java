@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -37,6 +38,8 @@ public class TyconMain {
 	public static final Item flour = new ItemFlour().setRegistryName("breadtycoon:flour").setUnlocalizedName("flour").setCreativeTab(breadTabs);
 	public static final Item breadFrame = new ItemFrame().setRegistryName("breadtycoon:frame").setUnlocalizedName("frame").setCreativeTab(breadTabs);
 
+	@SidedProxy(serverSide = "ruo.map.tycoon.CommonProxy", clientSide = "ruo.map.tycoon.ClientProxy")
+	public static CommonProxy proxy;
 	@EventHandler
 	public void init(FMLInitializationEvent e){
 		MinecraftForge.EVENT_BUS.register(new TyconEvent());
@@ -46,22 +49,10 @@ public class TyconMain {
 	
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent e){
-		DebAPI.registerTileEntity(shopdisplay, TileShopping.class, new TileShoppingRenderer());
-		DebAPI.registerTileEntity(breaddisplay, TileBreadDisplay.class, new TileBreadDisplayRenderer());
-		DebAPI.registerTileEntity(breadcall, TileBreadCall.class, new TileBreadCallRenderer());
-		DebAPI.registerTileEntity(breadWorkbench, TileBreadWorkbench.class, new TileBreadWorkbenchRenderer());
 		GameRegistry.register(flour);
 		DebAPI.createJson(flour, Items.CHICKEN);
-		ModelBakery.registerItemVariants(breadFrame,
-				new ModelResourceLocation("breadtycoon:frame", "inventory")
-				,new ModelResourceLocation("breadtycoon:frame1", "inventory")
-				,new ModelResourceLocation("breadtycoon:frame2", "inventory")
-				,new ModelResourceLocation("breadtycoon:frame3", "inventory"),
-				new ModelResourceLocation("breadtycoon:frame4", "inventory"),
-				new ModelResourceLocation("breadtycoon:frame5", "inventory")
-		);
+		proxy.init();
 
-		ModelLoader.setCustomMeshDefinition(flour, new ItemFrameMesh());
 	}
 	@EventHandler
 	public void postinit(FMLPostInitializationEvent e){

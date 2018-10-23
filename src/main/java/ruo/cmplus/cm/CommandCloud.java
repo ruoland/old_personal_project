@@ -40,7 +40,7 @@ public class CommandCloud extends CommandPlusBase {
 		int b = Integer.valueOf(command[0]);
 		t.addSettingMessage(b);
 		//sender.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commandPlus.cloud.setting", Boolean.valueOf(args[0]))));
-		t.s.clouds = b;
+		t.getSetting().clouds = b;
 	}
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)
     {

@@ -27,9 +27,9 @@ public class Scroll extends AbstractMiniGame {
 		WorldAPI.getPlayer().motionX = 0;
 		WorldAPI.getPlayer().motionY = 0;
 		WorldAPI.getPlayer().motionZ = 0;
-		WorldAPI.getPlayerSP().motionX = 0;
-		WorldAPI.getPlayerSP().motionY = 0;
-		WorldAPI.getPlayerSP().motionZ = 0;
+		mc.thePlayer.motionX = 0;
+		mc.thePlayer.motionY = 0;
+		mc.thePlayer.motionZ = 0;
 		Camera.getCamera().reset();
 		Camera.getCamera().setYP(true);
 		Camera.getCamera().lockCamera(true, 90, 0);
@@ -46,9 +46,9 @@ public class Scroll extends AbstractMiniGame {
 		WorldAPI.getPlayer().motionX = 0;
 		WorldAPI.getPlayer().motionY = 0;
 		WorldAPI.getPlayer().motionZ = 0;
-		WorldAPI.getPlayerSP().motionX = 0;
-		WorldAPI.getPlayerSP().motionY = 0;
-		WorldAPI.getPlayerSP().motionZ = 0;
+		mc.thePlayer.motionX = 0;
+		mc.thePlayer.motionY = 0;
+		mc.thePlayer.motionZ = 0;
 		if(obj.length > 0) {
 			String str = (String) obj[0];
 			if(str.equalsIgnoreCase("cm") || str.equalsIgnoreCase("cmreset"))
@@ -88,10 +88,10 @@ public class Scroll extends AbstractMiniGame {
 			WorldAPI.getPlayer().motionX = 0;
 			WorldAPI.getPlayer().motionY = 0;
 			WorldAPI.getPlayer().motionZ = 0;
-			WorldAPI.getPlayerSP().motionX = 0;
-			WorldAPI.getPlayerSP().motionY = 0;
-			WorldAPI.getPlayerSP().motionZ = 0;
-			WorldAPI.getPlayerSP().moveEntity(0,0,0);
+			mc.thePlayer.motionX = 0;
+			mc.thePlayer.motionY = 0;
+			mc.thePlayer.motionZ = 0;
+			mc.thePlayer.moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveForward = 0;
 			WorldAPI.getPlayer().moveStrafing = 0;
@@ -121,16 +121,16 @@ public class Scroll extends AbstractMiniGame {
 					Camera.getCamera().rotateCamera(0, -90, 0);
 				}
 			}
-			WorldAPI.getPlayerSP().moveEntity(0,0,0);
+			Minecraft.getMinecraft().thePlayer.moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveForward = 0;
 			WorldAPI.getPlayer().moveStrafing = 0;
 			WorldAPI.getPlayer().motionX = 0;
 			WorldAPI.getPlayer().motionY = 0;
 			WorldAPI.getPlayer().motionZ = 0;
-			WorldAPI.getPlayerSP().motionX = 0;
-			WorldAPI.getPlayerSP().motionY = 0;
-			WorldAPI.getPlayerSP().motionZ = 0;
+			Minecraft.getMinecraft().thePlayer.motionX = 0;
+			Minecraft.getMinecraft().thePlayer.motionY = 0;
+			Minecraft.getMinecraft().thePlayer.motionZ = 0;
 		}
 
 		if (Keyboard.KEY_A == key && s.keyBindForward.getKeyCode() != Keyboard.KEY_A) {// 두번째 조건은 카메라 설정을 한번만 하게 만들기 위해
@@ -144,10 +144,10 @@ public class Scroll extends AbstractMiniGame {
 			WorldAPI.getPlayer().motionX = 0;
 			WorldAPI.getPlayer().motionY = 0;
 			WorldAPI.getPlayer().motionZ = 0;
-			WorldAPI.getPlayerSP().motionX = 0;
-			WorldAPI.getPlayerSP().motionY = 0;
-			WorldAPI.getPlayerSP().motionZ = 0;
-			WorldAPI.getPlayerSP().moveEntity(0,0,0);
+			Minecraft.getMinecraft().thePlayer.motionX = 0;
+			Minecraft.getMinecraft().thePlayer.motionY = 0;
+			Minecraft.getMinecraft().thePlayer.motionZ = 0;
+			Minecraft.getMinecraft().thePlayer.moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveForward = 0;
 			WorldAPI.getPlayer().moveStrafing = 0;
@@ -176,7 +176,7 @@ public class Scroll extends AbstractMiniGame {
 					Camera.getCamera().rotateCamera(0, -90, 0);
 				}
 			}
-			WorldAPI.getPlayerSP().moveEntity(0,0,0);
+			Minecraft.getMinecraft().thePlayer.moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveEntity(0,0,0);
 			WorldAPI.getPlayer().moveForward = 0;
 			WorldAPI.getPlayer().moveStrafing = 0;
@@ -184,9 +184,9 @@ public class Scroll extends AbstractMiniGame {
 			WorldAPI.getPlayer().motionX = 0;
 			WorldAPI.getPlayer().motionY = 0;
 			WorldAPI.getPlayer().motionZ = 0;
-			WorldAPI.getPlayerSP().motionX = 0;
-			WorldAPI.getPlayerSP().motionY = 0;
-			WorldAPI.getPlayerSP().motionZ = 0;
+			Minecraft.getMinecraft().thePlayer.motionX = 0;
+			Minecraft.getMinecraft().thePlayer.motionY = 0;
+			Minecraft.getMinecraft().thePlayer.motionZ = 0;
 		}
 	}
 

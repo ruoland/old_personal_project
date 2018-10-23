@@ -156,8 +156,6 @@ public class MiniGame {
         //폭탄게임용
         DebAPI.registerEntity(this, "bomb",EntityBomb.class);
         GameRegistry.register(Bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
-        reg(Bomber.bombItem);
-
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
         DebAPI.registerEntity(this, "DefaultNPC", EntityDefaultNPC.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultBlock", EntityDefaultBlock.class);
@@ -199,12 +197,6 @@ public class MiniGame {
     public void init(FMLServerStoppedEvent e) {
         ActionEffect.save();
         minigameConfig.save();
-    }
-
-
-    public static void reg(Item block) {
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-                .register(block, 0, new ModelResourceLocation("minigame" + ":" + block.getUnlocalizedName().substring(5), "inventory"));
     }
 
     public void network() {

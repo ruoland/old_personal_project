@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
+import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.ModelDefaultNPC;
 import ruo.minigame.map.RenderDefaultNPC;
@@ -305,35 +306,10 @@ public class DebAPI {
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
     }
 
-    public static void registerTileEntity(Block block, Class<? extends TileEntity> tileEntity, TileEntitySpecialRenderer<? super TileEntity> renderer) {
-        GameRegistry.register(block);
-        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-                new ModelResourceLocation(block.getRegistryName(), "inventory"));
-        GameRegistry.registerTileEntity(tileEntity, block.getRegistryName().toString());
-        ClientRegistry.bindTileEntitySpecialRenderer(tileEntity, renderer);
-
-    }
-
-    public static void registerEntity(Object mod, String name, Class entity) {
-        registerEntity(mod, name, "textures/entity/steve.png", entity, new ModelDefaultNPC());
-    }
-
-    public static void registerEntity(Object mod, String name, String texture, Class entity) {
-        registerEntity(mod, name, texture, entity, new ModelDefaultNPC());
-    }
-
-    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity> entity) {
-        registerEntity(mod, name, texture, entity, new ModelDefaultNPC());
-    }
-
-    public static void registerEntity(Object mod, String name, String texture, Class entity, ModelBase model) {
-        registerEntity(mod, name, new ResourceLocation(texture), entity, model);
-    }
 
     private static int id = 140;
 
-    public static void registerEntity(Object mod, String name, Class<? extends Entity> entity, Render<? extends Entity> r) {
+    public static void registerEntity(Object mod, String name, Class<? extends Entity> entity) {
         boolean sendsVelocity = name.contains("VELOCITY-");
         boolean noEgg = name.contains("NO-EGG-");
         name = name.replace("NO-EGG-", "").replace("VELOCITY-", "");
@@ -342,13 +318,9 @@ public class DebAPI {
             EntityRegistry.registerModEntity(entity, name, id, mod, 80, 3, sendsVelocity);
         } else
             EntityRegistry.registerModEntity(entity, name, id, mod, 80, 3, sendsVelocity, getEggColor(name), getEggColor(name) * 5);
-
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-            RenderingRegistry.registerEntityRenderingHandler(entity, r);
         id++;
     }
-
-    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity> entity, ModelBase model) {
+    public static void registerEntity(Object mod, String name, ResourceLocation texture, Class<? extends Entity> entity) {
         boolean sendsVelocity = name.contains("VELOCITY-");
         boolean noEgg = name.contains("NO-EGG-");
         name = name.replace("NO-EGG-", "").replace("VELOCITY-", "");
@@ -357,7 +329,7 @@ public class DebAPI {
             EntityRegistry.registerModEntity(entity, name.replace("NO-EGG-", ""), id, mod, 80, 3, sendsVelocity);
         } else
             EntityRegistry.registerModEntity(entity, name, id, mod, 80, 3, false, getEggColor(name), getEggColor(name) * 5);
-        RenderingRegistry.registerEntityRenderingHandler(entity, new RenderDefaultNPC(model, texture));
+
         id++;
     }
 

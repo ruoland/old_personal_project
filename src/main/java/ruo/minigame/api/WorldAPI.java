@@ -3,20 +3,15 @@ package ruo.minigame.api;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.Timer;
@@ -29,25 +24,23 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import ruo.minigame.MiniGame;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.AbstractTick.BlockXYZ;
 
-import java.io.*;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.UUID;
-import java.util.logging.LogManager;
 
 public class WorldAPI {
-
-
     /**
      * min 이상 round 이하의 양수 또는 음수의 난수를 반환합니다
      */
     public static int minRand(int min, int round) {
         int random = rand.nextInt(round);
-        if (min <= random) {
+        if (min <= random || min == round) {
             return rand.nextBoolean() ? -random : random;
         }
         return minRand(min, round);
@@ -419,15 +412,11 @@ public class WorldAPI {
         return y;
     }
 
-    public static EntityPlayerSP getPlayerSP() {
-        return Minecraft.getMinecraft().thePlayer;
-    }
-
     public static EntityPlayer getPlayer() {
         MinecraftServer s = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (s == null || s.getPlayerList() == null || s.getPlayerList().getPlayerList() == null
-                || s.getPlayerList().getPlayerList().size() == 0)
-            return Minecraft.getMinecraft().thePlayer;
+//        if (FMLCommonHandler.instance().getSide() == Side.CLIENT && (s == null || s.getPlayerList() == null || s.getPlayerList().getPlayerList() == null
+//                || s.getPlayerList().getPlayerList().size() == 0))
+//            return Minecraft.getMinecraft().thePlayer;
 
         return s.getPlayerList().getPlayerList().get(0);
     }
@@ -478,10 +467,12 @@ public class WorldAPI {
     }
 
     public static String getCurrentWorldName() {
-        if(getPlayer() == null || getPlayer().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
+
+        if(getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
             return "noworld";
         }
-        return getPlayer().worldObj.getWorldInfo().getWorldName();
+        System.out.println(getServer().getEntityWorld().getWorldInfo().getWorldName());
+        return getPlayerMP().worldObj.getWorldInfo().getWorldName();
     }
 
     public static File getCurrentWorldFile() {
@@ -499,9 +490,9 @@ public class WorldAPI {
     public static void command(String command) {
         boolean client = isClientCommand(command);
         boolean server = isServerCommand(command);
-        if(client)
-            command(Minecraft.getMinecraft().thePlayer, command);
-        else if(server)
+//        if(client)
+//            command(Minecraft.getMinecraft().thePlayer, command);
+//        else if(server)
             command(WorldAPI.getPlayer(), command);
     }
 
@@ -516,7 +507,7 @@ public class WorldAPI {
             getServer().getCommandManager().executeCommand(sender, command);
             return;
         }
-        Minecraft.getMinecraft().thePlayer.sendChatMessage(command);
+//        Minecraft.getMinecraft().thePlayer.sendChatMessage(command);
     }
 
     public static boolean isClientCommand(String command){

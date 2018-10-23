@@ -16,9 +16,9 @@ public class CommandGamma extends CommandPlusBase{
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 		Minecraft mc = Minecraft.getMinecraft();
 		float gamma = Float.valueOf(args[1]) / 100F;
-		gamma = t.math(args[0], t.s.gammaSetting, gamma);
+		gamma = t.math(args[0], t.getSetting().gammaSetting, gamma);
 		setOptionF(Options.GAMMA, gamma);
-		t.addSettingMessage(t.s.gammaSetting);
+		t.addSettingMessage(t.getSetting().gammaSetting);
 	}
 	
 	public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args,

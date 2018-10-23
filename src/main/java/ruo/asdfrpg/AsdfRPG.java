@@ -9,6 +9,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -17,8 +18,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.camp.BlockCampFire;
-import ruo.asdfrpg.camp.TileCampFire;
-import ruo.asdfrpg.camp.TileCampFireRenderer;
 import ruo.asdfrpg.cook.CookedRecipe;
 import ruo.asdfrpg.cook.CookedRecipeHelper;
 import ruo.asdfrpg.event.AsdfEvent;
@@ -40,16 +39,19 @@ public class AsdfRPG {
         }
     };
     public static final SimpleNetworkWrapper ASDF_RPG = NetworkRegistry.INSTANCE.newSimpleChannel("asdfrpg");
+
+    @SidedProxy(serverSide = "ruo.asdfrpg.CommonProxy", clientSide = "ruo.asdfrpg.ClientProxy")
+    public static CommonProxy proxy;
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        DebAPI.registerTileEntity(campFire, TileCampFire.class, new TileCampFireRenderer());
         DebAPI.registerEntity(this, "NO-EGG-AsdfBlock", EntityAsdfBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-ThrowBlock", EntityThrowBlock.class);
-        DebAPI.registerEntity(this, "NO-EGG-Light", EntityLight.class, new RenderLight(1.0F));
+        DebAPI.registerEntity(this, "NO-EGG-Light", EntityLight.class);
         DebAPI.registerEntity(this, "RPGWolf", EntityRPGWolf.class);
         DebAPI.registerEntity(this, "TraderR", EntityTrader.class);
-
         DebAPI.registerEntity(this, "RPGGolem", EntityRPGGolem.class);
+        proxy.init();
         GameRegistry.register(villageReturn);
         GameRegistry.register(respawn);
         MinecraftForge.EVENT_BUS.register(new AsdfEvent());

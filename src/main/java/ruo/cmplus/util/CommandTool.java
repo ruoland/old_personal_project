@@ -12,8 +12,11 @@ import ruo.minigame.api.WorldAPI;
 public class CommandTool {
 
 	private final String command;
-	
-	public GameSettings s = Minecraft.getMinecraft().gameSettings;
+
+	public GameSettings getSetting(){
+		return Minecraft.getMinecraft().gameSettings;
+
+	}
 	public CommandTool(String command) {
 		this.command = command;
 	}

@@ -14,8 +14,8 @@ public class CommandDistance extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         int distance = parseInt(args[0], 0, 100);
-        t.s.renderDistanceChunks = t.math(args[0], t.s.renderDistanceChunks, distance);
-        t.addSettingMessage(t.s.renderDistanceChunks);
+        t.getSetting().renderDistanceChunks = t.math(args[0], t.getSetting().renderDistanceChunks, distance);
+        t.addSettingMessage(t.getSetting().renderDistanceChunks);
     }
 
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args,

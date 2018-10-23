@@ -1,10 +1,5 @@
 package ruo.asdf;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderCreeper;
-import net.minecraft.client.renderer.entity.RenderSkeleton;
-import net.minecraft.client.renderer.entity.RenderSpider;
-import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
@@ -13,6 +8,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -32,6 +28,9 @@ public class SUAKGEMod {
     public static final Enchantment chageEnchant = new ChargeEnchant();
     public static final Enchantment rangeBreakEnchant = new RangeBreakEnchant();
 
+    @SidedProxy(serverSide = "ruo.asdf.SUAKGECommonProxy", clientSide = "ruo.asdf.SUAKGEClientProxy")
+    public static SUAKGECommonProxy proxy;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
 
@@ -39,14 +38,15 @@ public class SUAKGEMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        DebAPI.registerEntity(this, "TPCreeper", EntityTeleportCreeper.class, new RenderCreeper(Minecraft.getMinecraft().getRenderManager()));
-        DebAPI.registerEntity(this, "SpiderCreeper", EntitySpiderJockey.class, new RenderSpider(Minecraft.getMinecraft().getRenderManager()));
+        DebAPI.registerEntity(this, "TPCreeper", EntityTeleportCreeper.class);
+        DebAPI.registerEntity(this, "SpiderCreeper", EntitySpiderJockey.class);
         DebAPI.registerEntity(this, "MissileCreeper", EntityMissileCreeper.class);
-        DebAPI.registerEntity(this, "Skelereeper", EntitySkelereeper.class, new RenderSkeleton(Minecraft.getMinecraft().getRenderManager()));
+        DebAPI.registerEntity(this, "Skelereeper", EntitySkelereeper.class);
         DebAPI.registerEntity(this, "FlyingSkeleton", EntityFlyingZombie.class);
         DebAPI.registerEntity(this, "FlyingCreeper", EntityFlyingCreeper.class);
 
-        DebAPI.registerEntity(this, "WildZombie", EntityWildZombie.class, new RenderZombie(Minecraft.getMinecraft().getRenderManager()));
+        DebAPI.registerEntity(this, "WildZombie", EntityWildZombie.class);
+        proxy.init();
         ForgeRegistries.ENCHANTMENTS.register(levitationEnchant);
         ForgeRegistries.ENCHANTMENTS.register(explosionEnchant);
         ForgeRegistries.ENCHANTMENTS.register(rangeEnchant);

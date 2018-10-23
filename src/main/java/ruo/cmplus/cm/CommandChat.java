@@ -71,7 +71,7 @@ public class CommandChat extends CommandBase {
 			return;
 		}
 		if(args[0].equals("gui")){
-			t.s.chatVisibility = EnumChatVisibility.valueOf(args[1].toUpperCase());
+			t.getSetting().chatVisibility = EnumChatVisibility.valueOf(args[1].toUpperCase());
 			return;
 		}
 	}

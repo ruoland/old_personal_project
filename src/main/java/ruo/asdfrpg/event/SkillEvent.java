@@ -1,7 +1,5 @@
 package ruo.asdfrpg.event;
 
-import atomicstryker.dynamiclights.client.DynamicLights;
-import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -60,7 +58,7 @@ public class SkillEvent {
     public void lightSkill(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityLight) {
             EntityLight arrow = (EntityLight) event.getEntity();
-            DynamicLights.addLightSource(new EntityLightAdapter(arrow, SkillHelper.getPlayerSkill().getSkill(Skills.LIGHT).getLevel()));
+//            DynamicLights.addLightSource(new EntityLightAdapter(arrow, SkillHelper.getPlayerSkill().getSkill(Skills.LIGHT).getLevel()));
         }
     }
 
@@ -83,24 +81,25 @@ public class SkillEvent {
         }
 
     }
-    private class EntityLightAdapter implements IDynamicLightSource {
-        private EntityLight entity;
-        private int level;
-
-        public EntityLightAdapter(EntityLight light, int level) {
-            entity = light;
-            this.level = level;
-            System.out.println(level);
-        }
-
-        @Override
-        public Entity getAttachmentEntity() {
-            return entity;
-        }
-
-        @Override
-        public int getLightLevel() {
-            return 15;
-        }
-    }
+//
+//    private class EntityLightAdapter implements IDynamicLightSource {
+//        private EntityLight entity;
+//        private int level;
+//
+//        public EntityLightAdapter(EntityLight light, int level) {
+//            entity = light;
+//            this.level = level;
+//            System.out.println(level);
+//        }
+//
+//        @Override
+//        public Entity getAttachmentEntity() {
+//            return entity;
+//        }
+//
+//        @Override
+//        public int getLightLevel() {
+//            return 15;
+//        }
+//    }
 }

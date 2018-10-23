@@ -13,12 +13,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
+import ruo.asdfrpg.EntityLight;
+import ruo.asdfrpg.skill.RenderLight;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lot.block.BlockClock;
 import ruo.map.lot.block.TileClock;
@@ -35,7 +38,6 @@ import ruo.map.lot.tool.ItemEnderShot;
 
 //@Mod(modid = "LOT")
 public class LOT {
-    public static KeyBinding keyBindFly = new KeyBinding("날기", Keyboard.KEY_F, "LOT");
 
     public static final Block switch2 = new BlockSwitch().setRegistryName("switch").setUnlocalizedName("lotswitch").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 
@@ -47,6 +49,8 @@ public class LOT {
     public static final Block arrowspawn = new BlockArrowSpawn(Material.ANVIL).setRegistryName("arrowspawn").setUnlocalizedName("arrowspawn").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static final Item lotbow = new ItemLOTBow().setRegistryName("bow").setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("lotbow");
 
+    @SidedProxy(serverSide = "ruo.map.lot.CommonProxy", clientSide = "ruo.map.lot.ClientProxy")
+    public static CommonProxy proxy;
     public LOT() {
         try {
             Class.forName("api.player.server.ServerPlayerAPI");
@@ -83,11 +87,10 @@ public class LOT {
         DebAPI.registerEntity(this, "WIND", EntityWind.class);
         DebAPI.registerEntity(this, "WALLBLOCK", EntityWallBlock.class);
         DebAPI.registerEntity(this, "DOORBLOCK", EntityDoorBlock.class);
-        DebAPI.registerEntity(this, "DUNARROW-NO-EGG-", EntityDunArrow.class, new RenderDunArrow(Minecraft.getMinecraft().getRenderManager()));
-        DebAPI.registerTileEntity(time, TileClock.class, new TileClockRenderer());
-        DebAPI.registerTileEntity(arrowspawn, TileArrowSpawn.class, new TileArrowSpawnRenderer());
-        DebAPI.registerTileEntity(switch2, TileSwitch.class, new TileSwitchRenderer());
-        DebAPI.registerEntity(this, "lotender", EntityEnderShot.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), enderShotIem, Minecraft.getMinecraft().getRenderItem()));
+        DebAPI.registerEntity(this, "DUNARROW-NO-EGG-", EntityDunArrow.class);
+        DebAPI.registerEntity(this, "lotender", EntityEnderShot.class);
+        proxy.init();;
+
         DebAPI.registerBlock(enderShotBlock);
         GameRegistry.register(enderShotIem);
         GameRegistry.register(lotbow);

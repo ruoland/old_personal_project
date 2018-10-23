@@ -8,20 +8,31 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ruo.minigame.map.EntityDefaultNPC;
@@ -40,6 +51,19 @@ import static org.lwjgl.opengl.GL12.GL_RESCALE_NORMAL;
 
 public class RenderAPI {
 
+    public static void registerTileEntity(Block block, Class<? extends TileEntity> tileEntity, TileEntitySpecialRenderer<? super TileEntity> renderer) {
+        GameRegistry.register(block);
+        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
+                new ModelResourceLocation(block.getRegistryName(), "inventory"));
+        GameRegistry.registerTileEntity(tileEntity, block.getRegistryName().toString());
+        ClientRegistry.bindTileEntitySpecialRenderer(tileEntity, renderer);
+
+    }
+    public static void registerRender(Class entity, Render<? extends Entity> r){
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+            RenderingRegistry.registerEntityRenderingHandler(entity, r);
+    }
     private static Minecraft mc = Minecraft.getMinecraft();
     public static ModelBase getEntityModel(Entity entity) {
         Render r = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);

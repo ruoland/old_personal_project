@@ -29,7 +29,6 @@ public class CMManager implements Serializable {
             new ResourceLocation("shaders/post/green.json"), new ResourceLocation("shaders/post/blur.json"),
             new ResourceLocation("shaders/post/wobble.json"), new ResourceLocation("shaders/post/blobs.json"),
             new ResourceLocation("shaders/post/antialias.json")};
-    private static transient Minecraft mc = Minecraft.getMinecraft();
     private static EnumFacing sleepFacing;
     public static boolean norain, mouse, HAND = true, ALL = true, HELMET = true, PORTAL = true, CROSSHAIRS = true, BOSSHEALTH = true, ARMOR = true, HEALTH = true, FOOD = true, AIR = true, HOTBAR = true, EXPERIENCE = true, HEALTHMOUNT = true, JUMPBAR = true, CHAT = true, PLAYER_LIST = true, DEBUG = true;
     private static boolean moveLock, sit, sleep;

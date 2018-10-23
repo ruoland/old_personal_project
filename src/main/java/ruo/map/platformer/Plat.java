@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -29,6 +30,8 @@ public class Plat {
     public static Item platCoin = new ItemCoin().setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("platcoin").setRegistryName("platcoin");
     public static Item chickenRiding = new ItemChickenRiding().setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("platChicken").setRegistryName("platChicken");
 
+    @SidedProxy(serverSide = "ruo.map.platformer.CommonProxy", clientSide = "ruo.map.platformer.ClientProxy")
+    public static CommonProxy proxy;
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
 
@@ -39,12 +42,13 @@ public class Plat {
         ModelLoader.setCustomModelResourceLocation(platCoin, 0, new ModelResourceLocation("plat:platcoin", "inventory"));
         DebAPI.registerEntity(this, "platHookShot", EntityHookShot.class);
         DebAPI.registerEntity(this, "platnpc", EntityNPC.class);
-        DebAPI.registerEntity(this, "platc1BossHorse", EntityBossHorse.class, new RenderHorse(Minecraft.getMinecraft().getRenderManager(), new ModelHorse(), 0.5F));
+        DebAPI.registerEntity(this, "platc1BossHorse", EntityBossHorse.class);
         DebAPI.registerEntity(this, "platc1BabyCow", EntityBabyCow.class);
         DebAPI.registerEntity(this, "platc2ChickenShop", EntityChickenShopKeeper.class);
-        DebAPI.registerEntity(this, "platCoin", EntityCoin.class, new RenderCoin(DebAPI.getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
-        DebAPI.registerEntity(this, "platPlatBlock", EntityPlatBlock.class );
-        DebAPI.registerEntity(this, "platCowBumo", EntityCowBumo.class );
+        DebAPI.registerEntity(this, "platCoin", EntityCoin.class);
+        DebAPI.registerEntity(this, "platPlatBlock", EntityPlatBlock.class);
+        DebAPI.registerEntity(this, "platCowBumo", EntityCowBumo.class);
+        proxy.init();
         DebAPI.createJson(platCoinSpawn, Items.CHICKEN);
         DebAPI.createJson(chickenRiding, Items.COOKED_CHICKEN);
         DebAPI.createJson(platCoin, Items.NETHER_STAR);

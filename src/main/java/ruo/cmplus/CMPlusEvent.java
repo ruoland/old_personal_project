@@ -15,10 +15,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.cm.v18.function.FunctionIF;
@@ -154,7 +156,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void event(WorldEvent.Load e) {
-        if (e.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && !(e.getWorld().provider instanceof WorldProvider10)) {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT && e.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && !(e.getWorld().provider instanceof WorldProvider10)) {
             try {
                 WorldProvider10 pro = new WorldProvider10();
                 pro.registerWorld(e.getWorld());
@@ -187,12 +189,6 @@ public class CMPlusEvent {
                 e2.printStackTrace();
             }
         }
-    }
-
-    @SubscribeEvent
-    public void playerTick(TickEvent.WorldTickEvent e) {
-        if (CMManager.norain)
-            e.world.setRainStrength(0);
     }
 
 }

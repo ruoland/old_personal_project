@@ -20,7 +20,7 @@ public class LOTEvent {
 	private int flyDelay = 0;
 	@SubscribeEvent
 	public void event(InputEvent.KeyInputEvent e) {
-		if(isLOT && LOT.keyBindFly.isPressed()){
+		if(isLOT && ClientProxy.keyBindFly.isPressed()){
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 			if(WorldAPI.equalsItem(player.inventory.armorInventory[2], Items.ELYTRA)) {
 				player.capabilities.isFlying = !Minecraft.getMinecraft().thePlayer.capabilities.isFlying;

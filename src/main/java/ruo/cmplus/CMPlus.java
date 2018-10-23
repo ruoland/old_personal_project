@@ -137,13 +137,9 @@ public class CMPlus {
         event.registerServerCommand(new CommandCustomEntity());
         event.registerServerCommand(new CommandOpenFolder());
         event.registerServerCommand(new CommandEvent());
-        event.registerServerCommand(new CommandGUI());
-
-        event.registerServerCommand(new CommandDrawtexture());
         event.registerServerCommand(new CommandMultiCommand());
         event.registerServerCommand(new CommandTimer());
         event.registerServerCommand(new CommandPosCommand());
-        event.registerServerCommand(new CommandOpen());
         event.registerServerCommand(new CommandPosition());
         event.registerServerCommand(new CommandIF());
         event.registerServerCommand(new CommandWhile());
@@ -151,16 +147,15 @@ public class CMPlus {
         event.registerServerCommand(new CommandFunction());
         event.registerServerCommand(new CommandVar());
         event.registerServerCommand(new CommandMath());
-        event.registerServerCommand(new CommandMouseCancel());
 
         //여러가지 이유로 멀티에서 사용불가능인 명령어들
         //개발중 버그 안잡음 멀티에선 NPC 사용 불가능 타임스피드는..
-        event.registerServerCommand(new CommandPotion());
-        event.registerServerCommand(new CommandEntity());
+        //event.registerServerCommand(new CommandPotion());
+        //event.registerServerCommand(new CommandEntity());
         //event.registerServerCommand(new CommandTimeSpeed());
-        event.registerServerCommand(new CommandNPCModel());
-        event.registerServerCommand(new CommandNPC());
-        event.registerServerCommand(new CommandText());
+       // event.registerServerCommand(new CommandNPCModel());
+        //event.registerServerCommand(new CommandNPC());
+        //event.registerServerCommand(new CommandText());
     }
 
     public void autoRegister() {

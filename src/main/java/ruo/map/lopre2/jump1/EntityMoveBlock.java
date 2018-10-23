@@ -1,5 +1,6 @@
 package ruo.map.lopre2.jump1;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -28,7 +29,7 @@ import java.util.List;
 
 public class EntityMoveBlock extends EntityPreBlock {
     protected double speed = 0.03D;
-    public static double playerSpeed =0.001D, playerYSpeed  = 0.1;
+    public static double playerSpeed = 0.001D, playerYSpeed = 0.1;
     protected double[] startPos = new double[3];
     protected double endPos[] = new double[3];
     protected double entityPos[] = new double[3];
@@ -43,7 +44,8 @@ public class EntityMoveBlock extends EntityPreBlock {
     private static final DataParameter<EnumFacing> FACING = EntityDataManager.createKey(EntityMoveBlock.class,
             DataSerializers.FACING);
 
-    private static final DataParameter<Boolean> IS_BUILDBLOCK =EntityDataManager.createKey(EntityMoveBlock.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_BUILDBLOCK = EntityDataManager.createKey(EntityMoveBlock.class, DataSerializers.BOOLEAN);
+
     public EntityMoveBlock(World worldIn) {
         super(worldIn);
         this.setBlockMode(Blocks.STONE);
@@ -67,18 +69,20 @@ public class EntityMoveBlock extends EntityPreBlock {
         dataManager.register(IS_BUILDBLOCK, false);
     }
 
-    public EnumFacing getFacing(){
+    public EnumFacing getFacing() {
         return dataManager.get(FACING);
     }
-    public void setFacing(EnumFacing facing){
+
+    public void setFacing(EnumFacing facing) {
         dataManager.set(FACING, facing);
     }
+
     public void setPos(EnumFacing facing, double y, float distance) {
         if (y != posY) {
             startPos[0] = posX;
             startPos[2] = posZ;
             startPos[1] = posY;
-            endPos = new double[] {posX,y,posZ};
+            endPos = new double[]{posX, y, posZ};
             setFacing(y > posY ? EnumFacing.UP : EnumFacing.DOWN);
             return;
         }
@@ -88,8 +92,9 @@ public class EntityMoveBlock extends EntityPreBlock {
         this.endPos = new double[]{posX + EntityAPI.lookX(facing, distance), posY, posZ + EntityAPI.lookZ(facing, distance)};
         setFacing(facing);
         this.setMoveDistance(distance, false);
-        System.out.println(EntityAPI.lookX(facing, distance)+ " - "+EntityAPI.lookZ(facing, distance)+ isServerWorld());
+        System.out.println(EntityAPI.lookX(facing, distance) + " - " + EntityAPI.lookZ(facing, distance) + isServerWorld());
     }
+
     public void setPos(EntityPlayer player, double y, float distance) {
         this.setPos(player.getHorizontalFacing(), y, distance);
     }
@@ -123,7 +128,7 @@ public class EntityMoveBlock extends EntityPreBlock {
                     } else {
                         playerSpeed -= 0.001;
                     }
-                    System.out.println(" - "+playerSpeed);
+                    System.out.println(" - " + playerSpeed);
                     return true;
                 }
                 if (WorldAPI.equalsHeldItem(Items.GOLDEN_APPLE) && isServerWorld()) {
@@ -192,18 +197,18 @@ public class EntityMoveBlock extends EntityPreBlock {
     }
 
 
-    public boolean canBeLeashedTo(EntityPlayer player)
-    {
+    public boolean canBeLeashedTo(EntityPlayer player) {
         return true;
     }
 
     int delay;//벽에 막혔을 때 딜레이랑 플레이어가 처음 들어갔을 때 motionXYZ를 초기화 함 이걸 언제 다시 초기화 하게 할 건지 딜레이
     boolean isPlayer;//플레이어가 처음 들어가면 초기화함, isPlayer는 플레이어가 있을 때
+    private EntityPlayerSP playerSP = Minecraft.getMinecraft().thePlayer;
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (WorldAPI.getPlayer() != null && WorldAPI.getPlayerSP() != null) {
+        if (WorldAPI.getPlayer() != null && playerSP != null) {
             entityPos = WorldAPI.changePosArray(this);
             if (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)
                 return;
@@ -255,14 +260,13 @@ public class EntityMoveBlock extends EntityPreBlock {
                 z = 0;
             }
 
-            if(getLeashed()){
+            if (getLeashed()) {
                 speed = 0.09;
-                EntityPlayerSP playerSP = WorldAPI.getPlayerSP();
-                WorldAPI.getPlayerSP().motionX = ((posX - playerSP.posX) / 20) + x;
-                WorldAPI.getPlayerSP().motionZ = ((posZ - playerSP.posZ) / 20)+ z;
-                WorldAPI.getPlayerSP().motionY = ((posY - 2.5 - playerSP.posY) / 10);
+                playerSP.motionX = ((posX - playerSP.posX) / 20) + x;
+                motionZ = ((posZ - playerSP.posZ) / 20) + z;
+                motionY = ((posY - 2.5 - playerSP.posY) / 10);
             }
-            if(!moveStop) {
+            if (!moveStop) {
                 if (dataManager.get(CAN_PLAYER_MOVE).booleanValue()) {
                     List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                             this.posX - 1D, this.posY, this.posZ - 1D, this.posX + 1D, this.posY + 1.8, this.posZ + 1D));
@@ -273,7 +277,7 @@ public class EntityMoveBlock extends EntityPreBlock {
                                     double px = x, py = y, pz = z;
                                     if (!GrabHelper.wallGrab && !isPlayer) {
                                         entity.setVelocity(0, 0, 0);
-                                        WorldAPI.getPlayerSP().setVelocity(0, 0, 0);
+                                        playerSP.setVelocity(0, 0, 0);
                                     }
                                     if (px > 0)
                                         px += playerSpeed;
@@ -286,12 +290,12 @@ public class EntityMoveBlock extends EntityPreBlock {
                                     if (py > 0) {
                                         py += playerYSpeed;
                                     }
-                                    if (WorldAPI.getPlayerSP().movementInput.jump) {
-                                        WorldAPI.getPlayerSP().jump();
-                                        WorldAPI.getPlayerMP().jump();
+                                    if (playerSP.movementInput.jump) {
+                                        playerSP.jump();
+                                        playerSP.jump();
                                         ActionEffect.setForceJump(true);
                                     }
-                                    WorldAPI.getPlayerSP().moveEntity(px, py, pz);
+                                    playerSP.moveEntity(px, py, pz);
                                     WorldAPI.getPlayerMP().moveEntity(px, py, pz);
                                     isPlayer = true;
                                     break;
@@ -306,7 +310,7 @@ public class EntityMoveBlock extends EntityPreBlock {
         }
     }
 
-    public double[] getSpeed(){
+    public double[] getSpeed() {
         double x = 0, y = 0, z = 0;
         prevX = posX;
         prevY = posY;
@@ -329,33 +333,37 @@ public class EntityMoveBlock extends EntityPreBlock {
         if (endPos[2] < entityPos[2]) {
             z = -speed;
         }
-        double px = x,py = y,pz = z;
-        if(px > 0)
-            px +=playerSpeed - 0.0009D;
-        if(px < 0)
-            px -=playerSpeed - 0.0009D;
-        if(pz > 0)
-            pz +=playerSpeed - 0.0009D;
-        if(pz < 0)
-            pz -=playerSpeed - 0.0009D;
-        if(py > 0) {
+        double px = x, py = y, pz = z;
+        if (px > 0)
+            px += playerSpeed - 0.0009D;
+        if (px < 0)
+            px -= playerSpeed - 0.0009D;
+        if (pz > 0)
+            pz += playerSpeed - 0.0009D;
+        if (pz < 0)
+            pz -= playerSpeed - 0.0009D;
+        if (py > 0) {
             py += playerYSpeed;
         }
-        return new double[]{px,py,pz};
+        return new double[]{px, py, pz};
     }
-    public float getMoveDistance(){
+
+    public float getMoveDistance() {
         return dataManager.get(MOVE_DISTANCE);
     }
+
     public void setPlayerMove(boolean blockMove) {
         dataManager.set(CAN_PLAYER_MOVE, blockMove);
     }
+
     public void setBlockMove(boolean blockMove) {
         dataManager.set(IS_BLOCK_MOVE, blockMove);
     }
+
     public void setMoveDistance(float moveDistance, boolean posReset) {
         dataManager.set(MOVE_DISTANCE, moveDistance);
         this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-        if(posReset)
+        if (posReset)
             this.setPos(getFacing(), posY, moveDistance);
     }
 
@@ -368,8 +376,8 @@ public class EntityMoveBlock extends EntityPreBlock {
                     if ((entity instanceof EntityPlayer) && !entity.noClip) {
                     	if(y != 0)
                     		motionY = 0;
-                    	else if(WorldAPI.getPlayerSP() != null)
-                    		WorldAPI.getPlayerSP().moveEntity(x,0,z);
+                    	else if(Minecraft.getMinecraft().thePlayer != null)
+                    		Minecraft.getMinecraft().thePlayer.moveEntity(x,0,z);
                     	System.out.println(entity);
                     }
                 }

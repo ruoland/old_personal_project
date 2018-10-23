@@ -3,9 +3,11 @@ package ruo.minigame.effect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiScreenWorking;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
 import ruo.minigame.effect.AbstractTick.Position;
 
 import java.util.ArrayList;
@@ -64,6 +66,8 @@ public class TickRegister {
 
 
     public static boolean isGamePaused() {
+        if(FMLCommonHandler.instance().getSide() == Side.SERVER)
+            return false;
         Minecraft mc = Minecraft.getMinecraft();
         return (mc.currentScreen instanceof GuiDownloadTerrain)
                 || (mc.currentScreen instanceof GuiScreenWorking);
