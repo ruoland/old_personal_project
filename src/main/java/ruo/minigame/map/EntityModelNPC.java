@@ -3,9 +3,9 @@ package ruo.minigame.map;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,11 +15,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Rotations;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Random;
 
@@ -233,7 +236,6 @@ class EntityModelNPC extends EntityMob {
         this.setSize(1F, 1F);
         setModel(TypeModel.BLOCK);
         setBlockMetadata(stack.getMetadata());
-        setTexture(RenderAPI.getBlockTexture(((ItemBlock) stack.getItem()).getBlock()));
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
     }
 
@@ -241,10 +243,17 @@ class EntityModelNPC extends EntityMob {
         setBlock(new ItemStack(block));
     }
 
+    @Nullable
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+
+        return super.onInitialSpawn(difficulty, livingdata);
+
+    }
+
     public void setBlock(ItemStack stack) {
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
         setBlockMetadata(stack.getMetadata());
-        setTexture(RenderAPI.getBlockTexture(((ItemBlock) stack.getItem()).getBlock()));
     }
 
     public void setBlockMetadata(int metadata) {
@@ -265,7 +274,7 @@ class EntityModelNPC extends EntityMob {
     }
 
     public void setTexture(String tex) {
-        texture = new ResourceLocation(tex);
+        setTexture(new ResourceLocation(tex));
     }
 
     public void setTexture(ResourceLocation tex) {
@@ -306,7 +315,7 @@ class EntityModelNPC extends EntityMob {
         compound.setString("texture", getTexture() != null ? getTexture().toString() : "");
         compound.setInteger("BlockID", Block.getIdFromBlock(getCurrentBlock()));
         compound.setInteger("BlockMetadata", dataManager.get(BLOCK_METADATA));
-        if(getCurrentBlock() != null)
+        if (getCurrentBlock() != null && FMLCommonHandler.instance().getSide() == Side.CLIENT)
             compound.setString("blockTexture", RenderAPI.getBlockTexture(getCurrentBlock()).toString());
     }
 
@@ -321,13 +330,13 @@ class EntityModelNPC extends EntityMob {
         setSleep(compound.getBoolean("ISSLEEP"), (int) compound.getFloat("SLEEPROTATE"));
         setElytra(compound.getBoolean("ISELYTRA"));
         setSit(compound.getBoolean("ISSIT"));
-        if(compound.hasKey("MODELTYPE"))
-        this.typeModel = TypeModel.valueOf(compound.getString("MODELTYPE"));
+        if (compound.hasKey("MODELTYPE"))
+            this.typeModel = TypeModel.valueOf(compound.getString("MODELTYPE"));
         if (!compound.getString("texture").equals(""))
             setTexture(compound.getString("texture"));
         if ((Block.getBlockById(compound.getInteger("BlockID")) != Blocks.AIR)) {
             setBlockMode(Block.getBlockById(compound.getInteger("BlockID")));
-            setTexture(compound.getString("blockTexture"));
+//            setTexture(compound.getString("blockTexture"));
         }
         setBlockMetadata(compound.getInteger("BlockMetadata"));
     }
@@ -352,23 +361,24 @@ class EntityModelNPC extends EntityMob {
         npc.setRGB(getRed(), getGreen(), getBlue());
     }
 
-    public void printModel(){
+    public void printModel() {
         System.out.println("-------------------------------------------------------------------");
         System.out.println("TypeModel" + getModel());
-        if(getModel() == TypeModel.BLOCK){
+        if (getModel() == TypeModel.BLOCK) {
             System.out.println("Block" + getCurrentBlock());
             System.out.println("Stack" + getCurrentStack());
             System.out.println("BlockID" + dataManager.get(BLOCK_ID));
         }
         System.out.println("Texture" + getTexture());
 
-        System.out.println("Translate" + getTraX()+" - "+getTraY()+" - "+getTraZ());
-        System.out.println("Rotate" + getRotateX()+" - "+getRotateY()+" - "+getRotateZ());
-        System.out.println("Scale" + getScaleX()+" - "+getScaleY()+" - "+getScaleZ());
+        System.out.println("Translate" + getTraX() + " - " + getTraY() + " - " + getTraZ());
+        System.out.println("Rotate" + getRotateX() + " - " + getRotateY() + " - " + getRotateZ());
+        System.out.println("Scale" + getScaleX() + " - " + getScaleY() + " - " + getScaleZ());
         System.out.println("getTransparency" + getTransparency());
-        System.out.println("RGB" + getRed()+ " - "+getGreen()+" - "+getBlue());
+        System.out.println("RGB" + getRed() + " - " + getGreen() + " - " + getBlue());
         System.out.println("-------------------------------------------------------------------");
     }
+
     public void setSleep(boolean isSleep, int rotate) {
         setSleep(isSleep);
         setSleepRotate(rotate);
@@ -406,7 +416,7 @@ class EntityModelNPC extends EntityMob {
     public void setElytra(boolean ely) {
         this.setFlag(7, ely);
         this.dataManager.set(IS_ELYTRA, ely);
-        if(!ely) {
+        if (!ely) {
             this.setFlag(7, true);
             this.setFlag(7, false);
         }
@@ -438,6 +448,6 @@ class EntityModelNPC extends EntityMob {
     }
 
     protected void addRotate(double x, double y, double z) {
-        addRotate((float)x,(float)y,(float)z);
+        addRotate((float) x, (float) y, (float) z);
     }
 }

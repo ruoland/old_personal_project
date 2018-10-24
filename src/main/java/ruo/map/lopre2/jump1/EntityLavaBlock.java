@@ -59,12 +59,6 @@ public class EntityLavaBlock extends EntityPreBlock {
     }
 
     @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        return super.processInteract(player, hand, stack);
-
-    }
-
-    @Override
     public boolean handleWaterMovement() {
         return false;
     }
@@ -76,7 +70,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-        lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ(), 90, 90, 0, false);
+
         lavaBlock.setBlockMode(getCurrentBlock());
         this.copyModel(lavaBlock);
         lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
@@ -105,9 +99,11 @@ public class EntityLavaBlock extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (canTeleportLock()) {
-            setVelocity(0, 0, 0);
+            motionY = 0;
+            motionX = 0;
+            motionZ = 0;
         }
-        if (WorldAPI.getPlayer() != null && !canTeleportLock()) {
+        if (!canTeleportLock()) {
             boolean isFly = true;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
@@ -121,14 +117,20 @@ public class EntityLavaBlock extends EntityPreBlock {
                 isFly = true;
             if (isFly) {
                 if(posY < getSpawnY()) {
-                    setVelocity(0, downSpeed, 0);
+                    motionZ= 0;
+                    motionY = downSpeed;
+                    motionX = 0;
                 }
                 else {
-                    setVelocity(0, 0, 0);
+                    motionZ= 0;
+                    motionY = 0;
+                    motionX = 0;
                 }
             }
             if (!isFly) {
-                setVelocity(0, -downSpeed, 0);
+                motionZ= 0;
+                motionY = -downSpeed;
+                motionX = 0;
             }
         }
     }

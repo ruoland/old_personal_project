@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.jump1.EntityBuildBlock;
@@ -48,11 +51,6 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         super(worldObj);
         //this.setCustomNameTag(this.getClass().getSimpleName().replace("Entity", ""));
         this.setDeathTimer(-1);
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox() || (WorldAPI.equalsHeldItem(LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(LoPre2.itemCopy));
     }
 
     @Override
@@ -96,7 +94,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        if (CommandJB.isDebMode && hand == EnumHand.MAIN_HAND) {
+        if (hand == EnumHand.MAIN_HAND) {
             if(stack != null && stack.getItem() == (LoPre2.itemCopy)) {
                 return false;
             }
@@ -108,26 +106,29 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
                 }
                 return super.processInteract(player, hand, stack);
             }
-            if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
-                setInv(!isInv());
-                setInvisible(isInv());
-                setTeleportLock(true);
-                System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨(락 걸림)");
-
-                return super.processInteract(player, hand, stack);
-            }
-            if (player.isSneaking()) {
-                setTeleport(true);
-                return super.processInteract(player, hand, stack);
-            }
-            if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
-                setTeleportLock(!canTeleportLock());
-                System.out.println("isLock이" + canTeleportLock() + "으로 설정됨");
-                return super.processInteract(player, hand, stack);
-            }
             if (stack != null && Block.getBlockFromItem(stack.getItem()) != null) {
                 setBlock(stack);
                 prevBlock = Block.getBlockFromItem(stack.getItem());
+                System.out.println("블럭 교체됨"+stack.getItem());
+                return super.processInteract(player, hand, stack);
+            }
+
+            if(FMLCommonHandler.instance().getSide() == Side.SERVER) {
+                if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
+                    setInv(!isInv());
+                    setInvisible(isInv());
+                    setTeleportLock(true);
+                    System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨(락 걸림)");
+                    return super.processInteract(player, hand, stack);
+                }
+                if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
+                    setTeleportLock(!canTeleportLock());
+                    System.out.println("isLock이" + canTeleportLock() + "으로 설정됨");
+                    return super.processInteract(player, hand, stack);
+                }
+            }
+            if (player.isSneaking()) {
+                setTeleport(true);
                 return super.processInteract(player, hand, stack);
             }
 
@@ -246,94 +247,92 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public void teleport() {
-        if (WorldAPI.getPlayerMP() == null)
+        if (WorldAPI.getPlayerMP() == null && FMLCommonHandler.instance().getSide().isServer())
             return;
         Vec3d vec = WorldAPI.getPlayer().getLookVec();
-        this.setPositionAndRotationDirect(WorldAPI.x() + vec.xCoord * ax,
-                WorldAPI.y() + WorldAPI.getPlayer().getEyeHeight() + vec.yCoord * ax,
-                WorldAPI.z() + vec.zCoord * ax, 90, 90, 0, true);
         this.setPosition((WorldAPI.x() + vec.xCoord * ax),
                 WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
                 WorldAPI.z() + vec.zCoord * ax);
         int xyz = 1;
-        if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL))
-            xyz = 3;
-        if (WorldAPI.equalsHeldItem(Items.STICK)) {
-            if (DebAPI.isKeyDown(Keyboard.KEY_UP)) {
-                addTraXYZ(0, xyz, 0);
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_DOWN)) {
-                addTraXYZ(0, -xyz, 0);
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_RIGHT)) {
-                if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                    addTraXYZ(-xyz, 0, 0);
-                } else
-                    addTraXYZ(xyz, 0, 0);
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_LEFT)) {
-                if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                    addTraXYZ(0, 0, -xyz);
-                } else
-                    addTraXYZ(0, 0, xyz);
-            }
-        } else {
-            if (DebAPI.isKeyDown(Keyboard.KEY_UP)) {
-                addRotate(0, xyz, 0);
-                System.out.println("YY");
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_DOWN)) {
-                addRotate(0, -xyz, 0);
-                System.out.println("--YY");
+        if(FMLCommonHandler.instance().getSide().isClient()) {
+            if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL))
+                xyz = 3;
+            if (WorldAPI.equalsHeldItem(Items.STICK)) {
+                if (DebAPI.isKeyDown(Keyboard.KEY_UP)) {
+                    addTraXYZ(0, xyz, 0);
+                }
+                if (DebAPI.isKeyDown(Keyboard.KEY_DOWN)) {
+                    addTraXYZ(0, -xyz, 0);
+                }
+                if (DebAPI.isKeyDown(Keyboard.KEY_RIGHT)) {
+                    if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                        addTraXYZ(-xyz, 0, 0);
+                    } else
+                        addTraXYZ(xyz, 0, 0);
+                }
+                if (DebAPI.isKeyDown(Keyboard.KEY_LEFT)) {
+                    if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                        addTraXYZ(0, 0, -xyz);
+                    } else
+                        addTraXYZ(0, 0, xyz);
+                }
+            } else {
+                if (DebAPI.isKeyDown(Keyboard.KEY_UP)) {
+                    addRotate(0, xyz, 0);
+                    System.out.println("YY");
+                }
+                if (DebAPI.isKeyDown(Keyboard.KEY_DOWN)) {
+                    addRotate(0, -xyz, 0);
+                    System.out.println("--YY");
 
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_RIGHT)) {
-                if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                    addRotate(xyz, 0, 0);
-                } else
-                    addRotate(-xyz, 0, 0);
-                System.out.println("XX");
+                }
+                if (DebAPI.isKeyDown(Keyboard.KEY_RIGHT)) {
+                    if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                        addRotate(xyz, 0, 0);
+                    } else
+                        addRotate(-xyz, 0, 0);
+                    System.out.println("XX");
 
+                }
+                if (DebAPI.isKeyDown(Keyboard.KEY_LEFT)) {
+                    System.out.println("ZZ");
+                    if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                        addRotate(0, 0, xyz);
+                    } else
+                        addRotate(0, 0, -xyz);
+                }
             }
-            if (DebAPI.isKeyDown(Keyboard.KEY_LEFT)) {
-                System.out.println("ZZ");
-                if (DebAPI.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                    addRotate(0, 0, xyz);
-                } else
-                    addRotate(0, 0, -xyz);
-            }
-        }
-        if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_K)) {
-            EntityPreBlock lavaBlock = spawn(WorldAPI.x() + vec.xCoord * ax,
-                    WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
-                    WorldAPI.z() + vec.zCoord * ax);
-            lavaBlock.teleportEnd();
-            lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-
-            if (this instanceof EntityBuildBlock) {
-                lavaBlock.setDead();
-                this.setTeleport(false);
-                this.setPositionAndUpdate(WorldAPI.x() + vec.xCoord * ax,
+            if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_K)) {
+                EntityPreBlock lavaBlock = spawn(WorldAPI.x() + vec.xCoord * ax,
                         WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
                         WorldAPI.z() + vec.zCoord * ax);
-                this.setSpawnXYZ(posX, posY, posZ);
-                System.out.println(posX + " - " + posY + " - " + posZ + " 소환됨");
-            } else {
-                setDead();
-                setTeleport(false);
-                System.out.println(isDead+" - "+isTeleport()+" - "+lavaBlock.isTeleport());
+                lavaBlock.teleportEnd();
+                lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
+
+                if (this instanceof EntityBuildBlock) {
+                    lavaBlock.setDead();
+                    this.setTeleport(false);
+                    this.setPositionAndUpdate(WorldAPI.x() + vec.xCoord * ax,
+                            WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
+                            WorldAPI.z() + vec.zCoord * ax);
+                    this.setSpawnXYZ(posX, posY, posZ);
+                    System.out.println(posX + " - " + posY + " - " + posZ + " 소환됨");
+                } else {
+                    setDead();
+                    setTeleport(false);
+                    System.out.println(isDead + " - " + isTeleport() + " - " + lavaBlock.isTeleport());
+                }
+            }
+
+            if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_J) && delayTick == 0) {
+                delayTick = 20;
+                EntityPreBlock lavaBlock = spawn(WorldAPI.x() + vec.xCoord * ax,
+                        WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
+                        WorldAPI.z() + vec.zCoord * ax);
+                lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
+                System.out.println(getCustomNameTag() + " 소환됨");
             }
         }
-
-        if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_J) && delayTick == 0) {
-            delayTick = 20;
-            EntityPreBlock lavaBlock = spawn(WorldAPI.x() + vec.xCoord * ax,
-                    WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
-                    WorldAPI.z() + vec.zCoord * ax);
-            lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-            System.out.println(getCustomNameTag() + " 소환됨");
-        }
-
     }
 
     public abstract EntityPreBlock spawn(double x, double y, double z);

@@ -148,12 +148,14 @@ public class EntityBigBlock extends EntityPreBlock {
             this.setFalling(false);
         }
         if (canTeleportLock()) {
-            setVelocity(0, 0, 0);
+            motionZ= 0;
+            motionY = 0;
+            motionX = 0;
         } else {
             float size = 2.5F;
-            if (getCustomNameTag().indexOf("BigBlock") != -1)
+            if (getCustomNameTag().contains("BigBlock"))
                 size = 2.5F;
-            if (getCustomNameTag().indexOf("SmallBlock") != -1)
+            if (getCustomNameTag().contains("SmallBlock"))
                 size = 1F;
             List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(posX - size, posY + 0.9, posZ - size, posX + size, posY + 1.9, posZ + size));
             for (EntityPlayer player : list) {
@@ -176,8 +178,9 @@ public class EntityBigBlock extends EntityPreBlock {
                     }
                 }
             }
-
-            this.setVelocity(0, downSpeed, 0);
+            motionZ= 0;
+            motionY = downSpeed;
+            motionX = 0;
         }
     }
 

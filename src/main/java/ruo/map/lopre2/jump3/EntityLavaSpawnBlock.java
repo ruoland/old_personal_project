@@ -55,7 +55,9 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
         super.onLivingUpdate();
         if(!isTeleport()) {
             if (getSpawnDistance() > WorldAPI.getPlayer().getDistanceToEntity(this)) {
-                setVelocity(0, 0.08, 0);
+                motionZ= 0;
+                motionY = 0.08;
+                motionX = 0;
                 this.worldObj.setBlockState(getPosition(), Blocks.LAVA.getDefaultState());
             } else if (worldObj.getBlockState(getPosition()).getBlock() == Blocks.LAVA) {
                 if(worldObj.getBlockState(getPosition().add(0,1,0)).getBlock() == Blocks.LAVA)
@@ -64,10 +66,14 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
                 if(worldObj.getBlockState(getPosition().add(0,-1,0)).getBlock() == Blocks.LAVA)
                     this.worldObj.setBlockState(getPosition().add(0,-1,0), Blocks.AIR.getDefaultState());
 
-                this.setVelocity(0,0,0);
+                motionZ= 0;
+                motionY = 0;
+                motionX = 0;
             }
             if (worldObj.getBlockState(getPosition().add(0,1,0)).getBlock() != Blocks.AIR) {
-                this.setVelocity(0,0,0);
+                motionZ= 0;
+                motionY = 0;
+                motionX = 0;
             }
         }
     }
@@ -78,7 +84,7 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-        lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ(), 90, 90, 0, false);
+
         lavaBlock.setBlockMode(getCurrentBlock());
         this.copyModel(lavaBlock);
         lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());

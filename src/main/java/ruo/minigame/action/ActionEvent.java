@@ -49,7 +49,7 @@ public class ActionEvent {
         }
 
     }
-    @SubscribeEvent
+    //@SubscribeEvent
     public void playerTick(PlayerTickEvent event) {
         GameSettings gs = Minecraft.getMinecraft().gameSettings;
         if (ActionEffect.canDoubleJump()) {

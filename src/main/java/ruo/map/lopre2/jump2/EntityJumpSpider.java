@@ -43,7 +43,9 @@ public class EntityJumpSpider extends EntitySpider {
         for(EntityPlayer player : list){
             if(entityIn.posY > posY+0.5){
                 attackEntityFrom(new DamageSource("밟혀서 뎀지 받음"), 1.5F);
-                entityIn.setVelocity(0,0.5,0);
+                motionZ= 0;
+                motionY = 0.5;
+                motionX = 0;
                 dataManager.set(ISJUMP, true);
                 entityIn.fallDistance = 0;
                 entityIn.onGround = true;

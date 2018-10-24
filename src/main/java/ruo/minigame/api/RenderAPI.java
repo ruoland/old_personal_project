@@ -36,6 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ruo.minigame.map.EntityDefaultNPC;
+import ruo.minigame.map.ModelDefaultNPC;
 import ruo.minigame.map.RenderDefaultNPC;
 
 import javax.annotation.Nullable;
@@ -50,6 +51,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_RESCALE_NORMAL;
 
 public class RenderAPI {
+    private static final ResourceLocation resourceLocation = new ResourceLocation("textures/entity/steve.png");
 
     public static void registerTileEntity(Block block, Class<? extends TileEntity> tileEntity, TileEntitySpecialRenderer<? super TileEntity> renderer) {
         GameRegistry.register(block);
@@ -60,11 +62,22 @@ public class RenderAPI {
         ClientRegistry.bindTileEntitySpecialRenderer(tileEntity, renderer);
 
     }
-    public static void registerRender(Class entity, Render<? extends Entity> r){
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-            RenderingRegistry.registerEntityRenderingHandler(entity, r);
+
+    public static void registerRender(Class entity, Render<? extends Entity> r) {
+        RenderingRegistry.registerEntityRenderingHandler(entity, r);
     }
+
+    public static void registerRender(Class entity) {
+        registerRender(entity, new RenderDefaultNPC(new ModelDefaultNPC(), resourceLocation));
+
+    }
+
+    public static void registerRender(Render<? extends Entity> r, Class entity) {
+        registerRender(entity, r);
+    }
+
     private static Minecraft mc = Minecraft.getMinecraft();
+
     public static ModelBase getEntityModel(Entity entity) {
         Render r = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
         Field f;
@@ -89,7 +102,7 @@ public class RenderAPI {
         return null;
     }
 
-    public static void renderItem(ItemStack stack, int x, int y, boolean stackSize){
+    public static void renderItem(ItemStack stack, int x, int y, boolean stackSize) {
         RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
         itemRender.zLevel = 200.0F;
         net.minecraft.client.gui.FontRenderer font = null;
@@ -97,13 +110,14 @@ public class RenderAPI {
         if (font == null) font = Minecraft.getMinecraft().fontRendererObj;
         if (stack != null) {
             RenderHelper.enableGUIStandardItemLighting();
-            itemRender.renderItemAndEffectIntoGUI(stack, x,y);
-            if(stackSize)
-                itemRender.renderItemOverlayIntoGUI(font, stack, x,y, null);
+            itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+            if (stackSize)
+                itemRender.renderItemOverlayIntoGUI(font, stack, x, y, null);
             RenderHelper.disableStandardItemLighting();
         }
         itemRender.zLevel = 0.0F;
     }
+
     public void renderBlock(EntityLivingBase l, ItemStack item) {
         IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(item, l.worldObj,
                 l);
@@ -227,10 +241,12 @@ public class RenderAPI {
                                    double height) {
         drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, 1000, width, height, true);
     }
+
     public static void drawTextureZ(String texture, double x, double y, double z, double width,
-                                   double height) {
+                                    double height) {
         drawTexture(texture, 1, 1, 1, 1, x, y, z, width, height, true);
     }
+
     public static void drawTexture(String texture, float red, float green, float blue, float alpha, double x, double y, double z, double width, double height,
                                    boolean push) {
         if (!hash.containsKey(texture)) {
@@ -291,7 +307,7 @@ public class RenderAPI {
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.color(red, green, blue, alpha);
-            GlStateManager.translate(0,0,z);
+            GlStateManager.translate(0, 0, z);
             Tessellator tessellator = Tessellator.getInstance();
             VertexBuffer vertexbuffer = tessellator.getBuffer();
             vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -322,6 +338,7 @@ public class RenderAPI {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
+
     public static void renderBlock(ArrayList<BlockPos> blockPosList, ArrayList<ItemStack> itemStackList, EntityLivingBase entitylivingbaseIn) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
@@ -342,6 +359,7 @@ public class RenderAPI {
         Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 
     }
+
     public static void renderBlock(ItemStack itemstack, EntityLivingBase entitylivingbaseIn) {
         IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemstack, entitylivingbaseIn.worldObj, entitylivingbaseIn);
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

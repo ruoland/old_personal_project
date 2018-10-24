@@ -73,40 +73,6 @@ public class ItemSpanner extends Item {
 
     int delay = 0;
 
-    public void on2Update(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
-        if (entityIn instanceof EntityPlayer) {
-            RayTraceResult rayTraceResult = Minecraft.getMinecraft().objectMouseOver;
-            if (rayTraceResult != null && rayTraceResult.typeOfHit != RayTraceResult.Type.MISS) {
-                if (rayTraceResult.typeOfHit == RayTraceResult.Type.ENTITY) {
-                    if (rayTraceResult.entityHit instanceof EntityPreBlock) {
-                        EntityPreBlock preBlock = (EntityPreBlock) rayTraceResult.entityHit;
-                        if (preBlock instanceof EntityMoveBlock) {
-                            EntityMoveBlock block = (EntityMoveBlock) preBlock;
-                            renderText = "블럭 방향:" + block.getFacing() + "/line/"
-                                    + "블럭 방향을 바꾸려면, 이동시킬 방향을 보고 블럭을 우클릭 하세요./line/"
-                                    + "이동 거리:" + block.getMoveDistance() + "/line/"
-                                    + "거리를 조절하려면 +키나 -키를 누르세요.";
-
-                            if ((Keyboard.isKeyDown(13) || Keyboard.isKeyDown(78)) && delay == 0) {
-                                delay = 5;
-                                block.setMoveDistance(block.getMoveDistance() + 1, true);
-                            }
-
-                            if ((Keyboard.isKeyDown(12) || Keyboard.isKeyDown(74)) && delay == 0) {
-                                delay = 5;
-                                block.setMoveDistance(block.getMoveDistance() - 1, true);
-                            }
-                        }
-                    }
-                }
-            } else
-                renderText = null;
-        }
-        if (delay > 0 && !worldIn.isRemote)
-            delay--;
-    }
-
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);

@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -40,11 +41,14 @@ import ruo.minigame.action.ActionEffect;
 import ruo.minigame.action.ActionEvent;
 import ruo.minigame.android.CommandCall;
 import ruo.minigame.android.CommandNotification;
+import ruo.minigame.api.RenderAPI;
 import ruo.minigame.command.*;
 import ruo.minigame.effect.TickRegister;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.map.EntityDefaultBlock;
 import ruo.minigame.map.EntityDefaultNPC;
+import ruo.minigame.map.ModelDefaultNPC;
+import ruo.minigame.map.RenderDefaultNPC;
 import ruo.minigame.minigame.bomber.Bomber;
 import ruo.minigame.minigame.bomber.BomberEvent;
 import ruo.minigame.minigame.bomber.EntityBomb;
@@ -61,6 +65,8 @@ import ruo.minigame.minigame.scroll.ScrollEvent;
 
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
+
+import static net.minecraftforge.fml.relauncher.Side.CLIENT;
 
 
 @Mod(modid = "MiniGame", name = "MiniGame")
@@ -94,7 +100,7 @@ public class MiniGame {
         try {
             Class.forName("api.player.server.ServerPlayerAPI");
             ServerPlayerAPI.register("MiniGame", MiniGameServerPlayer.class);
-            if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            if(FMLCommonHandler.instance().getSide() == CLIENT) {
                 ClientPlayerAPI.register("MiniGame", MiniGameClientPlayer.class);
                 RenderPlayerAPI.register("MiniGame", MiniGameRenderPlayer.class);
             }
@@ -112,7 +118,7 @@ public class MiniGame {
         minigameConfig.load();
         ActionEffect.load();
         minigameConfig.save();
-        if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+        if(FMLCommonHandler.instance().getSide() == CLIENT) {
             MiniGame.minerun = new MineRun();
             MiniGame.scroll = new Scroll();
             MiniGame.bomber = new Bomber();
@@ -131,6 +137,7 @@ public class MiniGame {
         //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //마인런 게임용
+
         DebAPI.registerEntity(this, "MRDummy", EntityDummyPlayer.class);
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
@@ -157,21 +164,20 @@ public class MiniGame {
         DebAPI.registerEntity(this, "bomb",EntityBomb.class);
         GameRegistry.register(Bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
-        DebAPI.registerEntity(this, "DefaultNPC", EntityDefaultNPC.class);
+        DebAPI.registerEntity(this, "VELOCITY-DefaultNPC", EntityDefaultNPC.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultBlock", EntityDefaultBlock.class);
-
+        proxy.init(e);
         MinecraftForge.EVENT_BUS.register(new ActionEvent());
         MinecraftForge.EVENT_BUS.register(new TickRegister.TickRegisterEvent());
         MinecraftForge.EVENT_BUS.register(new MiniGameEvent());
-        if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+        if(FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(mineRunEvent = new MineRunEvent());
             MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
             MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());
             MinecraftForge.EVENT_BUS.register(elytraEvent = new ElytraEvent());
-
-
             MinecraftForge.EVENT_BUS.register(new ElytraRenderEvent());
             MinecraftForge.EVENT_BUS.register(starMineEvent = new StarMineEvent());
+            ClientCommandHandler.instance.registerCommand(new CommandScroll());
         }
 
     }
@@ -182,7 +188,7 @@ public class MiniGame {
         e.registerServerCommand(new CommandClassLoader());
         e.registerServerCommand(new CommandMgs());
 
-        e.registerServerCommand(new CommandScroll());
+        //e.registerServerCommand(new CommandScroll());
         e.registerServerCommand(new CommandBomber());
         e.registerServerCommand(new CommandElytra());
         e.registerServerCommand(new CommandStarMine());

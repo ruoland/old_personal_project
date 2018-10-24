@@ -1,6 +1,6 @@
 package ruo.map.lopre2;
 
-public class CommonProxy {
+public class JumpCommonProxy {
     public void init(){
 
     }

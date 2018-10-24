@@ -34,8 +34,10 @@ public class EntityMoveBlock extends EntityPreBlock {
     protected double endPos[] = new double[3];
     protected double entityPos[] = new double[3];
     protected double prevX, prevY, prevZ;
-    public static boolean moveStop;
-    private static final DataParameter<Boolean> IS_BLOCK_MOVE = EntityDataManager.createKey(EntityMoveBlock.class,
+    //전체 블럭을 멈출 때 씀
+    public static boolean allBlockMoveStop;
+    //플레이어만 움직이는 벨트 블럭을 위해서 있음
+    private static final DataParameter<Boolean> CAN_BLOCK_MOVE = EntityDataManager.createKey(EntityMoveBlock.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CAN_PLAYER_MOVE = EntityDataManager.createKey(EntityMoveBlock.class,
             DataSerializers.BOOLEAN);
@@ -55,15 +57,15 @@ public class EntityMoveBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "MoveBlock" + getFacing().getName();
+        return "MoveBlock" + " 이동 중?" + !dataManager.get(CAN_BLOCK_MOVE)+" - 목적지"+(endPos != null ? endPos[0] +" - "+endPos[1]+" - "+endPos[2] : "");
     }
 
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(IS_BLOCK_MOVE, true);
-        dataManager.register(CAN_PLAYER_MOVE, true);
+        dataManager.register(CAN_BLOCK_MOVE, true);
+        dataManager.register(CAN_PLAYER_MOVE, false);
         dataManager.register(MOVE_DISTANCE, 2F);
         dataManager.register(FACING, EnumFacing.EAST);
         dataManager.register(IS_BUILDBLOCK, false);
@@ -90,9 +92,16 @@ public class EntityMoveBlock extends EntityPreBlock {
         startPos[1] = posY;
         startPos[2] = posZ - EntityAPI.lookZ(facing, distance);
         this.endPos = new double[]{posX + EntityAPI.lookX(facing, distance), posY, posZ + EntityAPI.lookZ(facing, distance)};
+
         setFacing(facing);
         this.setMoveDistance(distance, false);
-        System.out.println(EntityAPI.lookX(facing, distance) + " - " + EntityAPI.lookZ(facing, distance) + isServerWorld());
+    }
+
+    public void setMoveDistance(float moveDistance, boolean posReset) {
+        dataManager.set(MOVE_DISTANCE, moveDistance);
+        this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+        if (posReset)
+            this.setPos(getFacing(), posY, moveDistance);
     }
 
     public void setPos(EntityPlayer player, double y, float distance) {
@@ -132,8 +141,8 @@ public class EntityMoveBlock extends EntityPreBlock {
                     return true;
                 }
                 if (WorldAPI.equalsHeldItem(Items.GOLDEN_APPLE) && isServerWorld()) {
-                    setPlayerMove(!dataManager.get(CAN_PLAYER_MOVE).booleanValue());
-                    System.out.println(dataManager.get(CAN_PLAYER_MOVE).booleanValue());
+                    setPlayerMove(!dataManager.get(CAN_PLAYER_MOVE));
+                    System.out.println(dataManager.get(CAN_PLAYER_MOVE));
                     return true;
                 }
             }
@@ -157,7 +166,6 @@ public class EntityMoveBlock extends EntityPreBlock {
             compound.setDouble("endPosY", endPos[1]);
             compound.setDouble("endPosZ", endPos[2]);
         }
-        compound.setBoolean("blockMove", dataManager.get(IS_BLOCK_MOVE));
         compound.setBoolean("noClip", noClip);
         compound.setBoolean("CAN_PLAYER_MOVE", dataManager.get(CAN_PLAYER_MOVE));
         compound.setFloat("MoveDistance", dataManager.get(MOVE_DISTANCE));
@@ -169,7 +177,7 @@ public class EntityMoveBlock extends EntityPreBlock {
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-        lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ(), 90, 90, 1, false);
+
         this.copyModel(lavaBlock);
         lavaBlock.prevBlock = prevBlock;
         lavaBlock.setBlockMode(getCurrentBlock());
@@ -181,7 +189,6 @@ public class EntityMoveBlock extends EntityPreBlock {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         noClip = compound.getBoolean("noClip");
-        setBlockMove(compound.getBoolean("blockMove"));
         setPlayerMove(compound.getBoolean("CAN_PLAYER_MOVE"));
         setMoveDistance(compound.getFloat("MoveDistance"), false);
         if (compound.hasKey("startPosX")) {
@@ -193,6 +200,7 @@ public class EntityMoveBlock extends EntityPreBlock {
             endPos[0] = compound.getDouble("endPosX");
             endPos[1] = compound.getDouble("endPosY");
             endPos[2] = compound.getDouble("endPosZ");
+            teleportSpawnPos();
         }
     }
 
@@ -203,113 +211,114 @@ public class EntityMoveBlock extends EntityPreBlock {
 
     int delay;//벽에 막혔을 때 딜레이랑 플레이어가 처음 들어갔을 때 motionXYZ를 초기화 함 이걸 언제 다시 초기화 하게 할 건지 딜레이
     boolean isPlayer;//플레이어가 처음 들어가면 초기화함, isPlayer는 플레이어가 있을 때
-    private EntityPlayerSP playerSP = Minecraft.getMinecraft().thePlayer;
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (WorldAPI.getPlayer() != null && playerSP != null) {
-            entityPos = WorldAPI.changePosArray(this);
-            if (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)
-                return;
-            if (startPos[0] == 0 && startPos[1] == 0 && startPos[2] == 0) {
-                this.startPos = WorldAPI.changePosArray(this);
-            }
-            if (getDistance(endPos[0], endPos[1], endPos[2]) < 0.5 || (endPos[0] == entityPos[0] && endPos[1] == entityPos[1] && endPos[2] == entityPos[2])) {
+        entityPos = WorldAPI.changePosArray(this);
+        if ((startPos[0] == 0 && startPos[1] == 0 && startPos [2] == 0) || (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)) {
+            return;
+        }
+        if (getDistance(endPos[0], endPos[1], endPos[2]) < 0.5 ) {
+            double start2[] = startPos;
+            double end2[] = endPos;
+            startPos = end2;
+            endPos = start2;
+        }
+        if ((Double.compare(posX, prevX) == 0 && Double.compare(posY, prevY) == 0 && Double.compare(posZ, prevZ) == 0)) {
+            delay++;
+            if (delay == 20) {
+                delay = 0;
                 double start2[] = startPos;
                 double end2[] = endPos;
                 startPos = end2;
                 endPos = start2;
             }
-            if ((Double.compare(posX, prevX) == 0 && Double.compare(posY, prevY) == 0 && Double.compare(posZ, prevZ) == 0)) {
-                delay++;
-                if (delay == 20) {
-                    delay = 0;
-                    double start2[] = startPos;
-                    double end2[] = endPos;
-                    startPos = end2;
-                    endPos = start2;
-                }
-            }
+        }
 
-            double x = 0, y = 0, z = 0;
-            prevX = posX;
-            prevY = posY;
-            prevZ = posZ;
-            if (endPos[1] > entityPos[1]) {
-                y = speed;
-            }
-            if (endPos[1] < entityPos[1]) {
-                y = -speed;
-            }
-            if (endPos[0] > entityPos[0]) {
-                x = speed;
-            }
-            if (endPos[0] < entityPos[0]) {
-                x = -speed;
-            }
-            if (endPos[2] > entityPos[2]) {
-                z = speed;
-            }
-            if (endPos[2] < entityPos[2]) {
-                z = -speed;
-            }
-            if (!dataManager.get(IS_BLOCK_MOVE).booleanValue()) {
-                x = 0;
-                y = 0;
-                z = 0;
-            }
+        double x = 0, y = 0, z = 0;
+        prevX = posX;
+        prevY = posY;
+        prevZ = posZ;
+        if (endPos[1] > entityPos[1]) {
+            y = speed;
+        }
+        if (endPos[1] < entityPos[1]) {
+            y = -speed;
+        }
+        if (endPos[0] > entityPos[0]) {
+            x = speed;
+        }
+        if (endPos[0] < entityPos[0]) {
+            x = -speed;
+        }
+        if (endPos[2] > entityPos[2]) {
+            z = speed;
+        }
+        if (endPos[2] < entityPos[2]) {
+            z = -speed;
+        }
+        if (!dataManager.get(CAN_BLOCK_MOVE)) {
+            x = 0;
+            y = 0;
+            z = 0;
+        }
 
-            if (getLeashed()) {
-                speed = 0.09;
-                playerSP.motionX = ((posX - playerSP.posX) / 20) + x;
-                motionZ = ((posZ - playerSP.posZ) / 20) + z;
-                motionY = ((posY - 2.5 - playerSP.posY) / 10);
-            }
-            if (!moveStop) {
-                if (dataManager.get(CAN_PLAYER_MOVE).booleanValue()) {
-                    List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
-                            this.posX - 1D, this.posY, this.posZ - 1D, this.posX + 1D, this.posY + 1.8, this.posZ + 1D));
-                    if (!list.isEmpty()) {
-                        for (Entity entity : list) {
-                            if ((entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
-                                if (GrabHelper.wallGrab || entity.onGround) {
-                                    double px = x, py = y, pz = z;
-                                    if (!GrabHelper.wallGrab && !isPlayer) {
-                                        entity.setVelocity(0, 0, 0);
-                                        playerSP.setVelocity(0, 0, 0);
-                                    }
-                                    if (px > 0)
-                                        px += playerSpeed;
-                                    if (px < 0)
-                                        px -= playerSpeed;
-                                    if (pz > 0)
-                                        pz += playerSpeed;
-                                    if (pz < 0)
-                                        pz -= playerSpeed;
-                                    if (py > 0) {
-                                        py += playerYSpeed;
-                                    }
-                                    if (playerSP.movementInput.jump) {
-                                        playerSP.jump();
-                                        playerSP.jump();
-                                        ActionEffect.setForceJump(true);
-                                    }
-                                    playerSP.moveEntity(px, py, pz);
-                                    WorldAPI.getPlayerMP().moveEntity(px, py, pz);
-                                    isPlayer = true;
-                                    break;
-                                }
-                            } else
-                                isPlayer = false;
-                        }
-                    }
-                }
-                setVelocity(x, y, z);
-            }
+        if (getLeashed()) {
+            speed = 0.09;
+//                playerSP.motionX = ((posX - playerSP.posX) / 20) + x;
+//                playerSP.motionZ = ((posZ - playerSP.posZ) / 20) + z;
+//                playerSP.motionY = ((posY - 2.5 - playerSP.posY) / 10);
+        }
+        if (!allBlockMoveStop) {
+            playerMove(x,y,z);
+            motionX = x;
+            motionY = y;
+            motionZ = z;
         }
     }
 
+    private void playerMove(double x, double y, double z) {
+        if (dataManager.get(CAN_PLAYER_MOVE)) {
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
+                    this.posX - 1D, this.posY, this.posZ - 1D, this.posX + 1D, this.posY + 1.8, this.posZ + 1D));
+            if (!list.isEmpty()) {
+                for (Entity entity : list) {
+                    if ((entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
+                        if (GrabHelper.wallGrab || entity.onGround) {
+                            double px = x, py = y, pz = z;
+                            if (!GrabHelper.wallGrab && !isPlayer) {
+                                entity.motionX = 0;
+                                entity.motionY = 0;
+                                entity.motionZ = 0;
+                            }
+                            if (px > 0)
+                                px += playerSpeed;
+                            if (px < 0)
+                                px -= playerSpeed;
+                            if (pz > 0)
+                                pz += playerSpeed;
+                            if (pz < 0)
+                                pz -= playerSpeed;
+                            if (py > 0) {
+                                py += playerYSpeed;
+                            }
+//                                    if (playerSP.movementInput.jump) {
+//                                        playerSP.jump();
+//                                        playerSP.jump();
+//                                        ActionEffect.setForceJump(true);
+//                                    }
+//                                    playerSP.moveEntity(px, py, pz);
+                            entity.moveEntity(px, py, pz);
+                            isPlayer = true;
+                            break;
+                        }
+                    } else
+                        isPlayer = false;
+                }
+            }
+        }
+    }
     public double[] getSpeed() {
         double x = 0, y = 0, z = 0;
         prevX = posX;
@@ -357,14 +366,7 @@ public class EntityMoveBlock extends EntityPreBlock {
     }
 
     public void setBlockMove(boolean blockMove) {
-        dataManager.set(IS_BLOCK_MOVE, blockMove);
-    }
-
-    public void setMoveDistance(float moveDistance, boolean posReset) {
-        dataManager.set(MOVE_DISTANCE, moveDistance);
-        this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
-        if (posReset)
-            this.setPos(getFacing(), posY, moveDistance);
+        dataManager.set(CAN_BLOCK_MOVE, blockMove);
     }
 
     /*

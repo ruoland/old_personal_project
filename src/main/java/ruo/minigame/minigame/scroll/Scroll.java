@@ -24,9 +24,6 @@ public class Scroll extends AbstractMiniGame {
 	@Override
 	public boolean start(Object... obj) {
 		KeyBinding.unPressAllKeys();
-		WorldAPI.getPlayer().motionX = 0;
-		WorldAPI.getPlayer().motionY = 0;
-		WorldAPI.getPlayer().motionZ = 0;
 		mc.thePlayer.motionX = 0;
 		mc.thePlayer.motionY = 0;
 		mc.thePlayer.motionZ = 0;
@@ -85,16 +82,11 @@ public class Scroll extends AbstractMiniGame {
 			s.setOptionKeyBinding(s.keyBindLeft, Keyboard.KEY_SECTION);
 			KeyBinding.resetKeyBindingArrayAndHash();
 			KeyBinding.unPressAllKeys();
-			WorldAPI.getPlayer().motionX = 0;
-			WorldAPI.getPlayer().motionY = 0;
-			WorldAPI.getPlayer().motionZ = 0;
+			KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), true);
 			mc.thePlayer.motionX = 0;
 			mc.thePlayer.motionY = 0;
 			mc.thePlayer.motionZ = 0;
 			mc.thePlayer.moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveForward = 0;
-			WorldAPI.getPlayer().moveStrafing = 0;
 
 			if (MiniGame.scroll.x) {
 				if (!MiniGame.scroll.xR) {
@@ -122,12 +114,6 @@ public class Scroll extends AbstractMiniGame {
 				}
 			}
 			Minecraft.getMinecraft().thePlayer.moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveForward = 0;
-			WorldAPI.getPlayer().moveStrafing = 0;
-			WorldAPI.getPlayer().motionX = 0;
-			WorldAPI.getPlayer().motionY = 0;
-			WorldAPI.getPlayer().motionZ = 0;
 			Minecraft.getMinecraft().thePlayer.motionX = 0;
 			Minecraft.getMinecraft().thePlayer.motionY = 0;
 			Minecraft.getMinecraft().thePlayer.motionZ = 0;
@@ -141,16 +127,12 @@ public class Scroll extends AbstractMiniGame {
 			s.setOptionKeyBinding(s.keyBindLeft, Keyboard.KEY_SECTION);
 			KeyBinding.resetKeyBindingArrayAndHash();
 			KeyBinding.unPressAllKeys();
-			WorldAPI.getPlayer().motionX = 0;
-			WorldAPI.getPlayer().motionY = 0;
-			WorldAPI.getPlayer().motionZ = 0;
+			KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), true);
+
 			Minecraft.getMinecraft().thePlayer.motionX = 0;
 			Minecraft.getMinecraft().thePlayer.motionY = 0;
 			Minecraft.getMinecraft().thePlayer.motionZ = 0;
 			Minecraft.getMinecraft().thePlayer.moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveForward = 0;
-			WorldAPI.getPlayer().moveStrafing = 0;
 
 			if (MiniGame.scroll.x) {
 				if (!MiniGame.scroll.xR) {
@@ -177,13 +159,7 @@ public class Scroll extends AbstractMiniGame {
 				}
 			}
 			Minecraft.getMinecraft().thePlayer.moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveEntity(0,0,0);
-			WorldAPI.getPlayer().moveForward = 0;
-			WorldAPI.getPlayer().moveStrafing = 0;
 
-			WorldAPI.getPlayer().motionX = 0;
-			WorldAPI.getPlayer().motionY = 0;
-			WorldAPI.getPlayer().motionZ = 0;
 			Minecraft.getMinecraft().thePlayer.motionX = 0;
 			Minecraft.getMinecraft().thePlayer.motionY = 0;
 			Minecraft.getMinecraft().thePlayer.motionZ = 0;

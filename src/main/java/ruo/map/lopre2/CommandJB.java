@@ -21,7 +21,9 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldSummary;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump1.EntityMoveBlock;
@@ -125,7 +127,7 @@ public class CommandJB extends CommandPlusBase {
                 System.out.println((endTime - startTime) / 1000 + "초.");
                 WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
                 WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
-                if (WorldAPI.equalsWorldName("JumpMap")) {
+                if (FMLCommonHandler.instance().getSide() == Side.CLIENT && WorldAPI.equalsWorldName("JumpMap")) {
                     WorldAPI.getPlayer().addStat(LoPre2.achievementOneClear);
                     if (WorldAPI.findInventoryItemCount(Items.APPLE) > 1) {
                         WorldAPI.getPlayer().addStat(LoPre2.achievementApple);
@@ -200,7 +202,7 @@ public class CommandJB extends CommandPlusBase {
                 System.out.println("DOWNRESET " + EntityWaterBlockCreator.downReset);
             }
             if (args[0].equalsIgnoreCase("moveStop")) {
-                EntityMoveBlock.moveStop = Boolean.valueOf(args[1]);
+                EntityMoveBlock.allBlockMoveStop = Boolean.valueOf(args[1]);
             }
             if (args[0].equalsIgnoreCase("nightvision")) {
                 LooPre2Event.nightVision = t.parseBoolean(args[1]);

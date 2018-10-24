@@ -41,8 +41,6 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-		lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(),
-				lavaBlock.getSpawnZ(), 90, 90, 1, false);
 		this.copyModel(lavaBlock);
 		lavaBlock.prevBlock = prevBlock;
 		lavaBlock.setBlockMode(getCurrentBlock());
@@ -57,8 +55,6 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());
-		lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3,
-				lavaBlock.getSpawnZ(), 90, 90, 1, false);
 		this.copyModel(lavaBlock);
 		lavaBlock.prevBlock = prevBlock;
 		lavaBlock.setBlockMode(getCurrentBlock());
@@ -123,8 +119,11 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 							this.getEntityBoundingBox().expand(0.5D, -0.4000000059604645D, 0.5D), Material.WATER,
 							this) || (posCheckDelay == 0 && WorldAPI.checkPos(this, prevX, prevY, prevZ))) {
 						this.setDead();
-					} else
-						this.setVelocity(0, -0.07, 0);
+					} else {
+						motionX = 0;
+						motionY = -0.07;
+						motionZ = 0;
+					}
 				} else
 					motionY = 0;
 				if(posCheckDelay == 0) {

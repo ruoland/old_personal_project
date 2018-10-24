@@ -3,6 +3,7 @@ package ruo.minigame.api;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.Timer;
@@ -31,6 +33,7 @@ import ruo.minigame.effect.AbstractTick.BlockXYZ;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -414,9 +417,9 @@ public class WorldAPI {
 
     public static EntityPlayer getPlayer() {
         MinecraftServer s = FMLCommonHandler.instance().getMinecraftServerInstance();
-//        if (FMLCommonHandler.instance().getSide() == Side.CLIENT && (s == null || s.getPlayerList() == null || s.getPlayerList().getPlayerList() == null
-//                || s.getPlayerList().getPlayerList().size() == 0))
-//            return Minecraft.getMinecraft().thePlayer;
+        if ((s == null || s.getPlayerList() == null || s.getPlayerList().getPlayerList() == null
+                || s.getPlayerList().getPlayerList().size() == 0))
+            return null;
 
         return s.getPlayerList().getPlayerList().get(0);
     }
@@ -463,7 +466,7 @@ public class WorldAPI {
     }
 
     public static World getWorld() {
-        return getPlayer() != null ? getPlayer().worldObj : null;
+        return getServer().getEntityWorld();
     }
 
     public static String getCurrentWorldName() {
@@ -471,8 +474,7 @@ public class WorldAPI {
         if(getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
             return "noworld";
         }
-        System.out.println(getServer().getEntityWorld().getWorldInfo().getWorldName());
-        return getPlayerMP().worldObj.getWorldInfo().getWorldName();
+        return getServer().getEntityWorld().getWorldInfo().getWorldName();
     }
 
     public static File getCurrentWorldFile() {
@@ -639,5 +641,17 @@ public class WorldAPI {
             return item.getItem() == item2;
         } else
             return false;
+    }
+    public static boolean equalsHeldItem(EntityPlayer player, Item item2) {
+        ItemStack item = player.getHeldItemMainhand();
+        if (item != null) {
+            return item.getItem() == item2;
+        } else
+            return false;
+    }
+    public static List<EntityPlayerMP> getPlayerList() {
+        if(getServer().getPlayerList() != null)
+        return getServer().getPlayerList().getPlayerList();
+        else return null;
     }
 }

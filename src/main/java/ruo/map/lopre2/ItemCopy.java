@@ -95,47 +95,11 @@ public class ItemCopy extends Item {
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
-        if (isSelected && entityIn instanceof EntityPlayer && preBlocks != null && stack.hasTagCompound() && stack.getTagCompound().getBoolean("PREV")) {
-            EntityPlayer playerIn = (EntityPlayer) entityIn;
-            RayTraceResult rayTraceResult = Minecraft.getMinecraft().objectMouseOver;
-
-            if ((rayTraceResult != null && rayTraceResult.entityHit != null) || lavaBlock != null) {
-                if (ItemCopy.lavaBlock == null) {
-                    lavaBlock = (EntityPreBlock) rayTraceResult.entityHit;
-                }
-                if (lavaBlock.isCopyBlock() || lavaBlock.isTeleport()) {
-                    lavaBlock = null;
-                    return;
-                }
-                lavaBlock.setForceSpawn(true);
-                double lavaY = lavaBlock.posY;
-                for (int i = 1; i <= preBlocks.length; i++) {
-                    if (preBlocks[i] == null)
-                        preBlocks[i] = lavaBlock.spawn(lavaBlock.posX + -WorldAPI.getVecXZ(playerIn, i)[0], lavaY, lavaBlock.posZ + -WorldAPI.getVecXZ(playerIn, i)[1]);
-                    preBlocks[i].setCopyBlock(true);
-                    if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("YONOFF")) {
-                        lavaY = lavaBlock.posY + -(playerIn.getLookVec().yCoord * (i + lavaYP));
-                    }
-                    preBlocks[i].setPosition(lavaBlock.posX + -WorldAPI.getVecXZ(playerIn, i)[0], lavaY, lavaBlock.posZ + -WorldAPI.getVecXZ(playerIn, i)[1]);
-                }
-                if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                    lavaYP += 0.1;
-                }
-                if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                    lavaYP -= 0.1;
-                }
-                if (Keyboard.isKeyDown(Keyboard.KEY_L) && !playerIn.getCooldownTracker().hasCooldown(this)) {
-                    itemInteractionForEntity(stack, playerIn, EntityDefaultNPC.getUUIDNPC(lavaBlock.getUniqueID()), EnumHand.MAIN_HAND);
-                    playerIn.getCooldownTracker().setCooldown(this, 10);
-                }
-            }
-        }
         if (!isSelected && worldIn.isRemote && preBlocks != null) {
             lavaBlock = null;
             for (EntityPreBlock preBlock : preBlocks) {
                 if (preBlock == null)
                     continue;
-                ;
                 preBlock.setDead();
             }
             preBlocks = new EntityPreBlock[(int)distance];

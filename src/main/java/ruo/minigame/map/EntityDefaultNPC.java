@@ -112,12 +112,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public double getDistance(Vec3d vec3d) {
         return super.getDistance(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
-
-    @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
-        return super.processInteract(player, hand, stack);
-    }
-
     public void teleportEnd() {
 
     }

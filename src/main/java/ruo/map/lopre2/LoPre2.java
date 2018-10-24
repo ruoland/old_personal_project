@@ -1,6 +1,5 @@
 package ruo.map.lopre2;
 
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -19,7 +17,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.jump1.*;
 import ruo.map.lopre2.jump2.*;
@@ -47,8 +44,8 @@ public class LoPre2 {
     @Instance("LoopPre2")
     public static LoPre2 instance;
 
-    @SidedProxy(serverSide = "ruo.map.lopre2.CommonProxy", clientSide = "ruo.map.lopre2.ClientProxy")
-    public static CommonProxy proxy;
+    @SidedProxy(serverSide = "ruo.map.lopre2.JumpCommonProxy", clientSide = "ruo.map.lopre2.JumpClientProxy")
+    public static JumpCommonProxy proxy;
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
         GameRegistry.register(itemSpanner.setUnlocalizedName("spanner").setRegistryName("looppre2:spanner"));
@@ -59,7 +56,7 @@ public class LoPre2 {
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
-        proxy.init();
+
         achievementApple.registerStat();
         achievementNoDie1.registerStat();
         achievementNoGameMode1.registerStat();
@@ -106,11 +103,9 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "VELOCITY-loopdownblock", EntityWaterBlockCreator.class);
         DebAPI.registerEntity(this, "VELOCITY-NO-EGG-PreBlock", EntityPreBlock.class);
         //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);
-
-
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
-
+        proxy.init();
     }
 
     @EventHandler

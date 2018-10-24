@@ -71,7 +71,9 @@ public class EntityFallingBlock extends EntityPreBlock {
         if (isInLava()) {
             if (lavaY == 0)
                 lavaY = MathHelper.floor_double(posY);
-            this.setVelocity(0, -0.004, 0);
+            motionX = 0;
+            motionY = -0.004;
+            motionZ = 0;
         }
         if (lavaY - 0.2 > posY) {
             this.setPositionAndUpdate(posX, getSpawnY(), posZ);

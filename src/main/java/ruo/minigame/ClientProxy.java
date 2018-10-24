@@ -7,10 +7,20 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.lwjgl.input.Keyboard;
-import ruo.minigame.minigame.minerun.BlockRendererDispatcherMineRun;
+import ruo.minigame.api.RenderAPI;
+import ruo.minigame.fakeplayer.EntityFakePlayer;
+import ruo.minigame.map.EntityDefaultBlock;
+import ruo.minigame.map.EntityDefaultNPC;
+import ruo.minigame.minigame.bomber.EntityBomb;
+import ruo.minigame.minigame.elytra.EntityFlyingWeen;
+import ruo.minigame.minigame.elytra.miniween.*;
+import ruo.minigame.minigame.elytra.playerarrow.EntityHomingTNT;
+import ruo.minigame.minigame.elytra.playerarrow.EntityTNTArrow;
+import ruo.minigame.minigame.minerun.*;
 
 import java.lang.reflect.Field;
 
@@ -19,6 +29,15 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void pre(FMLPreInitializationEvent event) {
+
+		//DebAPI.registerEvent(new TextEvent());
+
+		ClientRegistry.registerKeyBinding(grab);
+
+		ClientCommandHandler.instance.registerCommand(new CommandMg());
+	}
+
+	public void init(FMLInitializationEvent e){
 		try {
 			Field modelManagerField = Minecraft.class.getDeclaredField("modelManager");
 			modelManagerField.setAccessible(true);
@@ -33,13 +52,30 @@ public class ClientProxy extends CommonProxy {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		//DebAPI.registerEvent(new TextEvent());
-
-		ClientRegistry.registerKeyBinding(grab);
-
-		ClientCommandHandler.instance.registerCommand(new CommandMg());
+        RenderAPI.registerRender(EntityDummyPlayer.class);
+        RenderAPI.registerRender(EntityMRCreeper.class);
+        RenderAPI.registerRender(EntityMRZombie.class);
+        RenderAPI.registerRender(EntityMREnderman.class);
+        RenderAPI.registerRender(EntityMRMissileCreeper.class);
+        RenderAPI.registerRender(EntityMRRocketCreeper.class);
+        RenderAPI.registerRender(EntityMRWalkingZombie.class);
+        RenderAPI.registerRender(EntityFlyingWeen.class);
+        RenderAPI.registerRender(EntityElytraBullet.class);
+        RenderAPI.registerRender(EntityElytraPumpkin.class);
+        RenderAPI.registerRender(EntityElytraPumpkinAttack.class);
+        RenderAPI.registerRender(EntityElytraPumpkinFire.class);
+        RenderAPI.registerRender(EntityElytraChest.class);
+        RenderAPI.registerRender(EntityElytraScore.class);
+        RenderAPI.registerRender(EntityTNTArrow.class);
+        RenderAPI.registerRender(EntityHomingTNT.class);
+        RenderAPI.registerRender(EntityElytraCreeper.class);
+        RenderAPI.registerRender(EntityElytraBossWeen.class);
+        RenderAPI.registerRender(EntityElytraBossMini.class);
+        RenderAPI.registerRender(EntityBomb.class);
+        RenderAPI.registerRender(EntityFakePlayer.class);
+        RenderAPI.registerRender(EntityDefaultNPC.class);
+        RenderAPI.registerRender(EntityDefaultBlock.class);
 	}
-	
 	@Override
 	public void post(FMLPostInitializationEvent event){
 	

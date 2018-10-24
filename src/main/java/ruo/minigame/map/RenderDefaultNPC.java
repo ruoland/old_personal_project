@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -15,6 +16,8 @@ import org.lwjgl.opengl.GL11;
 import ruo.helloween.EntityWeen;
 import ruo.map.lopre2.jump1.EntityBuildBlock;
 import ruo.minigame.api.RenderAPI;
+
+import static ruo.minigame.map.TypeModel.BLOCK;
 
 @SideOnly(Side.CLIENT)
 public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<EntityDefaultNPC> {
@@ -54,7 +57,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 return;
             }
 
-            if (npc.getModel() == TypeModel.BLOCK) {
+            if (npc.getModel() == BLOCK) {
                 boolean flag = !npc.isInvisible() || this.renderOutlines;
                 boolean flag1 = !flag && !npc.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
 
@@ -147,7 +150,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     @Override
     public void doRender(EntityDefaultNPC entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.mainModel.isChild = entity.isChild();
-        if (entity instanceof EntityDefaultBlock && entity.getModel() == TypeModel.BLOCK && !(mainModel instanceof ModelDefaultBlock)) {
+        if (entity instanceof EntityDefaultBlock && entity.getModel() == BLOCK && !(mainModel instanceof ModelDefaultBlock)) {
             mainModel = new ModelDefaultBlock();
             DEFAULT_RES_LOC = entity.getTexture();
         }
@@ -194,6 +197,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         if (entity.getModel() == TypeModel.PIG && !(mainModel instanceof ModelPig)) {
             mainModel = new ModelPig();
             DEFAULT_RES_LOC = new ResourceLocation("textures/entity/pig/pig.png");
+        }
+        if(entity.getModel() == BLOCK && !DEFAULT_RES_LOC.equals(RenderAPI.getBlockTexture(entity.getCurrentBlock()))){
+            DEFAULT_RES_LOC = RenderAPI.getBlockTexture(entity.getCurrentBlock());
+            System.out.println("갱신됨"+DEFAULT_RES_LOC+RenderAPI.getBlockTexture(entity.getCurrentBlock())+entity.getCurrentBlock());
         }
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }

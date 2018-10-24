@@ -37,7 +37,7 @@ public class EntityBigBlockMove extends EntityMoveBlock {
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-        lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ(), 90, 90, 1, false);
+
         lavaBlock.setBlockMode(getCurrentStack());
         worldObj.spawnEntityInWorld(lavaBlock);
         this.copyModel(lavaBlock);
