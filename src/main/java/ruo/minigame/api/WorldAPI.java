@@ -27,6 +27,8 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import ruo.cmplus.CMPlus;
+import ruo.cmplus.test.CMPacketCommand;
 import ruo.minigame.MiniGame;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.AbstractTick.BlockXYZ;
@@ -448,9 +450,14 @@ public class WorldAPI {
     }
 
     public static void teleport(double x, double y, double z, float yaw, float pitch) {
-        ((EntityPlayerMP) getPlayer()).connection.setPlayerLocation(x, y, z, yaw, pitch);
+        teleport(getPlayerMP(), x,y,z,yaw,pitch);
     }
-
+    public static void teleport(EntityPlayerMP playerMP, double x, double y, double z, float yaw, float pitch) {
+        playerMP.connection.setPlayerLocation(x, y, z, yaw, pitch);
+    }
+    public static void teleport(EntityPlayerMP playerMP, double x, double y, double z) {
+        playerMP.connection.setPlayerLocation(x, y, z, playerMP.rotationYaw, playerMP.rotationPitch);
+    }
     public static EntityPlayerMP getPlayerByName(String username) {
         MinecraftServer s = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (s.getPlayerList().getPlayerList().size() == 0)
@@ -478,7 +485,10 @@ public class WorldAPI {
     }
 
     public static File getCurrentWorldFile() {
+        if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
         return new File("./saves/" + getCurrentWorldName());
+        else
+            return new File("./"+getCurrentWorldName());
     }
 
     public static String[] getSignText(BlockPos block) {
@@ -509,6 +519,8 @@ public class WorldAPI {
             getServer().getCommandManager().executeCommand(sender, command);
             return;
         }
+        CMPlus.INSTANCE.sendTo(new CMPacketCommand(command), (EntityPlayerMP) sender);
+
 //        Minecraft.getMinecraft().thePlayer.sendChatMessage(command);
     }
 
@@ -518,7 +530,7 @@ public class WorldAPI {
             commandName = command.split(" ")[0].replace("/", "");//명령어를 찾기 위해 인자를 때어냄
         else
             commandName = command.replaceFirst("/", "");
-        return ClientCommandHandler.instance.getCommands().get(commandName) != null;
+        return FMLCommonHandler.instance().getSide() == Side.CLIENT && ClientCommandHandler.instance.getCommands().get(commandName) != null;
     }
     public static boolean isServerCommand(String command){
         String commandName;

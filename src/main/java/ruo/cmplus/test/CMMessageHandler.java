@@ -10,11 +10,11 @@ public class CMMessageHandler implements IMessageHandler<CMPacketCommand, IMessa
 
     @Override
     public IMessage onMessage(CMPacketCommand message, MessageContext ctx) {
-        String username = message.name;
-        System.out.println("메세지 핸들러 " + username);
+        String command = message.name;
+        System.out.println("메세지 핸들러 " + command);
         Minecraft.getMinecraft().addScheduledTask(() -> {
             ClientCommandHandler.instance.executeCommand(Minecraft.getMinecraft().thePlayer,
-                    username);
+                    command);
         });
         return null;
     }

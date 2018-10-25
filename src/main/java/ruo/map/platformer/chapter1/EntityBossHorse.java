@@ -11,9 +11,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import ruo.map.lot.EntityFallBlock;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
+import ruo.minigame.map.EntityDefaultNPC;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
@@ -81,7 +81,7 @@ public class EntityBossHorse extends EntityHorse {
         WorldAPI.blockTick(worldObj, 0,0,0,0,0,0, new AbstractTick.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
-                EntityFallBlock lavaBlock = new EntityFallBlock(worldObj);
+                EntityDefaultNPC lavaBlock = new EntityDefaultNPC(worldObj);
                 lavaBlock.setPosition(x, y, z);
                 lavaBlock.setBlock(Blocks.STONE);
                 worldObj.spawnEntityInWorld(lavaBlock);

@@ -22,7 +22,7 @@ public class CMPacketCommand implements IMessage {
 	@Override
 	public void toBytes(ByteBuf buf) {
 		ByteBufUtils.writeUTF8String(buf, name);
-		//System.out.println("보냄"+name);
+		System.out.println("보냄"+name);
 
 	}
 

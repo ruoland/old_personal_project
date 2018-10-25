@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Loader;
-import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
@@ -65,7 +64,11 @@ public class GrabHelper {
 			} else
 				blockColide = false;
 		}
-		AxisAlignedBB aabbblock = null;
+
+	}
+
+	/*
+			AxisAlignedBB aabbblock = null;
 		if(Loader.isModLoaded("LoopPre2")) {
 			AxisAlignedBB aabbp = new AxisAlignedBB(EntityAPI.lookPlayerX(1), player.posY + 1, EntityAPI.lookPlayerZ(1), player.posX, player.posY, player.posZ);
 			List<EntityPreBlock> list = player.worldObj.getEntitiesWithinAABB(EntityPreBlock.class, aabbp);
@@ -95,7 +98,7 @@ public class GrabHelper {
 			prevZ = player.posZ;
 
 		}
-	}
+	 */
 
 	public static void reset() {
 		isReset = true;

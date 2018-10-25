@@ -18,7 +18,6 @@ import ruo.map.lot.tool.EntityEnderShot;
 import ruo.minigame.api.RenderAPI;
 
 public class ClientProxy extends CommonProxy {
-    public static KeyBinding keyBindFly = new KeyBinding("날기", Keyboard.KEY_F, "LOT");
 
     @Override
     public void init() {

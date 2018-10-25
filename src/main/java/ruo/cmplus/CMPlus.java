@@ -147,6 +147,7 @@ public class CMPlus {
         event.registerServerCommand(new CommandFunction());
         event.registerServerCommand(new CommandVar());
         event.registerServerCommand(new CommandMath());
+        event.registerServerCommand(new CommandSend());
 
         //여러가지 이유로 멀티에서 사용불가능인 명령어들
         //개발중 버그 안잡음 멀티에선 NPC 사용 불가능 타임스피드는..

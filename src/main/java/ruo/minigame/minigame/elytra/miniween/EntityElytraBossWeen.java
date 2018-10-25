@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.cmplus.util.Sky;
 import ruo.helloween.WeenEffect;
-import ruo.map.lopre2.LooPre2Event;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.Direction;
 import ruo.minigame.api.PosHelper;

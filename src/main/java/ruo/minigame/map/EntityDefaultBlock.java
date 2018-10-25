@@ -17,10 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.Skills;
 import ruo.cmplus.deb.DebAPI;
-import ruo.minigame.api.BlockAPI;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.api.WorldAPI;
 
@@ -167,9 +164,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND && isServerWorld()) {
-            if (SkillHelper.getPlayerSkill(player).isRegister(Skills.BLOCK_GRAB))
-                setTeleport(true);
-
         }
         if (player.isSneaking() && stack != null && stack.getItem() instanceof ItemBlock) {
             this.setBlock(stack);

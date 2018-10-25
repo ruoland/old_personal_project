@@ -19,16 +19,6 @@ public class LOTEvent {
 	public static boolean isLOT = false;
 	private int flyDelay = 0;
 	@SubscribeEvent
-	public void event(InputEvent.KeyInputEvent e) {
-		if(isLOT && ClientProxy.keyBindFly.isPressed()){
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-			if(WorldAPI.equalsItem(player.inventory.armorInventory[2], Items.ELYTRA)) {
-				player.capabilities.isFlying = !Minecraft.getMinecraft().thePlayer.capabilities.isFlying;
-				player.sendPlayerAbilities();
-			}
-		}
-	}
-	@SubscribeEvent
 	public void event(TickEvent.PlayerTickEvent e) {
 		if(isLOT && !e.player.capabilities.isCreativeMode && WorldAPI.equalsWorldName("LOT")){
 			if(dungeonArea != null){

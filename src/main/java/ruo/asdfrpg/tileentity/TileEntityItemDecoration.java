@@ -1,7 +1,7 @@
 package ruo.asdfrpg.tileentity;
 
-import ruo.map.tycoon.block.TileEntityBase;
+import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityItemDecoration extends TileEntityBase {
+public class TileEntityItemDecoration extends TileEntity {
 
 }

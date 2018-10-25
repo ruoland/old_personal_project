@@ -247,9 +247,9 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public void teleport() {
-        if (WorldAPI.getPlayerMP() == null && FMLCommonHandler.instance().getSide().isServer())
+        if (WorldAPI.getPlayer() == null && FMLCommonHandler.instance().getSide().isServer())
             return;
-        Vec3d vec = WorldAPI.getPlayer().getLookVec();
+        Vec3d vec = Minecraft.getMinecraft().thePlayer.getLookVec();
         this.setPosition((WorldAPI.x() + vec.xCoord * ax),
                 WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
                 WorldAPI.z() + vec.zCoord * ax);

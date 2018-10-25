@@ -9,11 +9,10 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import ruo.map.lopre2.EntityPreBlock;
-import ruo.map.lopre2.jump3.EntityLavaSpawnBlock;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.map.EntityDefaultNPC;
 
-public class EntityPlatBlock extends EntityPreBlock {
+public class EntityPlatBlock extends EntityDefaultNPC {
     //넉백된 상태
     private static final DataParameter<Boolean> ISKNOCKBACK = EntityDataManager.createKey(EntityPlatBlock.class, DataSerializers.BOOLEAN);
 
@@ -76,31 +75,5 @@ public class EntityPlatBlock extends EntityPreBlock {
             System.out.println("사라진 플랫블럭 좌표 " + this.getSpawnX() + ", " + this.getSpawnY() + ", " + this.getSpawnZ());
         }
         return true;
-    }
-
-    @Override
-    public boolean canTeleportLock() {
-        return false;
-    }
-
-    @Override
-    public EntityPreBlock spawn(double x, double y, double z) {
-        EntityPlatBlock lavaBlock = new EntityPlatBlock(worldObj);
-        lavaBlock.setTeleportLock(canTeleportLock());
-        lavaBlock.setSpawnXYZ(x, y, z);
-        lavaBlock.setTeleport(false);
-        lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-        lavaBlock.setPositionAndRotationDirect(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ(), 90, 90, 0, false);
-        lavaBlock.setBlockMode(getCurrentBlock());
-        this.copyModel(lavaBlock);
-        lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
-        lavaBlock.setBlockMetadata(getBlockMetadata());
-        lavaBlock.setInv(isInv());
-        lavaBlock.setInvisible(isInvisible());
-        lavaBlock.setCanKnockBack(canKnockBack());
-        if (isServerWorld() || canForceSpawn()) {
-            worldObj.spawnEntityInWorld(lavaBlock);
-        }
-        return lavaBlock;
     }
 }

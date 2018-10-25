@@ -142,6 +142,7 @@ public class EntityBigBlock extends EntityPreBlock {
             DebAPI.msgText("LoopPre2","사이즈가 변경됨 "+getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
         }
 
+
         if (!canTeleportLock() && (Float.compare(getRotateX(), 0) != 0 || Float.compare(getRotateY(), 0) != 0
                 || Float.compare(getRotateZ(), 0) != 0)) {//0이 동일함, -1은 첫번째 인자가 작음 width 는 서버월드에서 0을 반환하니 주의
             this.setTeleportLock(true);

@@ -2,7 +2,10 @@ package ruo.cmplus.cm;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+import ruo.cmplus.cm.shortco.CommandFunc;
+import ruo.cmplus.cm.v18.function.CommandFunction;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.cmplus.util.CommandTool;
 import ruo.minigame.api.WorldAPI;
@@ -22,9 +25,10 @@ public class CommandTimer extends CommandPlusBase {
 		TickRegister.register(new AbstractTick(tick * 20, false) {
 			@Override
 			public void run(Type type) {
-				WorldAPI.command(command);
+				WorldAPI.command(sender, command);
 			}
 		});
+
 		t.addLoMessage("start");
 	}
 }

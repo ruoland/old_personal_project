@@ -28,7 +28,7 @@ public class WeenEvent {
 
     @SubscribeEvent
     public void right(LivingFallEvent e) {
-        if (e.getEntityLiving() instanceof EntityPlayer && MiniGame.elytra.isStart()) {
+        if (isWeen && e.getEntityLiving() instanceof EntityPlayer && MiniGame.elytra.isStart()) {
             e.setDistance(0);
         }
     }

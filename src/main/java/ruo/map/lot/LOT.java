@@ -20,8 +20,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
-import ruo.asdfrpg.EntityLight;
-import ruo.asdfrpg.skill.RenderLight;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lot.block.BlockClock;
 import ruo.map.lot.block.TileClock;

@@ -69,8 +69,9 @@ public class EntityFallingBlock extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (isInLava()) {
-            if (lavaY == 0)
-                lavaY = MathHelper.floor_double(posY);
+            if (lavaY == 0) {
+                lavaY = (int) Math.round(posY);
+            }
             motionX = 0;
             motionY = -0.004;
             motionZ = 0;
