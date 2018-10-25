@@ -240,23 +240,27 @@ public class EntityMoveBlock extends EntityPreBlock {
         prevX = posX;
         prevY = posY;
         prevZ = posZ;
-        if (endPos[1] > entityPos[1]) {
-            y = speed;
+        if(getFacing() == EnumFacing.UP || getFacing() == EnumFacing.DOWN) {
+            if (endPos[1] > entityPos[1]) {
+                y = speed;
+            }
+            if (endPos[1] < entityPos[1]) {
+                y = -speed;
+            }
         }
-        if (endPos[1] < entityPos[1]) {
-            y = -speed;
-        }
-        if (endPos[0] > entityPos[0]) {
-            x = speed;
-        }
-        if (endPos[0] < entityPos[0]) {
-            x = -speed;
-        }
-        if (endPos[2] > entityPos[2]) {
-            z = speed;
-        }
-        if (endPos[2] < entityPos[2]) {
-            z = -speed;
+        else {
+            if (endPos[0] > entityPos[0]) {
+                x = speed;
+            }
+            if (endPos[0] < entityPos[0]) {
+                x = -speed;
+            }
+            if (endPos[2] > entityPos[2]) {
+                z = speed;
+            }
+            if (endPos[2] < entityPos[2]) {
+                z = -speed;
+            }
         }
         if (!dataManager.get(CAN_BLOCK_MOVE)) {
             x = 0;

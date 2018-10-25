@@ -22,16 +22,13 @@ public class JumpEvent2 {
                 if (e.getMessage().getUnformattedComponentText().indexOf("의 리스폰 지점을") != -1)
                     e.setCanceled(true);
             }
-
         }
-
     }
 
     @SubscribeEvent
     public void playerTick(CommandEvent e) {
         if (LoPre2.checkWorld()) {
             if (e.getCommand().getCommandName().equalsIgnoreCase("spawnpoint")) {
-                ActionEffect.setYTP(WorldAPI.getPlayer().posY - 20, WorldAPI.getPlayer().rotationPitch, WorldAPI.getPlayer().rotationYaw);
                 WorldAPI.command("/heal");
             }
         }
@@ -45,8 +42,10 @@ public class JumpEvent2 {
                     if (stack != null && stack.getItem() instanceof ItemSpanner) {
                         CommandJB.isDebMode = true;
                     }
-
                 }
+                if(e.player.bedLocation != null)
+                ActionEffect.setYTP(e.player.bedLocation.getY() - 20, ActionEffect.getPitch(), ActionEffect.getYaw());
+
             }
 
         }

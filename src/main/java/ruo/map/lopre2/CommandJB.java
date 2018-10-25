@@ -112,10 +112,10 @@ public class CommandJB extends CommandPlusBase {
                 isLavaInvisible = !isLavaInvisible;
                 System.out.println(isLavaInvisible);
             }
-            if(args[0].equalsIgnoreCase("hidepath1")){
+            if (args[0].equalsIgnoreCase("hidepath1")) {
                 WorldAPI.getPlayer().addStat(LoPre2.achievementHidePath1);
             }
-            if(args[0].equalsIgnoreCase("hidepath2")){
+            if (args[0].equalsIgnoreCase("hidepath2")) {
                 WorldAPI.getPlayer().addStat(LoPre2.achievementHidePath2);
             }
             if (args[0].equalsIgnoreCase("end")) {
@@ -128,22 +128,27 @@ public class CommandJB extends CommandPlusBase {
                 WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
                 WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
                 if (FMLCommonHandler.instance().getSide() == Side.CLIENT && WorldAPI.equalsWorldName("JumpMap")) {
-                    WorldAPI.getPlayer().addStat(LoPre2.achievementOneClear);
-                    if (WorldAPI.findInventoryItemCount(Items.APPLE) > 1) {
-                        WorldAPI.getPlayer().addStat(LoPre2.achievementApple);
+                    int appleCount = 0;
+                    for (EntityPlayer player : server.getPlayerList().getPlayerList()) {
+                        appleCount += WorldAPI.findInventoryItemCount(player, Items.APPLE);
+                        player.addStat(LoPre2.achievementOneClear);
+                        if (appleCount > 1) {
+                            player.addStat(LoPre2.achievementApple);
+                        }
+                        if (LooPre2Event.deathCount == 0) {
+                            player.addStat(LoPre2.achievementNoDie1);
+                        }
+                        if (LooPre2Event.gamemodeCount == 0) {
+                            player.addStat(LoPre2.achievementNoGameMode1);
+                        }
                     }
-                    if (LooPre2Event.deathCount == 0) {
-                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoDie1);
-                    }
-                    if (LooPre2Event.gamemodeCount == 0) {
-                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoGameMode1);
-                    }
+
                     WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 플레이 해주셔서 감사합니다?");
                     TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.]");
                     Style style = new Style();
                     textComponent.setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb jump2")));
                     sender.addChatMessage(textComponent);
-                }else if(WorldAPI.equalsWorldName("JumpMap Sea2")){
+                } else if (WorldAPI.equalsWorldName("JumpMap Sea2")) {
                     WorldAPI.getPlayer().addStat(LoPre2.achievementTwoClear);
                     if (LooPre2Event.deathCount == 0) {
                         WorldAPI.getPlayer().addStat(LoPre2.achievementNoDie2);
@@ -232,9 +237,9 @@ public class CommandJB extends CommandPlusBase {
                 mc.loadWorld((WorldClient) null);
                 ISaveFormat isaveformat = mc.getSaveLoader();
                 String worldName = "JumpMap Sea2";
-                if(diffu.equalsIgnoreCase("normal"))
+                if (diffu.equalsIgnoreCase("normal"))
                     mc.gameSettings.difficulty = EnumDifficulty.NORMAL;
-                else if(diffu.equalsIgnoreCase("hard"))
+                else if (diffu.equalsIgnoreCase("hard"))
                     mc.gameSettings.difficulty = EnumDifficulty.HARD;
 
                 if (isaveformat.canLoadWorld(worldName)) {

@@ -456,8 +456,16 @@ public class WorldAPI {
         playerMP.connection.setPlayerLocation(x, y, z, yaw, pitch);
     }
     public static void teleport(EntityPlayerMP playerMP, double x, double y, double z) {
-        playerMP.connection.setPlayerLocation(x, y, z, playerMP.rotationYaw, playerMP.rotationPitch);
+        teleport(playerMP, x, y, z, playerMP.rotationYaw, playerMP.rotationPitch);
     }
+
+    public static void teleport(EntityPlayerMP playerMP, BlockPos pos) {
+        teleport(playerMP, pos.getX(), pos.getY(), pos.getZ(), playerMP.rotationYaw, playerMP.rotationPitch);
+    }
+    public static void teleport(EntityPlayerMP playerMP, BlockPos pos, float yaw, float pitch) {
+        teleport(playerMP, pos.getX(), pos.getY(), pos.getZ(), yaw, pitch);
+    }
+
     public static EntityPlayerMP getPlayerByName(String username) {
         MinecraftServer s = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (s.getPlayerList().getPlayerList().size() == 0)
@@ -478,7 +486,7 @@ public class WorldAPI {
 
     public static String getCurrentWorldName() {
 
-        if(getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
+        if(getServer() == null || getServer().worldServers.length == 0 || getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
             return "noworld";
         }
         return getServer().getEntityWorld().getWorldInfo().getWorldName();
@@ -628,9 +636,9 @@ public class WorldAPI {
         return e.worldObj.getClosestPlayerToEntity(e, 10.0D);
     }
 
-    public static int findInventoryItemCount(Item e) {
+    public static int findInventoryItemCount(EntityPlayer player, Item e) {
         int appleCount = 0;
-        for (ItemStack itemstack : WorldAPI.getPlayer().inventory.mainInventory) {
+        for (ItemStack itemstack : player.inventory.mainInventory) {
             if (itemstack != null && itemstack.getItem() == e) {
                 appleCount += itemstack.stackSize;
             }

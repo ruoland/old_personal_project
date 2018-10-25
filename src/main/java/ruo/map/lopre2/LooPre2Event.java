@@ -32,7 +32,11 @@ public class LooPre2Event {
     public static int deathCount, gamemodeCount, spawnCount, healCount;
     private double startY;
     private boolean isDown;
-
+    public static String asdf;
+    @SubscribeEvent
+    public void waterJump(ServerChatEvent e) {
+        asdf =e.getMessage();
+    }
     @SubscribeEvent
     public void waterJump(LivingUpdateEvent e) {
         if (LoPre2.checkWorld() && e.getEntityLiving().isServerWorld() && e.getEntityLiving() instanceof EntityPlayer && e.getEntityLiving().isInWater()) {
@@ -164,13 +168,6 @@ public class LooPre2Event {
     }
 
     @SubscribeEvent
-    public void renderUI(RenderBlockOverlayEvent event) {
-        if (event.getBlockForOverlay().getBlock() == Blocks.LAVA || event.getBlockForOverlay().getBlock() == Blocks.FLOWING_LAVA) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
     public void renderUI(RenderGameOverlayEvent.Post event) {
         if (LoPre2.checkWorld()) {
             if (event.getType() == ElementType.ALL) {
@@ -201,7 +198,7 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void event(LoginEvent event) {
-        if (WorldAPI.equalsWorldName("JumpMap")) {
+        if (WorldAPI.equalsWorldName("JumpMap") || WorldAPI.equalsWorldName("JumpMap Sea2")) {
             if (Minecraft.getMinecraft().gameSettings.limitFramerate > 60) {
                 Minecraft.getMinecraft().gameSettings.limitFramerate = 60;
             }

@@ -3,9 +3,13 @@ package ruo.map.lopre2.jump1;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import ruo.map.lopre2.EntityPreBlock;
+import ruo.map.lopre2.jump2.EntityTeleportBlock;
 
 //
 public class EntityInvisibleBlock extends EntityPreBlock {
@@ -16,6 +20,11 @@ public class EntityInvisibleBlock extends EntityPreBlock {
 		setBlockMode(Blocks.STONE);
 		this.isFly = true;
 		defaultDelay = 20;
+	}
+
+	@Override
+	protected void entityInit() {
+		super.entityInit();
 	}
 
 	@Override
@@ -43,14 +52,16 @@ public class EntityInvisibleBlock extends EntityPreBlock {
         if(isServerWorld()){
 			if(currentDelay >=0 && !isTeleport()) {
 				if(isInvisible()){
-					currentDelay -= 1;
+					currentDelay --;
 				}
-				else
+				else {
 					currentDelay--;
+				}
 			}
 		}
         if(currentDelay <= 0){
-        	this.setInvisible(!isInvisible());
+			setInv(!isInv());
+			setInvisible(isInv());
         	currentDelay = defaultDelay;
         }
 		super.onLivingUpdate();

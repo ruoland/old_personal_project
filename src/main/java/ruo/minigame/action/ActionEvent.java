@@ -13,8 +13,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.ClientProxy;
 import ruo.minigame.MiniGame;
@@ -49,32 +51,34 @@ public class ActionEvent {
         }
 
     }
-    //@SubscribeEvent
+    @SubscribeEvent
     public void playerTick(PlayerTickEvent event) {
-        GameSettings gs = Minecraft.getMinecraft().gameSettings;
-        if (ActionEffect.canDoubleJump()) {
-            if (event.player instanceof EntityPlayerMP && !canDoubleJump && event.player.onGround) {
-                DebAPI.msgText("MiniGame",""+isPlayerJump+!canDoubleJump+event.player.onGround+event.player.motionY+event.player+"땅에 닿음");
-                canDoubleJump = true;
-            }
-            if (canDoubleJump && gs.keyBindJump.isPressed() && (!event.player.onGround || forceJump) && isPlayerJump) {
-                canDoubleJump = false;
-                isPlayerJump = false;
-                forceJump = false;
-                event.player.motionY = 0.5F;
-                event.player.fallDistance = 0;
-                DebAPI.msgText("MiniGame","더블점프함");
-                if (event.player.isSprinting()) {
-                    float f = event.player.rotationYaw * 0.017453292F;
-                    event.player.motionX -= (double) (MathHelper.sin(f) * 0.2F);
-                    event.player.motionZ += (double) (MathHelper.cos(f) * 0.2F);
+        if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            GameSettings gs = Minecraft.getMinecraft().gameSettings;
+            if (ActionEffect.canDoubleJump()) {
+                if (event.player instanceof EntityPlayerMP && !canDoubleJump && event.player.onGround) {
+                    DebAPI.msgText("MiniGame", "" + isPlayerJump + !canDoubleJump + event.player.onGround + event.player.motionY + event.player + "땅에 닿음");
+                    canDoubleJump = true;
+                }
+                if (canDoubleJump && gs.keyBindJump.isPressed() && (!event.player.onGround || forceJump) && isPlayerJump) {
+                    canDoubleJump = false;
+                    isPlayerJump = false;
+                    forceJump = false;
+                    event.player.motionY = 0.5F;
+                    event.player.fallDistance = 0;
+                    DebAPI.msgText("MiniGame", "더블점프함");
+                    if (event.player.isSprinting()) {
+                        float f = event.player.rotationYaw * 0.017453292F;
+                        event.player.motionX -= (double) (MathHelper.sin(f) * 0.2F);
+                        event.player.motionZ += (double) (MathHelper.cos(f) * 0.2F);
+                    }
                 }
             }
         }
         if (ActionEffect.getYTP() != 0) {
             double tpY = ActionEffect.getYTP();
             BlockPos tpPos = event.player.getBedLocation();
-            if (event.player.posY < tpY && tpPos.getY() > event.player.posY) {
+            if (tpPos != null && event.player.posY < tpY && tpPos.getY() > event.player.posY) {
                 event.player.fallDistance = 0;
                 event.player.setHealth(event.player.getMaxHealth());
                 WorldAPI.teleport(event.player.getBedLocation().add(0, 0.3, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
@@ -84,7 +88,7 @@ public class ActionEvent {
                     for(int i=0;i<blockAPI.size();i++){
                         if(blockAPI.getBlock(i) instanceof BlockBasePressurePlate){
                             event.player.setSpawnPoint(blockAPI.getPos(i), true);
-                            WorldAPI.teleport(event.player.getBedLocation().add(0, 1, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
+                            WorldAPI.teleport((EntityPlayerMP) event.player, event.player.getBedLocation().add(0, 1, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
                             break;
                         }
                     }
@@ -92,6 +96,7 @@ public class ActionEvent {
             }
         }
         if (ActionEffect.canCrawl()) {
+            GameSettings gs = Minecraft.getMinecraft().gameSettings;
             if (ClientProxy.grab.isKeyDown()) {
                 GrabHelper.wallGrabCheck(event.player, GrabHelper.wallGrab);
                 if (GrabHelper.wallGrab) {
