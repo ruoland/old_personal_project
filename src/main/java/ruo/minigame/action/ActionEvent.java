@@ -17,7 +17,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import ruo.cmplus.CMPlus;
 import ruo.cmplus.deb.DebAPI;
+import ruo.cmplus.test.CMPacketCommand;
 import ruo.minigame.ClientProxy;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.BlockAPI;
@@ -55,15 +57,17 @@ public class ActionEvent {
     public void playerTick(PlayerTickEvent event) {
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             GameSettings gs = Minecraft.getMinecraft().gameSettings;
+
             if (ActionEffect.canDoubleJump()) {
-                if (event.player instanceof EntityPlayerMP && !canDoubleJump && event.player.onGround) {
+                if (!canDoubleJump && event.player.onGround) {
                     DebAPI.msgText("MiniGame", "" + isPlayerJump + !canDoubleJump + event.player.onGround + event.player.motionY + event.player + "땅에 닿음");
                     canDoubleJump = true;
                 }
-                if (canDoubleJump && gs.keyBindJump.isPressed() && (!event.player.onGround || forceJump) && isPlayerJump) {
+                boolean isCanJump = (canDoubleJump && gs.keyBindJump.isPressed() && !event.player.onGround && isPlayerJump);
+                if (isCanJump) {
                     canDoubleJump = false;
                     isPlayerJump = false;
-                    forceJump = false;
+                    System.out.println("더블점프함");
                     event.player.motionY = 0.5F;
                     event.player.fallDistance = 0;
                     DebAPI.msgText("MiniGame", "더블점프함");
@@ -72,16 +76,18 @@ public class ActionEvent {
                         event.player.motionX -= (double) (MathHelper.sin(f) * 0.2F);
                         event.player.motionZ += (double) (MathHelper.cos(f) * 0.2F);
                     }
+                    CMPlus.INSTANCE.sendToServer(new CMPacketCommand("더블점프:"+event.player.getName()));
+
                 }
             }
         }
         if (ActionEffect.getYTP() != 0) {
             double tpY = ActionEffect.getYTP();
             BlockPos tpPos = event.player.getBedLocation();
-            if (tpPos != null && event.player.posY < tpY && tpPos.getY() > event.player.posY) {
+            if (event.player instanceof EntityPlayerMP && tpPos != null && event.player.posY < tpY && tpPos.getY() > event.player.posY) {
                 event.player.fallDistance = 0;
                 event.player.setHealth(event.player.getMaxHealth());
-                WorldAPI.teleport(event.player.getBedLocation().add(0, 0.3, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
+                WorldAPI.teleport((EntityPlayerMP) event.player, event.player.getBedLocation().add(0, 0.3, 0), ActionEffect.getYaw(), ActionEffect.getPitch());
                 Block block = event.player.worldObj.getBlockState(event.player.getBedLocation().add(0, -1, 0)).getBlock();
                 if(block instanceof BlockLiquid || event.player.worldObj.isAirBlock(event.player.getBedLocation().add(0, -1, 0))){//만약 텔레포트할 위치에 밟을 블럭이 없는 경우
                     BlockAPI blockAPI = WorldAPI.getBlock(event.player.worldObj, event.player.getBedLocation(), 4D);

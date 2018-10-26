@@ -35,8 +35,8 @@ public class CommandClip extends CommandPlusBase {
 
         String playerPosDeb = start+posX + ", " + posY + ", " + posZ+end;
         String playerPos = start+posX + " " + posY + " " + posZ+end;
-        String yawpitchDeb = start+WorldAPI.getPlayer().rotationYaw + "," + WorldAPI.getPlayer().rotationPitch+end;
-        String yawpitch = start+WorldAPI.getPlayer().rotationYaw + " " + WorldAPI.getPlayer().rotationPitch+end;
+        String yawpitchDeb = start+sender.getCommandSenderEntity().rotationYaw + "," + sender.getCommandSenderEntity().rotationPitch+end;
+        String yawpitch = start+sender.getCommandSenderEntity().rotationYaw + " " + sender.getCommandSenderEntity().rotationPitch+end;
         String currentClip = null;
         try {
             currentClip = "" + board.getContents(DataFlavor.stringFlavor).getTransferData(DataFlavor.stringFlavor);
@@ -66,7 +66,7 @@ public class CommandClip extends CommandPlusBase {
             debMode = !debMode;
             System.out.println(debMode);
         } else if (t.argCheck(args[0], "p", "y", "yaw", "pitch", "ya", "pi", "yp")) {
-            sender.addChatMessage(new TextComponentString("YAW" + WorldAPI.getPlayer().rotationYaw + "-Pitch:" + WorldAPI.getPlayer().rotationPitch));
+            sender.addChatMessage(new TextComponentString("YAW" + sender.getCommandSenderEntity().rotationYaw + "-Pitch:" + sender.getCommandSenderEntity().rotationPitch));
             board.setContents(new StringSelection(debMode ? yawpitchDeb : yawpitch), null);
         }
         try {

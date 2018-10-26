@@ -25,6 +25,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
+import ruo.cmplus.CMPlus;
+import ruo.cmplus.test.CMPacketCommand;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump1.EntityMoveBlock;
 import ruo.map.lopre2.jump1.EntityWaterBlockCreator;
@@ -71,6 +73,8 @@ public class CommandJB extends CommandPlusBase {
                     WorldAPI.addMessage("이제 점프를 공중에서 한번더 할 수 있습니다.(달리면서 점프하면 좀 더 멀리 뛸 수 있음)");
                 }
                 ActionEffect.doubleJump(Boolean.valueOf(args[1]));
+                CMPlus.INSTANCE.sendToAll(new CMPacketCommand("서버더블점프"+args[1]));
+
             }
 
             if (args[0].equalsIgnoreCase("deb"))
@@ -185,12 +189,6 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("block"))
                 Loop2Event.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
 
-            if (args[0].equalsIgnoreCase("water")) {
-                ActionEffect.inWater(Boolean.valueOf(args[1]));
-            }
-            if (args[0].equalsIgnoreCase("removewater")) {
-                ActionEffect.inWaterRemove();
-            }
             if (args[0].equalsIgnoreCase("downlock")) {
                 EntityWaterBlockCreator.downLock = !EntityWaterBlockCreator.downLock;
                 System.out.println("DOWNLOCK " + EntityWaterBlockCreator.downLock);

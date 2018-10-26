@@ -200,7 +200,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         }
         if(entity.getModel() == BLOCK && !DEFAULT_RES_LOC.equals(RenderAPI.getBlockTexture(entity.getCurrentBlock()))){
             DEFAULT_RES_LOC = RenderAPI.getBlockTexture(entity.getCurrentBlock());
-            System.out.println("갱신됨"+DEFAULT_RES_LOC+RenderAPI.getBlockTexture(entity.getCurrentBlock())+entity.getCurrentBlock());
         }
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }

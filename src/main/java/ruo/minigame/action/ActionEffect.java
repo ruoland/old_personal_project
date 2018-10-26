@@ -16,28 +16,8 @@ import java.util.HashMap;
 
 public class ActionEffect {
 	static String mapName;
-	protected static boolean canDoubleJump, isPlayerJump;
-	protected static boolean forceJump;
-
-	public static void setForceJump(boolean forceJump) {
-		ActionEffect.forceJump = forceJump;
-	}
-
-	public static void inWaterRemove() {
-		inWaterMap.remove(mapName);
-	}
-	public static void inWater(boolean inWater) {
-		inWaterMap.put(mapName, inWater);
-	}
-
-	//CommandJB , MiniGameClientPlayer 에 있음
-	public static boolean isInWater() {
-		return inWaterMap.containsKey(mapName);
-	}
-	public static boolean getInWater() {
-		return inWaterMap.containsKey(mapName) && inWaterMap.get(mapName);
-	}
-
+	public static boolean canDoubleJump, isPlayerJump;
+	public static boolean forceCanDoubleJump;
 	public static boolean isUseShield(EntityPlayer player) {
 		return ItemStack.areItemsEqualIgnoreDurability(player.getActiveItemStack(), new ItemStack(Items.SHIELD));
 	}
@@ -56,6 +36,7 @@ public class ActionEffect {
 	}
 
 	public static void doubleJump(boolean on) {
+			forceCanDoubleJump = on;
 		if(on && !djList.contains(mapName)) {
 			djList.add(mapName);
 		}else if(!on && djList.indexOf(mapName) != -1) {
@@ -67,7 +48,7 @@ public class ActionEffect {
 	}
 
 	public static boolean canDoubleJump() {
-		return djList.contains(mapName);
+		return djList.contains(mapName) || forceCanDoubleJump;
 	}
 
 	public static void teleportSpawnPoint(EntityPlayer player){

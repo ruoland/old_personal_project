@@ -16,11 +16,6 @@ public class MiniGameServerPlayer extends ServerPlayerBase
 	public MiniGameServerPlayer(ServerPlayerAPI playerAPI) {
 		super(playerAPI);
 	}
-	public boolean isInWater() {
-		if(ActionEffect.isInWater())
-			return ActionEffect.getInWater();
-		return super.isInWater();
-	};
 
 	@Override
 	public void jump() {

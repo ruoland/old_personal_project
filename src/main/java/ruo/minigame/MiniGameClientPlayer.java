@@ -15,12 +15,6 @@ public class MiniGameClientPlayer extends ClientPlayerBase {
 		
 	}
 
-	public boolean isInWater() {
-		if(ActionEffect.isInWater())
-			return ActionEffect.getInWater();
-		return super.isInWater();
-	};
-
 	public void onUpdate() {
 		if (FakePlayerHelper.fakePlayer != null) {
 			FakePlayerHelper.fakePlayer.rotationPitch = player.rotationPitch;
