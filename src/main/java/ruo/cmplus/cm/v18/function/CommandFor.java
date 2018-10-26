@@ -18,7 +18,7 @@ public class CommandFor extends CommandPlusBase{
 			return;
 		}
 		final String command = t.getCommand(args, 0, args.length-3);
-		int tick = parseInt(args[args.length-2]) * 20;
+		int tick = parseInt(args[args.length-2]);
 		FunctionFor.addFor(tick, command, Integer.valueOf(args[args.length-1]));
 	}
 

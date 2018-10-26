@@ -33,9 +33,10 @@ public class FunctionFor {
 				absLoop = !isStop;
 				if(absLoop)
 					WorldAPI.command(command.replace("@카운트", ""+absRunCount));
-				if(absRunCount >= maxCount){
+				if(absRunCount+1 >= maxCount){
 					absLoop = false;
 				}
+				System.out.println("현재 카운트"+absRunCount);
 			}
 		});
 	}

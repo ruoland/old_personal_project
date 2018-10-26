@@ -11,6 +11,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomModelResourceLocation(Mojae.itemRiding, 0, new ModelResourceLocation(Mojae.itemRiding.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(Mojae.itemGod, 0, new ModelResourceLocation(Mojae.itemGod.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(Mojae.itemOneShot, 0, new ModelResourceLocation(Mojae.itemOneShot.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Mojae.itemExplosion, 0, new ModelResourceLocation(Mojae.itemOneShot.getRegistryName(), "inventory"));
 
     }
 

@@ -1,6 +1,7 @@
 package ruo.yout;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.skill.PotionFly;
+import ruo.cmplus.deb.DebAPI;
 import ruo.yout.mojaelab.LabEvent;
 
 import java.util.ArrayList;
@@ -31,13 +33,19 @@ public class Mojae {
     public static final Item itemRiding = new ItemRiding();
     public static final Item itemGod = new ItemGod();
     public static final Item itemOneShot = new ItemOneShot();
+    public static final Item itemExplosion = new ItemExplosion();
     @Mod.EventHandler
     public  void init(FMLInitializationEvent e){
         MinecraftForge.EVENT_BUS.register(new MoJaeEvent());
         MinecraftForge.EVENT_BUS.register(new LabEvent());
-
+        Blocks.GLASS.setResistance(1000000);
+        Blocks.GLOWSTONE.setResistance(1000000);
+        Blocks.GRASS.setResistance(1000000);
+        Blocks.DIRT.setResistance(1000000);
+        Blocks.GLOWSTONE.setLightLevel(100);
         Potion.REGISTRY.register(30, new ResourceLocation("lock"), lockPotion);
         Potion.REGISTRY.register(31, new ResourceLocation("godPotion"), godPotion);
+        DebAPI.registerEntity(this, "MoJaeCreeper", EntityMoJaeCreeper.class);
         proxy.init();;
     }
     @Mod.EventHandler
@@ -47,6 +55,7 @@ public class Mojae {
         GameRegistry.register(itemRiding.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("riding").setUnlocalizedName("riding"));
         GameRegistry.register(itemGod.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("god").setUnlocalizedName("god"));
         GameRegistry.register(itemOneShot.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("oneshot").setUnlocalizedName("oneshot"));
+        GameRegistry.register(itemExplosion.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("explosion").setUnlocalizedName("explosion"));
         proxy.preinit();
     }
     @Mod.EventHandler
