@@ -1,5 +1,6 @@
 package ruo.yout;
 
+import net.minecraft.command.CommandTP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -64,10 +65,13 @@ public class Mojae {
     }
     @Mod.EventHandler
     public  void init(FMLServerStartingEvent e){
+        e.registerServerCommand(new CommandAttackDelay());
         e.registerServerCommand(new CommandMoJae());
         e.registerServerCommand(new CommandWorldTeleport());
         e.registerServerCommand(new CommandKillEntity());
         e.registerServerCommand(new CommandLockEntity());
+        e.registerServerCommand(new CommandHealthEntity());
+        e.registerServerCommand(new CommandTPEntity());
 
     }
 }

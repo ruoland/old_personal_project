@@ -53,7 +53,7 @@ public class EntityFlyNPC extends EntityDefaultNPC {
         super.onLivingUpdate();
         if (target!=null) {
             this.setVelocity((targetVec.xCoord / 20 )* getSpeed(), (targetVec.yCoord/20) * getSpeed(), (targetVec.zCoord/20) * getSpeed());
-
+            getLookHelper().setLookPosition(target.xCoord, target.yCoord, target.zCoord, 360, 360);
             if(target.distanceTo(this.getPositionVector()) < 1){
                 System.out.println("도착함");
                 this.setVelocity(0,0,0);

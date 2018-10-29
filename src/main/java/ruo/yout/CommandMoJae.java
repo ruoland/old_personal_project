@@ -90,8 +90,7 @@ public class CommandMoJae extends CommandPlusBase {
                         EntityMob mob = (EntityMob) living;
                         mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[]{EntityPigZombie.class}));
                         mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, entityClass, false));
-                        mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, entityClass, false));
-                        mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, entityClass, false));
+
                     }
                 }
             }

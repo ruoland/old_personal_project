@@ -7,17 +7,24 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import ruo.cmplus.util.CommandPlusBase;
 
-public class CommandKillEntity extends CommandPlusBase {
+import java.util.List;
+
+public class CommandKillEntity extends CommandEntity {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        for(Entity entity : sender.getEntityWorld().loadedEntityList){
-            if(entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)){
-                if(EntityList.getEntityString(entity).equalsIgnoreCase(args[0])){
-                    entity.setDead();
-                }
-            }
-        }
+
+    }
+
+    @Override
+    public void runCommand(EntityLivingBase livingBase, String[] args) throws CommandException {
+        livingBase.setDead();
+    }
+
+    @Override
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
+        return getListOfStringsMatchingLastWord(args, EntityList.getEntityNameList());
     }
 }

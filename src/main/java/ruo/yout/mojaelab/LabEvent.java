@@ -32,7 +32,6 @@ public class LabEvent {
             if(event.getSource().getEntity() instanceof EntityMoJaeCreeper){
                 event.setCanceled(true);
                 event.setAmount(0);
-                System.out.println(event.getEntityLiving().getName()+event.getEntityLiving().getHealth());
                 event.getEntityLiving().setVelocity(0,0,0);
             }
         }

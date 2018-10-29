@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.cmplus.cm.v18.function.FunctionFor;
 
 public class MoJaeEvent {
+    public static int attackDelay = 0;
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();
@@ -28,7 +29,9 @@ public class MoJaeEvent {
     public void event(LivingEvent.LivingUpdateEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();
         EntityLivingBase livingBase = event.getEntityLiving();
-
+        if(attackDelay  > -1){
+            livingBase.hurtResistantTime = livingBase.hurtTime = livingBase.maxHurtTime = livingBase.maxHurtResistantTime = attackDelay;
+        }
         if(name.startsWith("잠금해제")){
             livingBase.removePotionEffect(Mojae.lockPotion);
             livingBase.setCustomNameTag("");
