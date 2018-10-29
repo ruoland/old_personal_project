@@ -11,12 +11,12 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.cmplus.cm.v18.function.FunctionFor;
 
 public class MoJaeEvent {
-
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();

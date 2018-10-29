@@ -65,5 +65,9 @@ public class Mojae {
     @Mod.EventHandler
     public  void init(FMLServerStartingEvent e){
         e.registerServerCommand(new CommandMoJae());
+        e.registerServerCommand(new CommandWorldTeleport());
+        e.registerServerCommand(new CommandKillEntity());
+        e.registerServerCommand(new CommandLockEntity());
+
     }
 }

@@ -52,7 +52,6 @@ public class LabEvent {
             System.out.println("타입 " + sourceIndirect.damageType);
             System.out.println("소스오브 " + sourceIndirect.getSourceOfDamage());
             System.out.println("엔티티 " + sourceIndirect.getEntity());
-
         }
         if (Mojae.skelreeper && event.getSource() instanceof EntityDamageSourceIndirect) {
             EntityDamageSourceIndirect sourceIndirect = (EntityDamageSourceIndirect) event.getSource();

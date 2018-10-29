@@ -2,6 +2,7 @@ package ruo.cmplus.cm.v18.function;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.server.MinecraftServer;
 import ruo.cmplus.util.CommandPlusBase;
 
