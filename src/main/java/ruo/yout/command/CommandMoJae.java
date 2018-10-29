@@ -1,4 +1,4 @@
-package ruo.yout;
+package ruo.yout.command;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ruo.cmplus.cm.v18.function.CommandFor;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.yout.Mojae;
 
 import java.util.List;
 

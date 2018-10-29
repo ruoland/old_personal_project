@@ -207,6 +207,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
             }
         } else if (isFly) {
             motionY = 0;
+            onGround = true;
         }
         if (isServerWorld()) {
             if (!npcHash.containsKey(this.getCustomNameTag())) {

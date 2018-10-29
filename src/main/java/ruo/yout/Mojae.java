@@ -1,6 +1,5 @@
 package ruo.yout;
 
-import net.minecraft.command.CommandTP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -14,14 +13,14 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import ruo.asdfrpg.skill.PotionFly;
 import ruo.cmplus.deb.DebAPI;
+import ruo.minigame.api.RenderAPI;
+import ruo.yout.command.*;
 import ruo.yout.mojaelab.LabEvent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-@Mod(modid =  "MoJaeYoutube")
+@Mod(modid =  "Mojae")
 public class Mojae {
     public static HashMap<String, String> monterAttack = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static boolean dog_pan, skelreeper, arrow_reeper, arrow_riding;
@@ -47,6 +46,10 @@ public class Mojae {
         Potion.REGISTRY.register(30, new ResourceLocation("lock"), lockPotion);
         Potion.REGISTRY.register(31, new ResourceLocation("godPotion"), godPotion);
         DebAPI.registerEntity(this, "MoJaeCreeper", EntityMoJaeCreeper.class);
+        DebAPI.registerEntity(this, "MissileCree", EntityMissileCreeperLab.class);
+        DebAPI.registerEntity(this, "FlyingCree", EntityFlyingCreeperLab.class);
+        RenderAPI.registerRender(EntityFlyingCreeperLab.class);
+        RenderAPI.registerRender(EntityMissileCreeperLab.class);
         proxy.init();;
     }
     @Mod.EventHandler

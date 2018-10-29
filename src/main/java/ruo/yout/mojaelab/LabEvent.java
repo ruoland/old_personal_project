@@ -20,7 +20,9 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ruo.asdf.EntityFlyingCreeper;
 import ruo.hardcore.HardCore;
+import ruo.yout.EntityFlyingCreeperLab;
 import ruo.yout.EntityMoJaeCreeper;
 import ruo.yout.Mojae;
 
@@ -34,6 +36,12 @@ public class LabEvent {
                 event.setAmount(0);
                 event.getEntityLiving().setVelocity(0,0,0);
             }
+        }
+        if(event.getEntityLiving() instanceof EntityFlyingCreeperLab && event.getSource().getEntity() instanceof EntityFlyingCreeperLab){
+            event.setCanceled(true);
+            event.setAmount(0);
+            event.getEntityLiving().setVelocity(0,0,0);
+
         }
         System.out.println("타입 " + event.getSource().damageType);
         System.out.println("소스오브 " + event.getSource().getSourceOfDamage());

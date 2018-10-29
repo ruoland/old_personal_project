@@ -1,4 +1,4 @@
-package ruo.yout;
+package ruo.yout.command;
 
 import net.minecraft.block.BlockEndPortal;
 import net.minecraft.command.CommandException;
