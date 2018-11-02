@@ -73,6 +73,8 @@ public class Mojae {
         e.registerServerCommand(new CommandWorldTeleport());
         e.registerServerCommand(new CommandKillEntity());
         e.registerServerCommand(new CommandLockEntity());
+        e.registerServerCommand(new CommandUnlockEntity());
+
         e.registerServerCommand(new CommandHealthEntity());
         e.registerServerCommand(new CommandTPEntity());
 

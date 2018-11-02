@@ -10,20 +10,22 @@ import ruo.yout.mojaelab.LabEvent;
 
 import java.util.List;
 
-public class CommandLockEntity extends CommandEntity {
+public class CommandUnlockEntity extends CommandEntity {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         super.execute(server, sender, args);
-        if (args.length > 1) {
-            if (args[1].equalsIgnoreCase("event")) {
-                LabEvent.lockList.add(args[1]);
-            }
+        if(args.length > 1)
+        if(args[1].equalsIgnoreCase("event")){
+            LabEvent.lockList.remove(args[1]);
         }
     }
 
     @Override
     public void runCommand(EntityLivingBase livingBase, String[] args) throws CommandException {
-        livingBase.setCustomNameTag("잠금");
+        if (livingBase.getCustomNameTag().equalsIgnoreCase("잠금")) {
+            livingBase.setCustomNameTag("");
+            System.out.println("잠금 해제 됐습니다");
+        }
     }
 
     @Override

@@ -26,8 +26,10 @@ import ruo.yout.EntityFlyingCreeperLab;
 import ruo.yout.EntityMoJaeCreeper;
 import ruo.yout.Mojae;
 
-public class LabEvent {
+import java.util.ArrayList;
 
+public class LabEvent {
+    public static ArrayList<String> lockList = new ArrayList<>();
     @SubscribeEvent
     public void livingAttackEvent(LivingHurtEvent event) {
         if(Mojae.skelreeper && event.getEntityLiving() instanceof EntitySkeleton){
@@ -74,6 +76,13 @@ public class LabEvent {
 
     @SubscribeEvent
     public void joinWorld(EntityJoinWorldEvent event) {
+        for(String str : lockList) {
+            if(event.getEntity() instanceof EntityLivingBase) {
+                if (str.contains("all") || EntityList.isStringEntityName(event.getEntity(), str)) {
+                    event.getEntity().setCustomNameTag("잠금");
+                }
+            }
+        }
         if (event.getEntity() instanceof EntityArrow) {
             EntityArrow arrow = (EntityArrow) event.getEntity();
             if (Mojae.skelreeper && arrow.shootingEntity instanceof EntitySkeleton) {
