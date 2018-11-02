@@ -56,7 +56,7 @@ public class CMManager implements Serializable {
         if (name.equalsIgnoreCase("AIR"))
             return AIR;
         if (name.equalsIgnoreCase("HOTBAR"))
-            return FOOD;
+            return HOTBAR;
         if (name.equalsIgnoreCase("EXPERIENCE"))
             return EXPERIENCE;
         if (name.equalsIgnoreCase("HEALTHMOUNT"))
@@ -94,7 +94,7 @@ public class CMManager implements Serializable {
         if (name.equalsIgnoreCase("AIR"))
             AIR = isOn;
         if (name.equalsIgnoreCase("HOTBAR"))
-            FOOD = isOn;
+            HOTBAR = isOn;
         if (name.equalsIgnoreCase("EXPERIENCE"))
             EXPERIENCE = isOn;
         if (name.equalsIgnoreCase("HEALTHMOUNT"))

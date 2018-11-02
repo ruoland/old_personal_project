@@ -34,10 +34,6 @@ public class WeenEvent {
     }
 
     @SubscribeEvent
-    public void r(PlayerInteractEvent event) {
-    }
-
-    @SubscribeEvent
     public void right(ServerChatEvent e) {
         if (e.getMessage().equals("슈팅게임")) {
             MiniGame.elytra.start("0");
@@ -105,7 +101,6 @@ public class WeenEvent {
                 return;
             }
             e.getEntityLiving().worldObj.setRainStrength(0);
-
             e.getEntityLiving().setDead();
         }
     }

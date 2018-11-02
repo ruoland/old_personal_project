@@ -26,6 +26,7 @@ import ruo.cmplus.cm.v18.function.VAR;
 import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.*;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.minigame.elytra.Elytra;
 
 import java.lang.reflect.Field;
 
@@ -96,14 +97,13 @@ public class CMPlusClientEvent {
 
     @SubscribeEvent
     public void renderUI(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() == ElementType.ALL)
-            for (String s : uiList) {
-                if (event.getType() == ElementType.valueOf(s)) {
-                    if (!CMManager.isActiveUI(s)) {
-                        event.setCanceled(true);
-                    }
+        for (String s : uiList) {
+            if (event.getType() == ElementType.valueOf(s)) {
+                if (!CMManager.isActiveUI(s)) {
+                    event.setCanceled(true);
                 }
             }
+        }
     }
 
     @SubscribeEvent

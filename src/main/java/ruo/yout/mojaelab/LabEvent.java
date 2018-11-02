@@ -21,6 +21,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.asdf.EntityFlyingCreeper;
+import ruo.cmplus.cm.CommandUI;
 import ruo.hardcore.HardCore;
 import ruo.yout.EntityFlyingCreeperLab;
 import ruo.yout.EntityMoJaeCreeper;
@@ -53,24 +54,31 @@ public class LabEvent {
 
     @SubscribeEvent
     public void livingAttackEvent(LivingAttackEvent event) {
-        if (Mojae.arrow_riding && event.getSource() instanceof EntityDamageSourceIndirect) {
+        if( event.getSource() instanceof EntityDamageSourceIndirect) {
             EntityDamageSourceIndirect sourceIndirect = (EntityDamageSourceIndirect) event.getSource();
-            if (sourceIndirect.getSourceOfDamage() instanceof EntityArrow) {
-                event.setCanceled(true);
+            if (Mojae.arrow_riding) {
+                if (sourceIndirect.getSourceOfDamage() instanceof EntityArrow) {
+                    event.setCanceled(true);
+                }
+                System.out.println("타입 " + sourceIndirect.damageType);
+                System.out.println("소스오브 " + sourceIndirect.getSourceOfDamage());
+                System.out.println("엔티티 " + sourceIndirect.getEntity());
             }
-            System.out.println("타입 " + sourceIndirect.damageType);
-            System.out.println("소스오브 " + sourceIndirect.getSourceOfDamage());
-            System.out.println("엔티티 " + sourceIndirect.getEntity());
-        }
-        if (Mojae.skelreeper && event.getSource() instanceof EntityDamageSourceIndirect) {
-            EntityDamageSourceIndirect sourceIndirect = (EntityDamageSourceIndirect) event.getSource();
-            if (event.getEntityLiving().getEntityData().getBoolean("isArrowreper") && sourceIndirect.getSourceOfDamage() instanceof EntityArrow) {
-                event.setCanceled(true);
+            if (Mojae.skelreeper ) {
+                if (event.getEntityLiving().getEntityData().getBoolean("isArrowreper") && sourceIndirect.getSourceOfDamage() instanceof EntityArrow) {
+                    event.setCanceled(true);
+                }
+
+                System.out.println("타입 " + sourceIndirect.damageType);
+                System.out.println("소스오브 " + sourceIndirect.getSourceOfDamage());
+                System.out.println("엔티티 " + sourceIndirect.getEntity());
+                System.out.println("엔티티2 " + event.getEntityLiving());
             }
-            System.out.println("타입 " + sourceIndirect.damageType);
-            System.out.println("소스오브 " + sourceIndirect.getSourceOfDamage());
-            System.out.println("엔티티 " + sourceIndirect.getEntity());
-            System.out.println("엔티티2 " + event.getEntityLiving());
+            if (Mojae.arrow_count > 1) {
+                if (event.getEntityLiving() instanceof EntitySkeleton && event.getSource().getEntity() instanceof EntitySkeleton) {
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 
@@ -105,7 +113,7 @@ public class LabEvent {
                 EntitySkeleton skeleton = (EntitySkeleton) arrow.shootingEntity;
                 NBTTagCompound tagCompound = skeleton.getEntityData();
                 int attackDelay = tagCompound.getInteger("AttackDelay");
-                tagCompound.setInteger("AttackDelay", 20);
+                tagCompound.setInteger("AttackDelay", 5);
                 if (attackDelay == 0) {
                     for (int i = 0; i < Mojae.arrow_count; i++) {
                         EntityLivingBase attackTarget = skeleton.getAttackTarget();

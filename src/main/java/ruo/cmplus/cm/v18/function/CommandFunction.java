@@ -9,9 +9,11 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 import ruo.cmplus.deb.DebAPI;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.map.tycoon.BreadDataComparator;
 import ruo.minigame.api.WorldAPI;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class CommandFunction extends CommandPlusBase {
@@ -72,9 +74,12 @@ public class CommandFunction extends CommandPlusBase {
 	public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args,
 			BlockPos pos) {
 		File file = new File(WorldAPI.getCurrentWorldFile() + "/commandplus/" + "script/");
-		String[] str = new String[file.list().length];
-		for(int i = 0; i < file.list().length;i++) {
-			str[i] = file.list()[i].replace(".txt", "");
+		File[] fileList = file.listFiles();
+		Arrays.sort(fileList, new FunctionComparator());
+		String[] fileNameList = file.list();
+		String[] str = new String[fileNameList.length];
+		for(int i = 0; i < fileNameList.length;i++) {
+			str[i] = fileNameList[i].replace(".txt", "");
 		}
 		if(args.length == 1)
 		return getListOfStringsMatchingLastWord(args, str);

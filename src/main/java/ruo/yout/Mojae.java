@@ -1,10 +1,14 @@
 package ruo.yout;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -12,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.RenderAPI;
@@ -48,6 +53,8 @@ public class Mojae {
         DebAPI.registerEntity(this, "MoJaeCreeper", EntityMoJaeCreeper.class);
         DebAPI.registerEntity(this, "MissileCree", EntityMissileCreeperLab.class);
         DebAPI.registerEntity(this, "FlyingCree", EntityFlyingCreeperLab.class);
+        EntityRegistry.addSpawn(EntityFlyingCreeperLab.class, 10000,1,10, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.DEFAULT
+        ,Biomes.TAIGA, Biomes.SKY, Biomes.RIVER, Biomes.HELL, Biomes.EXTREME_HILLS, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.FOREST_HILLS, Biomes.VOID, Biomes.TAIGA_HILLS);
         RenderAPI.registerRender(EntityFlyingCreeperLab.class);
         RenderAPI.registerRender(EntityMissileCreeperLab.class);
         proxy.init();;
@@ -74,7 +81,6 @@ public class Mojae {
         e.registerServerCommand(new CommandKillEntity());
         e.registerServerCommand(new CommandLockEntity());
         e.registerServerCommand(new CommandUnlockEntity());
-
         e.registerServerCommand(new CommandHealthEntity());
         e.registerServerCommand(new CommandTPEntity());
 

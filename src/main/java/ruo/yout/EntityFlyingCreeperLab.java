@@ -25,9 +25,9 @@ public class EntityFlyingCreeperLab extends EntityFlyNPC {
         this.setRotate(0, 0, 0);
         isFly = true;
         this.addVelocity(0, 4, 0);
-        setSpeed(100);
+        setSpeed(20);
     }
-
+    
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         return false;
@@ -44,7 +44,7 @@ public class EntityFlyingCreeperLab extends EntityFlyNPC {
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         //this.tasks.addTask(1, new EntityAIFlyingMove(this));
-        //this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
     }
 
