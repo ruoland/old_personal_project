@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityMob;
@@ -65,16 +66,19 @@ public class CommandMoJae extends CommandPlusBase {
             }
         }
         if(args[0].equalsIgnoreCase("SKELREEPER")){
-            Mojae.skelreeper = Boolean.valueOf(args[1]);
+            Mojae.skelreeper = parseBoolean(args[1]);
         }
         if(args[0].equalsIgnoreCase("ARROWReper")){
-            Mojae.arrow_reeper = Boolean.valueOf(args[1]);
+            Mojae.arrow_reeper = parseBoolean(args[1]);
         }
         if(args[0].equalsIgnoreCase("ARROWCount")){
-            Mojae.arrow_count = Integer.valueOf(args[1]);
+            Mojae.arrow_count = parseInt(args[1]);
         }
         if(args[0].equalsIgnoreCase("ARROWRIDING")){
-            Mojae.arrow_riding = Boolean.valueOf(args[1]);
+            Mojae.arrow_riding = parseBoolean(args[1]);
+        }
+        if(args[0].equalsIgnoreCase("skeldelay")){
+            Mojae.skelDelay = parseInt(args[1]);
         }
     }
 
@@ -86,12 +90,10 @@ public class CommandMoJae extends CommandPlusBase {
                 if (Mojae.monterAttack.containsKey(monsterName)) {
                     String attackKey = Mojae.monterAttack.get(monsterName);
                     Class entityClass = EntityList.NAME_TO_CLASS.get(attackKey);
-
                     if (living instanceof EntityMob) {
                         EntityMob mob = (EntityMob) living;
                         mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[]{EntityPigZombie.class}));
                         mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, entityClass, false));
-
                     }
                 }
             }
@@ -101,7 +103,8 @@ public class CommandMoJae extends CommandPlusBase {
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         if(args.length == 1)
-        return getListOfStringsMatchingLastWord(args, "dog", "skelreeper", "arrowreper", "arrowcount", "arrowriding", "attack", "block", "unlock");
+        return getListOfStringsMatchingLastWord(args, "dog", "skelreeper", "arrowreper", "arrowcount", "arrowriding", "attack", "block", "unlock", "skeldelay" ,
+                "");
         else if(args[0].equalsIgnoreCase("attack")){
             return getListOfStringsMatchingLastWord(args, EntityList.getEntityNameList());
         } else if(args[0].equalsIgnoreCase("block")){

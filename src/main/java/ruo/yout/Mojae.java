@@ -2,13 +2,11 @@ package ruo.yout;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -29,7 +27,7 @@ import java.util.HashMap;
 public class Mojae {
     public static HashMap<String, String> monterAttack = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static boolean dog_pan, skelreeper, arrow_reeper, arrow_riding;
-    public static int arrow_count= 1;
+    public static int arrow_count= 1, skelDelay = -1;
     @SidedProxy(clientSide = "ruo.yout.ClientProxy", serverSide = "ruo.yout.CommonProxy")
     public static CommonProxy proxy;
     public static final PotionLock lockPotion = new PotionLock(false, 0);
