@@ -28,7 +28,7 @@ public class Mojae {
     public static HashMap<String, String> monterAttack = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static HashMap<String, String> monterAttackRemove = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
 
-    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = true;
+    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = true, wither;
     public static int arrow_count= 1, skelDelay = -1;
     @SidedProxy(clientSide = "ruo.yout.ClientProxy", serverSide = "ruo.yout.CommonProxy")
     public static CommonProxy proxy;

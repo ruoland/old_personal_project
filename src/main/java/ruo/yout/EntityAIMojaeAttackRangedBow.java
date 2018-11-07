@@ -3,6 +3,7 @@ package ruo.yout;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.ItemBow;
 import net.minecraft.util.EnumHand;
@@ -27,6 +28,12 @@ public class EntityAIMojaeAttackRangedBow extends EntityAIAttackRangedBow {
         if(attackTime  <= 0) {
             setAttackCooldown(Mojae.skelDelay);
             if (skeleton.getAttackTarget() != null) {
+                if(skeleton.getAttackTarget() instanceof EntityWither){
+                    EntityWither wither = (EntityWither) skeleton.getAttackTarget();
+                    if(wither.getInvulTime() > 0){
+                        return;
+                    }
+                }
                 int i = skeleton.getItemInUseMaxCount();
                 this.skeleton.setActiveHand(EnumHand.MAIN_HAND);
                 this.skeleton.attackEntityWithRangedAttack(skeleton.getAttackTarget(), ItemBow.getArrowVelocity(i));

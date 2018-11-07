@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.asdf.EntityFlyingCreeper;
 import ruo.cmplus.cm.CommandUI;
 import ruo.hardcore.HardCore;
+import ruo.minigame.api.WorldAPI;
 import ruo.yout.*;
 
 import java.util.ArrayList;
@@ -44,7 +45,6 @@ public class LabEvent {
             event.setCanceled(true);
             event.setAmount(0);
             event.getEntityLiving().setVelocity(0, 0, 0);
-
         }
         System.out.println("타입 " + event.getSource().damageType);
         System.out.println("소스오브 " + event.getSource().getSourceOfDamage());
@@ -68,13 +68,13 @@ public class LabEvent {
                 if (event.getEntityLiving().getEntityData().getBoolean("isArrowreper") && sourceIndirect.getSourceOfDamage() instanceof EntityArrow) {
                     event.setCanceled(true);
                 }
-
                 System.out.println("타입 " + sourceIndirect.damageType);
                 System.out.println("소스오브 " + sourceIndirect.getSourceOfDamage());
                 System.out.println("엔티티 " + sourceIndirect.getEntity());
                 System.out.println("엔티티2 " + event.getEntityLiving());
             }
-            if (!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity()))) {
+
+            if (Mojae.wither ||  (!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
                 event.setCanceled(true);
             }
         }
@@ -93,6 +93,10 @@ public class LabEvent {
         if (event.getEntity() instanceof EntityArrow) {
             checkArrow((EntityArrow) event.getEntity());
             EntityArrow arrow = (EntityArrow) event.getEntity();
+            if(Mojae.wither) {
+                arrow.shootingEntity = WorldAPI.getPlayer();
+                arrow.setPosition(arrow.posX, arrow.posY+1, arrow.posZ);
+            }
             if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
                 arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }

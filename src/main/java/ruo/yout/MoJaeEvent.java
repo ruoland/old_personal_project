@@ -30,7 +30,6 @@ public class MoJaeEvent {
         String name = event.getEntityLiving().getCustomNameTag();
         EntityLivingBase livingBase = event.getEntityLiving();
         if(attackDelay  != -1 && livingBase instanceof EntityMob &&!livingBase.getCustomNameTag().equalsIgnoreCase("잠금")){
-            System.out.println(livingBase.hurtResistantTime);
             livingBase.hurtResistantTime = (int) attackDelay;
         }
         if(name.startsWith("잠금해제")){

@@ -83,6 +83,9 @@ public class CommandMoJae extends CommandPlusBase {
         if(args[0].equalsIgnoreCase("skeldelay")){
             Mojae.skelDelay = parseInt(args[1]);
         }
+        if(args[0].equalsIgnoreCase("wither")){
+            Mojae.wither = parseBoolean(args[1]);//스켈레톤이 위더를 잡기 위해서 있음. 모든 화살은 플레이어가 쏜 게 됨. 이 상태에서는 스켈레톤이 화살에 무조건 맞지 않게 됨
+        }
     }
 
     public void updateAI(World world){
@@ -95,7 +98,6 @@ public class CommandMoJae extends CommandPlusBase {
                 if (Mojae.monterAttackRemove.containsKey(monsterName)) {
                     if (living instanceof EntityMob) {
                         EntityMob mob = (EntityMob) living;
-
                         Iterator iterator = mob.targetTasks.taskEntries.iterator();
                         while (iterator.hasNext()){
                             EntityAITasks.EntityAITaskEntry taskEntry = (EntityAITasks.EntityAITaskEntry) iterator.next();
@@ -104,7 +106,6 @@ public class CommandMoJae extends CommandPlusBase {
                                 iterator.remove();
                                 Mojae.monterAttack.remove(monsterName);
                                 mob.setAttackTarget(null);
-
                             }
                         }
                     }
