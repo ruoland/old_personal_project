@@ -56,7 +56,7 @@ public class LabEvent {
     public void livingAttackEvent(LivingAttackEvent event) {
         if (event.getSource() instanceof EntityDamageSourceIndirect) {
             EntityDamageSourceIndirect sourceIndirect = (EntityDamageSourceIndirect) event.getSource();
-            if (Mojae.arrow_riding) {
+            if (Mojae.arrowRiding) {
                 if (sourceIndirect.getSourceOfDamage() instanceof EntityArrow) {
                     event.setCanceled(true);
                 }
@@ -74,10 +74,8 @@ public class LabEvent {
                 System.out.println("엔티티 " + sourceIndirect.getEntity());
                 System.out.println("엔티티2 " + event.getEntityLiving());
             }
-            if (Mojae.arrow_count > 1) {
-                if (event.getEntityLiving() instanceof EntitySkeleton && event.getSource().getEntity() instanceof EntitySkeleton) {
-                    event.setCanceled(true);
-                }
+            if (!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity()))) {
+                event.setCanceled(true);
             }
         }
     }
@@ -94,6 +92,9 @@ public class LabEvent {
 
         if (event.getEntity() instanceof EntityArrow) {
             checkArrow((EntityArrow) event.getEntity());
+            EntityArrow arrow = (EntityArrow) event.getEntity();
+            if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
+                arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
 
         if (Mojae.arrow_count > 1 && event.getEntity() instanceof EntityArrow) {//한번에 나가는 화살을 조절함
@@ -123,13 +124,13 @@ public class LabEvent {
         if (Mojae.skelreeper && arrow.shootingEntity instanceof EntitySkeleton) {
             arrowReeper(arrow);
         }
-        if (Mojae.arrow_reeper && arrow.shootingEntity instanceof EntityPlayer) {
+        if (Mojae.arrowReeper && arrow.shootingEntity instanceof EntityPlayer) {
             arrowReeper(arrow);
         }
-        if (Mojae.arrow_riding && arrow.shootingEntity instanceof EntitySkeleton) {
+        if (Mojae.arrowRiding && arrow.shootingEntity instanceof EntitySkeleton) {
             arrowRiding(arrow);
         }
-        if (Mojae.arrow_riding && arrow.shootingEntity instanceof EntityPlayer) {
+        if (Mojae.arrowRiding && arrow.shootingEntity instanceof EntityPlayer) {
             arrowRiding(arrow);
         }
     }
@@ -159,7 +160,7 @@ public class LabEvent {
             if (Mojae.skelDelay != -1) {
                 for (EntityAITasks.EntityAITaskEntry aiBase : skeleton.tasks.taskEntries) {
                     if (aiBase.action instanceof EntityAIAttackRangedBow) {
-                        if(!(aiBase.action instanceof EntityAIMojaeAttackRangedBow)) {
+                        if (!(aiBase.action instanceof EntityAIMojaeAttackRangedBow)) {
                             skeleton.tasks.removeTask(aiBase.action);
                             skeleton.tasks.addTask(0, new EntityAIMojaeAttackRangedBow(skeleton, 1, Mojae.skelDelay, 15));
                         }

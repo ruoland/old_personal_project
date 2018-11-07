@@ -2,14 +2,13 @@ package ruo.yout.command;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import ruo.cmplus.util.CommandPlusBase;
-import ruo.yout.MoJaeEvent;
+import ruo.yout.Mojae;
 
-public class CommandAttackDelay extends CommandPlusBase {
+public class CommandTeamKill extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        MoJaeEvent.attackDelay = parseDouble(args[0]);
+        Mojae.canTeamKill = parseBoolean(args[0]);
     }
 }
