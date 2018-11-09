@@ -53,6 +53,7 @@ public class Mojae {
         DebAPI.registerEntity(this, "MoJaeCreeper", EntityMoJaeCreeper.class);
         DebAPI.registerEntity(this, "MissileCree", EntityMissileCreeperLab.class);
         DebAPI.registerEntity(this, "FlyingCree", EntityFlyingCreeperLab.class);
+        DebAPI.registerEntity(this, "VELOCITY-MojaeArrow", EntityMojaeArrow.class);
         EntityRegistry.addSpawn(EntityFlyingCreeperLab.class, 10000,1,10, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.DEFAULT
         ,Biomes.TAIGA, Biomes.SKY, Biomes.RIVER, Biomes.HELL, Biomes.EXTREME_HILLS, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.FOREST_HILLS, Biomes.VOID, Biomes.TAIGA_HILLS);
         RenderAPI.registerRender(EntityFlyingCreeperLab.class);

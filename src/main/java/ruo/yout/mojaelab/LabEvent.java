@@ -10,8 +10,10 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.asdf.EntityFlyingCreeper;
 import ruo.cmplus.cm.CommandUI;
 import ruo.hardcore.HardCore;
+import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.yout.*;
 
@@ -73,14 +76,22 @@ public class LabEvent {
                 System.out.println("엔티티 " + sourceIndirect.getEntity());
                 System.out.println("엔티티2 " + event.getEntityLiving());
             }
-
-            if (Mojae.wither ||  (!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
+            if(Mojae.wither && event.getEntityLiving() instanceof EntityWither){
+                EntityWither wither = (EntityWither) event.getEntityLiving();
+                System.out.println("  타입 " + sourceIndirect.damageType);
+                System.out.println("  소스오브 " + sourceIndirect.getSourceOfDamage());
+                System.out.println("  엔티티 " + sourceIndirect.getEntity());
+                System.out.println("  엔티티2 " + event.getEntityLiving());
+                System.out.println("  데미지"+event.getAmount());
+            }
+            if ((!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
                 event.setCanceled(true);
+                System.out.println("팀킬");
             }
         }
     }
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public void joinWorld(EntityJoinWorldEvent event) {
         for (String str : lockList) {//소환된 엔티티가 잠금 대상인지 아닌지
             if (event.getEntity() instanceof EntityLivingBase) {
@@ -93,9 +104,12 @@ public class LabEvent {
         if (event.getEntity() instanceof EntityArrow) {
             checkArrow((EntityArrow) event.getEntity());
             EntityArrow arrow = (EntityArrow) event.getEntity();
-            if(Mojae.wither) {
-                arrow.shootingEntity = WorldAPI.getPlayer();
-                arrow.setPosition(arrow.posX, arrow.posY+1, arrow.posZ);
+            if(Mojae.wither && !(arrow instanceof EntityMojaeArrow) && !event.getWorld().isRemote) {
+                EntityMojaeArrow arrow1 = new EntityMojaeArrow(event.getWorld());
+                arrow1.readFromNBT(EntityAPI.getNBT(arrow));
+                arrow.setDead();
+                event.getWorld().spawnEntityInWorld(arrow1);
+                arrow1.setPosition(arrow1.posX, arrow1.posY+1, arrow1.posZ);
             }
             if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
                 arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
