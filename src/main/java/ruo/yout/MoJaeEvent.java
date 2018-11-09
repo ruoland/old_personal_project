@@ -23,6 +23,7 @@ public class MoJaeEvent {
         String name = event.getEntityLiving().getCustomNameTag();
         if (event.getEntityLiving().isPotionActive(Mojae.godPotion) || name.startsWith("무적 상태")) {
            event.setCanceled(true);
+           System.out.println(event.getEntityLiving()+"가 무적이라 공격 취소됨");
         }
     }
     @SubscribeEvent

@@ -84,14 +84,18 @@ public class LabEvent {
                 System.out.println("  엔티티2 " + event.getEntityLiving());
                 System.out.println("  데미지"+event.getAmount());
             }
+            System.out.println("  2222타입 " + sourceIndirect.damageType);
+            System.out.println("  2222소스오브 " + sourceIndirect.getSourceOfDamage());
+            System.out.println("  2222엔티티 " + sourceIndirect.getEntity());
+            System.out.println("  2222엔티티2 " + event.getEntityLiving());
+            System.out.println("  2222데미지"+event.getAmount());
             if ((!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
                 event.setCanceled(true);
-                System.out.println("팀킬");
             }
         }
     }
 
-    //@SubscribeEvent
+    @SubscribeEvent
     public void joinWorld(EntityJoinWorldEvent event) {
         for (String str : lockList) {//소환된 엔티티가 잠금 대상인지 아닌지
             if (event.getEntity() instanceof EntityLivingBase) {
@@ -104,6 +108,8 @@ public class LabEvent {
         if (event.getEntity() instanceof EntityArrow) {
             checkArrow((EntityArrow) event.getEntity());
             EntityArrow arrow = (EntityArrow) event.getEntity();
+            if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
+                arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
             if(Mojae.wither && !(arrow instanceof EntityMojaeArrow) && !event.getWorld().isRemote) {
                 EntityMojaeArrow arrow1 = new EntityMojaeArrow(event.getWorld());
                 arrow1.readFromNBT(EntityAPI.getNBT(arrow));
@@ -111,8 +117,6 @@ public class LabEvent {
                 event.getWorld().spawnEntityInWorld(arrow1);
                 arrow1.setPosition(arrow1.posX, arrow1.posY+1, arrow1.posZ);
             }
-            if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
-                arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
 
         if (Mojae.arrow_count > 1 && event.getEntity() instanceof EntityArrow) {//한번에 나가는 화살을 조절함
