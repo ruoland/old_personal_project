@@ -2,6 +2,7 @@ package ruo.yout.command;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
@@ -16,8 +17,9 @@ public class CommandHealthEntity extends CommandEntity {
     }
 
     @Override
-    public void runCommand(EntityLivingBase livingBase, String[] args) throws CommandException{
-        livingBase.setHealth((float) parseDouble(args[1]));
+    public void runCommand(Entity entity, String[] args) throws CommandException{
+        if(entity instanceof EntityLivingBase)
+            ((EntityLivingBase)entity).setHealth((float) parseDouble(args[1]));
     }
 
     @Override

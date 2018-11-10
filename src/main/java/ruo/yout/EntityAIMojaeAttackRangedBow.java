@@ -14,7 +14,7 @@ import java.lang.reflect.Modifier;
 
 public class EntityAIMojaeAttackRangedBow extends EntityAIAttackRangedBow {
     private EntitySkeleton skeleton;
-    private int attackTime = 20;
+    private int attackTime;
     public EntityAIMojaeAttackRangedBow(EntitySkeleton skeleton, double speedAmplifier, int delay, float maxDistance) {
         super(skeleton, speedAmplifier, delay, maxDistance);
         this.skeleton = skeleton;

@@ -2,6 +2,7 @@ package ruo.yout.command;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
@@ -17,9 +18,8 @@ public class CommandKillEntity extends CommandEntity {
     }
 
     @Override
-    public void runCommand(EntityLivingBase livingBase, String[] args) throws CommandException {
+    public void runCommand(Entity livingBase, String[] args) throws CommandException {
         livingBase.setDead();
-        System.out.println("킬엔티티");
     }
 
     @Override

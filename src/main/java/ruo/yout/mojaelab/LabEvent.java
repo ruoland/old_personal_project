@@ -33,7 +33,6 @@ import ruo.yout.*;
 import java.util.ArrayList;
 
 public class LabEvent {
-    public static ArrayList<String> lockList = new ArrayList<>();
 
     @SubscribeEvent
     public void livingAttackEvent(LivingHurtEvent event) {
@@ -97,16 +96,10 @@ public class LabEvent {
 
     @SubscribeEvent
     public void joinWorld(EntityJoinWorldEvent event) {
-        for (String str : lockList) {//소환된 엔티티가 잠금 대상인지 아닌지
-            if (event.getEntity() instanceof EntityLivingBase) {
-                if (str.contains("all") || EntityList.isStringEntityName(event.getEntity(), str)) {
-                    event.getEntity().setCustomNameTag("잠금");
-                }
-            }
-        }
 
         if (event.getEntity() instanceof EntityArrow) {
-            checkArrow((EntityArrow) event.getEntity());
+            if(checkArrow((EntityArrow) event.getEntity()))
+                return;
             EntityArrow arrow = (EntityArrow) event.getEntity();
             if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
                 arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
@@ -142,19 +135,25 @@ public class LabEvent {
     /**
      * //화살을 쏘면 그 위에  크리퍼를 태우거나 화살 대신 크리퍼 나오게 하는 코드. 스켈레톤 플레이어 둘다 포함
      */
-    public void checkArrow(EntityArrow arrow) {
+    public boolean checkArrow(EntityArrow arrow) {
         if (Mojae.skelreeper && arrow.shootingEntity instanceof EntitySkeleton) {
             arrowReeper(arrow);
+            return true;
         }
         if (Mojae.arrowReeper && arrow.shootingEntity instanceof EntityPlayer) {
             arrowReeper(arrow);
+            return true;
         }
         if (Mojae.arrowRiding && arrow.shootingEntity instanceof EntitySkeleton) {
             arrowRiding(arrow);
+            return true;
+
         }
         if (Mojae.arrowRiding && arrow.shootingEntity instanceof EntityPlayer) {
             arrowRiding(arrow);
-        }
+            return true;
+        }else
+            return false;
     }
 
     public void arrowReeper(EntityArrow arrow) {

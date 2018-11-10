@@ -2,10 +2,12 @@ package ruo.yout.command;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import ruo.yout.MoJaeEvent;
 import ruo.yout.mojaelab.LabEvent;
 
 import java.util.List;
@@ -16,13 +18,13 @@ public class CommandLockEntity extends CommandEntity {
         super.execute(server, sender, args);
         if (args.length > 1) {
             if (args[1].equalsIgnoreCase("event")) {
-                LabEvent.lockList.add(args[1]);
+                MoJaeEvent.lockList.add(args[1]);
             }
         }
     }
 
     @Override
-    public void runCommand(EntityLivingBase livingBase, String[] args) throws CommandException {
+    public void runCommand(Entity livingBase, String[] args) throws CommandException {
         livingBase.setCustomNameTag("잠금");
     }
 

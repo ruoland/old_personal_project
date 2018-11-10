@@ -85,5 +85,6 @@ public class Mojae {
         e.registerServerCommand(new CommandHealthEntity());
         e.registerServerCommand(new CommandTPEntity());
         e.registerServerCommand(new CommandTeamKill());
+        e.registerServerCommand(new CommandFindEntity());
     }
 }
