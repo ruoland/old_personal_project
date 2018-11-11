@@ -18,8 +18,15 @@ public class CommandHealthEntity extends CommandEntity {
 
     @Override
     public void runCommand(Entity entity, String[] args) throws CommandException{
-        if(entity instanceof EntityLivingBase)
-            ((EntityLivingBase)entity).setHealth((float) parseDouble(args[1]));
+        if(entity instanceof EntityLivingBase) {
+            double health;
+            if(args[1].equalsIgnoreCase("max")){
+                health = ((EntityLivingBase) entity).getMaxHealth();
+            }
+            else
+                health = parseDouble(args[1]);
+            ((EntityLivingBase) entity).setHealth((float) health);
+        }
     }
 
     @Override
