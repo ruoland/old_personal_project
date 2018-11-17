@@ -19,10 +19,9 @@ public class NBTAPI {
                 file.createNewFile();
             }
         } catch (IOException e) {
-
             e.printStackTrace();
         }
-
+        readNBT();
 
     }
 
