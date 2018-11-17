@@ -2,13 +2,11 @@ package ruo.yout;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -28,8 +26,10 @@ import java.util.HashMap;
 @Mod(modid =  "Mojae")
 public class Mojae {
     public static HashMap<String, String> monterAttack = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
-    public static boolean dog_pan, skelreeper, arrow_reeper, arrow_riding;
-    public static int arrow_count= 1;
+    public static HashMap<String, String> monterAttackRemove = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
+
+    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = true, wither;
+    public static int arrow_count= 1, skelDelay = -1;
     @SidedProxy(clientSide = "ruo.yout.ClientProxy", serverSide = "ruo.yout.CommonProxy")
     public static CommonProxy proxy;
     public static final PotionLock lockPotion = new PotionLock(false, 0);
@@ -53,6 +53,7 @@ public class Mojae {
         DebAPI.registerEntity(this, "MoJaeCreeper", EntityMoJaeCreeper.class);
         DebAPI.registerEntity(this, "MissileCree", EntityMissileCreeperLab.class);
         DebAPI.registerEntity(this, "FlyingCree", EntityFlyingCreeperLab.class);
+        DebAPI.registerEntity(this, "VELOCITY-MojaeArrow", EntityMojaeArrow.class);
         EntityRegistry.addSpawn(EntityFlyingCreeperLab.class, 10000,1,10, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.DEFAULT
         ,Biomes.TAIGA, Biomes.SKY, Biomes.RIVER, Biomes.HELL, Biomes.EXTREME_HILLS, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.FOREST_HILLS, Biomes.VOID, Biomes.TAIGA_HILLS);
         RenderAPI.registerRender(EntityFlyingCreeperLab.class);
@@ -83,6 +84,7 @@ public class Mojae {
         e.registerServerCommand(new CommandUnlockEntity());
         e.registerServerCommand(new CommandHealthEntity());
         e.registerServerCommand(new CommandTPEntity());
-
+        e.registerServerCommand(new CommandTeamKill());
+        e.registerServerCommand(new CommandFindEntity());
     }
 }

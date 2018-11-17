@@ -16,15 +16,15 @@ public abstract class CommandEntity extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         for(Entity entity : sender.getEntityWorld().loadedEntityList){
-            if(entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)){
+            if(!(entity instanceof EntityPlayer)){
                 if(args[0].equalsIgnoreCase("all") || EntityList.getEntityString(entity).equalsIgnoreCase(args[0])){
-                    runCommand((EntityLivingBase) entity, args);
+                    runCommand(entity, args);
                 }
             }
         }
     }
 
-    public abstract void runCommand(EntityLivingBase livingBase, String[] args) throws CommandException;
+    public abstract void runCommand(Entity livingBase, String[] args) throws CommandException;
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         return getListOfStringsMatchingLastWord(args, EntityList.getEntityNameList());

@@ -3,6 +3,7 @@ package ruo.cmplus.deb;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;

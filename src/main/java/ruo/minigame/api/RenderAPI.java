@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -60,9 +61,11 @@ public class RenderAPI {
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
         GameRegistry.registerTileEntity(tileEntity, block.getRegistryName().toString());
         ClientRegistry.bindTileEntitySpecialRenderer(tileEntity, renderer);
-
     }
 
+    public static RenderManager getRenderMananger(){
+        return Minecraft.getMinecraft().getRenderManager();
+    }
     public static void registerRender(Class entity, Render<? extends Entity> r) {
         RenderingRegistry.registerEntityRenderingHandler(entity, r);
     }

@@ -9,8 +9,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.item.Item;
@@ -19,8 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ruo.cmplus.cm.v18.function.CommandFor;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.minigame.api.WorldAPI;
 import ruo.yout.Mojae;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class CommandMoJae extends CommandPlusBase {
@@ -49,8 +53,8 @@ public class CommandMoJae extends CommandPlusBase {
             updateAI(sender.getEntityWorld());
         }
         if(args[0].equalsIgnoreCase("remove")){
-            Mojae.monterAttack.remove(args[1]);
-            Mojae.monterAttack.remove(args[2]);
+            Mojae.monterAttackRemove.put(Mojae.monterAttack.get(args[2]),Mojae.monterAttack.get(args[1]));
+            Mojae.monterAttackRemove.put(Mojae.monterAttack.get(args[1]),Mojae.monterAttack.get(args[2]));
             updateAI(sender.getEntityWorld());
         }
         if(args[0].equalsIgnoreCase("unlock")){
@@ -65,16 +69,22 @@ public class CommandMoJae extends CommandPlusBase {
             }
         }
         if(args[0].equalsIgnoreCase("SKELREEPER")){
-            Mojae.skelreeper = Boolean.valueOf(args[1]);
+            Mojae.skelreeper = parseBoolean(args[1]);
         }
         if(args[0].equalsIgnoreCase("ARROWReper")){
-            Mojae.arrow_reeper = Boolean.valueOf(args[1]);
+            Mojae.arrowReeper = parseBoolean(args[1]);
         }
         if(args[0].equalsIgnoreCase("ARROWCount")){
-            Mojae.arrow_count = Integer.valueOf(args[1]);
+            Mojae.arrow_count = parseInt(args[1]);
         }
         if(args[0].equalsIgnoreCase("ARROWRIDING")){
-            Mojae.arrow_riding = Boolean.valueOf(args[1]);
+            Mojae.arrowRiding = parseBoolean(args[1]);
+        }
+        if(args[0].equalsIgnoreCase("skeldelay")){
+            Mojae.skelDelay = parseInt(args[1]);
+        }
+        if(args[0].equalsIgnoreCase("wither")){
+            Mojae.wither = parseBoolean(args[1]);//스켈레톤이 위더를 잡기 위해서 있음. 모든 화살은 플레이어가 쏜 게 됨. 이 상태에서는 스켈레톤이 화살에 무조건 맞지 않게 됨
         }
     }
 
@@ -83,26 +93,42 @@ public class CommandMoJae extends CommandPlusBase {
             if(entity instanceof EntityLiving) {
                 EntityLiving living = (EntityLiving) entity;
                 String monsterName = EntityList.getEntityString(living);
+                String attackTarget = Mojae.monterAttack.get(monsterName);
+                Class targetClass = EntityList.NAME_TO_CLASS.get(attackTarget);
+                if (Mojae.monterAttackRemove.containsKey(monsterName)) {
+                    if (living instanceof EntityMob) {
+                        EntityMob mob = (EntityMob) living;
+                        Iterator iterator = mob.targetTasks.taskEntries.iterator();
+                        while (iterator.hasNext()){
+                            EntityAITasks.EntityAITaskEntry taskEntry = (EntityAITasks.EntityAITaskEntry) iterator.next();
+                            if(taskEntry.action instanceof EntityAINearestAttackableTarget){
+                                System.out.println("삭제함");
+                                iterator.remove();
+                                Mojae.monterAttack.remove(monsterName);
+                                mob.setAttackTarget(null);
+                            }
+                        }
+                    }
+                }
                 if (Mojae.monterAttack.containsKey(monsterName)) {
-                    String attackKey = Mojae.monterAttack.get(monsterName);
-                    Class entityClass = EntityList.NAME_TO_CLASS.get(attackKey);
-
                     if (living instanceof EntityMob) {
                         EntityMob mob = (EntityMob) living;
                         mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[]{EntityPigZombie.class}));
-                        mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, entityClass, false));
-
+                        mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, targetClass, false));
                     }
                 }
             }
         }
+        Mojae.monterAttackRemove.clear();;
     }
+
 
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         if(args.length == 1)
-        return getListOfStringsMatchingLastWord(args, "dog", "skelreeper", "arrowreper", "arrowcount", "arrowriding", "attack", "block", "unlock");
-        else if(args[0].equalsIgnoreCase("attack")){
+        return getListOfStringsMatchingLastWord(args, "dog", "skelreeper", "arrowreper", "arrowcount", "arrowriding", "attack", "block", "unlock", "skeldelay" ,
+                "remove");
+        else if(args[0].equalsIgnoreCase("attack") || args[0].equalsIgnoreCase("remove")){
             return getListOfStringsMatchingLastWord(args, EntityList.getEntityNameList());
         } else if(args[0].equalsIgnoreCase("block")){
             return getListOfStringsMatchingLastWord(args,  Item.REGISTRY.getKeys());

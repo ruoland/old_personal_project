@@ -28,6 +28,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityAPI {
+
+    public static NBTTagCompound getNBT(Entity entity){
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        entity.writeToNBT(tagCompound);
+        return tagCompound;
+    }
     /**
      * Creates a Vec3 using the pitch and yaw of the entities rotation.
      */
