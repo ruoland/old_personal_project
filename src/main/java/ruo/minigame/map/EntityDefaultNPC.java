@@ -177,7 +177,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
         this.distance = distance;
     }
 
-
     public void setTeleport(boolean a) {
         this.dataManager.set(IS_TELEPORT, a);
     }

@@ -19,25 +19,19 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import ruo.cmplus.cm.CommandDrawtexture;
 import ruo.cmplus.cm.CommandMultiCommand;
 import ruo.cmplus.cm.CommandTimer;
-import ruo.cmplus.cm.beta.CommandEntity;
 import ruo.cmplus.cm.beta.CommandItem;
 import ruo.cmplus.cm.beta.CommandPlayer;
 import ruo.cmplus.cm.beta.custommodelentity.CommandCustomEntity;
-import ruo.cmplus.cm.beta.customnpc.CommandNPC;
-import ruo.cmplus.cm.beta.customnpc.CommandNPCModel;
 import ruo.cmplus.cm.beta.model.CMModelPlayer;
 import ruo.cmplus.cm.beta.model.CMRenderPlayer;
 import ruo.cmplus.cm.beta.model.CommandModel;
 import ruo.cmplus.cm.shortco.CommandCm;
 import ruo.cmplus.cm.shortco.CommandFunc;
-import ruo.cmplus.cm.v16.CommandMouseCancel;
 import ruo.cmplus.cm.v17.*;
 import ruo.cmplus.cm.v17.key.KeyEvent;
 import ruo.cmplus.cm.v18.*;
-import ruo.cmplus.cm.v18.customgui.CommandGUI;
 import ruo.cmplus.cm.v18.customgui.CustomClient;
 import ruo.cmplus.cm.v18.function.*;
 import ruo.cmplus.deb.CommandDeb;
@@ -47,6 +41,7 @@ import ruo.cmplus.test.CMMessageHandler;
 import ruo.cmplus.test.CMPacketCommand;
 
 import java.io.FileInputStream;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -66,6 +61,7 @@ public class CMPlus {
             }
             System.out.println("플레이어 API 찾음");
         }
+
     }
 
     @Instance("CommandPlus")
@@ -89,6 +85,14 @@ public class CMPlus {
             MinecraftForge.EVENT_BUS.register(new KeyEvent());
             MinecraftForge.EVENT_BUS.register(new CMPlusClientEvent());
         }
+
+        WaypointManager waypointManager = new WaypointManager("JumpMap");
+        // 콘피그에서 nbt로 컨버트
+        for (Iterator it = WaypointManagerOld.keySet().iterator(); it.hasNext(); ) {
+            String key = (String) it.next();
+            waypointManager.add(key, WaypointManagerOld.get(key));
+        }
+
     }
 
     @EventHandler

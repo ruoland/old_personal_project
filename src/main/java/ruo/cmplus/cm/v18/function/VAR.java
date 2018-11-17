@@ -133,8 +133,8 @@ public class VAR {
 	}
 
 	public static boolean ifMath(String key) {
-		return key.contains("+") || key.contains("-") || key.contains("*")
-				|| (key.contains("/") && checkNumber(key));
+		return (key.contains("+") || key.contains("-") || key.contains("*")
+				|| key.contains("/")) && checkNumber(key) && key.contains("@");
 	}
 
 	public static boolean checkNumber(String key) {

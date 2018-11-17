@@ -42,6 +42,10 @@ class EntityModelNPC extends EntityMob {
             DataSerializers.VARINT);
     private static final DataParameter<Integer> BLOCK_METADATA = EntityDataManager.createKey(EntityModelNPC.class,
             DataSerializers.VARINT);
+    private static final DataParameter<Integer> HEAD_BLOCK_ID = EntityDataManager.createKey(EntityModelNPC.class,
+            DataSerializers.VARINT);
+    private static final DataParameter<Integer> HEAD_BLOCK_METADATA = EntityDataManager.createKey(EntityModelNPC.class,
+            DataSerializers.VARINT);
     private static final DataParameter<Rotations> ROTATION_XYZ = EntityDataManager.createKey(EntityModelNPC.class,
             DataSerializers.ROTATIONS);
     private static final DataParameter<Rotations> SCALE_XYZ = EntityDataManager.createKey(EntityModelNPC.class,
@@ -77,6 +81,8 @@ class EntityModelNPC extends EntityMob {
         this.dataManager.register(SLEEP_ROTATE, 0F);
         this.dataManager.register(BLOCK_ID, 1);
         this.dataManager.register(BLOCK_METADATA, 0);
+        this.dataManager.register(HEAD_BLOCK_ID, 1);
+        this.dataManager.register(HEAD_BLOCK_METADATA, 0);
     }
 
     public Rotations getRGBColor() {
@@ -243,14 +249,6 @@ class EntityModelNPC extends EntityMob {
         setBlock(new ItemStack(block));
     }
 
-    @Nullable
-    @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-
-        return super.onInitialSpawn(difficulty, livingdata);
-
-    }
-
     public void setBlock(ItemStack stack) {
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
         setBlockMetadata(stack.getMetadata());
@@ -263,6 +261,14 @@ class EntityModelNPC extends EntityMob {
     public int getBlockMetadata() {
         return this.getDataManager().get(BLOCK_METADATA);
     }
+
+    public void setHeadBlock(ItemStack stack) {
+        dataManager.set(HEAD_BLOCK_METADATA, stack.getMetadata());
+        dataManager.set(HEAD_BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
+    }   public int getHeadBlockMetadata() {
+        return this.getDataManager().get(HEAD_BLOCK_METADATA);
+    }
+
 
     /**
      * 모델을 바꾸면 모델 회전이나 이동은 모두 초기화 됨
@@ -315,6 +321,8 @@ class EntityModelNPC extends EntityMob {
         compound.setString("texture", getTexture() != null ? getTexture().toString() : "");
         compound.setInteger("BlockID", Block.getIdFromBlock(getCurrentBlock()));
         compound.setInteger("BlockMetadata", dataManager.get(BLOCK_METADATA));
+        compound.setInteger("HEAD_BLOCK_ID", (dataManager.get(HEAD_BLOCK_ID)));
+        compound.setInteger("HEAD_BLOCK_METADATA", dataManager.get(HEAD_BLOCK_METADATA));
         if (getCurrentBlock() != null && FMLCommonHandler.instance().getSide() == Side.CLIENT)
             compound.setString("blockTexture", RenderAPI.getBlockTexture(getCurrentBlock()).toString());
     }
@@ -339,6 +347,12 @@ class EntityModelNPC extends EntityMob {
 //            setTexture(compound.getString("blockTexture"));
         }
         setBlockMetadata(compound.getInteger("BlockMetadata"));
+        dataManager.set(HEAD_BLOCK_ID, compound.getInteger("HEAD_BLOCK_ID"));
+        dataManager.set(HEAD_BLOCK_METADATA, compound.getInteger("HEAD_BLOCK_METADATA"));
+    }
+
+    public Block getHeadBlock(){
+        return Block.getBlockById(dataManager.get(HEAD_BLOCK_ID));
     }
 
     public Rotations getRotations(NBTTagCompound tag, String name) {
