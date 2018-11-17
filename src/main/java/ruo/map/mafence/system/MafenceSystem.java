@@ -29,7 +29,14 @@ public class MafenceSystem {
         TickRegister.register(new AbstractTick(100, false) {
             @Override
             public void run(TickEvent.Type type) {
-                levelWaveMap.get(curLevel).startWave(curLevel);
+                AbstractLevelWave wave = levelWaveMap.get(curLevel);
+                if(!wave.waveStart) {
+                    wave.startWave(curLevel);
+                    return;
+                }
+                if(!wave.waveEnd){
+                    return;
+                }
                 curLevel++;
             }
         });
@@ -44,11 +51,11 @@ public class MafenceSystem {
         LIFE_POINT--;
         if (LIFE_POINT == 0) {
             System.out.println("게임 끝");
-            ;
         }
     }
 
     public void setMonsterSpawn(BlockPos pos) {
         monsterSpawnPos = pos;
     }
+
 }

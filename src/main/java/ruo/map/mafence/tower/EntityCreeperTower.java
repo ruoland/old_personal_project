@@ -23,7 +23,7 @@ public class EntityCreeperTower extends EntityTower {
     public void fall(float distance, float damageMultiplier) {
         super.fall(distance, damageMultiplier);
         if(getRotateY() == 90){
-            worldObj.createExplosion(this, posX, posY, posZ, 1.5F * getTowerLevel(), false);
+            worldObj.createExplosion(this, posX, posY, posZ, 2.5F * getTowerLevel(), false);
         }
 
     }

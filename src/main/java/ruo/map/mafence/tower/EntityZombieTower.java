@@ -8,7 +8,7 @@ public class EntityZombieTower extends EntityTower {
 
     public EntityZombieTower(World worldIn) {
         super(worldIn);
-        maxAttackDelay = 60;
+        maxAttackDelay = 100;
     }
 
     @Override
