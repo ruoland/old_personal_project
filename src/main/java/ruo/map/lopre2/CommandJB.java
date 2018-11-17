@@ -2,14 +2,11 @@ package ruo.map.lopre2;
 
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGameOver;
-import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -33,11 +30,9 @@ import ruo.map.lopre2.jump1.EntityWaterBlockCreator;
 import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
 import ruo.minigame.action.ActionEffect;
-import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
-import ruo.minigame.map.EntityDefaultNPC;
 
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
@@ -184,10 +179,10 @@ public class CommandJB extends CommandPlusBase {
                 pos2 = WorldAPI.changePosArrayInt((EntityLivingBase) sender);
             }
             if (args[0].equalsIgnoreCase("set"))
-                Loop2Event.curve(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
+                Loop.curve(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
 
             if (args[0].equalsIgnoreCase("block"))
-                Loop2Event.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
+                Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
 
             if (args[0].equalsIgnoreCase("downlock")) {
                 EntityWaterBlockCreator.downLock = !EntityWaterBlockCreator.downLock;

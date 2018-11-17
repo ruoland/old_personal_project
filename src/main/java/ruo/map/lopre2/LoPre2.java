@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.jump1.*;
 import ruo.map.lopre2.jump2.*;
@@ -25,16 +27,18 @@ import ruo.minigame.api.WorldAPI;
 
 @Mod(modid = "LoopPre2", name = "LoopPre2")
 public class LoPre2 {
-    public static Achievement achievementApple = new Achievement("achievement.apple", "apple", 0, 1, new ItemStack(Items.GOLDEN_APPLE), LoPre2.achievementNoGameMode1);
-    public static Achievement achievementNoDie1 = new Achievement("achievement.nodie1", "nodie1", 0, 2, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode1);
-    public static Achievement achievementNoGameMode1 = new Achievement("achievement.nogamemode1", "nogamemode1", 0, 0, Items.GOLDEN_APPLE, null);
-    public static Achievement achievementNoDie2 = new Achievement("achievement.nodie2", "nodie2", 1, 2, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode2);
-    public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 2, 0, Items.GOLDEN_APPLE, null);
-
-    public static Achievement achievementOneClear = new Achievement("achievement.oneclear", "oneclear", 0, 3, Items.FIREWORK_CHARGE, null);
-    public static Achievement achievementTwoClear = new Achievement("achievement.twoclear", "twoclear", 1, 3, Items.FIREWORKS, null);
+    public static Achievement achievementOneClear = new Achievement("achievement.oneclear", "oneclear", 0, 0, Items.FIREWORK_CHARGE, null);
+    public static Achievement achievementNoDie1 = new Achievement("achievement.nodie1", "nodie1", 0, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode1);
+    public static Achievement achievementNoGameMode1 = new Achievement("achievement.nogamemode1", "nogamemode1", 0, 2, Items.GOLDEN_APPLE, null);
+    public static Achievement achievementApple = new Achievement("achievement.apple", "apple", 0, 3, new ItemStack(Items.GOLDEN_APPLE), LoPre2.achievementNoGameMode1);
+    public static Achievement achievementPoorBlock = new Achievement("achievement.poorblock", "poorblock", 0, 4, Items.GOLDEN_APPLE, null);
     public static Achievement achievementHidePath1= new Achievement("achievement.hidepath1", "hidepath1", 0, 6, Items.FEATHER, null);
+
+    public static Achievement achievementTwoClear = new Achievement("achievement.twoclear", "twoclear", 1, 0, Items.FIREWORKS, null);
+    public static Achievement achievementNoDie2 = new Achievement("achievement.nodie2", "nodie2", 1, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode2);
+    public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 1, 2, Items.GOLDEN_APPLE, null);
     public static Achievement achievementHidePath2= new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
+
 
     //점프맵 2 코드
     public static Item itemCopy = new ItemCopy().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
@@ -85,6 +89,8 @@ public class LoPre2 {
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         MinecraftForge.EVENT_BUS.register(new LooPre2Event());
 
+        if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        MinecraftForge.EVENT_BUS.register(new LooPreClientEvent());
 
         DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
 

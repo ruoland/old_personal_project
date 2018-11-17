@@ -79,6 +79,11 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         }
     }
 
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
     public boolean isInv() {
         return dataManager.get(ISINV).booleanValue();
     }

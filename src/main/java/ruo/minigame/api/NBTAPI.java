@@ -12,7 +12,7 @@ public class NBTAPI {
     private NBTTagCompound nbttagcompound = new NBTTagCompound();
     private File file;
 
-    public NBTAPI(String f) {
+    public  NBTAPI(String f) {
         file = new File(f);
         try {
             if (!file.exists()) {

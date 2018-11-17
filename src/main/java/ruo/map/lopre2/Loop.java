@@ -10,7 +10,7 @@ import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 
-public class Loop2Event {
+public class Loop {
     static double currentY, currentZ;
 
     public static void curve(World worldObj, int x, int y, int z, int x2, int y2, int z2) {

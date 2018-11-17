@@ -21,8 +21,8 @@ public class CommandWaypoint extends CommandPlusBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 1) {
             String key = !args[1].contains(":") ? WorldAPI.getCurrentWorldName() + ":" + args[1] : args[1];
-            String worldName = key.substring(0,key.indexOf(":"));
-            WaypointManager waypointManager = new WaypointManager(worldName);
+            String worldName = key.substring(0, key.indexOf(":"));
+            WaypointManager waypointManager = WaypointManager.getWaypoint(worldName);
             if (args[0].equals("set")) {
                 if (waypointManager.has(key)) {
                     sender.addChatMessage(new TextComponentString(key + " 웨이포인트는 이미 존재합니다."));
@@ -39,9 +39,9 @@ public class CommandWaypoint extends CommandPlusBase {
                     sender.addChatMessage(new TextComponentString(key + " 웨이포인트를 제거했습니다."));
                 } else
                     sender.addChatMessage(new TextComponentString(WorldAPI.getCurrentWorldName() + ":" + args[0] + " 웨이포인트가 존재하지 않습니다."));
-            }else{
+            } else {
                 Entity entity = getEntity(server, sender, args[0]);
-                if(entity instanceof EntityPlayerMP) {
+                if (entity instanceof EntityPlayerMP) {
                     if (waypointManager.has(key)) {
                         double[] dou = waypointManager.get(key);
                         WorldAPI.teleport((EntityPlayerMP) entity, dou[0], dou[1], dou[2]);
@@ -51,10 +51,11 @@ public class CommandWaypoint extends CommandPlusBase {
             }
         } else {
             String key = !args[0].contains(":") ? WorldAPI.getCurrentWorldName() + ":" + args[0] : args[0];
-            String worldName = key.substring(0,key.indexOf(":"));
-            WaypointManager waypointManager = new WaypointManager(worldName);
+            String worldName = key.substring(0, key.indexOf(":"));
+            WaypointManager waypointManager = WaypointManager.getWaypoint(worldName);
             if (waypointManager.has(key)) {
                 double[] dou = waypointManager.get(key);
+                System.out.println(dou[0] + " - " + dou[1] + "  - " + dou[2]);
                 WorldAPI.teleport(dou[0], dou[1], dou[2]);
             } else
                 sender.addChatMessage(new TextComponentString(key + "라는 웨이포인트가 존재하지 않습니다."));
@@ -65,7 +66,7 @@ public class CommandWaypoint extends CommandPlusBase {
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args,
                                                 BlockPos pos) {
-        WaypointManager waypointManager = new WaypointManager(WorldAPI.getCurrentWorldName());
+        WaypointManager waypointManager = WaypointManager.getWaypoint(WorldAPI.getCurrentWorldName());
 
         return getListOfStringsMatchingLastWord(args, waypointManager.keySet());
     }

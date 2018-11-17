@@ -3,9 +3,12 @@ package ruo.map.lopre2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.stats.StatisticsManagerServer;
 import net.minecraft.tileentity.CommandBlockBaseLogic;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.DamageSource;
@@ -18,8 +21,11 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.jump1.EntityLavaBlock;
@@ -150,6 +156,10 @@ public class LooPre2Event {
     @SubscribeEvent
     public void a(PlayerTickEvent event) {
         if (LoPre2.checkWorld()) {
+            if(event.player.getDistance(1195.1, 4.4, -541.8) < 2){
+                event.player.addStat(LoPre2.achievementPoorBlock);
+                System.out.println("조건 완료");
+            }
             event.player.setAir(0);
             event.player.worldObj.setRainStrength(0);
             if(fireAttack) {

@@ -86,7 +86,7 @@ public class CMPlus {
             MinecraftForge.EVENT_BUS.register(new CMPlusClientEvent());
         }
 
-        WaypointManager waypointManager = new WaypointManager("JumpMap");
+        WaypointManager waypointManager = WaypointManager.getWaypoint("JumpMap");
         // 콘피그에서 nbt로 컨버트
         for (Iterator it = WaypointManagerOld.keySet().iterator(); it.hasNext(); ) {
             String key = (String) it.next();

@@ -5,13 +5,22 @@ import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import ruo.minigame.api.NBTAPI;
 
+import java.util.HashMap;
 import java.util.Set;
 
 public class WaypointManager {
+    private static HashMap<String, WaypointManager> wayMap = new HashMap<>();
     private NBTAPI nbt;
-    public WaypointManager(String worldname) {
+
+    private WaypointManager(String worldname) {
         System.out.println("./saves/" + worldname + "/waypoint.dat");
-        nbt = new NBTAPI("./saves/" + worldname + "/waypoint.dat");
+        nbt = new NBTAPI("./saves/" + worldname + "/waypoint.dat");;
+        wayMap.put(worldname, this);
+
+    }
+
+    public static WaypointManager getWaypoint(String worldName){
+        return wayMap.containsKey(worldName) ? wayMap.get(worldName) :new WaypointManager(worldName);
     }
 
     public void add(String name, double x, double y, double z) {
@@ -21,10 +30,13 @@ public class WaypointManager {
         tagCompound.setDouble("posZ", z);
         nbt.getNBT().setTag(name, tagCompound);
         nbt.saveNBT();
+        System.out.println(name+x+" - "+y+" - "+z);
+
     }
 
     public void add(String name, double[] position) {
         add(name, position[0], position[1], position[2]);
+
     }
 
     public Set keySet() {
@@ -39,9 +51,9 @@ public class WaypointManager {
     public double[] get(String name) {
         double[] position = new double[3];
         NBTTagCompound nbtPos = nbt.getNBT().getCompoundTag(name);
-        position[0] = nbtPos.getDouble(name + "-X");
-        position[1] = nbtPos.getDouble(name + "-Y");
-        position[2] = nbtPos.getDouble(name + "-Z");
+        position[0] = nbtPos.getDouble("posX");
+        position[1] = nbtPos.getDouble("posY");
+        position[2] = nbtPos.getDouble("posZ");
         return position;
     }
 
