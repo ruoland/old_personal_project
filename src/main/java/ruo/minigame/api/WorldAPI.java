@@ -66,6 +66,8 @@ public class WorldAPI {
      * 음수 또는 양수의 난수를 반환합니다
      */
     public static int rand(int round) {
+        if(round <= 0)
+            return 0;
         return rand.nextBoolean() ? -rand.nextInt(round) : rand.nextInt(round);
     }
 

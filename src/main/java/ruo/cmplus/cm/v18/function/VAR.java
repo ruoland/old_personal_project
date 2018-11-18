@@ -138,8 +138,8 @@ public class VAR {
 	}
 
 	public static boolean checkNumber(String key) {
-		String sub = key.substring(key.indexOf("/"), key.indexOf("/") + 1);
 		try {
+			String sub = key.substring(key.indexOf("/"), key.indexOf("/") + 1);
 			Integer.valueOf(sub);
 			return true;
 		} catch (Exception e) {

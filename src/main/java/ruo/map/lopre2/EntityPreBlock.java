@@ -36,12 +36,10 @@ import java.util.List;
 
 public abstract  class EntityPreBlock extends EntityDefaultNPC {
     protected static Block prevBlock = Blocks.STONE;
-    private static final DataParameter<Boolean> ISINV = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
+    private static final DataParameter<Boolean> ISINV = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FORCE_SPAWN = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
+    private static final DataParameter<Boolean> FORCE_SPAWN = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);//클라이언트 월드에서 엔티티가 스폰 될 수 있게 함, 가짜 블럭 생성용
-    private static final DataParameter<Boolean> COPY = EntityDataManager.<Boolean>createKey(EntityPreBlock.class,
-            DataSerializers.BOOLEAN);//복사용 블럭인가
     private static final DataParameter<Boolean> TELEPORT_LOCK = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DIFFICULTY = EntityDataManager.createKey(EntityPreBlock.class,
@@ -59,8 +57,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         dataManager.register(TELEPORT_LOCK, false);
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
-        dataManager.register(COPY, false);
-        dataManager.register(DIFFICULTY, 2);
+        dataManager.register(DIFFICULTY, -1);
     }
 
     @Nullable
@@ -81,19 +78,11 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
 
     @Override
     public boolean hasCustomName() {
-        return false;
+        return WorldAPI.equalsHeldItem(LoPre2.itemDifficulty) || WorldAPI.equalsHeldItem(LoPre2.itemSpanner);
     }
 
     public boolean isInv() {
         return dataManager.get(ISINV).booleanValue();
-    }
-
-    public void setCopyBlock(boolean is) {
-        dataManager.set(COPY, is);
-    }
-
-    public boolean isCopyBlock() {
-        return dataManager.get(COPY).booleanValue();
     }
 
 
@@ -118,7 +107,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
                 return super.processInteract(player, hand, stack);
             }
 
-            if(FMLCommonHandler.instance().getSide() == Side.SERVER) {
+            if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
                     setInv(!isInv());
                     setInvisible(isInv());
@@ -208,8 +197,20 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
     private int delayTick;
     @Override
     public void onLivingUpdate() {
-        if(getScaleX() == 0 || getScaleY() == 0 || getScaleZ() == 0)
-            setScale(1,1,1);
+        if(getScaleZ() == 0.5){
+            setSize(0.5F,1F);
+        }
+        if(getDifficulty() > -1) {
+            setBlock(Blocks.WOOL);
+            setBlockMetadata(6);
+            if (getDifficulty() <= worldObj.getDifficulty().getDifficultyId()) {
+                setInv(false);
+                setCollision(true);
+            } else {
+                setInv(true);
+                setCollision(false);
+            }
+        }
         if (CommandJB.isLavaInvisible && !(this instanceof EntityBigBlock)) {
             setInvisible(!isInv());
         } else
@@ -379,7 +380,7 @@ public abstract  class EntityPreBlock extends EntityDefaultNPC {
         setSize(compound.getFloat("widthl"), compound.getFloat("heightl"));
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
-
+        setDifficulty(compound.getInteger("difficulty"));
     }
 
     @Override

@@ -18,6 +18,7 @@ import net.minecraft.util.math.Rotations;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 import ruo.minigame.api.Direction;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.PosHelper;
@@ -112,6 +113,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public double getDistance(Vec3d vec3d) {
         return super.getDistance(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
+
     public void teleportEnd() {
 
     }
@@ -219,11 +221,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
         if (isServerWorld()) {
             if (getDataManager().get(ON_DEATH_TIMER)) {
-                if (getDeathTime() > 0) {
-                    setDeathTimer(getDeathTime() - 1);
-                }
-                if (getDeathTime() == 0) {
-                    this.setDead();
+                setDeathTimer(getDeathTime() - 1);
+                System.out.println("데스 타이머 깍임" + getDeathTime());
+                if (getDeathTime() <= 0) {
+                    System.out.println("죽음");
                     onTimerDeath();
                 }
             }
@@ -238,7 +239,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void onTimerDeath() {
-
+        this.setDead();
     }
 
     public int getDeathTime() {
@@ -349,11 +350,12 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void setDeathTimer(int deathTimer) {
-        if (deathTimer > 0) {
             dataManager.set(DEATH_TIMER, deathTimer);
             dataManager.set(ON_DEATH_TIMER, true);
-        } else
-            dataManager.set(ON_DEATH_TIMER, false);
+    }
+
+    public void deathTimerCancel(int deathTimer) {
+        dataManager.set(ON_DEATH_TIMER, false);
 
     }
 
@@ -400,9 +402,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
         dataManager.set(IS_STURN, is);
         if (!is)
             dataManager.set(STURN_TICK, -1);
-        else if(dataManager.get(STURN_TICK) <= 0){
+        else if (dataManager.get(STURN_TICK) <= 0) {
             dataManager.set(STURN_TICK, 20);
-            System.out.println("[경고] "+this+"의 엔티티의 스턴 틱이 설정되지 않아 20틱으로 설정했습니다.");
+            System.out.println("[경고] " + this + "의 엔티티의 스턴 틱이 설정되지 않아 20틱으로 설정했습니다.");
         }
         dataManager.set(LOCK_YAW, this.rotationYaw);
         dataManager.set(LOCK_PITCH, this.rotationPitch);

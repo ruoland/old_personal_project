@@ -60,12 +60,11 @@ import ruo.minigame.minigame.elytra.*;
 import ruo.minigame.minigame.elytra.miniween.*;
 import ruo.minigame.minigame.elytra.playerarrow.EntityHomingTNT;
 import ruo.minigame.minigame.elytra.playerarrow.EntityTNTArrow;
+import ruo.minigame.minigame.scroll.*;
 import ruo.minigame.minigame.starmine.CommandStarMine;
 import ruo.minigame.minigame.starmine.StarMine;
 import ruo.minigame.minigame.starmine.StarMineEvent;
 import ruo.minigame.minigame.minerun.*;
-import ruo.minigame.minigame.scroll.Scroll;
-import ruo.minigame.minigame.scroll.ScrollEvent;
 
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
@@ -140,8 +139,18 @@ public class MiniGame {
         GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("minigame:blockInvisible"));
         //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
+        //스크롤 용
+        DebAPI.registerEntity(this, "ScrollCreeper", EntityScrollCreeper.class);
+        RenderAPI.registerRender(EntityScrollCreeper.class);
+        DebAPI.registerEntity(this, "ScrollBoss", EntityScrollBoss.class);
+        RenderAPI.registerRender(EntityScrollBoss.class);
+        DebAPI.registerEntity(this, "ScrollFallingBlock", EntityScrollBossFallingBlock.class);
+        RenderAPI.registerRender(EntityScrollBossFallingBlock.class);
+        DebAPI.registerEntity(this, "ScrollWarning", EntityScrollBossWarning.class);
+        RenderAPI.registerRender(EntityScrollBossWarning.class);
+        DebAPI.registerEntity(this, "SCrollShoting", EntityScrollBossShootingBlock.class);
+        RenderAPI.registerRender(EntityScrollBossShootingBlock.class);
         //마인런 게임용
-
         DebAPI.registerEntity(this, "MRDummy", EntityDummyPlayer.class);
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
         DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);

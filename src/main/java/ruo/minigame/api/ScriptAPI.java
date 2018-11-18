@@ -65,7 +65,6 @@ public class ScriptAPI {
 			else
 				initJS(init);
 			addObject("system", System.out);
-			addObject("nbt", new NBTAPI("./scriptapi.dat"));
 		}
 		public String replaceFunction(String line) {
 			try {
@@ -168,9 +167,6 @@ public class ScriptAPI {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
 					script = new StringBuffer();
 					for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-						System.out.println("Replace2---"+replace2(s));
-						System.out.println("Replace---"+replace(replace2(s)));
-						System.out.println("ReplaceFunction---"+replaceFunction(replace(replace2(s))));
 
 						script.append(replaceFunction(replace(replace2(s))));
 						

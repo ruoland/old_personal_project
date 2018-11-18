@@ -27,7 +27,7 @@ import ruo.minigame.api.WorldAPI;
 public class LooPreClientEvent {
     @SubscribeEvent
     public void client(TickEvent.ClientTickEvent event){
-        if(Keyboard.isKeyDown(Keyboard.KEY_R)){
+        if(LoPre2.checkWorld() && Keyboard.isKeyDown(Keyboard.KEY_R) && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getBedLocation() != null){
             WorldAPI.teleport(WorldAPI.getPlayerMP().getBedLocation());
             WorldAPI.getPlayerMP().heal(20);
         }

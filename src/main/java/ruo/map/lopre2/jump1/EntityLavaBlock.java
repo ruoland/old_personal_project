@@ -40,7 +40,7 @@ public class EntityLavaBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "LavaBlock 고정:"+canTeleportLock()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
+        return "LavaBlock 고정:"+canTeleportLock()+"난이도:"+getDifficulty()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
     }
 
     @Override

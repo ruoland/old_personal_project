@@ -158,7 +158,6 @@ public class LooPre2Event {
         if (LoPre2.checkWorld()) {
             if(event.player.getDistance(1195.1, 4.4, -541.8) < 2){
                 event.player.addStat(LoPre2.achievementPoorBlock);
-                System.out.println("조건 완료");
             }
             event.player.setAir(0);
             event.player.worldObj.setRainStrength(0);

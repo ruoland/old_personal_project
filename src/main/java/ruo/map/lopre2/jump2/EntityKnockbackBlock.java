@@ -24,7 +24,7 @@ public class EntityKnockbackBlock extends EntityMoveBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "KnockbackBlock "+" 넉백 "+knockbackSize;
+        return "KnockbackBlock "+"난이도:"+getDifficulty()+" 넉백 "+knockbackSize;
     }
 
     @Override
@@ -49,13 +49,15 @@ public class EntityKnockbackBlock extends EntityMoveBlock {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
-                this.posX - knockbackSize, this.posY, this.posZ - knockbackSize, this.posX + knockbackSize, this.posY + 1.5, this.posZ + knockbackSize));
-        if (!list.isEmpty()) {
-            for (Entity entity : list) {
-                if ((entity instanceof EntityPlayer) && !entity.noClip) {
-                    ((EntityLivingBase) entity).knockBack(this, 0.4F, this.posX - entity.posX, this.posZ - entity.posZ);
+        if(!isInv()) {
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
+                    this.posX - knockbackSize, this.posY, this.posZ - knockbackSize, this.posX + knockbackSize, this.posY + 1.5, this.posZ + knockbackSize));
+            if (!list.isEmpty()) {
+                for (Entity entity : list) {
+                    if ((entity instanceof EntityPlayer) && !entity.noClip) {
+                        ((EntityLivingBase) entity).knockBack(this, 0.4F, this.posX - entity.posX, this.posZ - entity.posZ);
 
+                    }
                 }
             }
         }

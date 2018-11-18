@@ -24,11 +24,12 @@ public class ItemDifficulty extends Item {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if(target instanceof EntityPreBlock){
+        if(target instanceof EntityLavaBlock || target instanceof EntityBigBlock || target instanceof EntityKnockbackBlock){
             EntityPreBlock preBlock = (EntityPreBlock) target;
             preBlock.setDifficulty(preBlock.getDifficulty()+1);
-            if(preBlock.getDifficulty() > 2)
+            if(preBlock.getDifficulty() > 3)
                 preBlock.setDifficulty(1);
+
         }
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }

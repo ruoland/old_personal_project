@@ -91,7 +91,7 @@ public class EntityBigBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "BigBlock " + " 잠금:" + canTeleportLock()+ " 딜레이:"+getDefaultDelay();
+        return "BigBlock " + " 잠금:" + canTeleportLock()+"난이도:"+getDifficulty()+ " 딜레이:"+getDefaultDelay();
     }
 
     @Override
