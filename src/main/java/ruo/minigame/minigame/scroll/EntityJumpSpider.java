@@ -37,6 +37,7 @@ public class EntityJumpSpider extends EntitySpider {
         super.onCollideWithPlayer(entityIn);
         List<EntityPlayer> list = EntityAPI.getEntity(worldObj, this.getEntityBoundingBox().expand(0,0.5,0), EntityPlayer.class);
         for(EntityPlayer player : list){
+            player.setHealth(0);
             if(entityIn.posY > posY+0.5){
                 attackEntityFrom(new DamageSource("밟혀서 뎀지 받음"), 1.5F);
                 entityIn.setVelocity(0,0.5,0);

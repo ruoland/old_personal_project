@@ -79,8 +79,6 @@ public class GrabHelper {
 			prevX = player.posX;
 			prevZ = player.posZ;
 			System.out.println("잡을 수 있게 설정됨");
-
-
 		}
 
 	}
