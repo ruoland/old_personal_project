@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Loader;
+import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 
@@ -46,6 +47,7 @@ public class GrabHelper {
 	 */
 	public static void wallGrabCheck(EntityPlayer player, boolean isGrab) {
 		String index = player.getHorizontalFacing().getName();
+
 		double posX = EntityAPI.lookPlayerX(1), posY = player.posY, posZ = EntityAPI.lookPlayerZ(1);
 		if (wallGrab && !isRangeX(player.posX) && !isRangeZ(player.posZ)) {
 			ungrab(player);
@@ -55,20 +57,34 @@ public class GrabHelper {
 		Block lookblockup = WorldAPI.getBlock(posX, posY + 2, posZ).getBlock();//플레이어 눈 앞 블럭 위에 블럭 - 이게 AIR여야만 올라갈 수 있음
 		if (wallGrab) {
 			Block jumpCheckBlock = WorldAPI.getBlock(posX, posY - 1, posZ).getBlock();//점프한 상태에서도 체크하기 위해서 있음
-			Block jumpCheckBlock2 = WorldAPI.getBlock(posX, posY, posZ).getBlock();
-
+			Block jumpCheckBlock2 = WorldAPI.getBlock(posX, posY, posZ).getBlock();//
 			if ((WorldAPI.equalsBlock(lookblock, Blocks.AIR) && !WorldAPI.equalsBlock(lookblockup, Blocks.AIR))
-					|| !WorldAPI.equalsBlock(lookblockup, Blocks.AIR)
-					|| (WorldAPI.equalsBlock(jumpCheckBlock, Blocks.AIR) && WorldAPI.equalsBlock(jumpCheckBlock2, Blocks.AIR))) {
+					|| !WorldAPI.equalsBlock(lookblockup, Blocks.AIR)) {
+				System.out.println((WorldAPI.equalsBlock(lookblock, Blocks.AIR) && !WorldAPI.equalsBlock(lookblockup, Blocks.AIR))+" - "+  !WorldAPI.equalsBlock(lookblockup, Blocks.AIR)+" - "+ (WorldAPI.equalsBlock(jumpCheckBlock, Blocks.AIR) && WorldAPI.equalsBlock(jumpCheckBlock2, Blocks.AIR)));
 				blockColide = true;
-			} else
+			} else {
 				blockColide = false;
+			}
+		}
+		System.out.println("블럭1"+blockColide);
+
+		AxisAlignedBB aabbblock = lopre(player);
+
+		if (aabbblock != null || (!WorldAPI.equalsBlock(lookblock, Blocks.AIR) && WorldAPI.equalsBlock(lookblockup, Blocks.AIR))) {
+			if (!isGrab) {
+				player.motionY = 0;
+			}
+			wallGrab = true;
+			wallFacing = index;
+			prevX = player.posX;
+			prevZ = player.posZ;
+			System.out.println("잡을 수 있게 설정됨");
+
+
 		}
 
 	}
-
-	/*
-			AxisAlignedBB aabbblock = null;
+	public static AxisAlignedBB lopre(EntityPlayer player){
 		if(Loader.isModLoaded("LoopPre2")) {
 			AxisAlignedBB aabbp = new AxisAlignedBB(EntityAPI.lookPlayerX(1), player.posY + 1, EntityAPI.lookPlayerZ(1), player.posX, player.posY, player.posZ);
 			List<EntityPreBlock> list = player.worldObj.getEntitiesWithinAABB(EntityPreBlock.class, aabbp);
@@ -83,23 +99,12 @@ public class GrabHelper {
 
 				if (aabb != null && aabbp != null && aabb.intersectsWith(aabbp) && (preBlockArrayList.size() == 1 || skip)) {
 					blockColide = false;
-					aabbblock = aabb;
-					break;
+					return aabb;
 				}
 			}
 		}
-		if (aabbblock != null || (!WorldAPI.equalsBlock(lookblock, Blocks.AIR) && WorldAPI.equalsBlock(lookblockup, Blocks.AIR))) {
-			if (!isGrab) {
-				player.motionY = 0;
-			}
-			wallGrab = true;
-			wallFacing = index;
-			prevX = player.posX;
-			prevZ = player.posZ;
-
-		}
-	 */
-
+		return null;
+	}
 	public static void reset() {
 		isReset = true;
 	}

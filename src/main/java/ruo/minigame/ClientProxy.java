@@ -31,9 +31,7 @@ public class ClientProxy extends CommonProxy {
 	public void pre(FMLPreInitializationEvent event) {
 
 		//DebAPI.registerEvent(new TextEvent());
-
 		ClientRegistry.registerKeyBinding(grab);
-
 		ClientCommandHandler.instance.registerCommand(new CommandMg());
 	}
 

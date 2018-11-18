@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 import ruo.cmplus.CMManager;
 import ruo.cmplus.camera.Camera;
 import ruo.minigame.MiniGame;
+import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
@@ -36,6 +37,8 @@ public class Scroll extends AbstractMiniGame {
         s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);
         pos(Keyboard.KEY_A);//카메라 초기화
         //MiniGame.spawnFakePlayer(false);
+        ActionEffect.doubleJump(true);
+        ActionEffect.crawl(true);
         return super.start();
     }
 

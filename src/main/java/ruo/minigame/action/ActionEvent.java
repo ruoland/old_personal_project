@@ -104,13 +104,14 @@ public class ActionEvent {
         if (ActionEffect.canCrawl()) {
             GameSettings gs = Minecraft.getMinecraft().gameSettings;
             if (ClientProxy.grab.isKeyDown()) {
+                System.out.println("키 다운 상태");
                 GrabHelper.wallGrabCheck(event.player, GrabHelper.wallGrab);
                 if (GrabHelper.wallGrab) {
                     KeyBinding bind = Minecraft.getMinecraft().gameSettings.keyBindForward;
                     if (bind.isPressed() || bind.isKeyDown()) {
                         if (!GrabHelper.blockColide) {
-                            if(GrabHelper.getGrabSpeed() < 2.0)
-                            GrabHelper.setGrabSpeed((float) (GrabHelper.getGrabSpeed() + 0.005D));
+                            if(GrabHelper.getGrabSpeed() < 1.5)
+                            GrabHelper.setGrabSpeed((float) (GrabHelper.getGrabSpeed() + 0.001D));
                             event.player.motionY = GrabHelper.getGrabSpeed();
                         }
                     }else

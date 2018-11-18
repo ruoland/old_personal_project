@@ -16,5 +16,7 @@ public class MiniGameRenderPlayer extends RenderPlayerBase {
 		super(playerAPI);
 	}
 
+
+
 }
 

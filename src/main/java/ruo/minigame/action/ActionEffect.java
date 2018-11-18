@@ -27,7 +27,6 @@ public class ActionEffect {
 			crawlMapList.add(mapName);
 		}else if(!onoff && crawlMapList.indexOf(mapName) != -1) {
 			crawlMapList.remove(crawlMapList.get(crawlMapList.indexOf(mapName)));
-
 		}
 	}
 
