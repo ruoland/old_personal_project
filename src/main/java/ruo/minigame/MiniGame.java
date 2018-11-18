@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiKeyBindingList;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.RenderSpider;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
@@ -140,6 +141,8 @@ public class MiniGame {
         //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //스크롤 용
+        DebAPI.registerEntity(this, "ScrollSpider", EntityJumpSpider.class);
+        RenderAPI.registerRender(EntityJumpSpider.class, new RenderSpider<EntityJumpSpider>(RenderAPI.getRenderMananger()));
         DebAPI.registerEntity(this, "ScrollCreeper", EntityScrollCreeper.class);
         RenderAPI.registerRender(EntityScrollCreeper.class);
         DebAPI.registerEntity(this, "ScrollBoss", EntityScrollBoss.class);
@@ -148,8 +151,14 @@ public class MiniGame {
         RenderAPI.registerRender(EntityScrollBossFallingBlock.class);
         DebAPI.registerEntity(this, "ScrollWarning", EntityScrollBossWarning.class);
         RenderAPI.registerRender(EntityScrollBossWarning.class);
-        DebAPI.registerEntity(this, "SCrollShoting", EntityScrollBossShootingBlock.class);
+        DebAPI.registerEntity(this, "ScrollShoting", EntityScrollBossShootingBlock.class);
         RenderAPI.registerRender(EntityScrollBossShootingBlock.class);
+        DebAPI.registerEntity(this, "ScrollFlyingBlock", EntityJumpFlyingBlock.class);
+        RenderAPI.registerRender(EntityJumpFlyingBlock.class);
+        DebAPI.registerEntity(this, "ScrollTNT", EntityJumpTNT.class);
+        RenderAPI.registerRender(EntityJumpTNT.class);
+        DebAPI.registerEntity(this, "ScrollDoubleReset", EntityJumpDoubleReset.class);
+        RenderAPI.registerRender(EntityJumpDoubleReset.class);
         //마인런 게임용
         DebAPI.registerEntity(this, "MRDummy", EntityDummyPlayer.class);
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);

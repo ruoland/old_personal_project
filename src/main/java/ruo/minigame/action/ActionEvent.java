@@ -120,7 +120,7 @@ public class ActionEvent {
             }else if(GrabHelper.wallGrab){
                 GrabHelper.ungrab(event.player);
             }
-            if (GrabHelper.wallGrab && (ClientProxy.grab.isKeyDown() || ClientProxy.grab.isPressed())
+            if ((ClientProxy.grab.isKeyDown() || ClientProxy.grab.isPressed())
                     && (gs.keyBindSneak.isKeyDown() || gs.keyBindSneak.isPressed())) {
                 WorldAPI.getPlayer().setAIMoveSpeed(WorldAPI.getPlayer().getAIMoveSpeed() / 2);
                 if (event.player.height != 1.8F || event.player.getEyeHeight() != event.player.getDefaultEyeHeight()) {
