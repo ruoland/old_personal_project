@@ -1,6 +1,8 @@
 package ruo.minigame.minigame.scroll;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.GameSettings;
@@ -29,18 +31,18 @@ public class ScrollEvent {
 
     private Minecraft mc = Minecraft.getMinecraft();
     private GameSettings s = mc.gameSettings;
-    private int prevX, pitch;
 
     @SubscribeEvent
     public void login(WorldEvent.Unload event) {
         if (MiniGame.scroll.isStart())
             MiniGame.scroll.end();
     }
+
     @SubscribeEvent
     public void login(EntityJoinWorldEvent event) {
-        if(event.getEntity() instanceof EntityArrow){
+        if (event.getEntity() instanceof EntityArrow) {
             EntityArrow arrow = (EntityArrow) event.getEntity();
-            if(arrow.shootingEntity instanceof EntityPlayer){
+            if (arrow.shootingEntity instanceof EntityPlayer) {
                 arrow.setDamage(arrow.getDamage() * 1.5);
             }
         }
@@ -48,16 +50,21 @@ public class ScrollEvent {
         //bow.onPlayerStoppedUsing(event.getBow(), event.getWorld(), event.getEntityPlayer(), 100);
         //event.setAction(ActionResult.newResult(EnumActionResult.SUCCESS, event.getBow()));
     }
+
     @SubscribeEvent
     public void login(ClientTickEvent event) {
+        if(mc.currentScreen instanceof GuiGameOver){
+            if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+                this.mc.thePlayer.respawnPlayer();
+                this.mc.displayGuiScreen((GuiScreen) null);
+            }
+        }
         if (mc.currentScreen != null || !MiniGame.scroll.isStart())
             return;
 
-        float y = (Mouse.getEventY()-180F) * 0.1F;
-        prevX = Mouse.getEventY();
-        //System.out.println(y  + " - " + Mouse.getEventY());
-        if(y <= 90 && y >= -90)
-        Camera.getCamera().pitch = y;
+        float y = (Mouse.getEventY() - 180F) * 0.1F;
+        if (y <= 90 && y >= -90)
+            Camera.getCamera().pitch = y;
         else
             Mouse.setCursorPosition(Mouse.getEventX(), get());
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
@@ -67,12 +74,13 @@ public class ScrollEvent {
             MiniGame.scroll.pos(Keyboard.KEY_D);
         }
     }
-    public int get(){
+
+    public int get() {
         int y = Mouse.getEventY();
-        if(y > 90)
+        if (y > 90)
             return 270;
-        else if(y < 90)
+        else if (y < 90)
             return 90;
-    return 0;
+        return 0;
     }
 }

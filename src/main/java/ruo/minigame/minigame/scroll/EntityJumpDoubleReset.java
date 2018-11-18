@@ -1,5 +1,6 @@
 package ruo.minigame.minigame.scroll;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -7,11 +8,14 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import ruo.map.lopre2.CommandJB;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.action.ActionEvent;
+
+import java.util.List;
 
 public class EntityJumpDoubleReset extends EntityPreBlock {
     private static final DataParameter<Integer> INVISIBLE_TIME = EntityDataManager.createKey(EntityJumpDoubleReset.class, DataSerializers.VARINT);
@@ -42,14 +46,16 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
     @Override
     public void onCollideWithPlayer(EntityPlayer entityIn) {
         super.onCollideWithPlayer(entityIn);
-        if (!isInv() && dataManager.get(INVISIBLE_TIME) <= 0 && entityIn.posY > posY + 0.5) {
+        if(!isInv() ) {
             ActionEffect.forceCanDoubleJump = true;
             ActionEffect.canDoubleJump = true;
             ActionEffect.isPlayerJump = true;
             setInv(true);
             setInvisible(true);
+            entityIn.fallDistance = 0;
             dataManager.set(INVISIBLE_TIME, 40);
         }
+        System.out.println(isServerWorld());
     }
 
     @Override
@@ -58,11 +64,12 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
         if(isServerWorld()){
 
             setCollision(false);
-            dataManager.set(INVISIBLE_TIME, dataManager.get(INVISIBLE_TIME)-1);
+
             if(dataManager.get(INVISIBLE_TIME) <= 0){
                 setInv(false);
-                setInvisible(false);
-            }
+            }else
+                dataManager.set(INVISIBLE_TIME, dataManager.get(INVISIBLE_TIME)-1);
+
         }
     }
 

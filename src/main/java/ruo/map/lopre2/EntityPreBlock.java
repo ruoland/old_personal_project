@@ -82,7 +82,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public boolean isInv() {
-        return dataManager.get(ISINV).booleanValue();
+        return dataManager.get(ISINV);
     }
 
 
@@ -199,9 +199,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     @Override
     public void onLivingUpdate() {
-        if (getScaleZ() == 0.5) {
-            setSize(0.5F, 1F);
-        }
+        setInvisible(isInv());
         if (getDifficulty() > -1) {
             setBlock(Blocks.WOOL);
             setBlockMetadata(6);
