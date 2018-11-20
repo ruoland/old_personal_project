@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import ruo.cmplus.CMManager;
+import ruo.cmplus.CMPlusCameraEvent;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.cmplus.util.CommandTool;
@@ -20,6 +21,7 @@ public class CommandCamera extends CommandPlusBase{
 		
 		CommandTool t = new CommandTool(getCommandName());
 		EntityPlayerMP p = WorldAPI.getPlayerMP();
+
 		if(t.length(args)){
 			t.addLoMessage("help.reset");
 			t.addLoMessage("help.yaw");
@@ -33,6 +35,11 @@ public class CommandCamera extends CommandPlusBase{
 			return;
 		}
 		Camera renderer = Camera.getCamera();
+		if(t.argCheck(args[0], "pos")){
+			CMPlusCameraEvent.x = sender.getPositionVector().xCoord;
+			CMPlusCameraEvent.y = sender.getPositionVector().yCoord;
+			CMPlusCameraEvent.z = sender.getPositionVector().zCoord;
+		}
 		if(t.argCheck(args[0], "reset", "리셋")){
 			Camera.getCamera().reset();
 			t.addLoMessage("reset");

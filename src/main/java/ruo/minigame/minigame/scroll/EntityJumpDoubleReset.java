@@ -44,9 +44,9 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer entityIn) {
-        super.onCollideWithPlayer(entityIn);
-        if(!isInv() ) {
+    protected void collideWithEntity(Entity entityIn) {
+        super.collideWithEntity(entityIn);
+        if(isServerWorld() && !isTeleport() && entityIn instanceof EntityPlayer && !isInv() && getEntityBoundingBox().intersectsWith(entityIn.getEntityBoundingBox())) {
             ActionEffect.forceCanDoubleJump = true;
             ActionEffect.canDoubleJump = true;
             ActionEffect.isPlayerJump = true;
@@ -54,23 +54,34 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
             setInvisible(true);
             entityIn.fallDistance = 0;
             dataManager.set(INVISIBLE_TIME, 40);
+            System.out.println(isServerWorld()+""+entityIn.motionY);
         }
-        System.out.println(isServerWorld());
+        System.out.println(isServerWorld()+""+getDistanceToEntity(entityIn));
+
+    }
+
+    @Override
+    public void onCollideWithPlayer(EntityPlayer entityIn) {
+        super.onCollideWithPlayer(entityIn);
+
     }
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(isServerWorld()){
-
             setCollision(false);
-
             if(dataManager.get(INVISIBLE_TIME) <= 0){
                 setInv(false);
             }else
                 dataManager.set(INVISIBLE_TIME, dataManager.get(INVISIBLE_TIME)-1);
+        }else{
+            if(dataManager.get(INVISIBLE_TIME) == 40) {
+                setInv(false);
+            }
 
         }
+
     }
 
     @Override

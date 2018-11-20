@@ -144,6 +144,7 @@ public class Scroll extends AbstractMiniGame {
 
     public void pos(int key) {
         boolean isSprintKeyDown = s.keyBindSprint.isKeyDown();
+
         if (Keyboard.KEY_D == key && s.keyBindForward.getKeyCode() != Keyboard.KEY_D) {// 두번째 조건은 카메라 설정을 한번만 하게 만들기 위해
             System.out.println(s.keyBindForward.getKeyCode() + " - 키 코드 - " + Keyboard.KEY_D);
             s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);

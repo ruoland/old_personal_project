@@ -18,12 +18,19 @@ import ruo.minigame.api.WorldAPI;
 public class CMPlusCameraEvent {
     private Camera cm = Camera.getCamera();
     private Minecraft mc = Minecraft.getMinecraft();
-
+    public static double x,y,z;
     @SubscribeEvent
     public void event2(EntityViewRenderEvent.FOVModifier e) {
         e.setFOV(Camera.getCamera().getZoom());
     }
-    //asdf
+    @SubscribeEvent
+    public void event222(EntityViewRenderEvent.CameraSetup e) {
+        if (x != 0 && y != 0 && z != 0) {
+            GL11.glTranslated(mc.thePlayer.posX-x, 0, 0);
+            GL11.glTranslated(0, mc.thePlayer.posY-y, 0);
+            GL11.glTranslated(0, 0, mc.thePlayer.posZ-z);
+        }
+    }
     @SubscribeEvent
     public void event2(EntityViewRenderEvent.CameraSetup e) {
         GL11.glTranslated(cm.traX, 0, 0);
