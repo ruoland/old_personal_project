@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ruo.cmplus.camera.Camera;
+import ruo.map.lopre2.jump2.EntityTeleportBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 

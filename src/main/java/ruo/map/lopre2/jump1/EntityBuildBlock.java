@@ -213,6 +213,10 @@ public class EntityBuildBlock extends EntityPreBlock {
         if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("D 블럭")) {
             dBlock = this;
         }
+
+    }
+
+    public void blockRead(NBTTagCompound compound){
         int size = compound.getInteger("BUILDSIZE");
         for (int i = 0; i < size; i++) {
             ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) compound.getTag(i + "-STACK"));
