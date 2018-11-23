@@ -74,15 +74,16 @@ public class EntityLavaBlock extends EntityPreBlock {
         lavaBlock.setBlockMode(getCurrentBlock());
         this.copyModel(lavaBlock);
         lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
-        lavaBlock.setWidth(getWidth());
-        lavaBlock.setHeight(getHeight());
-        lavaBlock.setSize(getWidth(), getHeight());
+
         lavaBlock.setBlockMetadata(getBlockMetadata());
         lavaBlock.setInv(isInv());
         lavaBlock.setInvisible(isInvisible());
         if(isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(lavaBlock);
         }
+        lavaBlock.setWidth(getWidth());
+        lavaBlock.setHeight(getHeight());
+        lavaBlock.setSize(getWidth(), getHeight());
         return lavaBlock;
     }
 
@@ -170,6 +171,8 @@ public class EntityLavaBlock extends EntityPreBlock {
         super.readEntityFromNBT(compound);
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
+        setSize(getWidth(), getHeight());
+        System.out.println(getWidth()+ " - "+getHeight());
         downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
     }

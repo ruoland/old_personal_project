@@ -100,11 +100,12 @@ public class MiniGame {
     public static StarMine starMine;
     public static StarMineEvent starMineEvent;
     public Configuration minigameConfig;
+
     public MiniGame() {
         try {
             Class.forName("api.player.server.ServerPlayerAPI");
             ServerPlayerAPI.register("MiniGame", MiniGameServerPlayer.class);
-            if(FMLCommonHandler.instance().getSide() == CLIENT) {
+            if (FMLCommonHandler.instance().getSide() == CLIENT) {
                 ClientPlayerAPI.register("MiniGame", MiniGameClientPlayer.class);
                 RenderPlayerAPI.register("MiniGame", MiniGameRenderPlayer.class);
             }
@@ -122,7 +123,7 @@ public class MiniGame {
         minigameConfig.load();
         ActionEffect.load();
         minigameConfig.save();
-        if(FMLCommonHandler.instance().getSide() == CLIENT) {
+        if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MiniGame.minerun = new MineRun();
             MiniGame.scroll = new Scroll();
             MiniGame.bomber = new Bomber();
@@ -141,24 +142,16 @@ public class MiniGame {
         //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //스크롤 용
+        DebAPI.registerEntity(this, "ScrollCreeper", EntityJumpCreeper.class);
         DebAPI.registerEntity(this, "ScrollSpider", EntityJumpSpider.class);
-        RenderAPI.registerRender(EntityJumpSpider.class, new RenderSpider<EntityJumpSpider>(RenderAPI.getRenderMananger()));
-        DebAPI.registerEntity(this, "ScrollCreeper", EntityScrollCreeper.class);
-        RenderAPI.registerRender(EntityScrollCreeper.class);
         DebAPI.registerEntity(this, "ScrollBoss", EntityScrollBoss.class);
-        RenderAPI.registerRender(EntityScrollBoss.class);
         DebAPI.registerEntity(this, "ScrollFallingBlock", EntityScrollBossFallingBlock.class);
-        RenderAPI.registerRender(EntityScrollBossFallingBlock.class);
         DebAPI.registerEntity(this, "ScrollWarning", EntityScrollBossWarning.class);
-        RenderAPI.registerRender(EntityScrollBossWarning.class);
         DebAPI.registerEntity(this, "ScrollShoting", EntityScrollBossShootingBlock.class);
-        RenderAPI.registerRender(EntityScrollBossShootingBlock.class);
         DebAPI.registerEntity(this, "ScrollFlyingBlock", EntityJumpFlyingBlock.class);
-        RenderAPI.registerRender(EntityJumpFlyingBlock.class);
         DebAPI.registerEntity(this, "ScrollTNT", EntityJumpTNT.class);
-        RenderAPI.registerRender(EntityJumpTNT.class);
         DebAPI.registerEntity(this, "ScrollDoubleReset", EntityJumpDoubleReset.class);
-        RenderAPI.registerRender(EntityJumpDoubleReset.class);
+
         //마인런 게임용
         DebAPI.registerEntity(this, "MRDummy", EntityDummyPlayer.class);
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
@@ -183,7 +176,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityElytraBossMini.class);
 
         //폭탄게임용
-        DebAPI.registerEntity(this, "bomb",EntityBomb.class);
+        DebAPI.registerEntity(this, "bomb", EntityBomb.class);
         GameRegistry.register(Bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
         DebAPI.registerEntity(this, "VELOCITY-DefaultNPC", EntityDefaultNPC.class);
@@ -192,7 +185,7 @@ public class MiniGame {
         MinecraftForge.EVENT_BUS.register(new ActionEvent());
         MinecraftForge.EVENT_BUS.register(new TickRegister.TickRegisterEvent());
         MinecraftForge.EVENT_BUS.register(new MiniGameEvent());
-        if(FMLCommonHandler.instance().getSide() == CLIENT) {
+        if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(mineRunEvent = new MineRunEvent());
             MinecraftForge.EVENT_BUS.register(scrollEvent = new ScrollEvent());
             MinecraftForge.EVENT_BUS.register(bomberEvent = new BomberEvent());

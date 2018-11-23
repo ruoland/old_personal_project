@@ -95,7 +95,7 @@ public class ActionEffect {
 
 	public static void save() {
 		String worldName = ActionEffect.mapName;
-		if (!worldName.equalsIgnoreCase("noworld")) {
+		if (worldName != null && !worldName.equalsIgnoreCase("noworld")) {
 			MiniGame.instance.minigameConfig.get(worldName, "crawl", false).set(crawlMapList.contains(worldName));
 			if(inWaterMap.containsKey(worldName))
 				MiniGame.instance.minigameConfig.get(worldName, "inWater", false).set(inWaterMap.get(worldName));

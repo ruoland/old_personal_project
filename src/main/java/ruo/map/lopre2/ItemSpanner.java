@@ -28,7 +28,6 @@ public class ItemSpanner extends Item {
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         String name = target.getClass().getSimpleName().replace("Entity", "");
 
-
         if (!target.isInvisible()) {
             if (target instanceof EntityWaterBlockCreator && hand == EnumHand.MAIN_HAND) {
                 EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
@@ -100,6 +99,7 @@ public class ItemSpanner extends Item {
                 lavaBlock.setWidth(1F);
                 lavaBlock.setHeight(0.3F);
                 lavaBlock.setScale(1,0.3F,1);
+                lavaBlock.setTra(0,0.3F,0);
                 lavaBlock.teleportSpawnPos();
             }else{
                 lavaBlock.setWidth(1F);

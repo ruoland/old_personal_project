@@ -3,6 +3,7 @@ package ruo.minigame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.block.model.ModelManager;
+import net.minecraft.client.renderer.entity.RenderSpider;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -21,6 +22,7 @@ import ruo.minigame.minigame.elytra.miniween.*;
 import ruo.minigame.minigame.elytra.playerarrow.EntityHomingTNT;
 import ruo.minigame.minigame.elytra.playerarrow.EntityTNTArrow;
 import ruo.minigame.minigame.minerun.*;
+import ruo.minigame.minigame.scroll.*;
 
 import java.lang.reflect.Field;
 
@@ -73,6 +75,14 @@ public class ClientProxy extends CommonProxy {
         RenderAPI.registerRender(EntityFakePlayer.class);
         RenderAPI.registerRender(EntityDefaultNPC.class);
         RenderAPI.registerRender(EntityDefaultBlock.class);
+		RenderAPI.registerRender(EntityJumpCreeper.class);
+		RenderAPI.registerRender(EntityJumpSpider.class, new RenderSpider<EntityJumpSpider>(RenderAPI.getRenderMananger()));
+		RenderAPI.registerRender(EntityScrollBoss.class);RenderAPI.registerRender(EntityScrollBossFallingBlock.class);
+		RenderAPI.registerRender(EntityScrollBossWarning.class);
+		RenderAPI.registerRender(EntityScrollBossShootingBlock.class);
+		RenderAPI.registerRender(EntityJumpFlyingBlock.class);
+		RenderAPI.registerRender(EntityJumpTNT.class);
+		RenderAPI.registerRender(EntityJumpDoubleReset.class);
 	}
 	@Override
 	public void post(FMLPostInitializationEvent event){

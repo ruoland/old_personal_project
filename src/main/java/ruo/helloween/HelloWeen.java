@@ -12,7 +12,7 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.helloween.miniween.*;
 import ruo.minigame.api.RenderAPI;
 
-@Mod(modid = "Halloween")
+//@Mod(modid = "Halloween")
 public class HelloWeen {
 	@SidedProxy(serverSide = "ruo.helloween.HWCommonProxy", clientSide = "ruo.helloween.HWClientProxy")
 	public static HWCommonProxy proxy;

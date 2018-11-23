@@ -213,6 +213,7 @@ public class EntityBuildBlock extends EntityPreBlock {
         if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("D 블럭")) {
             dBlock = this;
         }
+        blockRead(compound);
 
     }
 

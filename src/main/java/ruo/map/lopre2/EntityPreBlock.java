@@ -200,10 +200,10 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     @Override
     public void onLivingUpdate() {
         setInvisible(isInv());
-        if (getDifficulty() > -1) {
-            setBlock(Blocks.WOOL);
-            setBlockMetadata(6);
-            if (getDifficulty() <= worldObj.getDifficulty().getDifficultyId()) {
+        if (getDifficulty() > 0) {
+            //setBlock(Blocks.WOOL);
+            //setBlockMetadata(6);
+            if (getDifficulty() >= worldObj.getDifficulty().getDifficultyId()) {
                 setInv(false);
                 setCollision(true);
             } else {
@@ -378,6 +378,13 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
         setDifficulty(compound.getInteger("difficulty"));
+        if(getDifficulty() == 0 || worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("JumpMap")) {
+            setDifficulty(-1);
+            setInv(false);
+            setCollision(true);
+        }
+        System.out.println(worldObj.getWorldInfo().getWorldName()+"난이도"+getDifficulty());
+
     }
 
     @Override

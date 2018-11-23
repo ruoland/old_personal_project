@@ -34,6 +34,7 @@ import ruo.minigame.api.WorldAPI;
 public class EntityFallingBlock extends EntityPreBlock {
 
     private static final DataParameter<Float> LAVA_Y = EntityDataManager.createKey(EntityFallingBlock.class, DataSerializers.FLOAT);
+
     public EntityFallingBlock(World worldIn) {
         super(worldIn);
         this.setBlockMode(Blocks.STONE);
@@ -61,22 +62,23 @@ public class EntityFallingBlock extends EntityPreBlock {
         return lavaBlock;
     }
 
-    public float getLavaY(){
+    public float getLavaY() {
         return dataManager.get(LAVA_Y);
     }
 
-    public void setLavaY(float i){
+    public void setLavaY(float i) {
         dataManager.set(LAVA_Y, i);
     }
-        @Override
+
+    @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
         if (getLavaY() == 0)
             lavaYUpdate();
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
-    public void lavaYUpdate(){
-        for (float i = 0; i < 70; i+=0.2) {
+    public void lavaYUpdate() {
+        for (float i = 0; i < 70; i += 0.2) {
             Block block = worldObj.getBlockState(new BlockPos(getSpawnX(), posY - i, getSpawnZ()))
                     .getBlock();
             if (block == Blocks.LAVA) {
@@ -85,30 +87,33 @@ public class EntityFallingBlock extends EntityPreBlock {
             }
         }
     }
+
     @Override
     public String getCustomNameTag() {
         return "폴링 블럭" + getLavaY();
     }
+
     private boolean firstReset = false;
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-
-        AxisAlignedBB aabb = getEntityBoundingBox().expand(-0.1, -0.25F,-0.1);
-        if (this.worldObj.isMaterialInBB(aabb, Material.LAVA)) {
-            if(!firstReset)
-            {
-                double lava = getLavaY();
-                setPositionAndUpdate(posX, getLavaY() - 0.2, posZ);
-                firstReset = true;
+        if (!isTeleport()) {
+            AxisAlignedBB aabb = getEntityBoundingBox().expand(-0.1, -0.25F, -0.1);
+            if (this.worldObj.isMaterialInBB(aabb, Material.LAVA)) {
+                if (!firstReset) {
+                    setPositionAndUpdate(posX, getLavaY() - 0.5, posZ);
+                    firstReset = true;
+                }
+                motionX = 0;
+                motionY = -0.003;
+                motionZ = 0;
             }
-            motionX = 0;
-            motionY = -0.003;
-            motionZ = 0;
-        }
-        if (getLavaY() - 1> posY) {
-            this.setPositionAndUpdate(posX, getSpawnY(), posZ);
-            firstReset = false;
+            if (getLavaY() - 1 > posY) {
+                this.setPositionAndUpdate(posX, getSpawnY(), posZ);
+                firstReset = false;
+                lavaYUpdate();
+            }
         }
     }
 
@@ -120,8 +125,8 @@ public class EntityFallingBlock extends EntityPreBlock {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        if(CommandJB.isDebMode){
-            if(WorldAPI.equalsItem(stack, LoPre2.itemSpanner)){
+        if (CommandJB.isDebMode) {
+            if (WorldAPI.equalsItem(stack, LoPre2.itemSpanner)) {
                 this.setPositionAndUpdate(posX, getSpawnY(), posZ);
                 setLavaY(0);
                 lavaYUpdate();
@@ -140,6 +145,7 @@ public class EntityFallingBlock extends EntityPreBlock {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         setLavaY(compound.getFloat("lavaY"));
+        System.out.println(getLavaY());
     }
 
 }

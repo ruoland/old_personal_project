@@ -1,5 +1,8 @@
 package ruo.map.lopre2;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockMobSpawner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +24,7 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -59,7 +63,6 @@ public class LooPre2Event {
             }
         }
     }
-
     @SubscribeEvent
     public void a(ServerChatEvent event) {
         String dis = event.getMessage();
@@ -152,7 +155,6 @@ public class LooPre2Event {
     }
 
     public static boolean nightVision = true, posYDead = true, fireAttack;
-
     @SubscribeEvent
     public void a(PlayerTickEvent event) {
         if (LoPre2.checkWorld()) {

@@ -74,17 +74,6 @@ public class LoPre2 {
                 achievementHidePath1, achievementHidePath2,
                 achievementTwoClear, achievementOneClear, achievementNoGameMode1,achievementNoDie1,achievementNoGameMode2,achievementNoDie2,achievementApple, achievementHidePath1, achievementHidePath2
         }));
-        //더미로간 클래스
-        //        DebAPI.registerEntity(this, "LoopUpDownWaterBlock", EntityLoopUpDownWaterBlock.class);
-        //        DebAPI.registerEntity(this, "DebBlock", EntityDebBlock.class, new RenderDebBlock(new ModelDebBlock(), 0.5F));
-        //DebAPI.registerEntity(this, "VELOCITY-LoopUpDownBlock", EntityLoopUpDownMoveBlock.class);
-        //   DebAPI.registerEntity(this, "shipBlock", EntityShipBlock.class);
-        //        DebAPI.registerEntity(this, "shipBlockPart", EntityShipBlockPart.class);
-        //        DebAPI.registerEntity(this, "RopeBlock", EntityRopeBlock.class);
-        //        DebAPI.registerEntity(this, "RopeBlock2", EntityRopeBlock2.class);
-        //        DebAPI.registerEntity(this, "buildMove", EntityBuildBlockMove.class);
-        //        DebAPI.registerEntity(this, "BeltBlock", EntityBeltBlock.class);
-        //DebAPI.registerEntity(this, "ridingBlock", EntityRidingBlock.class);
         //점프맵 2 코드
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         MinecraftForge.EVENT_BUS.register(new LooPre2Event());
