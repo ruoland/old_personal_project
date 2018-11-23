@@ -33,7 +33,10 @@ import ruo.map.lopre2.jump2.EntityJumpSpider;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
+import ruo.minigame.effect.Move;
 import ruo.minigame.effect.TickRegister;
+import ruo.minigame.minigame.scroll.EntityJumpCreeper;
+import ruo.minigame.minigame.scroll.EntityJumpFlyingCreeper;
 
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
@@ -188,14 +191,7 @@ public class CommandJB extends CommandPlusBase {
                 Loop.save(sender.getEntityWorld(), args[1], pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
             if (args[0].equalsIgnoreCase("blockspawn"))
                 Loop.read(sender.getEntityWorld(), args[1], parseDouble(args[2]), parseDouble(args[3]), parseDouble(args[4]));
-            if (args[0].equalsIgnoreCase("jump3cave")) {
-                Loop.read(sender.getEntityWorld(), "ball",  156.4, 66.960, -423.06);
-                Loop.read(sender.getEntityWorld(), "ball",  153, 62, -422);
-                Loop.read(sender.getEntityWorld(), "ball",  149.2, 62.5, -422.7);
-                Loop.read(sender.getEntityWorld(), "ball",  155.5, 67.6, -422.3);
-                Loop.read(sender.getEntityWorld(), "ball",  157.4, 63.1, -423.3);
-                WorldAPI.setBlock(sender.getEntityWorld(), 145, 59, -422,156, 68, -422 , Blocks.BARRIER);
-            }
+
             if (args[0].equalsIgnoreCase("downlock")) {
                 EntityWaterBlockCreator.downLock = !EntityWaterBlockCreator.downLock;
                 System.out.println("DOWNLOCK " + EntityWaterBlockCreator.downLock);

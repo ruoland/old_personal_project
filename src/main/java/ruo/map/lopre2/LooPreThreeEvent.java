@@ -22,14 +22,20 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
+import ruo.minigame.effect.Move;
+import ruo.minigame.minigame.scroll.EntityJumpCreeper;
 
 
-public class LooPreClientEvent {
+public class LooPreThreeEvent {
+    private int tick = 0;
+
     @SubscribeEvent
-    public void client(TickEvent.ClientTickEvent event){
-        if(LoPre2.checkWorld() && Minecraft.getMinecraft().currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_R) && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getBedLocation() != null){
-            WorldAPI.teleport(WorldAPI.getPlayerMP().getBedLocation());
-            WorldAPI.getPlayerMP().heal(20);
+    public void a(TickEvent.ServerTickEvent event) {
+        if (LoPre2.checkWorld()) {
+            if (tick > 100 && event.phase == TickEvent.Phase.END) {
+                tick = 0;
+
+            }
         }
     }
 }

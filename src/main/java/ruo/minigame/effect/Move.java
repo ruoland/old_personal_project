@@ -53,6 +53,7 @@ public abstract class Move {
 			path.setEnterDoors(true);
 			path.setBreakDoors(true);
 			path.tryMoveToXYZ(x, y, z, speed);
+			moveOld();
 		}
 	}
 
@@ -144,7 +145,7 @@ public abstract class Move {
 
 	public void moveStart() {
 		if (target != null) {
-			TickRegister.register(new AbstractTick(getCustomName(), Type.SERVER,1, true) {
+			TickRegister.register(new AbstractTick(mob.getUniqueID().toString(), Type.SERVER,1, true) {
 				@Override
 				public void run(Type type) {
 					if(movecount % 3 == 0)
@@ -159,7 +160,7 @@ public abstract class Move {
 			});
 		} else
 			moveToXYZ();
-		System.out.println(speed);
+		System.out.println("이동 속도 "+speed);
 	}
 	
 	public Move setCustomName(String name) {

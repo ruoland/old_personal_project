@@ -77,7 +77,7 @@ public class LoPre2 {
         //점프맵 2 코드
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         MinecraftForge.EVENT_BUS.register(new LooPre2Event());
-
+        MinecraftForge.EVENT_BUS.register(new LooPreThreeEvent());
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
         MinecraftForge.EVENT_BUS.register(new LooPreClientEvent());
 
@@ -116,6 +116,7 @@ public class LoPre2 {
     public static boolean checkWorld() {
         String worldName = WorldAPI.getCurrentWorldName();
         return worldName.equalsIgnoreCase("JumpMap")
-                || worldName.equalsIgnoreCase("JumpMap Sea2");
+                || worldName.equalsIgnoreCase("JumpMap Sea2")
+                || worldName.equalsIgnoreCase("JumpThree");
     }
 }

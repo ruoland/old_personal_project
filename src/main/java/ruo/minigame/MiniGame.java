@@ -42,6 +42,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opencl.CL;
 import ruo.cmplus.deb.CommandClassLoader;
 import ruo.cmplus.deb.DebAPI;
+import ruo.map.lopre2.CommandJumpThree;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.action.ActionEvent;
 import ruo.minigame.android.CommandCall;
@@ -151,6 +152,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "ScrollFlyingBlock", EntityJumpFlyingBlock.class);
         DebAPI.registerEntity(this, "ScrollTNT", EntityJumpTNT.class);
         DebAPI.registerEntity(this, "ScrollDoubleReset", EntityJumpDoubleReset.class);
+        DebAPI.registerEntity(this, "ScrollFlyingCreeper", EntityJumpFlyingCreeper.class);
 
         //마인런 게임용
         DebAPI.registerEntity(this, "MRDummy", EntityDummyPlayer.class);
@@ -201,7 +203,7 @@ public class MiniGame {
         e.registerServerCommand(new CommandMonologue());
         e.registerServerCommand(new CommandClassLoader());
         e.registerServerCommand(new CommandMgs());
-
+        e.registerServerCommand(new CommandJumpThree());
         //e.registerServerCommand(new CommandScroll());
         e.registerServerCommand(new CommandBomber());
         e.registerServerCommand(new CommandElytra());

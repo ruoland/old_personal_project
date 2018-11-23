@@ -358,18 +358,13 @@ public class EntityAPI {
         });
     }
 
-    public static boolean isMove(String customname) {
-        boolean abs = TickRegister.isAbsTickRun(customname);
-        return abs;
-    }
-
     public static boolean isMove(EntityLivingBase base) {
-        boolean abs = TickRegister.isAbsTickRun(base.getName() + "-MOVE");
+        boolean abs = TickRegister.isAbsTickRun(base.getUniqueID().toString() + "-MOVE");
         return abs;
     }
 
     public static void move(final Move move) {
-        boolean abs = TickRegister.isAbsTickRun(move.getCustomName());
+        boolean abs = TickRegister.isAbsTickRun(move.mob.getUniqueID().toString());
         if (abs) {
             removeMove(move.mob);
             System.out.println("이동 코드가 이미 실행 중이어서 기존 코드는 삭제됐습니다");

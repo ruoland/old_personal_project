@@ -41,6 +41,8 @@ public class EntityJumpCreeper extends EntityDefaultNPC {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(source.isFireDamage())
+            return false;
         if(CommandJB.isDebMode){
             if(source.getEntity() instanceof EntityPlayer){
                 EntityPlayer player = (EntityPlayer) source.getEntity();
@@ -50,10 +52,5 @@ public class EntityJumpCreeper extends EntityDefaultNPC {
             }
         }
         return super.attackEntityFrom(source, amount);
-    }
-
-    @Override
-    public boolean isAIDisabled() {
-        return true;
     }
 }

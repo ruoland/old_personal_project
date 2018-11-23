@@ -83,6 +83,7 @@ public class ClientProxy extends CommonProxy {
 		RenderAPI.registerRender(EntityJumpFlyingBlock.class);
 		RenderAPI.registerRender(EntityJumpTNT.class);
 		RenderAPI.registerRender(EntityJumpDoubleReset.class);
+		RenderAPI.registerRender(EntityJumpFlyingCreeper.class);
 	}
 	@Override
 	public void post(FMLPostInitializationEvent event){
