@@ -156,41 +156,4 @@ public class CMPlusEvent {
 
     }
 
-    @SubscribeEvent
-    public void event(WorldEvent.Load e) {
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT && e.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && !(e.getWorld().provider instanceof WorldProvider10)) {
-            try {
-                WorldProvider10 pro = new WorldProvider10();
-                pro.registerWorld(e.getWorld());
-                for (Field f : e.getWorld().provider.getClass().getDeclaredFields()) {
-                    Field prof;
-                    try {
-                        prof = pro.getClass().getDeclaredField(f.getName());
-                    } catch (Exception e2) {
-                        continue;
-                    }
-                    prof.setAccessible(true);
-                    f.setAccessible(true);
-                    //prof.set(pro, f.get(e.getWorld().provider));
-                }
-                pro.setSpawnPoint(e.getWorld().provider.getSpawnPoint());
-
-                for (Field f : World.class.getDeclaredFields()) {
-                    if (f.getName().equals("provider")) {
-                        f.setAccessible(true);
-                        f.set(e.getWorld(), pro);
-                        e.getWorld().provider.setCloudRenderer(new CloudRenderer());
-                        e.getWorld().provider.setSkyRenderer(new SkyRenderer());
-                        Sky.pro = (WorldProvider10) e.getWorld().provider;
-
-                        break;
-                    }
-                }
-
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
-        }
-    }
-
 }

@@ -134,6 +134,11 @@ public class EntityLavaBlock extends EntityPreBlock {
                 motionX = 0;
             }
         }
+
+        if(getWidth() != 0 && getHeight() != 0 && (width != getWidth() || height != getHeight())){
+            setSize(getWidth(),getHeight());
+        }
+
     }
     public float getWidth() {
         return dataManager.get(WIDTH);
@@ -148,6 +153,8 @@ public class EntityLavaBlock extends EntityPreBlock {
         if(getWidth() != 0 && getHeight() != 0){
             this.setSize(getWidth(), getHeight());
         }
+        System.out.println("라바블럭 사이즈 width 설정함 "+getWidth() + " - "+width);
+
     }
 
     public void setHeight(float height){
@@ -155,6 +162,8 @@ public class EntityLavaBlock extends EntityPreBlock {
         if(getWidth() != 0 && getHeight() != 0){
             this.setSize(getWidth(), getHeight());
         }
+        System.out.println("라바블럭 사이즈 height 설정함 "+getHeight() + " - "+height);
+
     }
 
     @Override
@@ -172,7 +181,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
         setSize(getWidth(), getHeight());
-        System.out.println(getWidth()+ " - "+getHeight());
+        System.out.println("라바블럭 사이즈 NBT에서 읽음 "+getWidth()+ " - "+getHeight());
         downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
     }

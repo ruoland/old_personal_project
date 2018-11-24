@@ -42,6 +42,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opencl.CL;
 import ruo.cmplus.deb.CommandClassLoader;
 import ruo.cmplus.deb.DebAPI;
+import ruo.map.lopre2.CommandJB;
 import ruo.map.lopre2.CommandJumpThree;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.action.ActionEvent;

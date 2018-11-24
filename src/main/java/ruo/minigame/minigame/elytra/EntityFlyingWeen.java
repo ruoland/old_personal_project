@@ -1,6 +1,7 @@
 package ruo.minigame.minigame.elytra;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
@@ -104,6 +105,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
             this.setDead();
             return;
         }
+        EntityPlayer player = WorldAPI.getPlayer();
 
         if (deadFalling) {
             deathTick++;
@@ -124,17 +126,17 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
             forceStageSkip = true;
         }
         if (!firstPatternEnd) {//윈을 날리는 패턴
-            this.setPosition(EntityAPI.lookPlayerX(15), fakePlayer.posY, EntityAPI.lookPlayerZ(15));
+            this.setPosition(EntityAPI.lookX(player, 15), fakePlayer.posY, EntityAPI.lookZ(player,15));
         }
         if (firstPatternEnd && !secondPatternEnd) {
-            this.setPosition(EntityAPI.lookPlayerX(6), fakePlayer.posY - 15, EntityAPI.lookPlayerZ(6));
+            this.setPosition(EntityAPI.lookX(player,6), fakePlayer.posY - 15, EntityAPI.lookZ(player,6));
         }
         if (secondPatternEnd && !thirdPatternEnd)
-            this.setPosition(EntityAPI.lookPlayerX(15), fakePlayer.posY, EntityAPI.lookPlayerZ(15));
+            this.setPosition(EntityAPI.lookX(player,15), fakePlayer.posY, EntityAPI.lookZ(player,15));
         if (thirdPatternEnd)
-            this.setPosition(EntityAPI.lookPlayerX(15), fakePlayer.posY, EntityAPI.lookPlayerZ(15));
+            this.setPosition(EntityAPI.lookX(player,15), fakePlayer.posY, EntityAPI.lookZ(player,15));
         if (fourPatternEnd && !fivePatternEnd) {
-            this.setPosition(EntityAPI.lookPlayerX(6), fakePlayer.posY - 15, EntityAPI.lookPlayerZ(6));
+            this.setPosition(EntityAPI.lookX(player,6), fakePlayer.posY - 15, EntityAPI.lookZ(player,6));
         }
     }
 

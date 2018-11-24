@@ -162,6 +162,10 @@ public class LooPre2Event {
             if(event.player.getDistance(1195.1, 4.4, -541.8) < 2){
                 event.player.addStat(LoPre2.achievementPoorBlock);
             }
+            if(event.player.getDistance(1128.6, 7.0, -574.8) < 1){
+                event.player.addStat(LoPre2.achievementHidePath1);
+
+            }
             event.player.setAir(0);
             event.player.worldObj.setRainStrength(0);
             if(fireAttack) {

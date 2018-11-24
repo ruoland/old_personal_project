@@ -48,7 +48,7 @@ public class GrabHelper {
 	public static void wallGrabCheck(EntityPlayer player, boolean isGrab) {
 		String index = player.getHorizontalFacing().getName();
 
-		double posX = EntityAPI.lookPlayerX(1), posY = player.posY, posZ = EntityAPI.lookPlayerZ(1);
+		double posX = EntityAPI.lookX(player, 1), posY = player.posY, posZ = EntityAPI.lookZ(player, 1);
 		if (wallGrab && !isRangeX(player.posX) && !isRangeZ(player.posZ)) {
 			ungrab(player);
 			System.out.println("언그랩됨");
@@ -84,7 +84,7 @@ public class GrabHelper {
 	}
 	public static AxisAlignedBB lopre(EntityPlayer player){
 		if(Loader.isModLoaded("LoopPre2")) {
-			AxisAlignedBB aabbp = new AxisAlignedBB(EntityAPI.lookPlayerX(1), player.posY + 1, EntityAPI.lookPlayerZ(1), player.posX, player.posY, player.posZ);
+			AxisAlignedBB aabbp = new AxisAlignedBB(EntityAPI.lookX(player, 1), player.posY + 1, EntityAPI.lookZ(player, 1), player.posX, player.posY, player.posZ);
 			List<EntityPreBlock> list = player.worldObj.getEntitiesWithinAABB(EntityPreBlock.class, aabbp);
 			for (EntityPreBlock entity : list) {
 				ArrayList<EntityPreBlock> preBlockArrayList = (ArrayList<EntityPreBlock>) EntityAPI.getEntity(entity.worldObj, entity.getEntityBoundingBox().addCoord(0,0.2,0), EntityPreBlock.class);

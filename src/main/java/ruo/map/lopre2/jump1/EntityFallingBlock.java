@@ -102,7 +102,7 @@ public class EntityFallingBlock extends EntityPreBlock {
             AxisAlignedBB aabb = getEntityBoundingBox().expand(-0.1, -0.25F, -0.1);
             if (this.worldObj.isMaterialInBB(aabb, Material.LAVA)) {
                 if (!firstReset) {
-                    setPositionAndUpdate(posX, getLavaY() - 0.5, posZ);
+                    setPositionAndUpdate(posX, getLavaY() - 0.3, posZ);
                     firstReset = true;
                 }
                 motionX = 0;

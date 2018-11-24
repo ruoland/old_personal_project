@@ -66,6 +66,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         if (getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
             setRotate(90, 90, 90);
         this.setTeleport(true);
+
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
@@ -253,6 +254,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public void teleport() {
+
         Vec3d vec = Minecraft.getMinecraft().thePlayer.getLookVec();
         this.setPosition((WorldAPI.x() + vec.xCoord * ax),
                 WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,

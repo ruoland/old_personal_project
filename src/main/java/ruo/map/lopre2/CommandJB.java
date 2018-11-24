@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.CMPlus;
+import ruo.cmplus.cm.CommandMultiCommand;
 import ruo.cmplus.test.CMPacketCommand;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump1.EntityMoveBlock;
@@ -79,16 +80,14 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("deb"))
                 isDebMode = true;
 
-
             if (args[0].equalsIgnoreCase("help")) {
                 sender.addChatMessage(new TextComponentString("1.블럭이 보이지 않는 경우는 나갔다 들어오기"));
                 sender.addChatMessage(new TextComponentString("2.체력과 배고픔 회복은 /heal"));
                 sender.addChatMessage(new TextComponentString("3./fly true 를 입력하면 하늘을 날 수 있습니다"));
-                sender.addChatMessage(new TextComponentString("4.중간저장을 하려면 /spawnpoint"));
+                sender.addChatMessage(new TextComponentString("4.너무 어려우면 /spawnpoint (사용시 도전과제 클리어 못함)"));
                 sender.addChatMessage(new TextComponentString("5.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
-
             }
-            if (args[0].equalsIgnoreCase("up")) {
+            if (args[0].equalsIgnoreCase("upblock")) {
                 upMode = !upMode;
                 if (upMode)
                     sender.addChatMessage(new TextComponentString("스패너를 들고 우클릭하면 빅블럭과 투명 블럭의 위치를 위로 올릴 수 있습니다."));

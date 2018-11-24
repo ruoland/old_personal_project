@@ -98,42 +98,6 @@ public class EntityAPI {
         return 0;
     }
 
-    public static double lookPlayerX(double plus) {
-        EntityPlayer player = WorldAPI.getPlayer();
-        EnumFacing facing = ((EntityPlayer) player).getHorizontalFacing();
-        if (facing == EnumFacing.NORTH) {
-            return WorldAPI.getPlayer().posX;
-        }
-        if (facing == EnumFacing.SOUTH) {
-            return WorldAPI.getPlayer().posX;
-        }
-        if (facing == EnumFacing.EAST) {
-            return WorldAPI.getPlayer().posX + plus;
-        }
-        if (facing == EnumFacing.WEST) {
-            return WorldAPI.getPlayer().posX - plus;
-        }
-        return WorldAPI.getPlayer().posX;
-    }
-
-    public static double lookPlayerZ(double plus) {
-        EntityPlayer player = WorldAPI.getPlayer();
-        EnumFacing facing = ((EntityPlayer) player).getHorizontalFacing();
-        if (facing == EnumFacing.NORTH) {
-            return WorldAPI.getPlayer().posZ - plus;
-        }
-        if (facing == EnumFacing.SOUTH) {
-            return WorldAPI.getPlayer().posZ + plus;
-        }
-        if (facing == EnumFacing.EAST) {
-            return WorldAPI.getPlayer().posZ;
-        }
-        if (facing == EnumFacing.WEST) {
-            return WorldAPI.getPlayer().posZ;
-        }
-        return WorldAPI.getPlayer().posZ;
-    }
-
     public static double getX(EntityLivingBase base, Direction spawnDirection, double plus, boolean pos) {
         switch (spawnDirection) {
             case FORWARD:

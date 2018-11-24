@@ -27,15 +27,4 @@ import ruo.minigame.minigame.scroll.EntityJumpCreeper;
 
 
 public class LooPreThreeEvent {
-    private int tick = 0;
-
-    @SubscribeEvent
-    public void a(TickEvent.ServerTickEvent event) {
-        if (LoPre2.checkWorld()) {
-            if (tick > 100 && event.phase == TickEvent.Phase.END) {
-                tick = 0;
-
-            }
-        }
-    }
 }

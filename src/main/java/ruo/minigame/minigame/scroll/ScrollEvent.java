@@ -22,6 +22,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import ruo.cmplus.camera.Camera;
 import ruo.cmplus.cm.CommandCamera;
+import ruo.map.lopre2.LoPre2;
 import ruo.map.tycoon.GuiDayEnd;
 import ruo.minigame.MiniGame;
 import ruo.minigame.api.ScriptAPI;
@@ -54,7 +55,7 @@ public class ScrollEvent {
     }
     @SubscribeEvent
     public void login(ClientTickEvent event) {
-        if(mc.currentScreen instanceof GuiGameOver){
+        if(LoPre2.checkWorld() && mc.currentScreen instanceof GuiGameOver){
             if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 this.mc.thePlayer.respawnPlayer();
                 this.mc.displayGuiScreen((GuiScreen) null);

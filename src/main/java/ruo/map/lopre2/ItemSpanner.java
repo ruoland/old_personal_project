@@ -89,13 +89,14 @@ public class ItemSpanner extends Item {
         }
         if (target instanceof EntityLavaBlock) {
             EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
-            if(lavaBlock.getWidth() == 1F && lavaBlock.getHeight() == 1F){
+            if(lavaBlock.width == 1F && lavaBlock.height == 1 || lavaBlock.getWidth() == 1F && lavaBlock.getHeight() == 1F){
                 lavaBlock.setWidth(0.5F);
                 lavaBlock.setHeight(1F);
                 lavaBlock.setScale(0.5F, 1F, 0.5F);
+                lavaBlock.setTra(0,0F,0);
                 lavaBlock.teleportSpawnPos();
 
-            }else if(lavaBlock.getWidth() == 0.5F && lavaBlock.getHeight() == 1F){
+            }else if(lavaBlock.width == 0.5F && lavaBlock.height == 1F ||lavaBlock.getWidth() == 0.5F && lavaBlock.getHeight() == 1F){
                 lavaBlock.setWidth(1F);
                 lavaBlock.setHeight(0.3F);
                 lavaBlock.setScale(1,0.3F,1);
@@ -105,6 +106,7 @@ public class ItemSpanner extends Item {
                 lavaBlock.setWidth(1F);
                 lavaBlock.setHeight(1F);
                 lavaBlock.setScale(1,1,1);
+                lavaBlock.setTra(0,0F,0);
                 lavaBlock.teleportSpawnPos();
             }
         }
