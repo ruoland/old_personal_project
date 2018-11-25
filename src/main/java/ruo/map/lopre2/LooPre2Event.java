@@ -42,29 +42,6 @@ import ruo.minigame.minigame.scroll.EntityJumpCreeper;
 public class LooPre2Event {
     private int currentStage;
     public static int deathCount, gamemodeCount, spawnCount, healCount;
-    private double startY;
-    private boolean isDown;
-    public static String asdf;
-    @SubscribeEvent
-    public void waterJump(ServerChatEvent e) {
-        asdf =e.getMessage();
-    }
-    @SubscribeEvent
-    public void waterJump(LivingUpdateEvent e) {
-        if (LoPre2.checkWorld() && e.getEntityLiving().isServerWorld() && e.getEntityLiving() instanceof EntityPlayer && e.getEntityLiving().isInWater()) {
-            if (e.getEntityLiving().onGround) {
-                startY = e.getEntityLiving().posY;
-            }
-            if ((startY + 1 <= e.getEntityLiving().posY || isDown) && Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown()) {
-                e.getEntityLiving().motionY -= 0.04;
-                isDown = true;
-                if (e.getEntityLiving().onGround) {
-                    startY = e.getEntityLiving().posY;
-                    isDown = false;
-                }
-            }
-        }
-    }
     @SubscribeEvent
     public void a(ServerChatEvent event) {
         String dis = event.getMessage();

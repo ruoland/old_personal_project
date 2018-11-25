@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.map.lopre2.EntityPreBlock;
 
 import java.util.List;
 
@@ -17,7 +18,9 @@ public abstract class CommandEntity extends CommandPlusBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         for(Entity entity : sender.getEntityWorld().loadedEntityList){
             if(!(entity instanceof EntityPlayer)){
-                if(args[0].equalsIgnoreCase("all") || EntityList.getEntityString(entity).equalsIgnoreCase(args[0])){
+                boolean isJumpBlock = entity instanceof EntityPreBlock && entity.getCustomNameTag().startsWith(args[0]);
+                if(args[0].equalsIgnoreCase("all") || EntityList.getEntityString(entity).equalsIgnoreCase(args[0])
+                        || entity.getCustomNameTag().equalsIgnoreCase(args[0]) || isJumpBlock){
                     runCommand(entity, args);
                 }
             }

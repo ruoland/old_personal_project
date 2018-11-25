@@ -2,20 +2,28 @@ package ruo.map.lopre2;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.cmplus.util.CommandPlusBase;
+import ruo.map.lopre2.jump1.EntityBuildBlock;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.Move;
 import ruo.minigame.effect.TickRegister;
+import ruo.minigame.map.EntityDefaultNPC;
 import ruo.minigame.minigame.scroll.EntityJumpCreeper;
 import ruo.minigame.minigame.scroll.EntityJumpFlyingCreeper;
+import ruo.yout.command.CommandEntity;
 
 public class CommandJumpThree extends CommandPlusBase {
+
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args[0].equalsIgnoreCase("cave")) {
@@ -41,8 +49,62 @@ public class CommandJumpThree extends CommandPlusBase {
         if (args[0].equalsIgnoreCase("lavacreeper")) {
             lavacreeper(156, 63.7, -343.0);
         }
+        if (args[0].equalsIgnoreCase("rotate")) {
+            EntityBuildBlock buildBlock = (EntityBuildBlock) EntityDefaultNPC.getNPC("rotate");
+            for(Entity entity : sender.getEntityWorld().loadedEntityList){
+                if(!(entity instanceof EntityPlayer)){
+                    boolean isJumpBlock = entity instanceof EntityPreBlock && entity.getCustomNameTag().startsWith("rotate");
+                    if(entity.getCustomNameTag().equalsIgnoreCase("rotate")
+                            || entity.getCustomNameTag().equalsIgnoreCase("rotate") || isJumpBlock){
+                        buildBlock = (EntityBuildBlock) entity;
+                        EntityDefaultNPC entitydefServer = EntityDefaultNPC.getUUIDNPC(buildBlock.getUniqueID());
+                        EntityDefaultNPC entitydefClient = (EntityDefaultNPC) buildBlock;
+
+                        EnumFacing facing =null;
+                        System.out.println(buildBlock.isServerWorld() + " - " +entity +" 찾음  "+buildBlock.getRotateX() + " - "+buildBlock.getRotateY() + " -"+buildBlock.getRotateZ());
+                        if(entitydefServer.getRotateX() == 0){
+                            facing = EnumFacing.UP;
+                            entitydefServer.setRotate(90,0,0);
+                            entitydefServer.setTra(0,3,5);
+                            entitydefClient.setRotate(90,0,0);
+                            entitydefClient.setTra(0,3,5);
+                        }
+                        if(entitydefServer.getRotateX() == 90){
+                            facing = EnumFacing.SOUTH;
+                            entitydefServer.setRotate(180, 0,0);
+                            entitydefServer.setTra(0,6,3);
+                            entitydefClient.setRotate(180, 0,0);
+                            entitydefClient.setTra(0,6,3);
+                        }
+                        if(entitydefServer.getRotateX() == 180){
+                            facing = EnumFacing.DOWN;
+                            entitydefServer.setRotate(270, 0,0);
+                            entitydefServer.setTra(0,4,0);
+                            entitydefClient.setRotate(270, 0,0);
+                            entitydefClient.setTra(0,4,0);
+                        }
+                        if(entitydefServer.getRotateX() == 270){
+                            facing = EnumFacing.NORTH;
+                            entitydefServer.setRotate(0, 0,0);
+                            entitydefServer.setTra(0,1,2);
+                            entitydefClient.setRotate(0, 0,0);
+                            entitydefClient.setTra(0,1,2);
+                        }
+                        WorldAPI.command("/mge "+facing.rotateAround(EnumFacing.Axis.X).getName().toLowerCase()+" collision true");
+                        WorldAPI.command("/mge "+facing.getName().toLowerCase()+" collision false");
+                        System.out.println(buildBlock.isServerWorld() + " - " +entity +" 찾음22  "+buildBlock.getRotateX() + " - "+buildBlock.getRotateY() + " -"+buildBlock.getRotateZ());
+                        break;
+                    }
+                }
+            }
+            EnumFacing facing = null;
+
+        }
     }
 
+    public  void rotate(){
+
+    }
     public void lavacreeper(double x, double y, double z) {
         TickRegister.register(new AbstractTick(60, true) {
             @Override

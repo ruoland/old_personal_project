@@ -45,6 +45,7 @@ public class EntityBuildBlock extends EntityPreBlock {
         this.setBlockMode(Blocks.STONE);
         isFly = true;
         this.setCollision(false);
+        setJumpName("빌드 블럭");
     }
 
     @Override
@@ -106,7 +107,7 @@ public class EntityBuildBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "빌드 블럭 " + " RoX:" + getRotateX() + " RoY:" + getRotateY() + " RoZ:" + getRotateZ();
+        return  getJumpName() + " RoX:" + getRotateX() + " RoY:" + getRotateY() + " RoZ:" + getRotateZ();
     }
 
     @Override

@@ -35,12 +35,13 @@ public class EntityLavaBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.noClip = !noClip;
         isFly = true;
+        setJumpName("라바 블럭");
     }
 
 
     @Override
     public String getCustomNameTag() {
-        return "LavaBlock 고정:"+canTeleportLock()+"난이도:"+getDifficulty()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
+        return getJumpName()+" 고정:"+canTeleportLock()+"난이도:"+getDifficulty()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
     }
 
     @Override
@@ -66,18 +67,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
         EntityLavaBlock lavaBlock = new EntityLavaBlock(worldObj);
-        lavaBlock.setTeleportLock(canTeleportLock());
-        lavaBlock.setSpawnXYZ(x, y, z);
-        lavaBlock.setTeleport(false);
-        lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
-
-        lavaBlock.setBlockMode(getCurrentBlock());
-        this.copyModel(lavaBlock);
-        lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
-
-        lavaBlock.setBlockMetadata(getBlockMetadata());
-        lavaBlock.setInv(isInv());
-        lavaBlock.setInvisible(isInvisible());
+        dataCopy(lavaBlock, x,y,z);
         if(isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(lavaBlock);
         }

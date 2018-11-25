@@ -36,6 +36,7 @@ import java.util.List;
 
 public abstract class EntityPreBlock extends EntityDefaultNPC {
     protected static Block prevBlock = Blocks.STONE;
+    private static final DataParameter<String> JUMP_NAME = EntityDataManager.createKey(EntityPreBlock.class, DataSerializers.STRING);
     private static final DataParameter<Boolean> ISINV = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FORCE_SPAWN = EntityDataManager.createKey(EntityPreBlock.class,
@@ -58,6 +59,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         dataManager.register(ISINV, false);
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(DIFFICULTY, -1);
+        dataManager.register(JUMP_NAME, "");
     }
 
     @Nullable
@@ -148,6 +150,14 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     public void setDifficulty(int i) {
         dataManager.set(DIFFICULTY, i);
 
+    }
+
+    public String getJumpName(){
+        return dataManager.get(JUMP_NAME);
+    }
+
+    public void setJumpName(String name){
+        dataManager.set(JUMP_NAME, name);
     }
 
     @Override
@@ -364,12 +374,29 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         //super.despawnEntity();
     }
 
+    public void dataCopy(EntityLavaBlock lavaBlock, double x, double y, double z){
+        lavaBlock.setTeleportLock(canTeleportLock());
+        lavaBlock.setSpawnXYZ(x, y, z);
+        lavaBlock.setTeleport(false);
+        lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
+        lavaBlock.setJumpName(getJumpName());
+        lavaBlock.setBlockMode(getCurrentBlock());
+        this.copyModel(lavaBlock);
+        lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
+
+        lavaBlock.setBlockMetadata(getBlockMetadata());
+        lavaBlock.setInv(isInv());
+        lavaBlock.setInvisible(isInvisible());
+    }
+
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setBoolean("falling", canTeleportLock());
         compound.setBoolean("isInv", isInv());
         compound.setInteger("difficulty", getDifficulty());
+        if(!getJumpName().isEmpty())
+        compound.setString("jumpname", getJumpName());
     }
 
     @Override
@@ -385,8 +412,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             setInv(false);
             setCollision(true);
         }
-        System.out.println(worldObj.getWorldInfo().getWorldName()+"난이도"+getDifficulty());
-
+        if(compound.hasKey("jumpname"))
+        setJumpName(compound.getString("jumpname"));
     }
 
     @Override

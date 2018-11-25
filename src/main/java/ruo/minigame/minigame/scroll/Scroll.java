@@ -6,6 +6,7 @@ import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
 import ruo.cmplus.CMManager;
 import ruo.cmplus.camera.Camera;
+import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.PosHelper;
@@ -17,6 +18,7 @@ public class Scroll extends AbstractMiniGame {
     private Minecraft mc;
     private GameSettings s;
     public boolean x, z, xR, zR;
+    public float moveX, moveZ;
     public float yaw=-1, pitch=-1;//요는 좌우
 
     public Scroll() {
@@ -158,24 +160,24 @@ public class Scroll extends AbstractMiniGame {
             if (MiniGame.scroll.x) {
                 if (!MiniGame.scroll.xR) {
                     Camera.getCamera().lockCamera(true, yaw == -1 ? 90: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(0, 0.199, 6.7);
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 180, 0);
                 }
                 if (MiniGame.scroll.xR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? -90: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(0, 0.199, -6.7);
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 0, 0);
                 }
             }
             if (MiniGame.scroll.z) {
                 if (!zR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? 0: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(7, 0.199, -2);//원래 값은 x 6.7 y 0.199 z 0
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);//원래 값은 x 6.7 y 0.199 z 0
                     Camera.getCamera().rotateCamera(0, 90, 0);
                 }
                 if (zR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? 180: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(-6.7, 0.199, 0);
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, -90, 0);
                 }
             }
@@ -194,24 +196,24 @@ public class Scroll extends AbstractMiniGame {
             if (MiniGame.scroll.x) {
                 if (!MiniGame.scroll.xR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? 270: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(0, 0.199F, 6.7);
+                    Camera.getCamera().moveCamera(moveX, 0.199F, moveZ);
                     Camera.getCamera().rotateCamera(0, 180, 0);
                 }
                 if (MiniGame.scroll.xR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? 90: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(0, 0.199, -6.7);
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 0, 0);
                 }
             }
             if (MiniGame.scroll.z) {
                 if (!zR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? 180: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(7, 0.199, -2);
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 90, 0);
                 }
                 if (zR) {
                     Camera.getCamera().lockCamera(true,  yaw == -1 ? 0: yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(-6.7, 0.199, 0);
+                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, -90, 0);
                 }
             }

@@ -90,7 +90,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                         GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
                     }
                     GlStateManager.popMatrix();
-
                 }
                 return;
             }

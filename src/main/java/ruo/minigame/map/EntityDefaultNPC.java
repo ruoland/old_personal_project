@@ -118,6 +118,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     }
 
+
     public EntityDefaultNPC setTargetSpeed(double speed) {
         this.targetMoveSpeed = speed;
         return this;
@@ -472,9 +473,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (!worldObj.isRemote) {
 
             npcHash.remove(this.getCustomNameTag());
-            npcHash.put(this.getCustomNameTag(), this);
+
         }
         super.setCustomNameTag(name);
+        npcHash.put(this.getCustomNameTag(), this);
     }
 
 

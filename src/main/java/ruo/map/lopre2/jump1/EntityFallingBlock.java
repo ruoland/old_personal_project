@@ -39,6 +39,7 @@ public class EntityFallingBlock extends EntityPreBlock {
         super(worldIn);
         this.setBlockMode(Blocks.STONE);
         this.setCollision(true);
+        setJumpName("폴링 블럭");
     }
 
     @Override
@@ -90,7 +91,7 @@ public class EntityFallingBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "폴링 블럭" + getLavaY();
+        return getJumpName()+ getLavaY();
     }
 
     private boolean firstReset = false;

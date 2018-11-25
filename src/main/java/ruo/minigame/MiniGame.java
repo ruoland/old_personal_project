@@ -203,7 +203,7 @@ public class MiniGame {
     public void init(FMLServerStartingEvent e) {
         e.registerServerCommand(new CommandMonologue());
         e.registerServerCommand(new CommandClassLoader());
-        e.registerServerCommand(new CommandMgs());
+        e.registerServerCommand(new CommandMge());
         e.registerServerCommand(new CommandJumpThree());
         //e.registerServerCommand(new CommandScroll());
         e.registerServerCommand(new CommandBomber());

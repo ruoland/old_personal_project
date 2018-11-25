@@ -30,7 +30,7 @@ public class LooPreClientEvent {
         if(LoPre2.checkWorld() && Minecraft.getMinecraft().currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_R) && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getBedLocation() != null){
             WorldAPI.teleport(WorldAPI.getPlayerMP().getBedLocation());
             WorldAPI.getPlayerMP().heal(20);
-            System.out.println("텔레포트 됨");
+            WorldAPI.getPlayer().fallDistance = 0;
         }
     }
 }
