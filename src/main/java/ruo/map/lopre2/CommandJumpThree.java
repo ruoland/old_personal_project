@@ -54,7 +54,7 @@ public class CommandJumpThree extends CommandPlusBase {
             for(Entity entity : sender.getEntityWorld().loadedEntityList){
                 if(!(entity instanceof EntityPlayer)){
                     boolean isJumpBlock = entity instanceof EntityPreBlock && entity.getCustomNameTag().startsWith("rotate");
-                    if(entity.getCustomNameTag().equalsIgnoreCase("rotate")
+                    if(EntityList.getEntityString(entity).equalsIgnoreCase("rotate")
                             || entity.getCustomNameTag().equalsIgnoreCase("rotate") || isJumpBlock){
                         buildBlock = (EntityBuildBlock) entity;
                         EntityDefaultNPC entitydefServer = EntityDefaultNPC.getUUIDNPC(buildBlock.getUniqueID());
@@ -68,6 +68,8 @@ public class CommandJumpThree extends CommandPlusBase {
                             entitydefServer.setTra(0,3,5);
                             entitydefClient.setRotate(90,0,0);
                             entitydefClient.setTra(0,3,5);
+                            WorldAPI.command(sender, "/mge rotate rotate set 90 0 0");
+                            WorldAPI.command(sender, "/mge rotate tra set 0 3 5");
                         }
                         if(entitydefServer.getRotateX() == 90){
                             facing = EnumFacing.SOUTH;
@@ -75,6 +77,8 @@ public class CommandJumpThree extends CommandPlusBase {
                             entitydefServer.setTra(0,6,3);
                             entitydefClient.setRotate(180, 0,0);
                             entitydefClient.setTra(0,6,3);
+                            WorldAPI.command(sender, "/mge rotate rotate set 180 0 0");
+                            WorldAPI.command(sender, "/mge rotate tra set 0 6 3");
                         }
                         if(entitydefServer.getRotateX() == 180){
                             facing = EnumFacing.DOWN;
@@ -82,6 +86,8 @@ public class CommandJumpThree extends CommandPlusBase {
                             entitydefServer.setTra(0,4,0);
                             entitydefClient.setRotate(270, 0,0);
                             entitydefClient.setTra(0,4,0);
+                            WorldAPI.command(sender, "/mge rotate rotate set 270 0 0");
+                            WorldAPI.command(sender, "/mge rotate tra set 0 4 0");
                         }
                         if(entitydefServer.getRotateX() == 270){
                             facing = EnumFacing.NORTH;
@@ -89,11 +95,12 @@ public class CommandJumpThree extends CommandPlusBase {
                             entitydefServer.setTra(0,1,2);
                             entitydefClient.setRotate(0, 0,0);
                             entitydefClient.setTra(0,1,2);
+                            WorldAPI.command(sender, "/mge rotate rotate set 0 0 0");
+                            WorldAPI.command(sender, "/mge rotate tra set 0 1 2");
                         }
-                        WorldAPI.command("/mge "+facing.rotateAround(EnumFacing.Axis.X).getName().toLowerCase()+" collision true");
-                        WorldAPI.command("/mge "+facing.getName().toLowerCase()+" collision false");
+                        WorldAPI.command(sender, "/mge "+facing.rotateAround(EnumFacing.Axis.X).getName().toLowerCase()+" collision true");
+                        WorldAPI.command(sender, "/mge "+facing.getName().toLowerCase()+" collision false");
                         System.out.println(buildBlock.isServerWorld() + " - " +entity +" 찾음22  "+buildBlock.getRotateX() + " - "+buildBlock.getRotateY() + " -"+buildBlock.getRotateZ());
-                        break;
                     }
                 }
             }
