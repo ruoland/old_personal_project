@@ -28,8 +28,6 @@ public class CommandMge extends CommandEntity {
         EntityDefaultNPC entitydefClient = (EntityDefaultNPC) livingBase;
 
         String type = args[1], arg1 = args[2];
-        System.out.println(type+ " - " + arg1+" - "+entitydefServer.isServerWorld() +" - "+entitydefClient.isServerWorld());
-
         float	x,y,z;
 
         if(type.equalsIgnoreCase("model")) {
