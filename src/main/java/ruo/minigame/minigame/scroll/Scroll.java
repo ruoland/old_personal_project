@@ -38,7 +38,6 @@ public class Scroll extends AbstractMiniGame {
         Camera.getCamera().playerCamera(true);
         s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);
         pos(Keyboard.KEY_A);//카메라 초기화
-        //MiniGame.spawnFakePlayer(false);
         ActionEffect.doubleJump(true);
         ActionEffect.crawl(true);
         return super.start();
@@ -217,7 +216,6 @@ public class Scroll extends AbstractMiniGame {
                     Camera.getCamera().rotateCamera(0, -90, 0);
                 }
             }
-
         }
     }
 
