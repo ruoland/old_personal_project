@@ -17,6 +17,9 @@ import ruo.minigame.api.NBTAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Loop {
@@ -46,16 +49,37 @@ public class Loop {
         worldObj.spawnEntityInWorld(buildBlock);
         buildBlock.setBlock(xx,yy,zz,x2,y2,z2);
     }
+    public static void saveBuildBlock(EntityBuildBlock buildBlock) {
+        StringBuffer buildName = new StringBuffer("./buildblock/클릭한블럭.nbt");
+        File clickBlock = new File(buildName.toString());
+        if(clickBlock.isFile()){
+            try {
+                Desktop.getDesktop().open(new File("./buildblock"));
+                WorldAPI.addMessage("빌드블럭이 이미 있습니다.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            NBTAPI nbtapi = new NBTAPI(buildName.toString());
+            buildBlock.writeEntityToNBT(nbtapi.getNBT());
+            nbtapi.saveNBT();
+            WorldAPI.addMessage("빌드블럭을 저장했습니다. 이름을 바꾸세요.");
 
+
+        }
+    }
     public static void save(World worldObj, String name,int xx, int yy, int zz, int x2, int y2, int z2) {
-        NBTAPI nbtapi = new NBTAPI("./buildblock/"+name);
+        StringBuffer buildName = new StringBuffer("./buildblock/").append(name).append(".nbt");
+        NBTAPI nbtapi = new NBTAPI(buildName.toString());
         NBTTagCompound compound = nbtapi.getNBT();
         ArrayList<BlockPos> blockPosList = new ArrayList();
         ArrayList<ItemStack> blockList = new ArrayList();
         WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new AbstractTick.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
-                if (worldObj.getBlockState(getPos()).getBlock() != null && worldObj.getBlockState(getPos()).getBlock() != Blocks.AIR) {
+                worldObj.getBlockState(getPos()).getBlock();
+                if (worldObj.getBlockState(getPos()).getBlock() != Blocks.AIR) {
                     blockPosList.add(new BlockPos(xx - x, yy - y, zz - z));
 
                     IBlockState state = worldObj.getBlockState(getPos());
@@ -76,7 +100,9 @@ public class Loop {
         nbtapi.saveNBT();
     }
     public static EntityBuildBlock read(World worldObj, String name, double x, double y, double z) {
-        NBTAPI nbtapi = new NBTAPI("./"+name);
+        StringBuffer buildName = new StringBuffer("./buildblock/").append(name).append(".nbt");
+
+        NBTAPI nbtapi = new NBTAPI(buildName.toString());
         NBTTagCompound compound = nbtapi.getNBT();
         EntityBuildBlock buildBlock = new EntityBuildBlock(worldObj);
         buildBlock.blockRead(compound);

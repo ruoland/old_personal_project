@@ -17,11 +17,12 @@ public class NBTAPI {
         try {
             if (!file.exists()) {
                 file.createNewFile();
-            }
+            }else
+                readNBT();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        readNBT();
+
 
     }
 

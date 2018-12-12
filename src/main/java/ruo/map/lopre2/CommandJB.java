@@ -43,7 +43,6 @@ public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
     public static long startTime, endTime;
     public static boolean isDebMode = false, isLavaInvisible;//용암 블럭 투명화를 반대로 설정함
-    public static boolean upMode, downMode;
     //E 1127 247 -70
     //E 회전 -180 0 -180
     //N 1127 247 -61
@@ -86,20 +85,6 @@ public class CommandJB extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("3./fly true 를 입력하면 하늘을 날 수 있습니다"));
                 sender.addChatMessage(new TextComponentString("4.너무 어려우면 /spawnpoint (사용시 도전과제 클리어 못함)"));
                 sender.addChatMessage(new TextComponentString("5.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
-            }
-            if (args[0].equalsIgnoreCase("upblock")) {
-                upMode = !upMode;
-                if (upMode)
-                    sender.addChatMessage(new TextComponentString("스패너를 들고 우클릭하면 빅블럭과 투명 블럭의 위치를 위로 올릴 수 있습니다."));
-                else
-                    sender.addChatMessage(new TextComponentString("해제됐습니다."));
-            }
-            if (args[0].equalsIgnoreCase("down")) {
-                downMode = !downMode;
-                if (downMode)
-                    sender.addChatMessage(new TextComponentString("스패너를 들고 우클릭하면 빅블럭과 투명 블럭의 위치를 아래로 내릴 수 있습니다."));
-                else
-                    sender.addChatMessage(new TextComponentString("해제됐습니다."));
             }
             if (args[0].equalsIgnoreCase("start")) {
                 startTime = System.currentTimeMillis();

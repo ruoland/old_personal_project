@@ -46,7 +46,7 @@ public class CommandFunction extends CommandPlusBase {
 		
 		if (function.getFile().length() == 0) {
 			sender.addChatMessage(text("펑션에 명령어가 없습니다.")
-					.appendSibling(text("(파일 열기)", new ClickEvent(Action.RUN_COMMAND, "/func " + args[0] + " open"),
+					.appendSibling(text("(파일 열기) ", new ClickEvent(Action.RUN_COMMAND, "/func " + args[0] + " open"),
 							TextFormatting.UNDERLINE))
 					.appendSibling(
 							text(" (폴더 열기)", new ClickEvent(Action.RUN_COMMAND, "/func " + args[0] + " openfolder"),
@@ -54,21 +54,6 @@ public class CommandFunction extends CommandPlusBase {
 		}
 	}
 
-	public static ITextComponent text(String text) {
-		return new TextComponentString(text);
-	}
-
-	public static ITextComponent text(String text, ClickEvent event) {
-		return new TextComponentSelector(text).setStyle(new Style().setClickEvent(event));
-	}
-
-	public static ITextComponent text(String text, ClickEvent event, TextFormatting form) {
-		return new TextComponentSelector(text).setStyle(new Style().setClickEvent(event).setColor(form));
-	}
-
-	public static ITextComponent text(String text, TextFormatting form) {
-		return new TextComponentSelector(text).setStyle(new Style().setColor(form));
-	}
 
 	@Override
 	public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args,

@@ -275,7 +275,6 @@ public class Function {
 		try {
 			Desktop.getDesktop().open(new File(WorldAPI.getCurrentWorldFile() + "/commandplus/" + "script/"));
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		}
 	}

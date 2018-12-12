@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.cmplus.util.CommandPlusBase;
 import ruo.map.lopre2.jump1.EntityBuildBlock;
+import ruo.map.lopre2.jump3.JumpTool;
 import ruo.minigame.api.EntityAPI;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
@@ -34,6 +35,10 @@ public class CommandJumpThree extends CommandPlusBase {
             Loop.read(sender.getEntityWorld(), "ball", 157.4, 63.1, -423.3).setRotate(WorldAPI.rand(180), WorldAPI.rand(180), WorldAPI.rand(180));
             WorldAPI.setBlock(sender.getEntityWorld(), 145, 59, -422, 156, 68, -422, Blocks.BARRIER);
         }
+
+        if(args[0].equalsIgnoreCase("rotatespawn")){
+            JumpTool.rotateBlockSpawn((EntityPlayer) sender, args[1]);
+        }
         if (args[0].equalsIgnoreCase("flying")) {
             EntityJumpFlyingCreeper flyingCreeper = new EntityJumpFlyingCreeper(sender.getEntityWorld());
         }
@@ -53,57 +58,41 @@ public class CommandJumpThree extends CommandPlusBase {
             EntityBuildBlock buildBlock = (EntityBuildBlock) EntityDefaultNPC.getNPC("rotate");
             for(Entity entity : sender.getEntityWorld().loadedEntityList){
                 if(!(entity instanceof EntityPlayer)){
-                    boolean isJumpBlock = entity instanceof EntityPreBlock && entity.getCustomNameTag().startsWith("rotate");
-                    if(EntityList.getEntityString(entity).equalsIgnoreCase("rotate")
-                            || entity.getCustomNameTag().equalsIgnoreCase("rotate") || isJumpBlock){
+                    boolean isJumpBlock = entity instanceof EntityPreBlock && ((EntityPreBlock) entity).getJumpName().equalsIgnoreCase(args[1]);
+
+                    if(entity.getCustomNameTag().equalsIgnoreCase(args[1]) || isJumpBlock){
                         buildBlock = (EntityBuildBlock) entity;
+                        String buildName = buildBlock.getJumpName();
                         EntityDefaultNPC entitydefServer = EntityDefaultNPC.getUUIDNPC(buildBlock.getUniqueID());
                         EntityDefaultNPC entitydefClient = (EntityDefaultNPC) buildBlock;
-
                         EnumFacing facing =null;
-                        System.out.println("111111111111 찾음  "+buildBlock.getRotateX() + " - "+buildBlock.getRotateY() + " -"+buildBlock.getRotateZ());
+                        System.out.println("111111111111 찾음  "+buildName+buildBlock.getRotateX() + " - "+buildBlock.getRotateY() + " -"+buildBlock.getRotateZ());
                         if(entitydefServer.getRotateX() == 270){
                             facing = EnumFacing.NORTH;
-                            entitydefServer.setRotate(0, 0,0);
-                            entitydefServer.setTra(0,1,2);
-                            entitydefClient.setRotate(0, 0,0);
-                            entitydefClient.setTra(0,1,2);
-                            WorldAPI.command(sender, "/mge rotate rotate set 0 0 0");
-                            WorldAPI.command(sender, "/mge rotate tra set 0 1 2");
+                            WorldAPI.command(sender, "/mge "+buildName+" rotate set 0 0 0");
+                            WorldAPI.command(sender, "/mge "+buildName+" tra set 0 0 0");
                         }
-                        if(entitydefServer.getRotateX() == 180){
+                        else if(entitydefServer.getRotateX() == 180){
                             facing = EnumFacing.DOWN;
-                            entitydefServer.setRotate(270, 0,0);
-                            entitydefServer.setTra(0,4,0);
-                            entitydefClient.setRotate(270, 0,0);
-                            entitydefClient.setTra(0,4,0);
-                            WorldAPI.command(sender, "/mge rotate rotate set 270 0 0");
-                            WorldAPI.command(sender, "/mge rotate tra set 0 4 0");
+                            WorldAPI.command(sender, "/mge "+buildName+" rotate set 270 0 0");
+                            WorldAPI.command(sender, "/mge "+buildName+" tra set 0 -8 1");
                         }
-                        if(entitydefServer.getRotateX() == 90){
+                        else if(entitydefServer.getRotateX() == 90){
                             facing = EnumFacing.SOUTH;
-                            entitydefServer.setRotate(180, 0,0);
-                            entitydefServer.setTra(0,6,3);
-                            entitydefClient.setRotate(180, 0,0);
-                            entitydefClient.setTra(0,6,3);
-                            WorldAPI.command(sender, "/mge rotate rotate set 180 0 0");
-                            WorldAPI.command(sender, "/mge rotate tra set 0 6 3");
+                            WorldAPI.command(sender, "/mge "+buildName+" rotate set 180 0 0");
+                            WorldAPI.command(sender, "/mge "+buildName+" tra set 0 -9 -7");
                         }
-
-                        if(entitydefServer.getRotateX() == 0){
+                        else if(entitydefServer.getRotateX() == 0){
                             facing = EnumFacing.UP;
-                            entitydefServer.setRotate(90,0,0);
-                            entitydefServer.setTra(0,3,5);
-                            entitydefClient.setRotate(90,0,0);
-                            entitydefClient.setTra(0,3,5);
-                            WorldAPI.command(sender, "/mge rotate rotate set 90 0 0");
-                            WorldAPI.command(sender, "/mge rotate tra set 0 3 5");
+                            WorldAPI.command(sender, "/mge "+buildName+" rotate set 90 0 0");
+                            WorldAPI.command(sender, "/mge "+buildName+" tra set 0 -1 -8");
                         }
 
 
-                        WorldAPI.command(sender, "/mge "+facing.rotateAround(EnumFacing.Axis.X).getName().toLowerCase()+" collision true");
-                        WorldAPI.command(sender, "/mge "+facing.getName().toLowerCase()+" collision false");
-                        System.out.println("2222222222 찾음22  "+facing.rotateAround(EnumFacing.Axis.X).getName()+"를 충돌하게 만들었고, "+facing.getName()+"를 충돌하지 않게 만들었음");
+                        WorldAPI.command(sender, "/mge "+buildName+"-"+facing.rotateAround(EnumFacing.Axis.X).getName().toLowerCase()+" collision true");
+                        WorldAPI.command(sender, "/mge "+buildName+"-"+facing.getName().toLowerCase()+" collision false");
+                        System.out.println("2222222222 찾음22  "+buildName+"-"+facing.rotateAround(EnumFacing.Axis.X).getName()+"를 충돌하게 만들었고, "+buildName+"-"+facing.getName()+"를 충돌하지 않게 만들었음");
+
                     }
                 }
             }

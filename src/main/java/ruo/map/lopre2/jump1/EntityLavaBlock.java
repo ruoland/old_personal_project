@@ -171,7 +171,6 @@ public class EntityLavaBlock extends EntityPreBlock {
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
         setSize(getWidth(), getHeight());
-        System.out.println("라바블럭 사이즈 NBT에서 읽음 "+getWidth()+ " - "+getHeight());
         downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
     }

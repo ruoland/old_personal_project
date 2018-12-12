@@ -54,9 +54,7 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
             setInvisible(true);
             entityIn.fallDistance = 0;
             dataManager.set(INVISIBLE_TIME, 40);
-            System.out.println(isServerWorld()+""+entityIn.motionY);
         }
-        System.out.println(isServerWorld()+""+getDistanceToEntity(entityIn));
 
     }
 

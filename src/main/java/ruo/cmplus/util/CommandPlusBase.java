@@ -12,6 +12,8 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.*;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.map.EntityDefaultNPC;
@@ -26,25 +28,23 @@ public abstract class CommandPlusBase extends CommandBase {
 
 	public CommandTool t;
 
-	/**
-	 * 커맨드 생성시 lang 양식을 자동으로 만들어주는 메서드
-	 * 이미 메모장에 적힌 내용을 다시 적는 기능이 필요함..
-	 */
-	private void help()
-	{
-		try {
-			File file = new File("./asdf.txt");
-			if (!file.isFile()) {
-				file.createNewFile();
-			}
-			BufferedWriter writer = Files.newWriter(file, Charset.forName("UTF-8"));
-			writer.newLine();
-			writer.write("commandPlus." + getCommandName() + ".help=/" + getCommandName());
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+	public static ITextComponent text(String text) {
+		return new TextComponentString(text);
 	}
+
+	public static ITextComponent text(String text, ClickEvent event) {
+		return new TextComponentSelector(text).setStyle(new Style().setClickEvent(event));
+	}
+
+	public static ITextComponent text(String text, ClickEvent event, TextFormatting form) {
+		return new TextComponentSelector(text).setStyle(new Style().setClickEvent(event).setColor(form));
+	}
+
+	public static ITextComponent text(String text, TextFormatting form) {
+		return new TextComponentSelector(text).setStyle(new Style().setColor(form));
+	}
+
 	public CommandPlusBase() {
 		t = new CommandTool(getCommandName());
 	}
