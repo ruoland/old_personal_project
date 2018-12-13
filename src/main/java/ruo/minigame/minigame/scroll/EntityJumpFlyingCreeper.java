@@ -79,13 +79,6 @@ public class EntityJumpFlyingCreeper extends EntityFlyNPC {
         if(attackTarget != null && attackTarget.isDead){
             this.targetRemove();
         }
-        for(int i=0;i<10;i++){
-            BlockPos pos = getPosition().add(0,-i,0);
-            Block block = worldObj.getBlockState(pos).getBlock();
-            if(block == Blocks.LAVA || block == Blocks.FLOWING_LAVA){
-                worldObj.setBlockToAir(pos);
-            }
-        }
     }
 
     @Override

@@ -31,6 +31,7 @@ import ruo.map.lopre2.jump1.EntityMoveBlock;
 import ruo.map.lopre2.jump1.EntityWaterBlockCreator;
 import ruo.map.lopre2.jump2.EntityBigInvisibleBlock;
 import ruo.map.lopre2.jump2.EntityJumpSpider;
+import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.AbstractTick;
@@ -166,9 +167,8 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("pos2")) {
                 pos2 = WorldAPI.changePosArrayInt((EntityLivingBase) sender);
             }
-            if (args[0].equalsIgnoreCase("set"))
-                Loop.curve(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
-
+            if (args[0].equalsIgnoreCase("inv"))
+                WorldAPI.setBlock(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], MiniGame.blockInvisible);
             if (args[0].equalsIgnoreCase("block"))
                 Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
             if (args[0].equalsIgnoreCase("save"))

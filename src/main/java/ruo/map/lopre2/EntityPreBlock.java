@@ -128,17 +128,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                 setTeleport(true);
                 return super.processInteract(player, hand, stack);
             }
-
-            if (CommandJB.downMode || CommandJB.upMode) {
-                if (this instanceof EntityBigBlock) {
-                    System.out.println("업모드 다운모드 둘중 하나 활성화된상태");
-                    EntityBigBlock bigBlock = (EntityBigBlock) this;
-                    List<EntityLavaBlock> list = worldObj.getEntitiesWithinAABB(EntityLavaBlock.class, getEntityBoundingBox().offset(1, 0, 1).expand(1, 2, 1));
-                    System.out.println("" + list.size() + " - " + list);
-                }
-                return super.processInteract(player, hand, stack);
-
-            }
         }
         return super.processInteract(player, hand, stack);
     }
