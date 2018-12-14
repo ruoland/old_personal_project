@@ -18,7 +18,7 @@ public class Scroll extends AbstractMiniGame {
     private Minecraft mc;
     private GameSettings s;
     public boolean x, z, xR, zR;
-    public float moveX, moveZ;
+    public float moveX, moveZ;//카메라
     public float yaw=-1, pitch=-1;//요는 좌우
 
     public Scroll() {
@@ -73,21 +73,22 @@ public class Scroll extends AbstractMiniGame {
 
         return super.end();
     }
+    public double getForwardXZ(){
+        if(x){
+            if(mc.thePlayer.rotationYaw == 90)
+                return -1;
+            else if(mc.thePlayer.rotationYaw == -90){
+                return 1;
+            }
+        }
+        if(z){
 
-    public double getForwardX(){
-        if(x){
-            return 0;
+            if(mc.thePlayer.rotationYaw == 0)
+                return 1;
+            else if(mc.thePlayer.rotationYaw == 180){
+                return -1;
+            }
         }
-        if(z)
-            return -1;
-        return 0;
-    }
-    public double getForwardZ(){
-        if(x){
-            return 1;
-        }
-        if(z)
-            return 0;
         return 0;
     }
 
@@ -108,7 +109,7 @@ public class Scroll extends AbstractMiniGame {
             return 0;
         return 0;
     }
-    public double getRightX(){
+    public double getLookX(){
         if(x){
             return -1;
         }
@@ -158,7 +159,7 @@ public class Scroll extends AbstractMiniGame {
             KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), true);
             if (MiniGame.scroll.x) {
                 if (!MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 90: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 90 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 180, 0);
                 }
