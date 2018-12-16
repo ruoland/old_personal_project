@@ -1,5 +1,6 @@
 package ruo.map.lopre2;
 
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.ICommand;
@@ -40,28 +41,31 @@ public class LooPreThreeEvent {
         if (event.player.getLowestRidingEntity() instanceof EntityMinecart) {
             inputDelay--;
             EntityMinecart entityMinecart = (EntityMinecart) event.player.getRidingEntity();
-            if(event.player.getLowestRidingEntity().motionY == 0)
+            if(event.player.getLowestRidingEntity().motionY > -0.5)
                 entityMinecart.setCanUseRail(true);
+            else
+                entityMinecart.setCanUseRail(false);
+            entityMinecart.setCurrentCartSpeedCapOnRail(0.8F);
             if (event.side == Side.CLIENT) {
                 if (Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed()) {
                     pressUsername = event.player.getName();
                     System.out.println("키 클릭");
-                    inputDelay = 20;
+                    inputDelay = 10;
                 }
                 else if(inputDelay < 0){
                     pressUsername = null;
                 }
             }
             else{
-                if(pressUsername != null && inputDelay > 0 && entityMinecart.motionY == 0) {
+                if(pressUsername != null && inputDelay > 0 && entityMinecart.canUseRail()) {
                     entityMinecart.setCanUseRail(false);
-
                     System.out.println(MiniGame.scroll.getForwardXZ());
-                    entityMinecart.moveEntity(0,1, MiniGame.scroll.getForwardXZ() * 5);
+                    entityMinecart.moveEntity(0,2.3, MiniGame.scroll.getForwardXZ() * 5);
                     System.out.println(Minecraft.getMinecraft().thePlayer.rotationYaw);
                     inputDelay = 0;
                 }
             }
+
         }
     }
 }

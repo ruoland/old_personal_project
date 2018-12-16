@@ -30,47 +30,51 @@ public class ItemSpanner extends Item {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        String name = target.getClass().getSimpleName().replace("Entity", "");
+        if(target instanceof EntityPreBlock) {
+            String name = ((EntityPreBlock) target).getJumpName();
 
-        if (!target.isInvisible()) {
-            if (target instanceof EntityBuildBlock && hand == EnumHand.MAIN_HAND) {
-                EntityBuildBlock buildBlock = (EntityBuildBlock) target;//빌드 블럭 저장
-                Loop.saveBuildBlock(buildBlock);
-            }
-            if (target instanceof EntityWaterBlockCreator && hand == EnumHand.MAIN_HAND) {
-                EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
-                lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
-            }
-            if (target instanceof EntityLavaBlock && hand == EnumHand.MAIN_HAND) {
-                EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
-                lavaBlock.setTeleportLock(!lavaBlock.canTeleportLock());
-                System.out.println("대상 위치" + lavaBlock.posX + " - " + lavaBlock.posY + " - " + lavaBlock.posZ);
-            }
-            if (target instanceof EntityInvisibleBlock) {
-                EntityInvisibleBlock lavaBlock = (EntityInvisibleBlock) target;
-                lavaBlock.defaultDelay += 5;
-                lavaBlock.setCustomNameTag(name + " 딜레이:" + (lavaBlock.defaultDelay / 20F));
-            }
-            if (target instanceof EntityMoveBlock) {
-                EntityMoveBlock lavaBlock = (EntityMoveBlock) target;
-                if (playerIn.rotationPitch <= -60 && playerIn.rotationPitch >= -90) {
-                    lavaBlock.setPos(playerIn, lavaBlock.posY + 3, 2);
-                    return true;
+            if (!target.isInvisible()) {
+                if (target instanceof EntityBuildBlock && hand == EnumHand.MAIN_HAND) {
+                    EntityBuildBlock buildBlock = (EntityBuildBlock) target;//빌드 블럭 저장
+                    Loop.saveBuildBlock(buildBlock);
                 }
-                if (playerIn.rotationPitch >= 60 && playerIn.rotationPitch <= 90) {
-                    lavaBlock.setPos(playerIn, lavaBlock.posY - 3, 2);
-                    return true;
+                if (target instanceof EntityWaterBlockCreator && hand == EnumHand.MAIN_HAND) {
+                    EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
+                    lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
                 }
-                lavaBlock.setPos(playerIn, lavaBlock.posY, 2);
-                lavaBlock.setCustomNameTag(name + " 방향:" + lavaBlock.getFacing());
-            }
-            if (target instanceof EntityBigBlock) {
-                EntityBigBlock lavaBlock = (EntityBigBlock) target;
-                lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
-                //if (lavaBlock.getRotateX() != 0 || lavaBlock.getRotateY() != 0 || lavaBlock.getRotateZ() != 0) {
-                //   lavaBlock.setCanFalling(!lavaBlock.canFalling());
-                //} else
-                //    System.out.println("기울어진 빅 블럭만 캔 폴링 설정 가능함");
+                if (target instanceof EntityLavaBlock && hand == EnumHand.MAIN_HAND) {
+                    EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
+                    lavaBlock.setTeleportLock(!lavaBlock.canTeleportLock());
+                    System.out.println("대상 위치" + lavaBlock.posX + " - " + lavaBlock.posY + " - " + lavaBlock.posZ);
+                }
+                if (target instanceof EntityInvisibleBlock) {
+                    EntityInvisibleBlock lavaBlock = (EntityInvisibleBlock) target;
+                    if(playerIn.isSneaking()){
+                        lavaBlock.setCollision(!lavaBlock.canCollision());
+                    }else {
+                    }
+                }
+                if (target instanceof EntityMoveBlock) {
+                    EntityMoveBlock lavaBlock = (EntityMoveBlock) target;
+                    if (playerIn.rotationPitch <= -60 && playerIn.rotationPitch >= -90) {
+                        lavaBlock.setPos(playerIn, lavaBlock.posY + 3, 2);
+                        return true;
+                    }
+                    if (playerIn.rotationPitch >= 60 && playerIn.rotationPitch <= 90) {
+                        lavaBlock.setPos(playerIn, lavaBlock.posY - 3, 2);
+                        return true;
+                    }
+                    lavaBlock.setPos(playerIn, lavaBlock.posY, 2);
+                    lavaBlock.setCustomNameTag(name + " 방향:" + lavaBlock.getFacing());
+                }
+                if (target instanceof EntityBigBlock) {
+                    EntityBigBlock lavaBlock = (EntityBigBlock) target;
+                    lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
+                    //if (lavaBlock.getRotateX() != 0 || lavaBlock.getRotateY() != 0 || lavaBlock.getRotateZ() != 0) {
+                    //   lavaBlock.setCanFalling(!lavaBlock.canFalling());
+                    //} else
+                    //    System.out.println("기울어진 빅 블럭만 캔 폴링 설정 가능함");
+                }
             }
         }
 

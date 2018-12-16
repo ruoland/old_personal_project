@@ -38,10 +38,9 @@ public class EntityLavaBlock extends EntityPreBlock {
         setJumpName("라바 블럭");
     }
 
-
     @Override
     public String getCustomNameTag() {
-        return getJumpName()+" 고정:"+canTeleportLock()+"난이도:"+getDifficulty()+" 속도:"+downSpeed+" RoX:"+getRotateX()+" RoY:"+getRotateY()+" RoZ:"+getRotateZ();
+        return getJumpName()+" 고정:"+canTeleportLock()+"난이도:"+getDifficulty();
     }
 
     @Override

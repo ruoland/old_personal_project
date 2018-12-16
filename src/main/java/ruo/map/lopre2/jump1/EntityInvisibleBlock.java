@@ -13,18 +13,25 @@ import ruo.map.lopre2.jump2.EntityTeleportBlock;
 
 //
 public class EntityInvisibleBlock extends EntityPreBlock {
-
+	private static final DataParameter<Boolean> IS_COLLISION = EntityDataManager.createKey(EntityInvisibleBlock.class, DataSerializers.BOOLEAN);
 	public EntityInvisibleBlock(World worldIn) {
 		super(worldIn);
 		this.setCollision(true);
 		setBlockMode(Blocks.STONE);
 		this.isFly = true;
 		defaultDelay = 20;
+		setJumpName("투명 블럭");
+	}
+
+	@Override
+	public String getCustomNameTag() {
+		return getJumpName()+" 충돌여부:"+canCollision()+" 난이도:"+getDifficulty();
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
+		dataManager.register(IS_COLLISION, false);
 	}
 
 	@Override
@@ -62,6 +69,8 @@ public class EntityInvisibleBlock extends EntityPreBlock {
         if(currentDelay <= 0){
 			setInv(!isInv());
 			setInvisible(isInv());
+			if(dataManager.get(IS_COLLISION))
+			setCollision(!isInv());
         	currentDelay = defaultDelay;
         }
 		super.onLivingUpdate();
@@ -74,16 +83,13 @@ public class EntityInvisibleBlock extends EntityPreBlock {
     @Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
-		compound.setDouble("spawnX", getSpawnX());
-		compound.setDouble("spawnY", getSpawnY());
-		compound.setDouble("spawnZ", getSpawnZ());
+		compound.setBoolean("IS_COLLISION", dataManager.get(IS_COLLISION));
 
 	}
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
-		setSpawnXYZ(compound.getDouble("spawnX"), compound.getDouble("spawnY"), compound.getDouble("spawnZ"));
-
+		dataManager.set(IS_COLLISION, compound.getBoolean("IS_COLLISION"));
 	}
 
 
