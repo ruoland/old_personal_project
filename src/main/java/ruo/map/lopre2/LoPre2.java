@@ -100,7 +100,9 @@ public class LoPre2 {
         //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
+
         proxy.init();
+
     }
 
     @EventHandler

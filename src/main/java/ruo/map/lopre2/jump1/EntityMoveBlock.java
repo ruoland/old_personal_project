@@ -3,8 +3,11 @@ package ruo.map.lopre2.jump1;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,6 +20,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import org.lwjgl.Sys;
 import ruo.map.lopre2.CommandJB;
 import ruo.map.lopre2.EntityPreBlock;
 import ruo.minigame.action.ActionEffect;
@@ -57,7 +62,7 @@ public class EntityMoveBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "MoveBlock" + " 이동 중?" + !dataManager.get(CAN_BLOCK_MOVE)+" - 목적지"+(endPos != null ? endPos[0] +" - "+endPos[1]+" - "+endPos[2] : "");
+        return "MoveBlock" + " 이동 중?" + !dataManager.get(CAN_BLOCK_MOVE) + " - 목적지" + (endPos != null ? endPos[0] + " - " + endPos[1] + " - " + endPos[2] : "");
     }
 
 
@@ -119,12 +124,13 @@ public class EntityMoveBlock extends EntityPreBlock {
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (CommandJB.isDebMode) {
             if (hand == EnumHand.MAIN_HAND) {
-                if (player.isSneaking()) {
-                    if (WorldAPI.equalsHeldItem(Items.WOODEN_SWORD)) {
-                        noClip = !noClip;
-                        System.out.println("노클립 " + noClip);
-                        return true;
-                    }
+                if (WorldAPI.equalsHeldItem(Items.WHEAT)) {
+                    if (player.isSneaking())
+                        playerYSpeed+=0.01;
+                    else
+                        playerYSpeed-=0.01;
+                    System.out.println(playerYSpeed);
+
                 }
                 if (WorldAPI.equalsHeldItem(Items.APPLE)) {
                     this.endPos = new double[]{posX + EntityAPI.lookX(player, 2), posY, posZ + EntityAPI.lookZ(player, 2)};
@@ -210,16 +216,27 @@ public class EntityMoveBlock extends EntityPreBlock {
     }
 
     int delay;//벽에 막혔을 때 딜레이랑 플레이어가 처음 들어갔을 때 motionXYZ를 초기화 함 이걸 언제 다시 초기화 하게 할 건지 딜레이
-    boolean isPlayer;//플레이어가 처음 들어가면 초기화함, isPlayer는 플레이어가 있을 때
+    boolean onPlayer;//플레이어가 처음 들어가면 초기화함, onPlayer 플레이어가 있을 때
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (WorldAPI.equalsHeldItem(Items.STICK)) {
+            Minecraft.getMinecraft().thePlayer.moveEntity(0.3, 0, 0);
+            moveEntity(playerYSpeed, 0, 0);
+            EntityTracker.updateServerPosition(this, posX, posY, posZ);
+        }
         entityPos = WorldAPI.changePosArray(this);
-        if ((startPos[0] == 0 && startPos[1] == 0 && startPos [2] == 0) || (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)) {
+        if ((startPos[0] == 0 && startPos[1] == 0 && startPos[2] == 0) || (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)) {
             return;
         }
-        if (getDistance(endPos[0], endPos[1], endPos[2]) < 0.5 ) {
+        if (getDistance(endPos[0], endPos[1], endPos[2]) < 0.5) {
             double start2[] = startPos;
             double end2[] = endPos;
             startPos = end2;
@@ -240,15 +257,14 @@ public class EntityMoveBlock extends EntityPreBlock {
         prevX = posX;
         prevY = posY;
         prevZ = posZ;
-        if(getFacing() == EnumFacing.UP || getFacing() == EnumFacing.DOWN) {
+        if (getFacing() == EnumFacing.UP || getFacing() == EnumFacing.DOWN) {
             if (endPos[1] > entityPos[1]) {
                 y = speed;
             }
             if (endPos[1] < entityPos[1]) {
                 y = -speed;
             }
-        }
-        else {
+        } else {
             if (endPos[0] > entityPos[0]) {
                 x = speed;
             }
@@ -274,11 +290,10 @@ public class EntityMoveBlock extends EntityPreBlock {
 //                playerSP.motionZ = ((posZ - playerSP.posZ) / 20) + z;
 //                playerSP.motionY = ((posY - 2.5 - playerSP.posY) / 10);
         }
+
         if (!allBlockMoveStop) {
-            playerMove(x,y,z);
-            motionX = x;
-            motionY = y;
-            motionZ = z;
+            playerMove(x, y, z);
+            moveEntity(x, y, z);
         }
     }
 
@@ -291,7 +306,7 @@ public class EntityMoveBlock extends EntityPreBlock {
                     if ((entity instanceof EntityPlayer) && !entity.noClip && (GrabHelper.wallGrab || entity.posY > posY + 0.2)) {
                         if (GrabHelper.wallGrab || entity.onGround) {
                             double px = x, py = y, pz = z;
-                            if (!GrabHelper.wallGrab && !isPlayer) {
+                            if (!GrabHelper.wallGrab && !onPlayer) {
                                 entity.motionX = 0;
                                 entity.motionY = 0;
                                 entity.motionZ = 0;
@@ -314,15 +329,16 @@ public class EntityMoveBlock extends EntityPreBlock {
 //                                    }
 //                                    playerSP.moveEntity(px, py, pz);
                             entity.moveEntity(px, py, pz);
-                            isPlayer = true;
+                            onPlayer = true;
                             break;
                         }
                     } else
-                        isPlayer = false;
+                        onPlayer = false;
                 }
             }
         }
     }
+
     public double[] getSpeed() {
         double x = 0, y = 0, z = 0;
         prevX = posX;

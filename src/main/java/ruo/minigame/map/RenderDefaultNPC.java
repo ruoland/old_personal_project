@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerSnowmanHead;
@@ -197,6 +198,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         if (entity.getModel() == TypeModel.PIG && !(mainModel instanceof ModelPig)) {
             mainModel = new ModelPig();
             DEFAULT_RES_LOC = new ResourceLocation("textures/entity/pig/pig.png");
+        }
+        if (entity.getModel() == TypeModel.CART && !(mainModel instanceof ModelMinecart)) {
+            mainModel = new ModelMinecart();
+            DEFAULT_RES_LOC = new ResourceLocation("textures/entity/minecart.png");
         }
         if(entity.getModel() == BLOCK && !DEFAULT_RES_LOC.equals(RenderAPI.getBlockTexture(entity.getCurrentBlock()))){
             DEFAULT_RES_LOC = RenderAPI.getBlockTexture(entity.getCurrentBlock());
