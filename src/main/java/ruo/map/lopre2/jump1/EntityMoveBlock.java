@@ -227,11 +227,6 @@ public class EntityMoveBlock extends EntityPreBlock {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (WorldAPI.equalsHeldItem(Items.STICK)) {
-            Minecraft.getMinecraft().thePlayer.moveEntity(0.3, 0, 0);
-            moveEntity(playerYSpeed, 0, 0);
-            EntityTracker.updateServerPosition(this, posX, posY, posZ);
-        }
         entityPos = WorldAPI.changePosArray(this);
         if ((startPos[0] == 0 && startPos[1] == 0 && startPos[2] == 0) || (endPos[0] == 0 && endPos[1] == 0 && endPos[2] == 0)) {
             return;

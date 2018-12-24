@@ -1,5 +1,7 @@
 package ruo.minigame.api;
 
+import com.sun.imageio.plugins.gif.GIFImageReader;
+import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -42,7 +44,12 @@ import ruo.minigame.map.RenderDefaultNPC;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,9 +70,10 @@ public class RenderAPI {
         ClientRegistry.bindTileEntitySpecialRenderer(tileEntity, renderer);
     }
 
-    public static RenderManager getRenderMananger(){
+    public static RenderManager getRenderMananger() {
         return Minecraft.getMinecraft().getRenderManager();
     }
+
     public static void registerRender(Class entity, Render<? extends Entity> r) {
         RenderingRegistry.registerEntityRenderingHandler(entity, r);
     }
@@ -248,6 +256,23 @@ public class RenderAPI {
     public static void drawTextureZ(String texture, double x, double y, double z, double width,
                                     double height) {
         drawTexture(texture, 1, 1, 1, 1, x, y, z, width, height, true);
+    }
+
+    public static void drawTextureZ(ResourceLocation texture, double x, double y, double z, double width,
+                                    double height) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.translate(0, 0, z);
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((double) x, (double) y + height, 0).tex(0, 1).endVertex();
+        vertexbuffer.pos(x + width, y + height, 0).tex(1, 1).endVertex();
+        vertexbuffer.pos(x + width, y, 0).tex(1, 0).endVertex();
+        vertexbuffer.pos(x, y, 0).tex(0, 0).endVertex();
+        tessellator.draw();
+        GlStateManager.disableBlend();
     }
 
     public static void drawTexture(String texture, float red, float green, float blue, float alpha, double x, double y, double z, double width, double height,
