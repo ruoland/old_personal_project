@@ -77,7 +77,6 @@ public class GuiMainMenuRealNew extends GuiScreen {
     private GuiButton realmsButton, modButton;
 
     public void initGui() {
-        CustomTool t = new CustomTool();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
 
@@ -99,7 +98,7 @@ public class GuiMainMenuRealNew extends GuiScreen {
         this.buttonList.add(new GuiCusButton(0, this.width / 2 - 100, i + 84, 98, 20, I18n.format("menu.options", new Object[0])));
         this.buttonList.add(new GuiCusButton(4, this.width / 2 + 2, i + 84, 98, 20, I18n.format("menu.quit", new Object[0])));
         this.buttonList.add(new GuiButtonLang(5, this.width / 2 - 124, i + 72 + 12));
-        t.initGui(width, height);
+        CustomTool.instance.initGui();
     }
 
 
