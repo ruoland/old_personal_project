@@ -30,7 +30,26 @@ public class ButtonFunction {
                         if(!buttonFunction.isFile()) {
                             buttonFunction.createNewFile();
                             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(buttonFunction.getPath()), "UTF8"));
-                            output.write("");
+                            switch (button.displayString){
+                                case "싱글 플레이":
+                                    output.write("열기:맵 선택");
+                                    break;
+                                case "멀티 플레이":
+                                    output.write("열기:멀티");
+                                    break;
+                                case "Language":
+                                    output.write("열기:언어");
+                                    break;
+                                case "게임 종료":
+                                    output.write("종료");
+                                    break;
+                                case "설정":
+                                    output.write("열기:설정");
+                                    break;
+                                default:
+                                    output.write("내용을 입력하세요.");
+                                    break;
+                            }
                             output.close();
                         }
                     }
@@ -47,6 +66,8 @@ public class ButtonFunction {
             BufferedReader reader = new BufferedReader(new FileReader(buttonFunction));
             String readline = reader.readLine();
             while (readline != null) {
+                if(readline.equalsIgnoreCase("내용을 입력하세요."))
+                    break;
                 runCommand(readline);
                 readline = reader.readLine();
             }
