@@ -6,23 +6,27 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldSummary;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ruo.minigame.api.RuoCode;
 
 import java.io.*;
 
 public class ButtonFunction {
-
+    private CustomTool customTool;
+    public ButtonFunction(CustomTool customTool){
+        this.customTool = customTool;
+    }
     public void init() {
         try {
             File functionFolder = new File("./function");
             functionFolder.mkdirs();
-            CustomTool customTool = CustomTool.instance;
             for (GuiButton button : customTool.getButtonList()) {
                 if (button instanceof GuiCusButton) {
                     if (((GuiCusButton) button).canEdit) {
@@ -64,7 +68,8 @@ public class ButtonFunction {
         try {
             File buttonFunction = new File("./function/" + button.displayString + ".txt");
             BufferedReader reader = new BufferedReader(new FileReader(buttonFunction));
-            String readline = reader.readLine();
+            String readline = reader.readLine().replace("\ufeff", "") ;
+            System.out.println(readline.substring(0,1).trim()+""+readline.substring(0,1).trim().equalsIgnoreCase(""));
             while (readline != null) {
                 if(readline.equalsIgnoreCase("내용을 입력하세요."))
                     break;
@@ -78,7 +83,7 @@ public class ButtonFunction {
 
     private void runCommand(String command) {
         Minecraft mc = Minecraft.getMinecraft();
-        GuiMainMenuRealNew mainMenuRealNew = CustomTool.instance.getMainmenu();
+        GuiCustomBase screen = customTool.getScreen();
         System.out.println(command);
         if (command.startsWith("종료")) {
             CustomTool.closeBrowser();
@@ -90,25 +95,25 @@ public class ButtonFunction {
         }
         if (command.startsWith("배경 변경:")) {
             String guiName = command.replace("배경 변경:", "");
-            CustomTool.instance.backgroundImage = guiName;
+            customTool.menuData.backgroundImage = guiName;
         }
         if (command.startsWith("열기:")) {
             String guiName = command.replace("열기:", "");
             switch (guiName) {
                 case "멀티":
-                    mc.displayGuiScreen(new GuiMultiplayer(mainMenuRealNew));
+                    mc.displayGuiScreen(new GuiMultiplayer(screen));
                     break;
                 case "옵션":
-                    mc.displayGuiScreen(new GuiOptions(mainMenuRealNew, mc.gameSettings));
+                    mc.displayGuiScreen(new GuiOptions(screen, mc.gameSettings));
                     break;
                 case "설정":
-                    mc.displayGuiScreen(new GuiOptions(mainMenuRealNew, mc.gameSettings));
+                    mc.displayGuiScreen(new GuiOptions(screen, mc.gameSettings));
                     break;
                 case "맵 선택":
-                    mc.displayGuiScreen(new GuiWorldSelection(mainMenuRealNew));
+                    mc.displayGuiScreen(new GuiWorldSelection(screen));
                     break;
                 case "언어":
-                    mc.displayGuiScreen(new GuiLanguage(mainMenuRealNew, mc.gameSettings, mc.getLanguageManager()));
+                    mc.displayGuiScreen(new GuiLanguage(screen, mc.gameSettings, mc.getLanguageManager()));
                     break;
             }
         }
@@ -121,9 +126,18 @@ public class ButtonFunction {
                 System.out.println("loadworld");
                 return;
             } else {
-                GuiConnecting guiConnecting = new GuiConnecting(mainMenuRealNew, mc, new ServerData("instance", joinName, false));
+                mc.displayGuiScreen(null);
+                if(mc.theWorld != null) {
+                    mc.theWorld.sendQuittingDisconnectingPacket();
+                    mc.loadWorld((WorldClient) null);
+                }
+                mc.addScheduledTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        FMLClientHandler.instance().connectToServer(screen,  new ServerData("instance", joinName, false));
+                    }
+                });
                 System.out.println("서버" + joinName);
-                mc.displayGuiScreen(guiConnecting);
             }
         }
     }
@@ -131,7 +145,11 @@ public class ButtonFunction {
     private boolean loadWorld(String worldName) {
         Minecraft mc = Minecraft.getMinecraft();
         ISaveFormat isaveformat = mc.getSaveLoader();
-
+        mc.displayGuiScreen(null);
+        if(mc.theWorld != null) {
+            mc.theWorld.sendQuittingDisconnectingPacket();
+            mc.loadWorld((WorldClient) null);
+        }
         if (isaveformat.canLoadWorld(worldName)) {
             try {
                 for (WorldSummary summary : isaveformat.getSaveList()) {

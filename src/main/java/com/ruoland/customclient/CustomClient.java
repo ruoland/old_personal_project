@@ -5,10 +5,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import ruo.cmplus.cm.CommandUI;
+import ruo.cmplus.cm.v18.customgui.CommandGUI;
 
 import java.io.File;
 import java.util.HashMap;
@@ -23,7 +27,14 @@ public class CustomClient {
     public static ConfigCategory mainmenuCategory, splashCategory;
 
     private static String configFile;
+    @Mod.EventHandler
+    public void asdf(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandGui());
+        event.registerServerCommand(new CommandDrawTexture());
+        event.registerServerCommand(new CommandDrawYoutube());
 
+        event.registerServerCommand(new CommandUi());
+    }
     @Mod.EventHandler
     public void asdf(FMLInitializationEvent event) {
 

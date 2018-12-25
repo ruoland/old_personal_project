@@ -3,7 +3,9 @@ package com.ruoland.customclient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import ruo.minigame.api.RenderAPI;
 
@@ -81,4 +83,33 @@ public class GuiCusButton extends GuiButton {
     }
 
 
+
+    public NBTTagCompound serializeNBT(GuiScreen menuRealNew) {
+        int i2 = menuRealNew.height / 4 + 48;
+
+        NBTTagCompound compound = new NBTTagCompound();
+        if(displayString.equalsIgnoreCase(""))
+            displayString = "Language";
+        compound.setString("Button", displayString);
+        compound.setString("Texture", buttonTextures.toString());
+        compound.setInteger("xPosition", xPosition);
+        compound.setInteger("yPosition", yPosition);
+        compound.setInteger("Width", width);
+        compound.setInteger("Height", height);
+        compound.setBoolean("Visible", visible);
+        return compound;
+    }
+
+    public void deserializeNBT(NBTTagCompound compound) {
+        if(compound.hasKey("Button")) {
+            System.out.println(displayString + "를"+ compound.getString("Button")+"으로 ㅂ꿈"+id);
+            displayString = compound.getString("Button");
+            buttonTextures = new ResourceLocation(compound.getString("Texture"));
+            xPosition = compound.getInteger("xPosition");
+            yPosition = compound.getInteger("yPosition");
+            width = compound.getInteger("Width");
+            height = compound.getInteger("Height");
+            visible = compound.getBoolean("Visible");
+        }
+    }
 }

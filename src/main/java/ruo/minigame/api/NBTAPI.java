@@ -17,6 +17,7 @@ public class NBTAPI {
         try {
             if (!file.exists()) {
                 file.createNewFile();
+                saveNBT();
             }else
                 readNBT();
         } catch (IOException e) {
