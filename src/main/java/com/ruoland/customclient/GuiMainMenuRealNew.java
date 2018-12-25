@@ -1,6 +1,7 @@
 package com.ruoland.customclient;
 
 import com.google.common.collect.Lists;
+import jdk.nashorn.internal.runtime.regexp.joni.Matcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class GuiMainMenuRealNew extends GuiScreen {
     private static final ResourceLocation SPLASH_TEXTS = new ResourceLocation("texts/splashes.txt");
@@ -98,7 +100,7 @@ public class GuiMainMenuRealNew extends GuiScreen {
         this.buttonList.add(new GuiCusButton(0, this.width / 2 - 100, i + 84, 98, 20, I18n.format("menu.options", new Object[0])));
         this.buttonList.add(new GuiCusButton(4, this.width / 2 + 2, i + 84, 98, 20, I18n.format("menu.quit", new Object[0])));
         this.buttonList.add(new GuiButtonLang(5, this.width / 2 - 124, i + 72 + 12));
-        CustomTool.instance.initGui();
+        CustomTool.instance.initGui(this);
     }
 
 
@@ -106,6 +108,7 @@ public class GuiMainMenuRealNew extends GuiScreen {
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
     protected void actionPerformed(GuiButton button) throws IOException {
+
         if (button.id == 200) {
             if (button.displayString.equals("false"))
                 button.displayString = "true";
@@ -119,7 +122,7 @@ public class GuiMainMenuRealNew extends GuiScreen {
                 FileUtils.copyFile(file.getAbsoluteFile(), new File("./resourcepacks/CustomClient/assets/customclient/textures/gui/" + file.getName()));
                 ResourceLocation chooser = RenderAPI.getDynamicTexture(file.getName(), file);
                 String name = "customclient:textures/gui/" + file.getName();
-                if (CustomTool.instance.selectButton != -1) {
+                if (CustomTool.instance.selectButtonID != -1) {
                     CustomTool.instance.setDynamicButtonField(chooser, name);
                 } else if (customTool.isBackgroundEdit()) {
                     CustomTool.instance.setDynamicBackgroundImage(chooser.toString(), name);
@@ -137,27 +140,12 @@ public class GuiMainMenuRealNew extends GuiScreen {
         if (button.id == 50) {
             return;
         }
-        if (button.id == 0) {
-            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-        }
-
-        if (button.id == 5) {
-            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager()));
-        }
-
-        if (button.id == 1) {
-            this.mc.displayGuiScreen(new GuiWorldSelection(this));
-        }
-        if (button.id == 2) {
-            this.mc.displayGuiScreen(new GuiMultiplayer(this));
-        }
-        if (button.id == 4) {
-            CustomTool.closeBrowser();
-            this.mc.shutdown();
-        }
         if (button.id == 6) {
             this.mc.displayGuiScreen(new net.minecraftforge.fml.client.GuiModList(this));
         }
+        ButtonFunction buttonFunction = new ButtonFunction();
+        buttonFunction.init();
+        buttonFunction.run(button);
     }
 
     public List<GuiButton> getButton() {
@@ -168,19 +156,19 @@ public class GuiMainMenuRealNew extends GuiScreen {
         return splashText;
     }
 
-    int delay = 0;
-
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         String texture = CustomTool.instance.backgroundImage;
 
         if (texture.startsWith("http") || texture.startsWith("Http") || texture.startsWith("www.youtube") || texture.startsWith("youtube.com")) {
             if (texture.indexOf("youtube") != -1) {
-                CustomTool.instance.drawBrowser(texture, width, height);
+                CustomTool.instance.drawBrowser("https://www.youtube.com/embed/"+getYoutubeID(texture), width, height);
             } else {
                 CustomTool.instance.backgroundImage = (texture);
                 CustomTool.instance.drawBrowser(texture, width, height);
             }
         } else {
+            if(CustomTool.instance.dynamicBackgroundImage != null)
+                texture = CustomTool.instance.dynamicBackgroundImage;
             RenderAPI.drawTextureZ(texture, 0, 0, -100, mc.displayWidth / 2, mc.displayHeight / 2);
             RenderAPI.drawTextureZ(texture, 0, 0, -100, mc.displayWidth / 2, mc.displayHeight / 2);
         }
@@ -193,7 +181,7 @@ public class GuiMainMenuRealNew extends GuiScreen {
         GlStateManager.scale(f, f, f);
         this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
         GlStateManager.popMatrix();
-        if (CustomTool.instance.isGradient()) {
+        if (CustomTool.instance.canRenderGradient()) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(0, 0, -100);
             this.drawGradientRect(0, 0, width, height, -2130706433, 16777215);
@@ -206,6 +194,16 @@ public class GuiMainMenuRealNew extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    public String getYoutubeID(String url){
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+
+        Pattern compiledPattern = Pattern.compile(pattern);
+        java.util.regex.Matcher matcher = compiledPattern.matcher(url); //url is youtube url for which you want to extract the id.
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return "";
+    }
     /**
      * Called when the mouse is clicked.
      */
@@ -215,18 +213,23 @@ public class GuiMainMenuRealNew extends GuiScreen {
     }
 
     @Override
-    protected void mouseClickMove(int p_146273_1_, int p_146273_2_, int p_146273_3_, long p_146273_4_) {
-        super.mouseClickMove(p_146273_1_, p_146273_2_, p_146273_3_, p_146273_4_);
-        CustomTool.instance.mouseClickMove(p_146273_1_, p_146273_2_, p_146273_3_, p_146273_4_);
-        drawTexturedModalRect(p_146273_3_, p_146273_3_, p_146273_3_, p_146273_3_, p_146273_3_, p_146273_3_);
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        CustomTool.instance.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        System.out.println("클릭 시간 "+timeSinceLastClick);
     }
 
-    /**
-     * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
-     */
-    protected void keyTyped(char p_73869_1_, int p_73869_2_) throws IOException {
-        super.keyTyped(p_73869_1_, p_73869_2_);
-        CustomTool.instance.keyTyped(p_73869_1_, p_73869_2_);
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        CustomTool.instance.mouseReleased(mouseX, mouseY, state);
+
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+        CustomTool.instance.keyTyped(typedChar, keyCode);
         System.out.println("키누름");
     }
 

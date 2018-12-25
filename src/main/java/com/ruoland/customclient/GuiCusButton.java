@@ -10,7 +10,7 @@ import ruo.minigame.api.RenderAPI;
 import java.io.File;
 
 public class GuiCusButton extends GuiButton {
-    public boolean noEdit = false;
+    public boolean canEdit = true;
     public ResourceLocation dynamicLocation;
     public ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
 
@@ -19,9 +19,13 @@ public class GuiCusButton extends GuiButton {
     }
 
     public GuiCusButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
-        super(buttonId, x, y, widthIn, heightIn, buttonText);
+        this(buttonId, x, y, widthIn, heightIn, buttonText, true);
     }
+    public GuiCusButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, boolean canEdit) {
+        super(buttonId, x, y, widthIn, heightIn, buttonText);
+        this.canEdit = canEdit;
 
+    }
     @Override
     public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
