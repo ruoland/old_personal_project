@@ -3,12 +3,19 @@ package com.ruoland.customclient;
 
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLSync;
 import ruo.cmplus.cm.CommandDrawtexture;
+import ruo.minigame.api.RenderAPI;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class CustomClientEvent {
     public static int expX, expY;
@@ -16,6 +23,22 @@ public class CustomClientEvent {
     public static int hotbarX,  hotbarY;
     public static int foodX, foodY;
 
+    public static CustomTool uiTool = new CustomTool("./customgui/customUI/default");
+
+    @SubscribeEvent
+    public void event(WorldEvent.Load event) {
+        if(Files.exists(Paths.get("./customgui/customUI/default.dat"))) {
+            NBTTagCompound tagCompound = uiTool.guiData.getNBTAPI().getNBT();
+            expX = tagCompound.getInteger("expX");
+            expY = tagCompound.getInteger("expX");
+            healthX = tagCompound.getInteger("healthX");
+            healthY = tagCompound.getInteger("healthY");
+            hotbarX = tagCompound.getInteger("hotbarX");
+            hotbarY = tagCompound.getInteger("hotbarY");
+            foodX = tagCompound.getInteger("foodX");
+            foodY = tagCompound.getInteger("foodY");
+        }
+    }
     @SubscribeEvent
     public void event(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiMainMenu) {
@@ -40,13 +63,20 @@ public class CustomClientEvent {
         if(event.getType() == RenderGameOverlayEvent.ElementType.FOOD){
             GlStateManager.popMatrix();
         }
+        if(event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+            if(uiTool != null){
+                for (GuiTexture g : uiTool.guiData.textureList) {
+                    GL11.glPushMatrix();
+                    g.renderTexture();
+                    GL11.glPopMatrix();
+                }
+            }
+        }
     }
     @SubscribeEvent
     public void event2(RenderGameOverlayEvent.Pre event){
         event.setPhase(EventPriority.LOWEST);
-        if(event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            return;
-        }
+
         if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE ){
             GlStateManager.pushMatrix();
             GlStateManager.translate(expX,expY,0);
@@ -64,4 +94,5 @@ public class CustomClientEvent {
             GlStateManager.translate(hotbarX,hotbarY,30);
         }
     }
+
 }

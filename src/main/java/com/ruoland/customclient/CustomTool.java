@@ -27,19 +27,14 @@ import java.util.regex.Pattern;
 
 public class CustomTool {
 
-    public boolean isEditMode() {
-        return editMode;
-    }
-
     private final Minecraft mc = Minecraft.getMinecraft();
     private final ArrayList<GuiTextField> fieldList = new ArrayList<GuiTextField>();
     private final ArrayList<GuiTextField> textureField = new ArrayList<GuiTextField>();
     protected GuiCustomBase guiScreen;
-
-    protected MenuData menuData;
+    protected GuiData guiData;
 
     public CustomTool(String name) {
-        menuData = new MenuData(this, name);
+        guiData = new GuiData(this, name);
         editName = new GuiTextField(1, mc.fontRendererObj, 20, 10, 140, 20);
         texture = new GuiTextField(2, mc.fontRendererObj, 20, 40, 200, 20);
         panorama = new GuiTextField(5, mc.fontRendererObj, 20, 10, 140, 20);
@@ -81,23 +76,23 @@ public class CustomTool {
         this.fieldAllEnable(false);
         this.textureEnable(false);
         //configsave();
-        menuData.saveNBT(guiScreen);
+        guiData.saveNBT(guiScreen);
     }
 
     public void initGui(GuiCustomBase mainmenu) {
         this.guiScreen = mainmenu;
-        menuData.textureList.clear();
+        guiData.textureList.clear();
 
         mainmenu.getButton().add(onoff);
         mainmenu.getButton().add(fileFind);
         fieldAllEnable(false);
         textureEnable(false);
 
-        menuData.customTool = this;
-        menuData.buttonSetting();
-        menuData.readTexture();
-        menuData.readBackground();
-        panorama.setText(menuData.backgroundImage);
+        guiData.customTool = this;
+        guiData.buttonSetting();
+        guiData.readTexture();
+        guiData.readBackground();
+        panorama.setText(guiData.backgroundImage);
 
     }
 
@@ -130,7 +125,14 @@ public class CustomTool {
     }
 
     public void drawScreen(int width, int height) {
-        for (GuiTexture g : menuData.textureList) {
+        if (canRenderGradient()) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, 0, -100);
+            guiScreen.drawGradientRect(0, 0, width, height, -2130706433, 16777215);
+            guiScreen.drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
+            GlStateManager.popMatrix();
+        }
+        for (GuiTexture g : guiData.textureList) {
             GL11.glPushMatrix();
             g.renderTexture();
             GL11.glPopMatrix();
@@ -275,8 +277,8 @@ public class CustomTool {
                         return;
                     }
                 }
-                for (int i = 0; i < menuData.textureList.size(); i++) {
-                    GuiTexture g = menuData.textureList.get(menuData.textureList.size() - 1 - i);
+                for (int i = 0; i < guiData.textureList.size(); i++) {
+                    GuiTexture g = guiData.textureList.get(guiData.textureList.size() - 1 - i);
                     if (g.mousePressed(mouseX, mouseY) && g.visible) {
                         selectTexture(g);
                         return;
@@ -286,12 +288,12 @@ public class CustomTool {
 
             selectButtonID = -1;// 단순히 배경만 눌렀다면
             selectTextureID = -1;// 선택한 것들을 제거한다
-            menuData.backgroundImage = panorama.getText();
+            guiData.backgroundImage = panorama.getText();
             fieldAllEnable(false);
             textureEnable(false);
             panorama.setEnabled(true);
             panorama.setVisible(true);
-            panorama.setText(menuData.backgroundImage);
+            panorama.setText(guiData.backgroundImage);
             this.onoff.visible = true;
             this.onoff.enabled = true;
             this.fileFind.visible = true;
@@ -334,7 +336,7 @@ public class CustomTool {
                     && (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
                 if (selectButtonID != -1) {
                     getButtonByID(selectButtonID).visible = false;
-                    menuData.removeList.add(selectButtonID);
+                    guiData.removeList.add(selectButtonID);
                 }
                 if (selectTextureID != -1) {
                     getTextureByID(selectTextureID).visible = false;
@@ -344,7 +346,7 @@ public class CustomTool {
             if (Keyboard.isKeyDown(56) && Keyboard.isKeyDown(Keyboard.KEY_C)) {
                 if (textureF.getVisible()) {
                     if (!textureF.getText().equals("")) {
-                        menuData.addTexture();
+                        guiData.addTexture();
                     }
                 }
             }
@@ -359,16 +361,17 @@ public class CustomTool {
                 textureEnable(false);
                 fieldAllEnable(false);
 
-                GuiCusButton newButton = new GuiCusButton(menuData.findEmptyID(), 0, 0, 100, 20, "버튼");
+                GuiCusButton newButton = new GuiCusButton(guiData.findEmptyID(), 0, 0, 100, 20, "버튼");
                 guiScreen.getButton().add(newButton);
                 selectButtonID = 255;
                 selectTextureID = -1;
                 selectButton(newButton);
+
             }
             if (Keyboard.isKeyDown(29) && Keyboard.isKeyDown(44)) {
-                if (menuData.removeList.size() != 0) {
-                    getButtonByID(menuData.removeList.get(menuData.removeList.size() - 1)).visible = true;
-                    menuData.removeList.remove(menuData.removeList.size() - 1);
+                if (guiData.removeList.size() != 0) {
+                    getButtonByID(guiData.removeList.get(guiData.removeList.size() - 1)).visible = true;
+                    guiData.removeList.remove(guiData.removeList.size() - 1);
                 }
             }
         }
@@ -398,7 +401,7 @@ public class CustomTool {
 
 
     public GuiTexture getTextureByID(int id) {
-        for (Object b : menuData.textureList) {
+        for (Object b : guiData.textureList) {
             GuiTexture button = (GuiTexture) b;
             if (button.id == id)
                 return (GuiTexture) b;
@@ -463,7 +466,9 @@ public class CustomTool {
         } else
             return false;
     }
-
+    public boolean isEditMode() {
+        return editMode;
+    }
 
     public static String getYoutubeID(String url){
         String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";

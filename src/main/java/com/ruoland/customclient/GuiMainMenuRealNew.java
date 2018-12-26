@@ -85,6 +85,7 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         this.buttonList.add(new GuiCusButton(4, this.width / 2 + 2, i + 84, 98, 20, I18n.format("menu.quit", new Object[0])));
         this.buttonList.add(new GuiButtonLang(5, this.width / 2 - 124, i + 72 + 12));
         customTool.initGui(this);
+
     }
 
 
@@ -112,13 +113,6 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
 
         this.drawString(this.fontRendererObj, "Copyright Mojang AB. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!") - 2, this.height - 10, -1);
 
-        if (customTool.canRenderGradient()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0, 0, -100);
-            this.drawGradientRect(0, 0, width, height, -2130706433, 16777215);
-            this.drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
-            GlStateManager.popMatrix();
-        }
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) (this.width / 2 + 90), 70.0F, 0.0F);

@@ -4,21 +4,20 @@ import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import ruo.minigame.api.RuoCode;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ButtonFunction {
+    private static HashMap<GuiButton, ButtonBucket> buttonBucketMap = new HashMap<>();
     private CustomTool customTool;
     public ButtonFunction(CustomTool customTool){
         this.customTool = customTool;
@@ -28,6 +27,11 @@ public class ButtonFunction {
             File functionFolder = new File("./function");
             functionFolder.mkdirs();
             for (GuiButton button : customTool.getButtonList()) {
+                if(buttonBucketMap.containsKey(button)) {
+                    buttonBucketMap.get(button).reload();
+                    continue;
+                }
+
                 if (button instanceof GuiCusButton) {
                     if (((GuiCusButton) button).canEdit) {
                         File buttonFunction = new File("./function/" + button.displayString + ".txt");
@@ -47,7 +51,7 @@ public class ButtonFunction {
                                 case "게임 종료":
                                     output.write("종료");
                                     break;
-                                case "설정":
+                                case "설정...":
                                     output.write("열기:설정");
                                     break;
                                 default:
@@ -56,6 +60,7 @@ public class ButtonFunction {
                             }
                             output.close();
                         }
+                        buttonBucketMap.put(button, new ButtonBucket(button));
                     }
                 }
             }
@@ -66,15 +71,8 @@ public class ButtonFunction {
 
     public void run(GuiButton button) {
         try {
-            File buttonFunction = new File("./function/" + button.displayString + ".txt");
-            BufferedReader reader = new BufferedReader(new FileReader(buttonFunction));
-            String readline = reader.readLine().replace("\ufeff", "") ;
-            System.out.println(readline.substring(0,1).trim()+""+readline.substring(0,1).trim().equalsIgnoreCase(""));
-            while (readline != null) {
-                if(readline.equalsIgnoreCase("내용을 입력하세요."))
-                    break;
-                runCommand(readline);
-                readline = reader.readLine();
+            for(String script : buttonBucketMap.get(button).getScripts()){
+                runCommand(script);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +93,7 @@ public class ButtonFunction {
         }
         if (command.startsWith("배경 변경:")) {
             String guiName = command.replace("배경 변경:", "");
-            customTool.menuData.backgroundImage = guiName;
+            customTool.guiData.backgroundImage = guiName;
         }
         if (command.startsWith("열기:")) {
             String guiName = command.replace("열기:", "");

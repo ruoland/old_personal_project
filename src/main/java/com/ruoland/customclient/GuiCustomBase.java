@@ -16,20 +16,24 @@ public class GuiCustomBase extends GuiScreen {
     public GuiCustomBase(String name){
         customTool = new CustomTool(name);
     }
+    public void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {
+        super.drawGradientRect(left,top,right,bottom,startColor,endColor);
+    }
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        String texture = customTool.menuData.backgroundImage;
+        String texture = customTool.guiData.backgroundImage;
         if (texture.startsWith("http") || texture.startsWith("Http") || texture.startsWith("www.youtube") || texture.startsWith("youtube.com")) {
             if (texture.indexOf("youtube") != -1) {
                 customTool.drawBrowser("https://www.youtube.com/embed/"+getYoutubeID(texture), width, height);
             } else {
-                customTool.menuData.backgroundImage = (texture);
+                customTool.guiData.backgroundImage = (texture);
                 customTool.drawBrowser(texture, width, height);
             }
         } else {
-            if(customTool.menuData.dynamicBackgroundImage != null)
-                texture = customTool.menuData.dynamicBackgroundImage;
-            if(!customTool.menuData.backgroundImage.equalsIgnoreCase("")) {
+            CustomTool.closeBrowser();
+            if(customTool.guiData.dynamicBackgroundImage != null)
+                texture = customTool.guiData.dynamicBackgroundImage;
+            if(!customTool.guiData.backgroundImage.equalsIgnoreCase("")) {
                 RenderAPI.drawTextureZ(texture, 0, 0, -100, mc.displayWidth / 2, mc.displayHeight / 2);
                 RenderAPI.drawTextureZ(texture, 0, 0, -100, mc.displayWidth / 2, mc.displayHeight / 2);
             }
@@ -97,7 +101,7 @@ public class GuiCustomBase extends GuiScreen {
                 if (customTool.selectButtonID != -1) {
                     customTool.setDynamicButtonField(chooser, name);
                 } else if (customTool.isBackgroundEdit()) {
-                    customTool.menuData.setDynamicBackgroundImage(chooser.toString(), name);
+                    customTool.guiData.setDynamicBackgroundImage(chooser.toString(), name);
                 } else {
                     customTool.setDynamicTextureField(RenderAPI.getDynamicTexture(file.getName(), file), name);
                 }
@@ -113,7 +117,7 @@ public class GuiCustomBase extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        customTool.menuData.saveNBT(this);
+        customTool.guiData.saveNBT(this);
         CustomTool.closeBrowser();
         super.onGuiClosed();
     }

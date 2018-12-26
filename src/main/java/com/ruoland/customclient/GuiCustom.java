@@ -3,7 +3,7 @@ package com.ruoland.customclient;
 public class GuiCustom extends GuiCustomBase {
     public GuiCustom(String name) {
         super(name);
-        customTool.menuData.backgroundImage = "";
+        customTool.guiData.backgroundImage = "";
     }
 
     @Override

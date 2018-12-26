@@ -1,6 +1,7 @@
 package com.ruoland.customclient;
 
-import org.lwjgl.input.Keyboard;
+import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 
@@ -8,14 +9,14 @@ public class GuiCustomUI extends GuiCustomBase {
     private String a;
     public GuiCustomUI(String name, String ui) {
         super(name);
-        customTool.menuData.backgroundImage = "";
+        customTool.guiData.backgroundImage = "";
         a = ui;
+
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-
     }
 
     @Override
@@ -33,8 +34,8 @@ public class GuiCustomUI extends GuiCustomBase {
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         if(a.equalsIgnoreCase("exp")) {
-            CustomClientEvent.expX = mouseX + -132;
-            CustomClientEvent.expY = mouseY + -188;
+            CustomClientEvent.expX = mouseX + -112;
+            CustomClientEvent.expY = mouseY + -208;
         }
         if(a.equalsIgnoreCase("food")){
             CustomClientEvent.foodX = mouseX + -218;
@@ -48,6 +49,23 @@ public class GuiCustomUI extends GuiCustomBase {
             CustomClientEvent.hotbarX = mouseX + -123;
             CustomClientEvent.hotbarY = mouseY + -216;
         }
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        NBTTagCompound tagCompound = customTool.guiData.getNBTAPI().getNBT();
+        tagCompound.setInteger("expX", CustomClientEvent.expX);
+        tagCompound.setInteger("expY", CustomClientEvent.expY);
+        tagCompound.setInteger("foodX", CustomClientEvent.foodX);
+        tagCompound.setInteger("foodY", CustomClientEvent.foodY);
+        tagCompound.setInteger("healthX", CustomClientEvent.healthX);
+        tagCompound.setInteger("healthY", CustomClientEvent.healthY);
+        tagCompound.setInteger("hotbarX", CustomClientEvent.hotbarX);
+        tagCompound.setInteger("hotbarY", CustomClientEvent.hotbarY);
+        customTool.guiData.getNBTAPI().saveNBT();
+        CustomClientEvent.uiTool.guiData.clearTexture();
+        CustomClientEvent.uiTool.guiData.readTexture();
     }
 
     /*
