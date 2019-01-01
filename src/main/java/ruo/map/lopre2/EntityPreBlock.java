@@ -1,5 +1,6 @@
 package ruo.map.lopre2;
 
+import com.ruoland.customclient.GuiMainMenuRealNew;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -74,9 +75,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     public void setInv(boolean is) {
         dataManager.set(ISINV, is);
-        if (is) {
-            setTeleportLock(true);
-        }
     }
 
     @Override
@@ -114,8 +112,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                 if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
                     setInv(!isInv());
                     setInvisible(isInv());
-                    setTeleportLock(true);
-                    System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨(락 걸림)");
+                    System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨");
                     return super.processInteract(player, hand, stack);
                 }
                 if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
@@ -328,7 +325,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                 System.out.println(isDead + " - " + isTeleport() + " - " + lavaBlock.isTeleport());
             }
         }
-
         if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_J) && delayTick == 0) {
             delayTick = 20;
             EntityPreBlock lavaBlock = spawn(WorldAPI.x() + vec.xCoord * ax,

@@ -2,6 +2,7 @@ package ruo.minigame.api;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -31,7 +31,7 @@ public class LoPre2 {
     public static Achievement achievementNoDie1 = new Achievement("achievement.nodie1", "nodie1", 0, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode1);
     public static Achievement achievementNoGameMode1 = new Achievement("achievement.nogamemode1", "nogamemode1", 0, 2, Items.GOLDEN_APPLE, null);
     public static Achievement achievementApple = new Achievement("achievement.apple", "apple", 0, 3, new ItemStack(Items.GOLDEN_APPLE), LoPre2.achievementNoGameMode1);
-    public static Achievement achievementPoorBlock = new Achievement("achievement.poorblock", "poorblock", 0, 4, Items.GOLDEN_APPLE, null);
+    public static Achievement achievementHidePath3 = new Achievement("achievement.hidepath3", "hidepath3", 0, 4, Items.GOLDEN_APPLE, null);
     public static Achievement achievementHidePath1= new Achievement("achievement.hidepath1", "hidepath1", 0, 6, Items.FEATHER, null);
 
     public static Achievement achievementTwoClear = new Achievement("achievement.twoclear", "twoclear", 1, 0, Items.FIREWORKS, null);

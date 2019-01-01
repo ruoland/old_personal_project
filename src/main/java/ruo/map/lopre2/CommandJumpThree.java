@@ -125,7 +125,6 @@ public class CommandJumpThree extends CommandPlusBase {
                         WorldAPI.command(sender, "/mge " + buildName + " tra set 0 -1 -8");
                     }
 
-
                     WorldAPI.command(sender, "/mge " + buildName + "-" + facing.rotateAround(EnumFacing.Axis.X).getName().toLowerCase() + " collision true");
                     WorldAPI.command(sender, "/mge " + buildName + "-" + facing.getName().toLowerCase() + " collision false");
                     System.out.println("2222222222 찾음22  " + buildName + "-" + facing.rotateAround(EnumFacing.Axis.X).getName() + "를 충돌하게 만들었고, " + buildName + "-" + facing.getName() + "를 충돌하지 않게 만들었음");

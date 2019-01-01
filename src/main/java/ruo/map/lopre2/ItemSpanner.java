@@ -51,7 +51,6 @@ public class ItemSpanner extends Item {
                     EntityInvisibleBlock lavaBlock = (EntityInvisibleBlock) target;
                     if(playerIn.isSneaking()){
                         lavaBlock.setCollision(!lavaBlock.canCollision());
-                    }else {
                     }
                 }
                 if (target instanceof EntityMoveBlock) {

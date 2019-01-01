@@ -136,8 +136,8 @@ public class LooPre2Event {
     @SubscribeEvent
     public void a(PlayerTickEvent event) {
         if (LoPre2.checkWorld()) {
-            if(event.player.getDistance(1195.1, 4.4, -541.8) < 2){
-                event.player.addStat(LoPre2.achievementPoorBlock);
+            if(event.player.getDistance(1201.4, 7.0, -548.6) < 2){
+                event.player.addStat(LoPre2.achievementHidePath3);
             }
             if(event.player.getDistance(1128.6, 7.0, -574.8) < 1){
                 event.player.addStat(LoPre2.achievementHidePath1);
@@ -164,7 +164,7 @@ public class LooPre2Event {
     public void renderUI(RenderGameOverlayEvent.Post event) {
         if (LoPre2.checkWorld()) {
             if (event.getType() == ElementType.ALL) {
-                Minecraft.getMinecraft().fontRendererObj.drawString("도움이 필요하면 /jb help", 0, 0,
+                Minecraft.getMinecraft().fontRendererObj.drawString("팁이 필요하면 /jb help", 0, 0,
                         0xFFFFFF);
                 if (ItemSpanner.renderText != null) {
                     String[] split = ItemSpanner.renderText.split("/line/");

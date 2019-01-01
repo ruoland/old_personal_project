@@ -22,10 +22,10 @@ achievement.nogamemode1=1탄 게임모드 안쓰고 클리어 하기
 achievement.nogamemode1.desc=게임모드를 쓰지 않고 1탄을 클리어 하세요.
 achievement.apple=사과 수집가
 achievement.apple.desc=1탄의 스테이지마다 숨어있는 1개의 사과를 모두 찾으세요. 
-achievement.poorblock=없어도 되는 블럭
-achievement.poorblock.desc=없어도 되는 블럭위에 올라서세요.
-achievement.hidepath=지름길 찾기
-achievement.hidepath.desc=1탄 스테이지 어딘가에 숨어있는 발판을 찾아보세요.
+achievement.hidepath3=지름길 찾기3
+achievement.hidepath3.desc=1탄 스테이지 3 어딘가에 있는 지름길을 찾아보세요
+achievement.hidepath1=지름길 찾기
+achievement.hidepath1.desc=1탄 스테이지 어딘가에 숨어있는 발판을 찾아보세요.
 
 achievement.twoclear=2탄 클리어하기
 achievement.twoclear.desc=2탄을 끝까지 플레이 하세요.
