@@ -75,6 +75,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     public void setInv(boolean is) {
         dataManager.set(ISINV, is);
+        System.out.println(is);
     }
 
     @Override
@@ -108,7 +109,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                 return super.processInteract(player, hand, stack);
             }
 
-            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
                     setInv(!isInv());
                     setInvisible(isInv());
@@ -120,7 +120,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                     System.out.println("isLock이" + canTeleportLock() + "으로 설정됨");
                     return super.processInteract(player, hand, stack);
                 }
-            }
             if (player.isSneaking()) {
                 setTeleport(true);
                 return super.processInteract(player, hand, stack);
@@ -382,6 +381,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         compound.setInteger("difficulty", getDifficulty());
         if(!getJumpName().isEmpty())
         compound.setString("jumpname", getJumpName());
+        System.out.println(isInv()+" - " +compound.getBoolean("isInv")+" - 저장 ");
     }
 
     @Override
@@ -391,12 +391,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         setSize(compound.getFloat("widthl"), compound.getFloat("heightl"));
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
+        System.out.println(compound.getBoolean("isInv")+" - 읽음 ");
         setDifficulty(compound.getInteger("difficulty"));
-        if(getDifficulty() == 0 || worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("JumpMap")) {
-            setDifficulty(-1);
-            setInv(false);
-            setCollision(true);
-        }
         if(compound.hasKey("jumpname"))
         setJumpName(compound.getString("jumpname"));
     }

@@ -31,6 +31,7 @@ public class LooPreClientEvent {
             WorldAPI.teleport(WorldAPI.getPlayerMP().getBedLocation());
             WorldAPI.getPlayerMP().heal(20);
             WorldAPI.getPlayer().fallDistance = 0;
+            WorldAPI.getPlayer().getFoodStats().setFoodLevel(20);
         }
     }
 }
