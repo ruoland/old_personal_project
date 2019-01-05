@@ -1,19 +1,19 @@
 package ruo.map.mafence.system;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import ruo.minigame.effect.AbstractTick;
-import ruo.minigame.effect.TickRegister;
+import ruo.map.mafence.EntityMonster;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MafenceSystem {
-    private static int curLevel, curWave;
-    private static int LIFE_POINT;
     private static MafenceSystem system;
-    private static BlockPos monsterSpawnPos;
-    private static Map<Integer, AbstractLevelWave> levelWaveMap = new HashMap<>();
+
+    private static int curWave;
+    private int lifePoint;
+    private Map<Integer, AbstractWave> waveMap = new HashMap<>();
+    public boolean waveRunning;
+
 
     public static MafenceSystem getInstance() {
         if (system == null)
@@ -21,41 +21,35 @@ public class MafenceSystem {
         return system;
     }
 
-    public void registerLevelWave(AbstractLevelWave levelWave) {
-        levelWaveMap.put(levelWave.level(), levelWave);
+    public void registerWave(AbstractWave levelWave) {
+        waveMap.put(levelWave.level(), levelWave);
     }
 
-    public void start() {
-        TickRegister.register(new AbstractTick(100, false) {
-            @Override
-            public void run(TickEvent.Type type) {
-                AbstractLevelWave wave = levelWaveMap.get(curLevel);
-                if(!wave.waveStart) {
-                    wave.startWave(curLevel);
-                    return;
-                }
-                if(!wave.waveEnd){
-                    return;
-                }
-                curLevel++;
-            }
-        });
+    public void waveStart() {
+        AbstractWave wave = waveMap.get(curWave);
+        if(!waveRunning) {//웨이브가 시작되지 않은 경우 시작함
+            wave.startWave();
+            waveRunning = true;
+            lifePoint = wave.getLifePoint();
+            curWave++;
+            return;
+        }
     }
 
-
-    public void lifePointAdd() {
-        LIFE_POINT++;
+    public void waveEnd(){
+        curWave++;
     }
 
-    public void lifePointSub() {
-        LIFE_POINT--;
-        if (LIFE_POINT == 0) {
+    public void attackToPlayer(EntityMonster monster){
+        lifePoint--;
+        monster.setDead();
+        if (lifePoint == 0) {
             System.out.println("게임 끝");
         }
     }
 
-    public void setMonsterSpawn(BlockPos pos) {
-        monsterSpawnPos = pos;
+    public void setLifePoint(int lifePoint) {
+        this.lifePoint = lifePoint;
     }
 
 }
