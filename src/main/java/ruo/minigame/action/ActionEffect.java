@@ -42,7 +42,6 @@ public class ActionEffect {
 			djList.remove(djList.get(djList.indexOf(mapName)));
 			if(djList.indexOf(mapName) != -1)
 				djList.remove(djList.get(djList.indexOf(mapName)));
-
 		}
 	}
 

@@ -13,7 +13,6 @@ import ruo.map.lopre2.jump2.EntityTeleportBlock;
 
 //
 public class EntityInvisibleBlock extends EntityPreBlock {
-	private static final DataParameter<Boolean> IS_COLLISION = EntityDataManager.createKey(EntityInvisibleBlock.class, DataSerializers.BOOLEAN);
 	public EntityInvisibleBlock(World worldIn) {
 		super(worldIn);
 		this.setCollision(true);
@@ -31,7 +30,6 @@ public class EntityInvisibleBlock extends EntityPreBlock {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataManager.register(IS_COLLISION, false);
 	}
 
 	@Override
@@ -53,25 +51,23 @@ public class EntityInvisibleBlock extends EntityPreBlock {
 		worldObj.spawnEntityInWorld(lavaBlock);
 		return lavaBlock;
 	}
-	public int defaultDelay, currentDelay;
+	public int defaultDelay, invDelay;
 	@Override
 	public void onLivingUpdate() {
         if(isServerWorld()){
-			if(currentDelay >=0 && !isTeleport()) {
+			if(invDelay >=0 && !isTeleport()) {
 				if(isInvisible()){
-					currentDelay --;
+					invDelay --;
 				}
 				else {
-					currentDelay--;
+					invDelay--;
 				}
 			}
 		}
-        if(currentDelay <= 0){
+        if(invDelay <= 0){
 			setInv(!isInv());
 			setInvisible(isInv());
-			if(dataManager.get(IS_COLLISION))
-			setCollision(!isInv());
-        	currentDelay = defaultDelay;
+			invDelay = defaultDelay;
         }
 		super.onLivingUpdate();
 	}
@@ -83,13 +79,11 @@ public class EntityInvisibleBlock extends EntityPreBlock {
     @Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
-		compound.setBoolean("IS_COLLISION", dataManager.get(IS_COLLISION));
 
 	}
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
-		dataManager.set(IS_COLLISION, compound.getBoolean("IS_COLLISION"));
 	}
 
 

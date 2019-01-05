@@ -75,7 +75,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     public void setInv(boolean is) {
         dataManager.set(ISINV, is);
-        System.out.println(is);
     }
 
     @Override
@@ -381,7 +380,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         compound.setInteger("difficulty", getDifficulty());
         if(!getJumpName().isEmpty())
         compound.setString("jumpname", getJumpName());
-        System.out.println(isInv()+" - " +compound.getBoolean("isInv")+" - 저장 ");
     }
 
     @Override
@@ -391,7 +389,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         setSize(compound.getFloat("widthl"), compound.getFloat("heightl"));
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
-        System.out.println(compound.getBoolean("isInv")+" - 읽음 ");
         setDifficulty(compound.getInteger("difficulty"));
         if(compound.hasKey("jumpname"))
         setJumpName(compound.getString("jumpname"));
