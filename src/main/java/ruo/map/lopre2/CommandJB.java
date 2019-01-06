@@ -9,12 +9,14 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.storage.ISaveFormat;
@@ -89,6 +91,8 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("start")) {
                 startTime = System.currentTimeMillis();
+                sender.addChatMessage(new TextComponentString("팁1 R키를 누르면 스폰포인트로 바로 이동합니다"));
+                sender.addChatMessage(new TextComponentString("팁2 죽었을 때 스페이스바를 누르면 바로 부활할 수 있습니다"));
             }
             if (args[0].equalsIgnoreCase("tpy")) {
                 ActionEffect.setYTP(Double.valueOf(args[1]), ActionEffect.getPitch(), ActionEffect.getYaw());
@@ -113,8 +117,10 @@ public class CommandJB extends CommandPlusBase {
                 long minute = sec / 60;
                 long second = sec - sec / 60 * 60;
                 System.out.println((endTime - startTime) / 1000 + "초.");
-                WorldAPI.addMessage(("걸린 시간:" + minute + "분 " + second + "초"));
-                WorldAPI.addMessage("플레이 해주셔서 감사합니다!");
+                for(EntityPlayerMP playerMP : server.getPlayerList().getPlayerList()){
+                    playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
+                    playerMP.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
+                }
                 if (FMLCommonHandler.instance().getSide() == Side.CLIENT && WorldAPI.equalsWorldName("JumpMap")) {
                     int appleCount = 0;
                     for (EntityPlayer player : server.getPlayerList().getPlayerList()) {
@@ -131,11 +137,13 @@ public class CommandJB extends CommandPlusBase {
                         }
                     }
 
-                    WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 플레이 해주셔서 감사합니다?");
+                    WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 2탄으로 바로 넘어갈까요?");
                     TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.]");
                     Style style = new Style();
+                    style.setColor(TextFormatting.BOLD);
                     textComponent.setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb jump2")));
-                    sender.addChatMessage(textComponent);
+                    //sender.addChatMessage(textComponent);
+                    WorldAPI.getPlayer().addChatComponentMessage(textComponent);
                 } else if (WorldAPI.equalsWorldName("JumpMap Sea2")) {
                     WorldAPI.getPlayer().addStat(LoPre2.achievementTwoClear);
                     if (LooPre2Event.deathCount == 0) {
@@ -148,17 +156,17 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("jump2")) {
                 if (WorldAPI.equalsWorldName("JumpMap")) {
-                    WorldAPI.addMessage("난이도를 선택해주세요.");
-                    TextComponentString textComponent = new TextComponentString("");
-                    TextComponentString normal = new TextComponentString("[보통 난이도]");
-                    normal.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb normal")));
-                    TextComponentString hard = new TextComponentString("[어려운 난이도]");
-                    hard.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb hard")));
-                    textComponent = (TextComponentString) textComponent.appendSibling(normal).appendSibling(hard);
+                    WorldAPI.addMessage("난이도를 선택해주세요.(설정에서 난이도를 언제든지 바꿀 수 있습니다.)");
+                    TextComponentString textComponent = new TextComponentString("   ");
+                    TextComponentString normal = new TextComponentString("[쉬운 난이도]");
+                    normal.setStyle(new Style().setColor(TextFormatting.BLUE).setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb easy")));
+                    TextComponentString hard = new TextComponentString("[보통 난이도]");
+                    hard.setStyle(new Style().setColor(TextFormatting.GREEN).setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb normal")));
+                    textComponent = (TextComponentString) normal.appendSibling(textComponent).appendSibling(hard);
                     sender.addChatMessage(textComponent);
                 }
             }
-            if (args[0].equalsIgnoreCase("normal") || args[0].equalsIgnoreCase("hard")) {
+            if (args[0].equalsIgnoreCase("easy") || args[0].equalsIgnoreCase("normal")) {
                 worldLoad(args[0]);
             }
             if (args[0].equalsIgnoreCase("pos1")) {
@@ -222,10 +230,10 @@ public class CommandJB extends CommandPlusBase {
                 mc.loadWorld((WorldClient) null);
                 ISaveFormat isaveformat = mc.getSaveLoader();
                 String worldName = "JumpMap Sea2";
-                if (diffu.equalsIgnoreCase("normal"))
+                if (diffu.equalsIgnoreCase("easy"))
+                    mc.gameSettings.difficulty = EnumDifficulty.EASY;
+                else if (diffu.equalsIgnoreCase("normal"))
                     mc.gameSettings.difficulty = EnumDifficulty.NORMAL;
-                else if (diffu.equalsIgnoreCase("hard"))
-                    mc.gameSettings.difficulty = EnumDifficulty.HARD;
 
                 if (isaveformat.canLoadWorld(worldName)) {
                     try {

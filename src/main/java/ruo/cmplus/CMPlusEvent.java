@@ -1,40 +1,18 @@
 package ruo.cmplus;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGameOver;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.command.CommandException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.input.Keyboard;
-import ruo.cmplus.camera.Camera;
 import ruo.cmplus.cm.v18.function.FunctionIF;
 import ruo.cmplus.cm.v18.function.VAR;
 import ruo.cmplus.deb.DebAPI;
-import ruo.cmplus.util.*;
+import ruo.cmplus.util.CommandPlusBase;
 import ruo.minigame.api.WorldAPI;
-import ruo.minigame.effect.AbstractTick;
-import sun.java2d.cmm.kcms.CMM;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CMPlusEvent {
     private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
