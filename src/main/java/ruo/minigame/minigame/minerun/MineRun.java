@@ -190,7 +190,7 @@ public class MineRun extends AbstractMiniGame {
         gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
         gs.keyBindUseItem.resetKeyBindingArrayAndHash();
         setElytra(0);
-        Camera.getCamera().reset();
+
         curX = 0;
         curY = 0;
         curZ = 0;
@@ -204,6 +204,7 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineFBX = 0;
         MiniGame.mineRunEvent.lineFBZ = 0;
         WorldAPI.command("/minerun lava");
+        Camera.getCamera().reset();
         return super.end();
     }
 }

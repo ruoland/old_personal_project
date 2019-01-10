@@ -25,8 +25,9 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ruo.asdf.EntityFlyingCreeper;
 import ruo.cmplus.cm.CommandUI;
-import ruo.hardcore.HardCore;
+import ruo.map.lopre2.ItemCopy;
 import ruo.minigame.api.EntityAPI;
+import ruo.minigame.api.RuoCode;
 import ruo.minigame.api.WorldAPI;
 import ruo.yout.*;
 
@@ -123,7 +124,7 @@ public class LabEvent {
                     for (int i = 0; i < Mojae.arrow_count; i++) {//설정된 값만큼 반복함
                         EntityLivingBase attackTarget = skeleton.getAttackTarget();
                         EntityZombie zombie = new EntityZombie(event.getWorld());//화살 쏘는 메서드가 엔티티 객체를 필요로 해서 만듬
-                        zombie.setPosition(attackTarget.posX + HardCore.rand(3), attackTarget.posY, attackTarget.posZ + HardCore.rand(3));
+                        zombie.setPosition(attackTarget.posX + WorldAPI.rand(3), attackTarget.posY, attackTarget.posZ + WorldAPI.rand(3));
                         skeleton.attackEntityWithRangedAttack(zombie, ItemBow.getArrowVelocity(skeleton.getItemInUseMaxCount()));
                     }
                 }

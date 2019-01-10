@@ -36,6 +36,7 @@ import ruo.map.lopre2.jump1.EntityLavaBlock;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
 import ruo.minigame.effect.Move;
+import ruo.minigame.minigame.minerun.MineRun;
 import ruo.minigame.minigame.scroll.EntityJumpCreeper;
 
 

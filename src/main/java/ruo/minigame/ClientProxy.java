@@ -52,8 +52,9 @@ public class ClientProxy extends CommonProxy {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-        RenderAPI.registerRender(EntityDummyPlayer.class);
-        RenderAPI.registerRender(EntityMRCreeper.class);
+		RenderAPI.registerRender(EntityWarningBlock.class);
+
+		RenderAPI.registerRender(EntityMRCreeper.class);
         RenderAPI.registerRender(EntityMRZombie.class);
         RenderAPI.registerRender(EntityMREnderman.class);
         RenderAPI.registerRender(EntityMRMissileCreeper.class);
