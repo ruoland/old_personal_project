@@ -115,7 +115,7 @@ public class EntityMRRocketCreeper extends EntityMR {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setDouble("returnTime", returnTime);
-        
+
     }
 
     @Override
