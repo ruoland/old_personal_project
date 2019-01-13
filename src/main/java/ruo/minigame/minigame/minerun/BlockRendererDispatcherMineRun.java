@@ -28,17 +28,17 @@ public class BlockRendererDispatcherMineRun extends BlockRendererDispatcher {
 
     @Override
     public boolean renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, VertexBuffer worldRendererIn) {
-        if (MiniGame.minerun.isStart() && (state.getBlock() instanceof BlockLiquid) && pos.getZ() >= WorldAPI.getPlayer().posZ) {
-            BlockPos blockPos = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
-            if (pos.getY() + 1 > WorldAPI.getPlayer().posY && pos.getY() < WorldAPI.getPlayer().posY + 5) {
-                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-                    MineRun.removeLavaPos.add(blockPos);
-                    MineRun.removeLavaState.add(WorldAPI.getWorld().getBlockState(blockPos));
-                    WorldAPI.getWorld().setBlockToAir(blockPos);
-                });
-            }
-            return false;
-        }
+//        if (MiniGame.minerun.isStart() && (state.getBlock() instanceof BlockLiquid) && pos.getZ() >= WorldAPI.getPlayer().posZ) {
+//            BlockPos blockPos = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
+//            if (pos.getY() + 1 > WorldAPI.getPlayer().posY && pos.getY() < WorldAPI.getPlayer().posY + 5) {
+//                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+//                    MineRun.removeLavaPos.add(blockPos);
+//                    MineRun.removeLavaState.add(WorldAPI.getWorld().getBlockState(blockPos));
+//                    WorldAPI.getWorld().setBlockToAir(blockPos);
+//                });
+//            }
+//            return false;
+//        }
         return super.renderBlock(state, pos, blockAccess, worldRendererIn);
     }
 }

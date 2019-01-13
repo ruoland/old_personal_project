@@ -28,6 +28,16 @@ public class EntityMR extends EntityDefaultNPC {
     }
 
     @Override
+    public void applyEntityCollision(Entity entityIn) {
+        //ssuper.applyEntityCollision(entityIn);
+    }
+
+    @Override
+    protected void collideWithNearbyEntities() {
+        //super.collideWithNearbyEntities();
+    }
+
+    @Override
     protected void collideWithEntity(Entity entityIn) {
         //super.collideWithEntity(entityIn);
         if (entityIn instanceof EntityPlayer && !WorldAPI.getPlayer().isCreative() && getDistanceToEntity(entityIn) < 0.7 && !isSturn()) {

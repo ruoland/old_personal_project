@@ -55,26 +55,25 @@ public class EntityMRMissileCreeper extends EntityMR {
                     lookYaw = rotationYaw;
                 }
             }
-            if (isRunMissle()) {
-                this.rotationPitch = lookPitch;
-                this.rotationYaw = lookYaw;
-                this.setVelocity(-MineRun.xCoord(), 0, -MineRun.zCoord());
-                //플레이어와 거리가 멀어진 경우(플레이어가 크리퍼를 지나친 경우)
-                if (WorldAPI.getPlayer().getDistance(targetX, targetY, targetZ) < 20) {
-                    dataManager.set(END_MISSILE, true);
-                }
+        }
+        if (isRunMissle()) {
+            this.rotationPitch = lookPitch;
+            this.rotationYaw = lookYaw;
+            this.setVelocity(-MineRun.xCoord(), 0, -MineRun.zCoord());
+            //플레이어와 거리가 멀어진 경우(플레이어가 크리퍼를 지나친 경우)
+            if (WorldAPI.getPlayer().getDistance(targetX, targetY, targetZ) < 20) {
+                dataManager.set(END_MISSILE, true);
             }
-            if (isEndMissle()) {
-                returnTime++;
-                if(returnTime > 60) {
-                    returnTime = 0;
-                    setPosition(getSpawnPosVec());
-                    dataManager.set(END_MISSILE, false);
-                    dataManager.set(RUN_MISSILE, false);
-                    this.setRotate(0,0,0);
-                    isLookPlayer = true;
-
-                }
+        }
+        if (isEndMissle()) {
+            returnTime++;
+            if(returnTime > 60) {
+                returnTime = 0;
+                setPosition(getSpawnPosVec());
+                dataManager.set(END_MISSILE, false);
+                dataManager.set(RUN_MISSILE, false);
+                this.setRotate(0,0,0);
+                isLookPlayer = true;
             }
         }
     }
