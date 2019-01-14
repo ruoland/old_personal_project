@@ -51,7 +51,6 @@ public class EntityMREnderman extends EntityMR {
 
     @Override
     public void onLivingUpdate() {
-
         super.onLivingUpdate();
         if (isServerWorld()) {
             moveDelay++;

@@ -21,7 +21,6 @@ public class EntityMRWalkingZombie extends EntityMR {
         if (MiniGame.minerun.isStart() && WorldAPI.getPlayer() != null) {
             getLookHelper().setLookPosition(posX + (MineRun.zCoord() * 2), posY + getEyeHeight(), posZ + (MineRun.xCoord() * 2), 360, 360);
             if (getDistanceToEntity(WorldAPI.getPlayer()) < 7) {
-
                 setVelocity(getX(direction, 0.2, false), 0, getZ(direction, 0.2, false));
             } else
                 setPosition(getSpawnPosVec());
