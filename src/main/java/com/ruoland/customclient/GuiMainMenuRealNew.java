@@ -94,9 +94,6 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
      */
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
-        if (button.id == 6) {
-            this.mc.displayGuiScreen(new net.minecraftforge.fml.client.GuiModList(this));
-        }
     }
 
     @Override
@@ -114,15 +111,18 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         this.drawString(this.fontRendererObj, "Copyright Mojang AB. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!") - 2, this.height - 10, -1);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-        GlStateManager.pushMatrix();
-        GlStateManager.translate((float) (this.width / 2 + 90), 70.0F, 0.0F);
-        GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
-        float f = 1.8F - MathHelper.abs(MathHelper.sin((float) (Minecraft.getSystemTime() % 1000L) / 1000.0F * ((float) Math.PI * 2F)) * 0.1F);
-        f = f * 100.0F / (float) (this.fontRendererObj.getStringWidth(this.splashText) + 32);
-        GlStateManager.scale(f, f, f);
-        this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
-        GlStateManager.popMatrix();
+        if(customTool.splashVisible) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) (this.width / 2 + 90), 70.0F, 0.0F);
+            GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
+            float f = 1.8F - MathHelper.abs(MathHelper.sin((float) (Minecraft.getSystemTime() % 1000L) / 1000.0F * ((float) Math.PI * 2F)) * 0.1F);
+            f = f * 100.0F / (float) (this.fontRendererObj.getStringWidth(this.splashText) + 32);
+            GlStateManager.scale(f, f, f);
+            this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
+            GlStateManager.popMatrix();
+        }
     }
+
 
 
 }

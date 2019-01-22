@@ -11,23 +11,27 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import ruo.minigame.api.WorldAPI;
 
+import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.HashMap;
 
 public class ButtonFunction {
     private static HashMap<GuiButton, ButtonBucket> buttonBucketMap = new HashMap<>();
     private CustomTool customTool;
-    public ButtonFunction(CustomTool customTool){
+
+    public ButtonFunction(CustomTool customTool) {
         this.customTool = customTool;
     }
+
     public void init() {
         try {
             File functionFolder = new File("./function");
             functionFolder.mkdirs();
             for (GuiButton button : customTool.getButtonList()) {
-                if(buttonBucketMap.containsKey(button)) {
+                if (buttonBucketMap.containsKey(button)) {
                     buttonBucketMap.get(button).reload();
                     continue;
                 }
@@ -35,10 +39,10 @@ public class ButtonFunction {
                 if (button instanceof GuiCusButton) {
                     if (((GuiCusButton) button).canEdit) {
                         File buttonFunction = new File("./function/" + button.displayString + ".txt");
-                        if(!buttonFunction.isFile()) {
+                        if (!buttonFunction.isFile()) {
                             buttonFunction.createNewFile();
                             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(buttonFunction.getPath()), "UTF8"));
-                            switch (button.displayString){
+                            switch (button.displayString) {
                                 case "싱글 플레이":
                                     output.write("열기:맵 선택");
                                     break;
@@ -71,7 +75,7 @@ public class ButtonFunction {
 
     public void run(GuiButton button) {
         try {
-            for(String script : buttonBucketMap.get(button).getScripts()){
+            for (String script : buttonBucketMap.get(button).getScripts()) {
                 runCommand(script);
             }
         } catch (Exception e) {
@@ -119,20 +123,25 @@ public class ButtonFunction {
             String joinName = command.replace("접속:", "");
             System.out.println(joinName);
             if (joinName.startsWith("http")) {
-                System.out.println("http");
+                try {
+                    Desktop.getDesktop().browse(new URI(joinName));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else if (loadWorld(joinName)) {
-                System.out.println("loadworld");
+                WorldAPI.worldLoad(joinName);
                 return;
+
             } else {
                 mc.displayGuiScreen(null);
-                if(mc.theWorld != null) {
+                if (mc.theWorld != null) {
                     mc.theWorld.sendQuittingDisconnectingPacket();
                     mc.loadWorld((WorldClient) null);
                 }
                 mc.addScheduledTask(new Runnable() {
                     @Override
                     public void run() {
-                        FMLClientHandler.instance().connectToServer(screen,  new ServerData("instance", joinName, false));
+                        FMLClientHandler.instance().connectToServer(screen, new ServerData("instance", joinName, false));
                     }
                 });
                 System.out.println("서버" + joinName);
@@ -144,7 +153,7 @@ public class ButtonFunction {
         Minecraft mc = Minecraft.getMinecraft();
         ISaveFormat isaveformat = mc.getSaveLoader();
         mc.displayGuiScreen(null);
-        if(mc.theWorld != null) {
+        if (mc.theWorld != null) {
             mc.theWorld.sendQuittingDisconnectingPacket();
             mc.loadWorld((WorldClient) null);
         }

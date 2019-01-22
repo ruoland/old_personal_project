@@ -2,8 +2,11 @@ package ruo.minigame.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.Timer;
@@ -23,15 +25,19 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import ruo.cmplus.CMPlus;
 import ruo.cmplus.test.CMPacketCommand;
 import ruo.minigame.MiniGame;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.AbstractTick.BlockXYZ;
+import ruo.minigame.effect.TickRegister;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -40,6 +46,30 @@ import java.util.Random;
 import java.util.UUID;
 
 public class WorldAPI {
+
+    public static void worldLoad(String worldName) {
+        Minecraft mc = Minecraft.getMinecraft();
+        TickRegister.register(new AbstractTick(TickEvent.Type.CLIENT, 1, false) {
+            @Override
+            public void run(TickEvent.Type type) {
+                mc.theWorld.sendQuittingDisconnectingPacket();
+                mc.loadWorld((WorldClient) null);
+                ISaveFormat isaveformat = mc.getSaveLoader();
+                if (isaveformat.canLoadWorld(worldName)) {
+                    try {
+                        for (WorldSummary summary : isaveformat.getSaveList()) {
+                            if (summary.getDisplayName().equalsIgnoreCase(worldName)) {
+                                net.minecraftforge.fml.client.FMLClientHandler.instance().tryLoadExistingWorld(new GuiWorldSelection(new GuiMainMenu()), summary);
+                                break;
+                            }
+                        }
+                    } catch (AnvilConverterException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
     /**
      * min 이상 round 이하의 양수 또는 음수의 난수를 반환합니다
      */
@@ -439,6 +469,10 @@ public class WorldAPI {
 
     public static void teleport(double x, double y, double z) {
         teleport(x, y, z, getPlayer().rotationYaw,
+                getPlayer().rotationPitch);
+    }
+    public static void teleport(Vec3d pos) {
+        teleport(pos.xCoord, pos.yCoord, pos.zCoord, getPlayer().rotationYaw,
                 getPlayer().rotationPitch);
     }
 

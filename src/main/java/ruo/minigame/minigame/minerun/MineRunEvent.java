@@ -30,6 +30,7 @@ import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.MiniGame;
 import ruo.minigame.action.ActionEffect;
 import ruo.minigame.api.*;
+import ruo.minigame.command.CommandMineRun;
 import ruo.minigame.fakeplayer.EntityFakePlayer;
 import ruo.minigame.fakeplayer.FakePlayerHelper;
 import ruo.minigame.minigame.elytra.GuiElytraGameOver;
@@ -110,7 +111,9 @@ public class MineRunEvent {
 
         if (e.side == Side.SERVER && e.phase == TickEvent.Phase.START && respawnTime > 0) {
             respawnTime--;
+
             if (respawnTime == 60) {
+                WorldAPI.teleport(new Vec3d(e.player.getBedLocation()).addVector(0.5,0,0));
                 WorldAPI.addMessage("3초 뒤에 시작됩니다.");
             }
             if (respawnTime == 40) {
@@ -122,9 +125,7 @@ public class MineRunEvent {
             if (respawnTime == 0) {
                 PosHelper posHelper = new PosHelper(WorldAPI.getPlayer());
                 e.player.setHealth(e.player.getMaxHealth());
-                WorldAPI.teleport(e.player.getBedLocation());
                 if (lineLR == 1) {
-
                     MineRun.setPosition(posHelper.getXZ(Direction.LEFT, 1, false));
                 }
                 if (lineLR == -1)
@@ -136,7 +137,7 @@ public class MineRunEvent {
         }
         EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
         if (MineRun.elytraMode() == 0) {
-            if (!e.player.isInLava() && !e.player.isInWater()) {
+            if (!e.player.isInLava() && !e.player.isInWater() && respawnTime <= 0) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
             }

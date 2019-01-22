@@ -44,6 +44,7 @@ public class GuiData {
         nbtapi.getNBT().setInteger("Texture Size", textureList.size());
         nbtapi.getNBT().setString("backgroundImage", backgroundImage);
         nbtapi.getNBT().setBoolean("Gradient", customTool.canRenderGradient());
+        nbtapi.getNBT().setBoolean("Splash", customTool.splashOn.displayString.equals("스플래시 켜기"));
         nbtapi.saveNBT();
     }
 
@@ -53,22 +54,23 @@ public class GuiData {
             backgroundImage = nbtapi.getNBT().getString("backgroundImage");
 
         }
-        System.out.println(nbtapi.getNBT().hasKey("Gradient")+" - "+customTool.guiScreen);
+        System.out.println(nbtapi.getNBT().hasKey("Gradient") + " - " + customTool.guiScreen);
         if (!nbtapi.getNBT().hasKey("Gradient") && customTool.guiScreen instanceof GuiMainMenuRealNew) {
             customTool.setRenderGradient(true);
             GuiTexture texture = new GuiTexture(0, "customclient:textures/gui/title2.png", 77, 31, 257, 45);
             this.textureList.add(texture);
         } else
             customTool.setRenderGradient(nbtapi.getNBT().getBoolean("Gradient"));
-
+        if (nbtapi.getNBT().hasKey("Splash"))
+            customTool.splashVisible = nbtapi.getNBT().getBoolean("Splash");
     }
 
     public void readTexture() {
         GuiTexture texture;
         int size = nbtapi.getNBT().getInteger("Texture Size");
-        System.out.println("텍스쳐 사이즈"+size);
+        System.out.println("텍스쳐 사이즈" + size);
         for (int i = 0; i < size; i++) {
-            if(nbtapi.getNBT().hasKey(String.valueOf(i))) {
+            if (nbtapi.getNBT().hasKey(String.valueOf(i))) {
                 NBTTagCompound tagCompound = nbtapi.getNBT().getCompoundTag(String.valueOf(i));
                 texture = new GuiTexture(i);
                 texture.deserializeNBT(tagCompound);
@@ -100,7 +102,7 @@ public class GuiData {
                 customTool.getScreen().getButton().add(b);
             }
         }
-        customTool.onoff.displayString = CustomClient.config.get("M", "onoff", "true").getString();
+        customTool.gradationOnoff.displayString = CustomClient.config.get("M", "onoff", "true").getString();
     }
 
     public NBTAPI getNBTAPI() {

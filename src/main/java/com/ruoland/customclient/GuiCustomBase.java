@@ -92,6 +92,16 @@ public class GuiCustomBase extends GuiScreen {
             else if (button.displayString.equals("true"))
                 button.displayString = "false";
         }
+        if (button.id == 201) {
+            if (button.displayString.equals("스플래시 켜기")) {
+                button.displayString = "스플래시 끄기";
+                customTool.splashVisible = false;
+            }
+            else if (button.displayString.equals("스플래시 끄기")) {
+                button.displayString = "스플래시 켜기";
+                customTool.splashVisible = true;
+            }
+        }
         if (button.id == 10) {
             File file = (CustomTool.fileChooser());
             if (file != null) {

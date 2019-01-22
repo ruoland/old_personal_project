@@ -40,10 +40,12 @@ public class CustomTool {
         panorama = new GuiTextField(5, mc.fontRendererObj, 20, 10, 140, 20);
 
         textureF = new GuiTextField(6, mc.fontRendererObj, 20, 10, 140, 20);
-        onoff = new GuiCusButton(200, 20, 50, 50, 20, "true", false);
-        fileFind = new GuiCusButton(10, 20, 120, 70, 20, "사진 선택", false);
-        onoff.visible = false;
+        gradationOnoff = new GuiCusButton(200, 20, 50, 50, 20, "true", false);
+        splashOn = new GuiCusButton(201, 20, 90, 80, 20, "스플래시 켜기", false);
+        fileFind = new GuiCusButton(10, 20, 70, 70, 20, "사진 선택", false);
+        gradationOnoff.visible = false;
         fileFind.visible = false;
+        splashOn.visible = false;
         texture.setMaxStringLength(5000);
         textureF.setMaxStringLength(5000);
         editName.setMaxStringLength(5000);
@@ -60,7 +62,7 @@ public class CustomTool {
     protected GuiTextField panorama, editName, texture;// 이름 바꾸는 텍스트 필드,
     // Width, Height
     protected GuiTextField textureF;// 이름 바꾸는 텍스트 필드, Width, Height
-    protected GuiCusButton onoff, fileFind;
+    protected GuiCusButton gradationOnoff, fileFind, splashOn;
 
     public boolean splashVisible = true;
     int splashX, splashY;
@@ -82,8 +84,8 @@ public class CustomTool {
     public void initGui(GuiCustomBase mainmenu) {
         this.guiScreen = mainmenu;
         guiData.textureList.clear();
-
-        mainmenu.getButton().add(onoff);
+        mainmenu.getButton().add(splashOn);
+        mainmenu.getButton().add(gradationOnoff);
         mainmenu.getButton().add(fileFind);
         fieldAllEnable(false);
         textureEnable(false);
@@ -212,10 +214,10 @@ public class CustomTool {
         return guiScreen;
     }
     public void setRenderGradient(boolean var) {
-        onoff.displayString = String.valueOf(var);
+        gradationOnoff.displayString = String.valueOf(var);
     }
     public boolean canRenderGradient() {
-        return this.onoff.displayString.equals("true");
+        return this.gradationOnoff.displayString.equals("true");
     }
 
     public void updateTexture() {
@@ -246,7 +248,7 @@ public class CustomTool {
     }
 
     protected boolean isBackgroundEdit() {
-        return onoff.visible;
+        return gradationOnoff.visible;
     }
 
     public void mouseClicked(int mouseX, int mouseY, int clickedMouseButton) {
@@ -294,10 +296,12 @@ public class CustomTool {
             panorama.setEnabled(true);
             panorama.setVisible(true);
             panorama.setText(guiData.backgroundImage);
-            this.onoff.visible = true;
-            this.onoff.enabled = true;
+            this.gradationOnoff.visible = true;
+            this.gradationOnoff.enabled = true;
             this.fileFind.visible = true;
             this.fileFind.enabled = true;
+            this.splashOn.visible = true;
+            this.splashOn.enabled = true;
         }
     }
 
@@ -386,8 +390,10 @@ public class CustomTool {
         }
         panorama.setEnabled(false);
         panorama.setVisible(false);
-        this.onoff.visible = false;
-        this.onoff.enabled = false;
+        this.gradationOnoff.visible = false;
+        this.gradationOnoff.enabled = false;
+        this.splashOn.visible = false;
+        this.splashOn.enabled = false;
     }
 
     public void textureEnable(boolean enable) {
@@ -422,14 +428,13 @@ public class CustomTool {
         return null;
     }
 
-    static IBrowser browser = null;
+    private static IBrowser browser = null;
 
     public static void drawBrowser(String url, int x, int y, int width, int height) {
         Minecraft mc = Minecraft.getMinecraft();
         if (Loader.isModLoaded("mcef")) {
             if (browser == null) {
                 API api = MCEFApi.getAPI();
-
                 browser = api.createBrowser(
                         "https://www.youtube.com/embed/"+getYoutubeID(url)+ "?autoplay=1&autohide=1&controls=0&showinfo=0&rel=0",
                         false);
