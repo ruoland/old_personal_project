@@ -1,6 +1,7 @@
 package com.ruoland.customclient;
 
 
+import com.ruoland.customclient.component.GuiTexture;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,9 +11,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLSync;
-import ruo.cmplus.cm.CommandDrawtexture;
-import ruo.minigame.api.RenderAPI;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +21,7 @@ public class CustomClientEvent {
     public static int hotbarX,  hotbarY;
     public static int foodX, foodY;
 
-    public static CustomTool uiTool = new CustomTool("./customgui/customUI/default");
+    public static GuiCustomBase uiTool = new GuiCustomBase("./customgui/customUI/default");
 
     @SubscribeEvent
     public void event(WorldEvent.Load event) {
@@ -44,7 +42,7 @@ public class CustomClientEvent {
         if (event.getGui() instanceof GuiMainMenu) {
             event.setGui(new GuiMainMenuRealNew("메인메뉴"));
         } else {
-            CustomTool.closeBrowser();
+            uiTool.closeBrowser();
         }
     }
 

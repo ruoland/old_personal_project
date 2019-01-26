@@ -1,5 +1,7 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.component;
 
+import com.ruoland.customclient.GuiCustomBase;
+import com.ruoland.customclient.URLDownload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -11,7 +13,7 @@ import ruo.minigame.api.RenderAPI;
 
 import java.io.File;
 
-public class GuiCusButton extends GuiButton {
+public class GuiCusButton extends GuiButton implements IGuiComponent {
     public boolean canEdit = true;
     public ResourceLocation dynamicLocation;
     public ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
@@ -26,29 +28,21 @@ public class GuiCusButton extends GuiButton {
     public GuiCusButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, boolean canEdit) {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
         this.canEdit = canEdit;
+        visible = canEdit;
 
     }
-    @Override
-    public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
-        super.drawTexturedModalRect(x, y, textureX, textureY, width, height);
-    }
-
-    /**
-     * Draws this button to the screen.
-     */
-    private Minecraft mc = Minecraft.getMinecraft();
-    float updateCounter;
-
     /**
      * Draws this button to the screen.
      */
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+        GuiCustomBase customBase = (GuiCustomBase) mc.currentScreen;
         if (buttonTextures.toString().startsWith("https://") || buttonTextures.toString().startsWith("http://")) {
             File f = new File("resourcepacks/CustomClient/assets/customclient/textures/gui/");
             f.mkdirs();
             buttonTextures = new ResourceLocation("customclient:textures/gui/" + URLDownload.download("CustomClient", buttonTextures.toString(),
                     "resourcepacks/CustomClient/assets/customclient/textures/gui/"));
         }
+
         if (this.visible) {
             FontRenderer fontrenderer = mc.fontRendererObj;
             mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
@@ -97,12 +91,12 @@ public class GuiCusButton extends GuiButton {
         compound.setInteger("Width", width);
         compound.setInteger("Height", height);
         compound.setBoolean("Visible", visible);
+        System.out.println("직렬화  "+displayString+xPosition+ " - "+yPosition);
         return compound;
     }
 
     public void deserializeNBT(NBTTagCompound compound) {
         if(compound.hasKey("Button")) {
-            System.out.println(displayString + "를"+ compound.getString("Button")+"으로 ㅂ꿈"+id);
             displayString = compound.getString("Button");
             buttonTextures = new ResourceLocation(compound.getString("Texture"));
             xPosition = compound.getInteger("xPosition");
@@ -110,6 +104,55 @@ public class GuiCusButton extends GuiButton {
             width = compound.getInteger("Width");
             height = compound.getInteger("Height");
             visible = compound.getBoolean("Visible");
+            System.out.println("역역역렬화  "+displayString+xPosition+ " - "+yPosition);
         }
+        System.out.println("역역역렬화22222  "+displayString+xPosition+ " - "+yPosition);
+
     }
+
+    public void setVisible(boolean visible){
+        this.visible = visible;
+        this.enabled = visible;
+    }
+
+    @Override
+    public int getX() {
+        return xPosition;
+    }
+
+    @Override
+    public int getY() {
+        return yPosition;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return buttonTextures;
+    }
+
+    @Override
+    public void setTexture(ResourceLocation resourceLocation) {
+        this.buttonTextures = resourceLocation;
+    }
+
 }

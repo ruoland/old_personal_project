@@ -3,7 +3,7 @@ package com.ruoland.customclient;
 public class GuiCustom extends GuiCustomBase {
     public GuiCustom(String name) {
         super(name);
-        customTool.guiData.backgroundImage = "";
+        guiData.backgroundImage = "";
     }
 
     @Override
@@ -14,7 +14,6 @@ public class GuiCustom extends GuiCustomBase {
     @Override
     public void initGui() {
         super.initGui();
-        customTool.initGui(this);
     }
 
 

@@ -1,5 +1,7 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.beta;
 
+import com.ruoland.customclient.CustomClientEvent;
+import com.ruoland.customclient.GuiCustomBase;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Mouse;
 
@@ -9,7 +11,7 @@ public class GuiCustomUI extends GuiCustomBase {
     private String a;
     public GuiCustomUI(String name, String ui) {
         super(name);
-        customTool.guiData.backgroundImage = "";
+        guiData.backgroundImage = "";
         a = ui;
 
     }
@@ -27,7 +29,6 @@ public class GuiCustomUI extends GuiCustomBase {
     @Override
     public void initGui() {
         super.initGui();
-        customTool.initGui(this);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class GuiCustomUI extends GuiCustomBase {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
-        NBTTagCompound tagCompound = customTool.guiData.getNBTAPI().getNBT();
+        NBTTagCompound tagCompound = guiData.getNBTAPI().getNBT();
         tagCompound.setInteger("expX", CustomClientEvent.expX);
         tagCompound.setInteger("expY", CustomClientEvent.expY);
         tagCompound.setInteger("foodX", CustomClientEvent.foodX);
@@ -63,9 +64,9 @@ public class GuiCustomUI extends GuiCustomBase {
         tagCompound.setInteger("healthY", CustomClientEvent.healthY);
         tagCompound.setInteger("hotbarX", CustomClientEvent.hotbarX);
         tagCompound.setInteger("hotbarY", CustomClientEvent.hotbarY);
-        customTool.guiData.getNBTAPI().saveNBT();
-        CustomClientEvent.uiTool.guiData.clearTexture();
-        CustomClientEvent.uiTool.guiData.readTexture();
+        guiData.getNBTAPI().saveNBT();
+        CustomClientEvent.uiTool.getGuiData().clearTexture();
+        CustomClientEvent.uiTool.getGuiData().loadComponent();
     }
 
     /*

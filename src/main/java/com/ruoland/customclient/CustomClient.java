@@ -1,16 +1,15 @@
 package com.ruoland.customclient;
 
 
-import net.minecraft.client.Minecraft;
+import com.ruoland.customclient.beta.CommandDrawTexture;
+import com.ruoland.customclient.beta.CommandDrawYoutube;
+import com.ruoland.customclient.beta.CommandGui;
+import com.ruoland.customclient.beta.CommandUI;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-
-import java.io.File;
 
 @Mod(modid = CustomClient.modid, name = "CustomClientR", version = CustomClient.version)
 public class CustomClient {

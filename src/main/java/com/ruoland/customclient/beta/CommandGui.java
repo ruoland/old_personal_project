@@ -1,15 +1,16 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.beta;
 
+import com.ruoland.customclient.GuiCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 
-public class CommandUI extends CommandBase {
+public class CommandGui extends CommandBase {
     @Override
     public String getCommandName() {
-        return "ui2";
+        return "gui2";
     }
 
     @Override
@@ -19,6 +20,6 @@ public class CommandUI extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiCustomUI("customgui/customUI/"+args[0], args[1]));
+        Minecraft.getMinecraft().displayGuiScreen(new GuiCustom("customgui/"+args[0]));
     }
 }

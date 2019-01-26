@@ -1,4 +1,4 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.button;
 
 import net.minecraft.client.gui.GuiButton;
 

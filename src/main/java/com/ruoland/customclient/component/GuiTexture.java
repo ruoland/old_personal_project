@@ -1,15 +1,12 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.component;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import ruo.minigame.api.NBTAPI;
 import ruo.minigame.api.RenderAPI;
 
 import java.io.File;
 
-public class GuiTexture {
+public class GuiTexture implements IGuiComponent {
 
     public int x, y, width, height, id;
     public boolean visible = true;
@@ -67,5 +64,50 @@ public class GuiTexture {
         height = compound.getInteger("Height");
         visible = compound.getBoolean("Visible");
         return compound;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return resourceLocation;
+    }
+
+    @Override
+    public void setTexture(ResourceLocation resourceLocation) {
+        this.resourceLocation = resourceLocation;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

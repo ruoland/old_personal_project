@@ -1,6 +1,8 @@
 package com.ruoland.customclient;
 
 import com.google.common.collect.Lists;
+import com.ruoland.customclient.button.GuiButtonLang;
+import com.ruoland.customclient.component.GuiCusButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,18 +11,14 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.config.ConfigCategory;
 import org.apache.commons.io.Charsets;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import ruo.minigame.api.RenderAPI;
 
 import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 public class GuiMainMenuRealNew extends GuiCustomBase {
     private static final ResourceLocation SPLASH_TEXTS = new ResourceLocation("texts/splashes.txt");
@@ -87,7 +85,7 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         this.buttonList.add(new GuiCusButton(0, this.width / 2 - 100, i + 84, 98, 20, I18n.format("menu.options", new Object[0])));
         this.buttonList.add(new GuiCusButton(4, this.width / 2 + 2, i + 84, 98, 20, I18n.format("menu.quit", new Object[0])));
         this.buttonList.add(new GuiButtonLang(5, this.width / 2 - 124, i + 72 + 12));
-        customTool.initGui(this);
+        super.initGui();
 
     }
 
@@ -100,8 +98,7 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         if (button.id == 200) {
             if (button.displayString.equals("흐리지 않게")) {
                 setRenderGradient(true);
-            }
-            else if (button.displayString.equals("흐리게")) {
+            } else if (button.displayString.equals("흐리게")) {
                 setRenderGradient(false);
             }
         }
@@ -109,30 +106,18 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
             if (button.displayString.equals("스플래시 켜기")) {
                 button.displayString = "스플래시 끄기";
                 splashVisible = false;
-            }
-            else if (button.displayString.equals("스플래시 끄기")) {
+            } else if (button.displayString.equals("스플래시 끄기")) {
                 button.displayString = "스플래시 켜기";
                 splashVisible = true;
             }
         }
     }
 
-    @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        customTool.keyTyped(typedChar, keyCode);
-    }
-
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        this.drawString(this.fontRendererObj, "Copyright Mojang AB. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!") - 2, this.height - 10, -1);
-        if (canRenderGradient()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0, 0, -100);
-            drawGradientRect(0, 0, width, height, -2130706433, 16777215);
-            drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
-            GlStateManager.popMatrix();
-        }
+
         super.drawScreen(mouseX, mouseY, partialTicks);
+
         if (splashVisible) {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) (this.width / 2 + 90), 70.0F, 0.0F);
@@ -143,13 +128,15 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
             this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
             GlStateManager.popMatrix();
         }
+        this.drawString(this.fontRendererObj, "Copyright Mojang AB. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!") - 2, this.height - 10, -1);
+
     }
 
     public void setRenderGradient(boolean var) {
         if (var)
-            this.customTool.gradientOnoff.displayString = "흐리게";
+            this.gradientOnoff.displayString = "흐리게";
         else
-            customTool.gradientOnoff.displayString = "흐리지 않게";
+            gradientOnoff.displayString = "흐리지 않게";
         gradient = var;
     }
 
@@ -165,16 +152,14 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
 
     @Override
     public void readNBT(GuiData guiData, NBTTagCompound tagCompound) {
-        if ( customTool.guiScreen instanceof GuiMainMenuRealNew) {
-            GuiMainMenuRealNew guiScreen = (GuiMainMenuRealNew) customTool.guiScreen;
-            if (!tagCompound.hasKey("Gradient")) {
-                guiScreen.setRenderGradient(true);
-                guiData.addTexture(0,"customclient:textures/gui/title2.png", 77, 31, 257, 45);
-            }else
-                guiScreen.setRenderGradient(tagCompound.getBoolean("Gradient"));
+        GuiMainMenuRealNew guiScreen = (GuiMainMenuRealNew) this;
+        if (!tagCompound.hasKey("Gradient")) {
+            guiScreen.setRenderGradient(true);
+            guiData.addTexture(0, "customclient:textures/gui/title2.png", 77, 31, 257, 45);
+        } else
+            guiScreen.setRenderGradient(tagCompound.getBoolean("Gradient"));
 
-            if (tagCompound.hasKey("Splash"))
-                guiScreen.splashVisible = tagCompound.getBoolean("Splash");
-        }
+        if (tagCompound.hasKey("Splash"))
+            guiScreen.splashVisible = tagCompound.getBoolean("Splash");
     }
 }

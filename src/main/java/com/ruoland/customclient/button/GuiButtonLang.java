@@ -1,5 +1,6 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.button;
 
+import com.ruoland.customclient.component.GuiCusButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.fml.relauncher.Side;

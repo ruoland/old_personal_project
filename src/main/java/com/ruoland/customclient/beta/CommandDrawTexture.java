@@ -1,25 +1,21 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.beta;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.montoyo.mcef.api.API;
-import net.montoyo.mcef.api.IBrowser;
-import net.montoyo.mcef.api.MCEFApi;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.relauncher.Side;
+import org.lwjgl.Sys;
 import ruo.minigame.api.RenderAPI;
 import ruo.minigame.effect.AbstractTick;
 import ruo.minigame.effect.TickRegister;
 
-public class CommandDrawYoutube extends CommandBase {
+public class CommandDrawTexture extends CommandBase {
     @Override
     public String getCommandName() {
-        return "drawyou";
+        return "drawtex";
     }
 
     @Override
@@ -30,26 +26,37 @@ public class CommandDrawYoutube extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
-        AbstractTick abstractTick = new AbstractTick(args[0]+args[1],TickEvent.Type.RENDER, 1, true) {
+        AbstractTick abstractTick = new AbstractTick(args[0]+args[1]+args[2]+args[3]+args[4]+args[5],TickEvent.Type.RENDER, 1, true) {
             @Override
             public boolean stopCondition() {
                 return alpha < 0;
             }
             @Override
             public void run(TickEvent.Type type) {
-                if(absRunCount > 500) {
-                    stopTick();
-                    CustomTool.closeBrowser();
-                }
                 try {
-                    CustomTool.drawBrowser("https://www.youtube.com/watch?v=sBapIS_NEgE", parseInt(args[0]), parseInt(args[1]), parseInt(args[2]), parseInt(args[3]));
+                    RenderAPI.drawTexture(args[0], alpha, parseDouble(args[1]), parseDouble(args[2]), parseDouble(args[3]), parseDouble(args[4]));
                 } catch (NumberInvalidException e) {
                     e.printStackTrace();
                 }
             }
         };
+        TickRegister.register(new AbstractTick(args[0]+args[1]+args[2]+args[3]+args[4]+args[5]+"timer", TickEvent.Type.SERVER, parseInt(args[5]), true) {
+            @Override
+            public boolean stopCondition() {
+                return alpha < 0;
+            }
+            @Override
+            public void run(TickEvent.Type type) {
+                absDefTick = 1;
+                alpha -= 1F/20F;
+                if(alpha <= -1)
+                {
+                    absLoop =false;
+                    alpha = 1;
+                }
+                System.out.println(alpha);
+            }
+        });
         TickRegister.register(abstractTick);
     }
-
-
 }

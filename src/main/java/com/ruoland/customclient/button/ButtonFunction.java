@@ -1,5 +1,7 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.button;
 
+import com.ruoland.customclient.component.GuiCusButton;
+import com.ruoland.customclient.GuiCustomBase;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -21,17 +23,17 @@ import java.util.HashMap;
 
 public class ButtonFunction {
     private static HashMap<GuiButton, ButtonBucket> buttonBucketMap = new HashMap<>();
-    private CustomTool customTool;
+    private GuiCustomBase customBase;
 
-    public ButtonFunction(CustomTool customTool) {
-        this.customTool = customTool;
+    public ButtonFunction(GuiCustomBase customTool) {
+        this.customBase = customTool;
     }
 
     public void init() {
         try {
             File functionFolder = new File("./function");
             functionFolder.mkdirs();
-            for (GuiButton button : customTool.getButtonList()) {
+            for (GuiButton button : customBase.getButtonList()) {
                 if (buttonBucketMap.containsKey(button)) {
                     buttonBucketMap.get(button).reload();
                     continue;
@@ -92,10 +94,10 @@ public class ButtonFunction {
 
     private void runCommand(String command) {
         Minecraft mc = Minecraft.getMinecraft();
-        GuiCustomBase screen = customTool.getScreen();
+        GuiCustomBase screen = customBase;
         System.out.println(command);
         if (command.startsWith("종료")) {
-            CustomTool.closeBrowser();
+            customBase.closeBrowser();
             mc.shutdown();
         }
         if (command.startsWith("재생:")) {
@@ -104,7 +106,7 @@ public class ButtonFunction {
         }
         if (command.startsWith("배경 변경:")) {
             String guiName = command.replace("배경 변경:", "");
-            customTool.guiData.backgroundImage = guiName;
+            customBase.getGuiData().backgroundImage = guiName;
         }
         if (command.startsWith("열기:")) {
             String guiName = command.replace("열기:", "");
