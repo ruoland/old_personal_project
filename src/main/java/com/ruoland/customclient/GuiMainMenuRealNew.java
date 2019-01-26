@@ -6,8 +6,10 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.config.ConfigCategory;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -60,7 +62,8 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         }
     }
 
-    private GuiButton realmsButton, modButton;
+    public static boolean splashVisible = true;
+    public static boolean gradient = true;
 
     public void initGui() {
         Calendar calendar = Calendar.getInstance();
@@ -78,8 +81,8 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         int j = this.height / 4 + 48;
         this.buttonList.add(new GuiCusButton(1, this.width / 2 - 100, j, I18n.format("menu.singleplayer", new Object[0])));
         this.buttonList.add(new GuiCusButton(2, this.width / 2 - 100, j + 24 * 1, I18n.format("menu.multiplayer", new Object[0])));
-        this.realmsButton = this.addButton(new GuiCusButton(14, this.width / 2 + 2, j + 24 * 2, 98, 20, I18n.format("menu.online", new Object[0]).replace("Minecraft", "").trim()));
-        this.buttonList.add(modButton = new GuiCusButton(6, this.width / 2 - 100, j + 24 * 2, 98, 20, I18n.format("fml.menu.mods")));
+        this.addButton(new GuiCusButton(14, this.width / 2 + 2, j + 24 * 2, 98, 20, I18n.format("menu.online", new Object[0]).replace("Minecraft", "").trim()));
+        this.buttonList.add(new GuiCusButton(6, this.width / 2 - 100, j + 24 * 2, 98, 20, I18n.format("fml.menu.mods")));
 
         this.buttonList.add(new GuiCusButton(0, this.width / 2 - 100, i + 84, 98, 20, I18n.format("menu.options", new Object[0])));
         this.buttonList.add(new GuiCusButton(4, this.width / 2 + 2, i + 84, 98, 20, I18n.format("menu.quit", new Object[0])));
@@ -88,30 +91,49 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
 
     }
 
-
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
+
+        if (button.id == 200) {
+            if (button.displayString.equals("흐리지 않게")) {
+                setRenderGradient(true);
+            }
+            else if (button.displayString.equals("흐리게")) {
+                setRenderGradient(false);
+            }
+        }
+        if (button.id == 201) {
+            if (button.displayString.equals("스플래시 켜기")) {
+                button.displayString = "스플래시 끄기";
+                splashVisible = false;
+            }
+            else if (button.displayString.equals("스플래시 끄기")) {
+                button.displayString = "스플래시 켜기";
+                splashVisible = true;
+            }
+        }
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         customTool.keyTyped(typedChar, keyCode);
-        System.out.println("키누름");
-    }
-
-    public String getSplashText() {
-        return splashText;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         this.drawString(this.fontRendererObj, "Copyright Mojang AB. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!") - 2, this.height - 10, -1);
-
+        if (canRenderGradient()) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, 0, -100);
+            drawGradientRect(0, 0, width, height, -2130706433, 16777215);
+            drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
+            GlStateManager.popMatrix();
+        }
         super.drawScreen(mouseX, mouseY, partialTicks);
-        if(customTool.splashVisible) {
+        if (splashVisible) {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) (this.width / 2 + 90), 70.0F, 0.0F);
             GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
@@ -123,6 +145,36 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
         }
     }
 
+    public void setRenderGradient(boolean var) {
+        if (var)
+            this.customTool.gradientOnoff.displayString = "흐리게";
+        else
+            customTool.gradientOnoff.displayString = "흐리지 않게";
+        gradient = var;
+    }
 
+    public boolean canRenderGradient() {
+        return gradient;
+    }
 
+    @Override
+    public void writeNBT(GuiData guiData, NBTTagCompound tagCompound) {
+        tagCompound.setBoolean("Gradient", canRenderGradient());
+        tagCompound.setBoolean("Splash", splashVisible);
+    }
+
+    @Override
+    public void readNBT(GuiData guiData, NBTTagCompound tagCompound) {
+        if ( customTool.guiScreen instanceof GuiMainMenuRealNew) {
+            GuiMainMenuRealNew guiScreen = (GuiMainMenuRealNew) customTool.guiScreen;
+            if (!tagCompound.hasKey("Gradient")) {
+                guiScreen.setRenderGradient(true);
+                guiData.addTexture(0,"customclient:textures/gui/title2.png", 77, 31, 257, 45);
+            }else
+                guiScreen.setRenderGradient(tagCompound.getBoolean("Gradient"));
+
+            if (tagCompound.hasKey("Splash"))
+                guiScreen.splashVisible = tagCompound.getBoolean("Splash");
+        }
+    }
 }

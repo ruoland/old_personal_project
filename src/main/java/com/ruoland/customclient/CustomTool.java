@@ -40,10 +40,10 @@ public class CustomTool {
         panorama = new GuiTextField(5, mc.fontRendererObj, 20, 10, 140, 20);
 
         textureF = new GuiTextField(6, mc.fontRendererObj, 20, 10, 140, 20);
-        gradationOnoff = new GuiCusButton(200, 20, 50, 50, 20, "true", false);
+        gradientOnoff = new GuiCusButton(200, 20, 50, 50, 20, "true", false);
         splashOn = new GuiCusButton(201, 20, 90, 80, 20, "스플래시 켜기", false);
         fileFind = new GuiCusButton(10, 20, 70, 70, 20, "사진 선택", false);
-        gradationOnoff.visible = false;
+        gradientOnoff.visible = false;
         fileFind.visible = false;
         splashOn.visible = false;
         texture.setMaxStringLength(5000);
@@ -62,15 +62,9 @@ public class CustomTool {
     protected GuiTextField panorama, editName, texture;// 이름 바꾸는 텍스트 필드,
     // Width, Height
     protected GuiTextField textureF;// 이름 바꾸는 텍스트 필드, Width, Height
-    protected GuiCusButton gradationOnoff, fileFind, splashOn;
-
-    public boolean splashVisible = true;
-    int splashX, splashY;
+    protected GuiCusButton gradientOnoff, fileFind, splashOn;
 
     public void setEditMode() {
-        if (!editMode) {
-            loadSplashData();
-        }
         editMode = !editMode;
         selectButtonID = -1;
         selectTextureID = -1;
@@ -85,30 +79,23 @@ public class CustomTool {
         this.guiScreen = mainmenu;
         guiData.textureList.clear();
         mainmenu.getButton().add(splashOn);
-        mainmenu.getButton().add(gradationOnoff);
+        mainmenu.getButton().add(gradientOnoff);
         mainmenu.getButton().add(fileFind);
         fieldAllEnable(false);
         textureEnable(false);
 
         guiData.customTool = this;
-        guiData.buttonSetting();
+        guiData.readButton();
         guiData.readTexture();
         guiData.readBackground();
         panorama.setText(guiData.backgroundImage);
 
     }
-
-    public void loadSplashData() {
-        CustomClient.config.load();
-        ConfigCategory splashConfig = CustomClient.config.getCategory("Splash");
-        splashX = splashConfig.get("X").getInt();
-        splashY = splashConfig.get("Y").getInt();
-        splashVisible = splashConfig.get("SplashVisible").getBoolean();
-    }
-
     /**
      * 다이나믹 텍스쳐로 사진 설정시 minecraft:dynamic/텍시쳐이름 이렇게 됨
      * 이렇게 되면 껐다키면 사진을 불러올 수 없음
+     *그래서 뭐하는 코드인데
+     *
      */
     public void setDynamicTextureField(ResourceLocation resourceLocation, String textureField) {
         this.textureF.setText(textureField);
@@ -127,13 +114,7 @@ public class CustomTool {
     }
 
     public void drawScreen(int width, int height) {
-        if (canRenderGradient()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0, 0, -100);
-            guiScreen.drawGradientRect(0, 0, width, height, -2130706433, 16777215);
-            guiScreen.drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
-            GlStateManager.popMatrix();
-        }
+
         for (GuiTexture g : guiData.textureList) {
             GL11.glPushMatrix();
             g.renderTexture();
@@ -194,31 +175,12 @@ public class CustomTool {
             GL11.glPopMatrix();
 
         }
-
-        if (splashVisible && guiScreen instanceof GuiMainMenuRealNew) {
-            GuiMainMenuRealNew mainMenuRealNew = (GuiMainMenuRealNew) guiScreen;
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) (splashX), (float) splashY, 0.0F);
-            GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
-            float f1 = 1.8F - MathHelper
-                    .abs(MathHelper.sin((float) (Minecraft.getSystemTime() % 1000L) / 1000.0F * (float) Math.PI * 2.0F)
-                            * 0.1F);
-            f1 = f1 * 100.0F / (float) (mc.fontRendererObj.getStringWidth(mainMenuRealNew.getSplashText()) + 32);
-            GL11.glScalef(f1, f1, f1);
-            guiScreen.drawCenteredString(mc.fontRendererObj, mainMenuRealNew.getSplashText(), 0, -8, -256);
-            GL11.glPopMatrix();
-        }
     }
 
     public GuiCustomBase getScreen(){
         return guiScreen;
     }
-    public void setRenderGradient(boolean var) {
-        gradationOnoff.displayString = String.valueOf(var);
-    }
-    public boolean canRenderGradient() {
-        return this.gradationOnoff.displayString.equals("true");
-    }
+
 
     public void updateTexture() {
         if (selectTextureID != -1)
@@ -248,7 +210,7 @@ public class CustomTool {
     }
 
     protected boolean isBackgroundEdit() {
-        return gradationOnoff.visible;
+        return gradientOnoff.visible;
     }
 
     public void mouseClicked(int mouseX, int mouseY, int clickedMouseButton) {
@@ -296,8 +258,8 @@ public class CustomTool {
             panorama.setEnabled(true);
             panorama.setVisible(true);
             panorama.setText(guiData.backgroundImage);
-            this.gradationOnoff.visible = true;
-            this.gradationOnoff.enabled = true;
+            this.gradientOnoff.visible = true;
+            this.gradientOnoff.enabled = true;
             this.fileFind.visible = true;
             this.fileFind.enabled = true;
             this.splashOn.visible = true;
@@ -390,8 +352,8 @@ public class CustomTool {
         }
         panorama.setEnabled(false);
         panorama.setVisible(false);
-        this.gradationOnoff.visible = false;
-        this.gradationOnoff.enabled = false;
+        this.gradientOnoff.visible = false;
+        this.gradientOnoff.enabled = false;
         this.splashOn.visible = false;
         this.splashOn.enabled = false;
     }

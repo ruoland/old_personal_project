@@ -1,9 +1,12 @@
 package com.ruoland.customclient;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FileUtils;
+import ruo.minigame.api.NBTAPI;
 import ruo.minigame.api.RenderAPI;
 
 import java.io.File;
@@ -82,26 +85,15 @@ public class GuiCustomBase extends GuiScreen {
         System.out.println("키누름");
     }
 
+    public void writeNBT(GuiData guiData, NBTTagCompound tagCompound){
+
+    }
+    public void readNBT(GuiData guiData, NBTTagCompound tagCompound){
+
+    }
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
-
-        if (button.id == 200) {
-            if (button.displayString.equals("false"))
-                button.displayString = "true";
-            else if (button.displayString.equals("true"))
-                button.displayString = "false";
-        }
-        if (button.id == 201) {
-            if (button.displayString.equals("스플래시 켜기")) {
-                button.displayString = "스플래시 끄기";
-                customTool.splashVisible = false;
-            }
-            else if (button.displayString.equals("스플래시 끄기")) {
-                button.displayString = "스플래시 켜기";
-                customTool.splashVisible = true;
-            }
-        }
         if (button.id == 10) {
             File file = (CustomTool.fileChooser());
             if (file != null) {

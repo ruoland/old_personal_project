@@ -43,26 +43,18 @@ public class GuiData {
         }
         nbtapi.getNBT().setInteger("Texture Size", textureList.size());
         nbtapi.getNBT().setString("backgroundImage", backgroundImage);
-        nbtapi.getNBT().setBoolean("Gradient", customTool.canRenderGradient());
-        nbtapi.getNBT().setBoolean("Splash", customTool.splashOn.displayString.equals("스플래시 켜기"));
+        customTool.guiScreen.writeNBT(this, nbtapi.getNBT());
         nbtapi.saveNBT();
+
     }
 
 
     public void readBackground() {
         if (nbtapi.getNBT().hasKey("backgroundImage")) {
             backgroundImage = nbtapi.getNBT().getString("backgroundImage");
-
         }
         System.out.println(nbtapi.getNBT().hasKey("Gradient") + " - " + customTool.guiScreen);
-        if (!nbtapi.getNBT().hasKey("Gradient") && customTool.guiScreen instanceof GuiMainMenuRealNew) {
-            customTool.setRenderGradient(true);
-            GuiTexture texture = new GuiTexture(0, "customclient:textures/gui/title2.png", 77, 31, 257, 45);
-            this.textureList.add(texture);
-        } else
-            customTool.setRenderGradient(nbtapi.getNBT().getBoolean("Gradient"));
-        if (nbtapi.getNBT().hasKey("Splash"))
-            customTool.splashVisible = nbtapi.getNBT().getBoolean("Splash");
+        customTool.guiScreen.readNBT(this, nbtapi.getNBT());
     }
 
     public void readTexture() {
@@ -86,7 +78,7 @@ public class GuiData {
         }
     }
 
-    public void buttonSetting() {
+    public void readButton() {
         for (int i = 0; i < customTool.getButtonList().size(); i++) {//기존에 있는 버튼을 설정함
             GuiCusButton b = (GuiCusButton) customTool.getButtonList().get(i);
             String buttonID = String.valueOf(b.id);
@@ -102,7 +94,6 @@ public class GuiData {
                 customTool.getScreen().getButton().add(b);
             }
         }
-        customTool.gradationOnoff.displayString = CustomClient.config.get("M", "onoff", "true").getString();
     }
 
     public NBTAPI getNBTAPI() {
@@ -138,8 +129,8 @@ public class GuiData {
                 100, 100));
     }
 
-    public void addTexture(String texture, int mouseX, int mouseY, int width, int height) {
-        this.textureList.add(new GuiTexture(this.textureList.size(), texture, mouseX, mouseY,
+    public void addTexture(int id, String texture, int mouseX, int mouseY, int width, int height) {
+        this.textureList.add(new GuiTexture(id, texture, mouseX, mouseY,
                 width, height));
     }
 

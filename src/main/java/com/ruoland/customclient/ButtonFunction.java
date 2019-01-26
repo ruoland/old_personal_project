@@ -6,6 +6,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.realms.RealmsBridge;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.ISaveFormat;
@@ -43,10 +44,10 @@ public class ButtonFunction {
                             buttonFunction.createNewFile();
                             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(buttonFunction.getPath()), "UTF8"));
                             switch (button.displayString) {
-                                case "싱글 플레이":
+                                case "싱글플레이":
                                     output.write("열기:맵 선택");
                                     break;
-                                case "멀티 플레이":
+                                case "멀티플레이":
                                     output.write("열기:멀티");
                                     break;
                                 case "Language":
@@ -57,6 +58,12 @@ public class ButtonFunction {
                                     break;
                                 case "설정...":
                                     output.write("열기:설정");
+                                    break;
+                                case "Realms":
+                                    output.write("열기:렐름");
+                                    break;
+                                case "Mods":
+                                    output.write("열기:모드");
                                     break;
                                 default:
                                     output.write("내용을 입력하세요.");
@@ -116,6 +123,13 @@ public class ButtonFunction {
                     break;
                 case "언어":
                     mc.displayGuiScreen(new GuiLanguage(screen, mc.gameSettings, mc.getLanguageManager()));
+                    break;
+                case "렐름":
+                    RealmsBridge realmsbridge = new RealmsBridge();
+                    realmsbridge.switchToRealms(screen);
+                    break;
+                case "모드":
+                    mc.displayGuiScreen(new net.minecraftforge.fml.client.GuiModList(screen));
                     break;
             }
         }
