@@ -177,7 +177,7 @@ public class ButtonFunction {
             try {
                 for (WorldSummary summary : isaveformat.getSaveList()) {
                     if (summary.getDisplayName().equalsIgnoreCase(worldName)) {
-                        net.minecraftforge.fml.client.FMLClientHandler.instance().tryLoadExistingWorld(new GuiWorldSelection(new GuiMainMenu()), summary);
+                        //net.minecraftforge.fml.client.FMLClientHandler.instance().tryLoadExistingWorld(new GuiWorldSelection(new GuiMainMenu()), summary);
                         return true;
                     }
                 }

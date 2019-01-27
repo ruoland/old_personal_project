@@ -8,7 +8,8 @@ import java.io.File;
 
 public class GuiTexture implements IGuiComponent {
 
-    public int x, y, width, height, id;
+    public int x, y, z, width, height, id;
+    public float alpha = 1F;
     public boolean visible = true;
     public ResourceLocation resourceLocation, dynamicLocation;
 
@@ -36,9 +37,9 @@ public class GuiTexture implements IGuiComponent {
     public void renderTexture() {
         if (visible) {
             if (dynamicLocation != null)
-                RenderAPI.drawTextureZ(dynamicLocation, this.x, this.y, -80, this.width, this.height);
+                RenderAPI.drawTextureZ(dynamicLocation, alpha, this.x, this.y, z, this.width, this.height);
             else
-                RenderAPI.drawTextureZ(resourceLocation, x, y, -80, width, height);
+                RenderAPI.drawTextureZ(resourceLocation, alpha, x, y, z, width, height);
         }
     }
 
@@ -51,18 +52,24 @@ public class GuiTexture implements IGuiComponent {
         compound.setString("texture", resourceLocation.toString());
         compound.setInteger("xPosition", x);
         compound.setInteger("yPosition", y);
+        compound.setInteger("z", z);
         compound.setInteger("Width", width);
         compound.setInteger("Height", height);
         compound.setBoolean("Visible", visible);
+        compound.setFloat("alpha", alpha);
         return compound;
     }
     public NBTTagCompound deserializeNBT(NBTTagCompound compound) {
         resourceLocation = new ResourceLocation(compound.getString("texture"));
         x = compound.getInteger("xPosition");
         y = compound.getInteger("yPosition");
+        z = compound.getInteger("z");
         width = compound.getInteger("Width");
         height = compound.getInteger("Height");
         visible = compound.getBoolean("Visible");
+        if(compound.hasKey("alpha")) {
+            alpha = compound.getFloat("alpha");
+        }
         return compound;
     }
 

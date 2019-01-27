@@ -1,6 +1,5 @@
 package com.ruoland.customclient.beta;
 
-import com.ruoland.customclient.GuiCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

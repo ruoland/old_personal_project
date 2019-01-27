@@ -1,6 +1,7 @@
 package com.ruoland.customclient;
 
 import com.ruoland.customclient.component.GuiCusButton;
+import com.ruoland.customclient.component.GuiString;
 import com.ruoland.customclient.component.GuiTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 
 public class GuiData {
     private GuiCustomBase customBase;
+    protected ArrayList<GuiString> stringList = new ArrayList<GuiString>();
 
-    protected ArrayList<Integer> removeList = new ArrayList<Integer>();
     protected ArrayList<GuiTexture> textureList = new ArrayList<GuiTexture>();
     private final NBTAPI nbtapi;
     Minecraft mc;
@@ -27,13 +28,25 @@ public class GuiData {
 
     }
 
+    public ArrayList<GuiTexture> getTextureList() {
+        return textureList;
+    }
+
+    public ArrayList<GuiString> getStringList() {
+        return stringList;
+    }
+
     public void saveNBT(GuiScreen mainmenu) {
+        nbtapi.resetNBT();
         for (GuiButton bu : customBase.getButtonList()) {
             GuiCusButton button = (GuiCusButton) bu;
             String buttonID = new StringBuffer("Button ").append(bu.id).toString();
-
             nbtapi.getNBT().setTag(buttonID, button.serializeNBT(mainmenu));
         }
+        for (GuiString bu : stringList) {
+            nbtapi.getNBT().setTag("String "+bu.getID(), bu.serializeNBT(mainmenu));
+        }
+
         for (int i = 0; i < textureList.size(); i++) {
             GuiTexture texture = textureList.get(i);
             if (texture.resourceLocation.toString().equals("") || texture.resourceLocation.toString().equals("minecraft:")) {
@@ -41,8 +54,10 @@ public class GuiData {
                 i--;
                 continue;
             }
+            if(texture.resourceLocation.toString().contains("dynamic")){
+                System.out.println(texture.resourceLocation + " 가 다이나믹으로 저장됨"+texture.dynamicLocation);
+            }
             String textureID = new StringBuffer("Texture ").append(texture.id).toString();
-
             nbtapi.getNBT().setTag(textureID, texture.serializeNBT());
         }
         nbtapi.getNBT().setInteger("Texture Size", textureList.size());
@@ -66,7 +81,6 @@ public class GuiData {
     }
 
     private void readButton() {
-
         for (GuiButton bu : customBase.getButtonList()) {//기존에 있는 버튼을 설정함
             GuiCusButton b = (GuiCusButton) bu;
             String buttonID = new StringBuffer("Button ").append(b.id).toString();
@@ -79,9 +93,15 @@ public class GuiData {
             if (nbtapi.getNBT().hasKey(buttonID)) {
                 b.deserializeNBT(nbtapi.getNBT().getCompoundTag(buttonID));
                 customBase.getButtonList().add(b);
-
             }
-
+        }
+        for (int i = 0; i < 255; i++) {
+            String buttonID = new StringBuffer("String ").append(i).toString();
+            if(nbtapi.getNBT().hasKey(buttonID)) {
+                GuiString guiString = new GuiString("",0,0,0);
+                guiString.deserializeNBT(nbtapi.getNBT().getCompoundTag(buttonID));
+            }else
+                break;
         }
     }
 
@@ -90,8 +110,6 @@ public class GuiData {
             backgroundImage = nbtapi.getNBT().getString("backgroundImage");
         }
         customBase.readNBT(this, nbtapi.getNBT());
-        System.out.println(backgroundImage);
-
     }
 
     private void readTexture() {

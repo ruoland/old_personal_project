@@ -1,4 +1,6 @@
-package com.ruoland.customclient;
+package com.ruoland.customclient.beta;
+
+import com.ruoland.customclient.GuiCustomBase;
 
 public class GuiCustom extends GuiCustomBase {
     public GuiCustom(String name) {

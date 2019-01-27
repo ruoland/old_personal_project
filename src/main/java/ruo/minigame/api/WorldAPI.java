@@ -52,8 +52,11 @@ public class WorldAPI {
         TickRegister.register(new AbstractTick(TickEvent.Type.CLIENT, 1, false) {
             @Override
             public void run(TickEvent.Type type) {
-                mc.theWorld.sendQuittingDisconnectingPacket();
-                mc.loadWorld((WorldClient) null);
+
+                if (mc.theWorld != null) {
+                    mc.theWorld.sendQuittingDisconnectingPacket();
+                    mc.loadWorld((WorldClient) null);
+                }
                 ISaveFormat isaveformat = mc.getSaveLoader();
                 if (isaveformat.canLoadWorld(worldName)) {
                     try {
@@ -521,7 +524,6 @@ public class WorldAPI {
     }
 
     public static String getCurrentWorldName() {
-
         if(getServer() == null || getServer().worldServers.length == 0 || getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
             return "noworld";
         }

@@ -31,6 +31,9 @@ public class NBTAPI {
     public NBTTagCompound getNBT() {
         return this.nbttagcompound;
     }
+    public void resetNBT(){
+        nbttagcompound = new NBTTagCompound();
+    }
 
     public void saveNBT() {
         try {

@@ -14,7 +14,8 @@ import ruo.minigame.api.RenderAPI;
 import java.io.File;
 
 public class GuiCusButton extends GuiButton implements IGuiComponent {
-    public boolean canEdit = true;
+    public boolean canEdit = true, displayStringVisible = true;
+    public float alpha = 0.6F;
     public ResourceLocation dynamicLocation;
     public ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
 
@@ -36,6 +37,8 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
      */
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         GuiCustomBase customBase = (GuiCustomBase) mc.currentScreen;
+        if(alpha > 1F)
+            alpha = 0.99F;
         if (buttonTextures.toString().startsWith("https://") || buttonTextures.toString().startsWith("http://")) {
             File f = new File("resourcepacks/CustomClient/assets/customclient/textures/gui/");
             f.mkdirs();
@@ -46,7 +49,7 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
         if (this.visible) {
             FontRenderer fontrenderer = mc.fontRendererObj;
             mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
             int i = this.getHoverState(this.hovered);
             GlStateManager.enableBlend();
@@ -54,9 +57,9 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             if (!buttonTextures.toString().equals("minecraft:textures/gui/widgets.png")) {
                 if (dynamicLocation != null)
-                    RenderAPI.drawTexture(dynamicLocation.toString(), 1.0F, this.xPosition, this.yPosition, this.width, this.height);
+                    RenderAPI.drawTexture(dynamicLocation.toString(), alpha, this.xPosition, this.yPosition, this.width, this.height);
                 else
-                    RenderAPI.drawTexture(buttonTextures.toString(), 1.0F, this.xPosition, this.yPosition, this.width, this.height);
+                    RenderAPI.drawTexture(buttonTextures.toString(), alpha, this.xPosition, this.yPosition, this.width, this.height);
             } else {
                 this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
                 this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
@@ -71,16 +74,18 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
             } else if (this.hovered) {
                 j = 16777120;
             }
-
+            if(displayStringVisible)
             this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
         }
     }
 
-
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
+    {
+        return this.enabled && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+    }
 
     public NBTTagCompound serializeNBT(GuiScreen menuRealNew) {
         int i2 = menuRealNew.height / 4 + 48;
-
         NBTTagCompound compound = new NBTTagCompound();
         if(displayString.equalsIgnoreCase(""))
             displayString = "Language";
@@ -91,7 +96,8 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
         compound.setInteger("Width", width);
         compound.setInteger("Height", height);
         compound.setBoolean("Visible", visible);
-        System.out.println("직렬화  "+displayString+xPosition+ " - "+yPosition);
+        compound.setBoolean("displayStringVisible", displayStringVisible);
+        compound.setFloat("alpha", alpha);
         return compound;
     }
 
@@ -104,9 +110,11 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
             width = compound.getInteger("Width");
             height = compound.getInteger("Height");
             visible = compound.getBoolean("Visible");
-            System.out.println("역역역렬화  "+displayString+xPosition+ " - "+yPosition);
+            if(compound.hasKey("alpha"))
+            alpha = compound.getFloat("alpha");
+            if(compound.hasKey("displayStringVisible"))
+                displayStringVisible = compound.getBoolean("displayStringVisible");
         }
-        System.out.println("역역역렬화22222  "+displayString+xPosition+ " - "+yPosition);
 
     }
 
