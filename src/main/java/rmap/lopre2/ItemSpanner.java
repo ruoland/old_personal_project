@@ -11,13 +11,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import rmap.lopre2.jump1.*;
-import ruo.map.lopre2.jump1.*;
 import rmap.lopre2.jump2.EntityBigBlock;
 import rmap.lopre2.jump2.EntityKnockbackBlock;
 
 public class ItemSpanner extends Item {
-    public static String renderText;
-    public static double debX, debZ;
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
@@ -69,14 +66,6 @@ public class ItemSpanner extends Item {
         }
 
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
-    }
-
-
-    int delay = 0;
-
-    @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override

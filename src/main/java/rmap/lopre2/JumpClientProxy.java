@@ -4,8 +4,6 @@ package rmap.lopre2;
 import minigameLib.api.RenderAPI;
 import rmap.lopre2.jump1.*;
 import rmap.lopre2.jump2.*;
-import ruo.map.lopre2.jump1.*;
-import ruo.map.lopre2.jump2.*;
 import rmap.lopre2.jump3.EntityLavaSpawnBlock;
 
 public class JumpClientProxy extends JumpCommonProxy {
@@ -26,6 +24,6 @@ public class JumpClientProxy extends JumpCommonProxy {
         RenderAPI.registerRender(EntityWaterBlockCreator.class);
         RenderAPI.registerRender(EntityPreBlock.class);
         RenderAPI.registerRender(EntityBuildBlock.class);
-        RenderAPI.registerRender(EntityInvisibleBlock.class);;
+        RenderAPI.registerRender(EntityInvisibleBlock.class);
     }
 }
