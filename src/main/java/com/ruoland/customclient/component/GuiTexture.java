@@ -1,13 +1,13 @@
 package com.ruoland.customclient.component;
 
+import com.ruoland.customclient.RenderAPI;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import ruo.minigame.api.RenderAPI;
 
 import java.io.File;
 
 public class GuiTexture implements IGuiComponent {
-
+    private boolean isLock;
     public int x, y, z, width, height, id;
     public float alpha = 1F;
     public boolean visible = true;
@@ -57,6 +57,7 @@ public class GuiTexture implements IGuiComponent {
         compound.setInteger("Height", height);
         compound.setBoolean("Visible", visible);
         compound.setFloat("alpha", alpha);
+        compound.setBoolean("isLock", isLock);
         return compound;
     }
     public NBTTagCompound deserializeNBT(NBTTagCompound compound) {
@@ -69,7 +70,10 @@ public class GuiTexture implements IGuiComponent {
         visible = compound.getBoolean("Visible");
         if(compound.hasKey("alpha")) {
             alpha = compound.getFloat("alpha");
+
         }
+        isLock = compound.getBoolean("isLock");
+
         return compound;
     }
 
@@ -84,12 +88,12 @@ public class GuiTexture implements IGuiComponent {
     }
 
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
@@ -101,6 +105,16 @@ public class GuiTexture implements IGuiComponent {
     @Override
     public boolean isVisible() {
         return visible;
+    }
+
+    @Override
+    public boolean isLock() {
+        return isLock;
+    }
+
+    @Override
+    public void setLock(boolean lock) {
+        isLock = lock;
     }
 
     @Override

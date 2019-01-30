@@ -1,6 +1,11 @@
 package ruo.asdfrpg.skill;
 
-import ruo.asdfrpg.EntityLight;
+import atomicstryker.dynamiclights.client.DynamicLights;
+import net.minecraft.entity.player.EntityPlayer;
+import ruo.asdfrpg.skill.entity.EntityLight;
+import ruo.asdfrpg.skill.entity.EntityLightAdapter;
+import ruo.asdfrpg.skill.system.Skill;
+import ruo.asdfrpg.skill.system.SkillStack;
 
 public class SkillLight extends Skill {
 
@@ -12,6 +17,8 @@ public class SkillLight extends Skill {
         skillStack.getPlayer().worldObj.spawnEntityInWorld(light);
         light.setFollower(skillStack.getPlayer(), skillStack.getLevel());
         System.out.println(skillStack.getPlayer());
+        DynamicLights.addLightSource(new EntityLightAdapter(light, 15));
+
     }
 
 

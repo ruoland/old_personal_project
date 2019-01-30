@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class GuiMainMenuRealNew extends GuiCustomBase {
     private static final ResourceLocation SPLASH_TEXTS = new ResourceLocation("texts/splashes.txt");
@@ -59,6 +61,8 @@ public class GuiMainMenuRealNew extends GuiCustomBase {
             IOUtils.closeQuietly((Closeable) iresource);
         }
     }
+
+
 
     public static boolean splashVisible = true;
     public static boolean gradient = true;

@@ -4,10 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
-import ruo.asdfrpg.skill.PlayerSkill;
-import ruo.asdfrpg.skill.Skill;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.SkillStack;
+import ruo.asdfrpg.skill.system.PlayerSkill;
+import ruo.asdfrpg.skill.system.Skill;
+import ruo.asdfrpg.skill.system.SkillHelper;
+import ruo.asdfrpg.skill.system.SkillStack;
 import ruo.minigame.api.RenderAPI;
 
 import java.io.IOException;
@@ -34,6 +34,8 @@ public class GuiAsdfSkill extends GuiScreen {
             } else {
                 SkillStack stack = playerSkill.getSkill(skill);
                 mc.fontRendererObj.drawString("레벨" + stack.getLevel(), (int) skill.lineX(), (int) skill.lineY() - 10, 0xFFFFFF);
+                mc.fontRendererObj.drawString("이름" + stack.getSkill().getLocalizedName(), (int) skill.lineX(), (int) skill.lineY() - 20, 0xFFFFFF);
+
                 RenderAPI.drawTexture("asdfrpg:bar.png", skill.lineX(), skill.lineY(), 32 / (stack.getMaxExp() - stack.getExp()), 8);
             }
         }

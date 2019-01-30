@@ -1,4 +1,4 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -6,11 +6,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import ruo.minigame.map.EntityDefaultBlock;
 
-public class EntityAsdfBlock extends EntityDefaultBlock {
+public class EntitySkillBlock extends EntityDefaultBlock {
     public EntityPlayer player = null;
     private EntityLivingBase target;
 
-    public EntityAsdfBlock(World worldIn) {
+    public EntitySkillBlock(World worldIn) {
         super(worldIn);
         this.setBlockMode(Blocks.STONE);
     }

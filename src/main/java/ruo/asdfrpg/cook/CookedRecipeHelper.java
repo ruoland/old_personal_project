@@ -3,8 +3,8 @@ package ruo.asdfrpg.cook;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.Skills;
+import ruo.asdfrpg.skill.system.SkillHelper;
+import ruo.asdfrpg.skill.system.Skills;
 
 import java.util.ArrayList;
 import java.util.List;

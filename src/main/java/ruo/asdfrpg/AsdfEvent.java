@@ -1,4 +1,4 @@
-package ruo.asdfrpg.event;
+package ruo.asdfrpg;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import ruo.asdfrpg.GuiAsdfGameOver;
-import ruo.asdfrpg.skill.SkillHelper;
+import ruo.asdfrpg.skill.system.SkillHelper;
 import ruo.minigame.api.LoginEvent;
 import ruo.minigame.api.WorldAPI;
 

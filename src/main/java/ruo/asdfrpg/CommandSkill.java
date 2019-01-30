@@ -1,14 +1,15 @@
 package ruo.asdfrpg;
 
+import atomicstryker.dynamiclights.client.DynamicLights;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import ruo.asdfrpg.skill.*;
+import ruo.asdfrpg.skill.entity.EntityLightAdapter;
+import ruo.asdfrpg.skill.system.*;
 import ruo.minigame.action.ActionEffect;
 
 import javax.annotation.Nullable;
@@ -32,12 +33,12 @@ public class CommandSkill extends CommandBase {
             return;
         }
         if (args[0].equalsIgnoreCase("light")) {
-//            DynamicLights.addLightSource(new EntityLightAdapter((EntityPlayer) sender, 15));
+            DynamicLights.addLightSource(new EntityLightAdapter((EntityPlayer) sender, 15));
+            return;
         }
         if (args[0].equalsIgnoreCase("reg")) {
             SkillHelper.registerSkill((EntityPlayer) sender, Skills.valueOf(args[1].toUpperCase()));
             SkillHelper.getPlayerSkill((EntityPlayer) sender).useSkill(Skills.valueOf(args[1].toUpperCase()));
-
             return;
         }
         if (args[0].equalsIgnoreCase("return")) {

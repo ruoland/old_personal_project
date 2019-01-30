@@ -1,6 +1,7 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.system;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import ruo.minigame.api.NBTAPI;
 import ruo.minigame.api.WorldAPI;
 

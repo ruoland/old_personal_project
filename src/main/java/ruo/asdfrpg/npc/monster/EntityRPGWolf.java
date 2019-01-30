@@ -1,4 +1,4 @@
-package ruo.asdfrpg;
+package ruo.asdfrpg.npc.monster;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;

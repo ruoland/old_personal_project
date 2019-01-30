@@ -1,4 +1,4 @@
-package ruo.asdfrpg;
+package ruo.asdfrpg.npc;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

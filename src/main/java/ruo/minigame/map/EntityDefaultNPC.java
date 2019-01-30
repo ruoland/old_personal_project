@@ -223,9 +223,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (isServerWorld()) {
             if (getDataManager().get(ON_DEATH_TIMER) && getDeathTime() >= 0) {
                 setDeathTimer(getDeathTime() - 1);
-                System.out.println("데스 타이머 깍임" + getDeathTime());
                 if (getDeathTime() <= 0) {
-                    System.out.println("죽음");
                     onTimerDeath();
                 }
             }

@@ -1,16 +1,14 @@
 package com.ruoland.customclient.beta;
 
+import com.ruoland.customclient.AbstractTick;
+import com.ruoland.customclient.RenderAPI;
+import com.ruoland.customclient.TickRegister;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.Sys;
-import ruo.minigame.api.RenderAPI;
-import ruo.minigame.effect.AbstractTick;
-import ruo.minigame.effect.TickRegister;
 
 public class CommandDrawTexture extends CommandBase {
     @Override

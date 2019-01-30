@@ -1,4 +1,4 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.system;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

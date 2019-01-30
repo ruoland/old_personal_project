@@ -8,10 +8,12 @@ public interface IGuiComponent
     public void setTexture(ResourceLocation resourceLocation);
     public int getX();
     public int getY();
-    public int getWidth();
-    public int getHeight();
+    public float getWidth();
+    public float getHeight();
     public int getID();
     public boolean isVisible();
+    public boolean isLock();
+    public void setLock(boolean lock);
     public ResourceLocation getTexture();
 
 }

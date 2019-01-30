@@ -4,6 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ruo.asdfrpg.skill.entity.EntitySkillBlock;
+import ruo.asdfrpg.skill.entity.EntityThrowBlock;
+import ruo.asdfrpg.skill.system.Skill;
+import ruo.asdfrpg.skill.system.SkillStack;
 import ruo.minigame.api.PosHelper;
 import ruo.minigame.api.Direction;
 
@@ -16,14 +20,14 @@ public class SkillBlockThrowAttack extends Skill {
         super.onEffect(playerSkill, data);
         EntityPlayer player = playerSkill.getPlayer();
         PosHelper posHelper = new PosHelper(player);
-        EntityAsdfBlock asdfBlock = new EntityAsdfBlock(player.worldObj);
+        EntitySkillBlock asdfBlock = new EntitySkillBlock(player.worldObj);
         asdfBlock.setPosition(posHelper.getXZ(Direction.FORWARD, 1, true).addVector(0, 5, 0));
         player.worldObj.spawnEntityInWorld(asdfBlock);
         for(int i = 0; i < 5;i++)
         getRandomBlock(player, asdfBlock);
     }
 
-    public BlockPos getRandomBlock(EntityPlayer player, EntityAsdfBlock asdfBlock) {
+    public BlockPos getRandomBlock(EntityPlayer player, EntitySkillBlock asdfBlock) {
         World world = player.worldObj;
         Random random = player.worldObj.rand;
         double x = player.posX + random.nextInt(24);

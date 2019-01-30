@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
-import ruo.asdfrpg.skill.SkillHelper;
+import ruo.asdfrpg.skill.system.SkillHelper;
 import ruo.cmplus.deb.DebAPI;
 import ruo.minigame.api.RenderAPI;
 

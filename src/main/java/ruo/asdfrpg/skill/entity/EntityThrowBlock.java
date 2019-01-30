@@ -1,4 +1,4 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;

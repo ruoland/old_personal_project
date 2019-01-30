@@ -1,7 +1,8 @@
 package com.ruoland.customclient.button;
 
-import com.ruoland.customclient.component.GuiCusButton;
 import com.ruoland.customclient.GuiCustomBase;
+import com.ruoland.customclient.WorldAPI;
+import com.ruoland.customclient.component.GuiCusButton;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -14,11 +15,11 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import ruo.minigame.api.WorldAPI;
 
 import java.awt.*;
 import java.io.*;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ButtonFunction {
@@ -31,7 +32,7 @@ public class ButtonFunction {
 
     public void init() {
         try {
-            File functionFolder = new File("./function");
+            File functionFolder = new File("./resourcepacks/CustomClient/function");
             functionFolder.mkdirs();
             for (GuiButton button : customBase.getButtonList()) {
                 if (buttonBucketMap.containsKey(button)) {
@@ -41,7 +42,7 @@ public class ButtonFunction {
 
                 if (button instanceof GuiCusButton) {
                     if (((GuiCusButton) button).canEdit) {
-                        File buttonFunction = new File("./function/" + button.displayString + ".txt");
+                        File buttonFunction = new File("./resourcepacks/CustomClient/function/" + button.displayString + ".txt");
                         if (!buttonFunction.isFile()) {
                             buttonFunction.createNewFile();
                             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(buttonFunction.getPath()), "UTF8"));
@@ -81,7 +82,9 @@ public class ButtonFunction {
             e.printStackTrace();
         }
     }
-
+    public ArrayList<String> getScript(GuiCusButton button){
+        return buttonBucketMap.get(button).getScripts();
+    }
     public void run(GuiButton button) {
         try {
             for (String script : buttonBucketMap.get(button).getScripts()) {

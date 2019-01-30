@@ -9,8 +9,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Mouse;
-import ruo.minigame.api.NBTAPI;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class GuiData {
@@ -22,7 +22,9 @@ public class GuiData {
     Minecraft mc;
 
     public GuiData(GuiCustomBase customBase, String fileName) {
-        nbtapi = new NBTAPI("./" + fileName + ".dat");
+        File file = new File("./resourcepacks/CustomClient/assets/customclient/");
+                file.mkdirs();
+        nbtapi = new NBTAPI("./resourcepacks/CustomClient/assets/customclient/" + fileName + ".dat");
         mc = Minecraft.getMinecraft();
         this.customBase = customBase;
 
@@ -42,8 +44,10 @@ public class GuiData {
             GuiCusButton button = (GuiCusButton) bu;
             String buttonID = new StringBuffer("Button ").append(bu.id).toString();
             nbtapi.getNBT().setTag(buttonID, button.serializeNBT(mainmenu));
+
         }
         for (GuiString bu : stringList) {
+            System.out.println("저장할 떄 스트링 아이디!!! "+bu.getID());
             nbtapi.getNBT().setTag("String "+bu.getID(), bu.serializeNBT(mainmenu));
         }
 
@@ -75,6 +79,7 @@ public class GuiData {
     }
 
     public void loadComponent() {
+        nbtapi.readNBT();
         readButton();
         readTexture();
         readBackground();
@@ -97,10 +102,12 @@ public class GuiData {
         }
         for (int i = 0; i < 255; i++) {
             String buttonID = new StringBuffer("String ").append(i).toString();
+
             if(nbtapi.getNBT().hasKey(buttonID)) {
                 GuiString guiString = new GuiString("",0,0,0);
                 guiString.deserializeNBT(nbtapi.getNBT().getCompoundTag(buttonID));
-            }else
+                stringList.add(guiString);
+            }else if( i > 10)
                 break;
         }
     }

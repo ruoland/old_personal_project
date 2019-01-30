@@ -40,7 +40,7 @@ public class CustomClientEvent {
     @SubscribeEvent
     public void event(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiMainMenu) {
-            event.setGui(new GuiMainMenuRealNew("메인메뉴"));
+            event.setGui(new GuiMainMenuRealNew("mainmenu"));
         } else {
             uiTool.closeBrowser();
         }

@@ -1,4 +1,4 @@
-package ruo.asdfrpg;
+package ruo.asdfrpg.npc;
 
 import net.minecraft.world.World;
 import ruo.minigame.map.EntityDefaultNPC;

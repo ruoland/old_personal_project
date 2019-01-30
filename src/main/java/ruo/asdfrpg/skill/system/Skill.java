@@ -1,4 +1,4 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.system;
 
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.AsdfRPG;

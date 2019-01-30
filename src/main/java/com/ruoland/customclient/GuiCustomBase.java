@@ -7,9 +7,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
@@ -20,7 +17,6 @@ import org.apache.commons.io.FileUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import ruo.minigame.api.RenderAPI;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,7 +40,7 @@ public class GuiCustomBase extends GuiScreen {
     private boolean editMode = false;
     protected GuiTextField backgroundField, nameField, textureField;
     protected GuiTextField imagePathField;// 텍스쳐 생성할 때
-    protected GuiCusButton gradientOnoff, fileFind, splashOn, visibleDisplayString;
+    protected GuiCusButton gradientOnoff, fileFind, splashOn, visibleDisplayString, lockButton;
     private IGuiComponent selectComponent;
 
     public GuiCustomBase(String name) {
@@ -57,6 +53,8 @@ public class GuiCustomBase extends GuiScreen {
         splashOn = new GuiCusButton(201, 20, 90, 80, 20, "스플래시 켜기", false);
         fileFind = new GuiCusButton(10, 20, 70, 70, 20, "사진 선택", false);
         visibleDisplayString = new GuiCusButton(11, 20, 100, 70, 20, "버튼 이름 숨기기", false);
+        lockButton = new GuiCusButton(12, 20, 120, 70, 20, "버튼 잠금", false);
+
     }
 
     public void setGuiData(GuiData data) {
@@ -68,10 +66,14 @@ public class GuiCustomBase extends GuiScreen {
     public void initGui() {
         super.initGui();
         guiData.textureList.clear();
-        buttonList.add(splashOn);
-        buttonList.add(gradientOnoff);
+
+        if(this instanceof GuiMainMenuRealNew) {
+            buttonList.add(gradientOnoff);
+            buttonList.add(splashOn);
+        }
         buttonList.add(fileFind);
         buttonList.add(visibleDisplayString);
+        buttonList.add(lockButton);
         fieldAllEnable(false);
         textureEnable(false);
         guiData.loadComponent();
@@ -83,7 +85,7 @@ public class GuiCustomBase extends GuiScreen {
         String texture = guiData.backgroundImage;
 
         if (texture.startsWith("http") || texture.startsWith("Http") || texture.startsWith("www.youtube") || texture.startsWith("youtube.com")) {
-            if (texture.indexOf("youtube") != -1) {
+            if (texture.contains("youtube")) {
                 drawBrowser("https://www.youtube.com/embed/" + getYoutubeID(texture), width, height);
             } else {
                 drawBrowser(texture, width, height);
@@ -143,6 +145,10 @@ public class GuiCustomBase extends GuiScreen {
         return selectComponent instanceof GuiTexture;
     }
 
+    public boolean checkLock(IGuiComponent iGuiComponent){
+        return !iGuiComponent.isLock() || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+
+    }
     /**
      * Called when the mouse is clicked.
      */
@@ -163,14 +169,15 @@ public class GuiCustomBase extends GuiScreen {
                 for (int i = 0; i < buttonList.size(); ++i) {//버튼 클릭 메서드
                     GuiCusButton guibutton = (GuiCusButton) buttonList.get(buttonList.size() - 1 - i);
                     if (guibutton.mousePressed(this.mc, mouseX, mouseY)) {
-                        if (guibutton.canEdit)
+                        if (guibutton.canEdit && checkLock(guibutton)) {
                             selectButton(guibutton);
-                        return;
+                            return;
+                        }
                     }
                 }
                 for (int i = 0; i < getGuiData().stringList.size(); ++i) {//문자 클릭 메서드
                     GuiString guibutton = (GuiString) getGuiData().stringList.get(getGuiData().stringList.size() - 1 - i);
-                    if (guibutton.mousePressed(this.mc, mouseX, mouseY)) {
+                    if (guibutton.mousePressed(this.mc, mouseX, mouseY) && checkLock(guibutton)) {
                         selectString(guibutton);
                         return;
                     }
@@ -178,7 +185,7 @@ public class GuiCustomBase extends GuiScreen {
                 GuiTexture topTexture = null;
                 for (int i = 0; i < guiData.textureList.size(); i++) {
                     GuiTexture g = guiData.textureList.get(guiData.textureList.size() - 1 - i);
-                    if (g.mousePressed(mouseX, mouseY) && g.visible) {
+                    if (g.mousePressed(mouseX, mouseY) && g.visible && checkLock(g)) {
                         if (topTexture == null || topTexture.z < g.z) ;
                         topTexture = g;
                     }
@@ -203,6 +210,7 @@ public class GuiCustomBase extends GuiScreen {
         textureEnable(false);
         nameField.setVisible(true);
         nameField.setText(guibutton.text);
+        lockButton.setVisible(true);
         fileFind.setVisible(false);
         visibleDisplayString.setVisible(false);
     }
@@ -215,6 +223,7 @@ public class GuiCustomBase extends GuiScreen {
         textureField.setText(String.valueOf(guibutton.buttonTextures));
         fileFind.setVisible(true);
         visibleDisplayString.setVisible(true);
+        lockButton.setVisible(true);
     }
 
     public void selectTexture(GuiTexture g) {
@@ -224,6 +233,7 @@ public class GuiCustomBase extends GuiScreen {
         System.out.println(g.resourceLocation);
         imagePathField.setText(g.resourceLocation.toString());
         imagePathField.setVisible(true);
+        lockButton.setVisible(true);
     }
 
     public void enableBackgroundField() {
@@ -279,6 +289,7 @@ public class GuiCustomBase extends GuiScreen {
             setEditMode();
         }
         if (editMode) {
+
             for (GuiTextField f : fieldList) {
                 f.textboxKeyTyped(typedChar, keyCode);
             }
@@ -291,6 +302,10 @@ public class GuiCustomBase extends GuiScreen {
                 if (isSelectTexture()) {
                     getSelTexture().setVisible(false);
                     removeList.add(getSelTexture());
+                }
+                if (isSelectString()) {
+                    getSelString().setVisible(false);
+                    removeList.add(getSelString());
                 }
             }
             if (Keyboard.isKeyDown(56) && Keyboard.isKeyDown(Keyboard.KEY_C)) {
@@ -308,7 +323,16 @@ public class GuiCustomBase extends GuiScreen {
                 if (nameField.getVisible()) {
                     int i = Mouse.getEventX() * mc.currentScreen.width / mc.displayWidth;
                     int j = mc.currentScreen.height - Mouse.getEventY() * mc.currentScreen.height / mc.displayHeight - 1;
-                    getGuiData().stringList.add(new GuiString(nameField.getText(), i, j,  getGuiData().stringList.size()));
+                    getGuiData().stringList.add(new GuiString(nameField.getText(), i, j, getGuiData().stringList.size()));
+                }
+            }
+            if (Keyboard.isKeyDown(56) && Keyboard.isKeyDown(Keyboard.KEY_F)) {
+                if (nameField.getVisible()) {
+                    int i = Mouse.getEventX() * mc.currentScreen.width / mc.displayWidth;
+                    int j = mc.currentScreen.height - Mouse.getEventY() * mc.currentScreen.height / mc.displayHeight - 1;
+                    GuiString guiString = new GuiString(nameField.getText(), i, j, getGuiData().stringList.size());
+                    guiString.isScale = true;
+                    getGuiData().stringList.add(guiString);
                 }
             }
             if (Keyboard.isKeyDown(56) && Keyboard.isKeyDown(Keyboard.KEY_X)) {
@@ -357,6 +381,12 @@ public class GuiCustomBase extends GuiScreen {
         }
         if (button.id == 11) {
             getSelButton().displayStringVisible = !getSelButton().displayStringVisible;
+        }
+        if(button.displayString.equalsIgnoreCase("위치 잠금")){
+            selectComponent.setLock(!selectComponent.isLock());
+            System.out.println("락이 "+selectComponent.isLock()+"으로 설정됨");
+            selectComponent = null;
+            lockButton.setVisible(false);
         }
         if (isEditMode()) {
             return;
@@ -407,17 +437,16 @@ public class GuiCustomBase extends GuiScreen {
             if (isSelectString()) {
                 GuiString button = getSelString();
                 if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                    button.width--;
+                    button.width-=0.05;
                 }
                 if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                    button.width++;
+                    button.width+=0.05;
                 }
-
                 if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                    button.height--;
+                    button.height-=0.05;
                 }
                 if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                    button.height++;
+                    button.height+=0.05;
                 }
             }
             if (isSelectButton()) {
@@ -483,6 +512,10 @@ public class GuiCustomBase extends GuiScreen {
             {
                 getSelButton().displayString = nameField.getText();
             }
+            if (isSelectString())// 버튼 수정 업데이트
+            {
+                getSelString().text = nameField.getText();
+            }
         }
     }
 
@@ -495,8 +528,8 @@ public class GuiCustomBase extends GuiScreen {
         if (editMode) {
             mc.fontRendererObj.drawString("수정 모드", 0, 0, 0x000000);
             if (selectComponent != null) {
-                mc.fontRendererObj.drawString("선택한 컴포넌트 좌표 " + selectComponent.getX() + " - " + selectComponent.getY(), 0, 20, 0xFFFFFF);
-                mc.fontRendererObj.drawString("선택한 컴포넌트 사이즈" + selectComponent.getWidth() + " - " + selectComponent.getHeight(), 0, 40, 0xFFFFFF);
+                //mc.fontRendererObj.drawString("선택한 컴포넌트 좌표 " + selectComponent.getX() + " - " + selectComponent.getY(), 0, 20, 0xFFFFFF);
+                //mc.fontRendererObj.drawString("선택한 컴포넌트 사이즈" + selectComponent.getWidth() + " - " + selectComponent.getHeight(), 0, 40, 0xFFFFFF);
             }
 
         }
@@ -573,6 +606,7 @@ public class GuiCustomBase extends GuiScreen {
         this.gradientOnoff.setVisible(false);
         this.splashOn.setVisible(false);
         this.visibleDisplayString.setVisible(false);
+        this.lockButton.setVisible(false);
     }
 
     public void textureEnable(boolean enable) {
@@ -628,29 +662,7 @@ public class GuiCustomBase extends GuiScreen {
 
 
     public static File fileChooser() {
-        File mcmeta = new File("resourcepacks/customclient/pack.mcmeta");
 
-        if (!mcmeta.isFile()) {
-            try {
-                mcmeta.createNewFile();
-                BufferedWriter writer = new BufferedWriter(new FileWriter(mcmeta));
-                writer.write("{");
-                writer.newLine();
-                writer.write("  \"pack\": {");
-                writer.newLine();
-                writer.write("    \"pack_format\": 2,");
-                writer.newLine();
-                writer.write("    \"description\": \"CustomClient\"");
-                writer.newLine();
-                writer.write("  }");
-                writer.newLine();
-                writer.write("}");
-                writer.flush();
-                writer.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         JFileChooser chooser = new JFileChooser();
         {
             try {

@@ -1,21 +1,22 @@
 package com.ruoland.customclient.component;
 
+import com.ruoland.customclient.RenderAPI;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import ruo.cmplus.cm.v18.function.VAR;
-import ruo.minigame.api.RenderAPI;
 
 public class GuiString implements IGuiComponent {
-    public boolean isVisible = true;
-    public int x, y, width = 1, height = 1, id;
+    public boolean isVisible = true, isLock = false;
+    public int x, y, id;
+    public float width = 1, height = 1;
     public String text;
     private Minecraft mc = Minecraft.getMinecraft();
+    public boolean isScale;
 
-    public GuiString(String text, int x, int y,int id) {
+    public GuiString(String text, int x, int y, int id) {
         this.text = text;
         this.x = x;
         this.y = y;
@@ -24,10 +25,15 @@ public class GuiString implements IGuiComponent {
 
     public void renderString() {
         if (isVisible) {
-            System.out.println(text);
-            GlStateManager.scale(width, height, 0);
-            GlStateManager.translate(-width, -height,0);
-            RenderAPI.drawString(text, x, y, 0xFFFFFF);
+            if (isScale) {
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(x, y, 0);
+                GlStateManager.scale(width, height, width);
+                GlStateManager.translate(-x,-y,0);
+                RenderAPI.drawString(text, x, y, 0xFFFFFF);
+                GlStateManager.popMatrix();
+            } else
+                RenderAPI.drawString(text, x, y, 0xFFFFFF);
         }
     }
 
@@ -37,6 +43,10 @@ public class GuiString implements IGuiComponent {
                 && p_146116_3_ < y + 9;
     }
 
+    public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color) {
+        fontRendererIn.drawStringWithShadow(text, (float) (x - fontRendererIn.getStringWidth(text) / 2), (float) y, color);
+    }
+
 
     public NBTTagCompound serializeNBT(GuiScreen menuRealNew) {
         int i2 = menuRealNew.height / 4 + 48;
@@ -44,9 +54,12 @@ public class GuiString implements IGuiComponent {
         compound.setString("Text", text);
         compound.setInteger("xPosition", x);
         compound.setInteger("yPosition", y);
-        compound.setInteger("Width", width);
-        compound.setInteger("Height", height);
+        compound.setFloat("Width", width);
+        compound.setFloat("Height", height);
         compound.setBoolean("Visible", isVisible);
+
+        compound.setBoolean("isLock", isLock);
+        compound.setBoolean("isScale", isScale);
         return compound;
     }
 
@@ -54,10 +67,11 @@ public class GuiString implements IGuiComponent {
         text = compound.getString("Text");
         x = compound.getInteger("xPosition");
         y = compound.getInteger("yPosition");
-        width = compound.getInteger("Width");
-        height = compound.getInteger("Height");
+        width = compound.getFloat("Width");
+        height = compound.getFloat("Height");
         isVisible = compound.getBoolean("Visible");
-
+        isLock = compound.getBoolean("isLock");
+        isScale = compound.getBoolean("isScale");
     }
 
     @Override
@@ -81,12 +95,12 @@ public class GuiString implements IGuiComponent {
     }
 
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
@@ -98,6 +112,16 @@ public class GuiString implements IGuiComponent {
     @Override
     public boolean isVisible() {
         return isVisible;
+    }
+
+    @Override
+    public boolean isLock() {
+        return isLock;
+    }
+
+    @Override
+    public void setLock(boolean lock) {
+        isLock = lock;
     }
 
     @Override

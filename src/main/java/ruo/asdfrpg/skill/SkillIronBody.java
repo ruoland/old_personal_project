@@ -2,6 +2,8 @@ package ruo.asdfrpg.skill;
 
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import ruo.asdfrpg.skill.system.Skill;
+import ruo.asdfrpg.skill.system.SkillStack;
 
 public class SkillIronBody extends Skill {
     @Override

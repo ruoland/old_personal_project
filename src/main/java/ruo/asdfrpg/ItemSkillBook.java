@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import ruo.asdfrpg.skill.Skill;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.Skills;
+import ruo.asdfrpg.skill.system.Skill;
+import ruo.asdfrpg.skill.system.SkillHelper;
+import ruo.asdfrpg.skill.system.Skills;
 
 import java.util.List;
 

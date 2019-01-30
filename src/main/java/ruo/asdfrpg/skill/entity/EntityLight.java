@@ -1,5 +1,7 @@
-package ruo.asdfrpg;
+package ruo.asdfrpg.skill.entity;
 
+import atomicstryker.dynamiclights.client.DynamicLights;
+import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -33,8 +35,7 @@ public class EntityLight extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if(player != null) {
-            this.setPosition(player.posX, player.posY + 2, player.posZ);
-
+            this.setPosition(player.posX, player.posY , player.posZ);
         }
     }
 

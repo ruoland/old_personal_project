@@ -20,11 +20,18 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ruo.asdfrpg.camp.BlockCampFire;
 import ruo.asdfrpg.cook.CookedRecipe;
 import ruo.asdfrpg.cook.CookedRecipeHelper;
-import ruo.asdfrpg.event.AsdfEvent;
-import ruo.asdfrpg.skill.*;
+import ruo.asdfrpg.npc.EntityTrader;
+import ruo.asdfrpg.npc.monster.EntityRPGGolem;
+import ruo.asdfrpg.npc.monster.EntityRPGWolf;
+import ruo.asdfrpg.skill.entity.EntityLight;
+import ruo.asdfrpg.skill.entity.EntitySkillBlock;
+import ruo.asdfrpg.skill.entity.EntityThrowBlock;
+import ruo.asdfrpg.skill.potion.PotionFly;
+import ruo.asdfrpg.skill.potion.PotionIronBody;
+import ruo.asdfrpg.skill.system.Skills;
 import ruo.cmplus.deb.DebAPI;
 
-//@Mod(modid = "asdfrpg", dependencies = "required-after:DynamicLights")
+@Mod(modid = "asdfrpg", dependencies = "required-after:DynamicLights")
 public class AsdfRPG {
     public static final PotionIronBody ironBodyPotion = new PotionIronBody(false, 0);
 
@@ -45,7 +52,7 @@ public class AsdfRPG {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        DebAPI.registerEntity(this, "NO-EGG-AsdfBlock", EntityAsdfBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-SkillBlock", EntitySkillBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-ThrowBlock", EntityThrowBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-Light", EntityLight.class);
         DebAPI.registerEntity(this, "RPGWolf", EntityRPGWolf.class);
@@ -55,6 +62,7 @@ public class AsdfRPG {
         GameRegistry.register(villageReturn);
         GameRegistry.register(respawn);
         MinecraftForge.EVENT_BUS.register(new AsdfEvent());
+        MinecraftForge.EVENT_BUS.register(new SkillEvent());
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_BEEF), new ItemStack(Items.BEEF)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_PORKCHOP),  new ItemStack(Items.PORKCHOP)));
         CookedRecipeHelper.registerRecipe(new CookedRecipe(new ItemStack(Items.COOKED_RABBIT),  new ItemStack(Items.RABBIT)));

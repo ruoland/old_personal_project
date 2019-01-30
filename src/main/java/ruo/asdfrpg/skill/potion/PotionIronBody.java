@@ -1,4 +1,4 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.potion;
 
 import net.minecraft.potion.Potion;
 

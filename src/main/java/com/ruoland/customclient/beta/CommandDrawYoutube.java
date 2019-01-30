@@ -1,14 +1,14 @@
 package com.ruoland.customclient.beta;
 
+import com.ruoland.customclient.AbstractTick;
 import com.ruoland.customclient.GuiCustomBase;
+import com.ruoland.customclient.TickRegister;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import ruo.minigame.effect.AbstractTick;
-import ruo.minigame.effect.TickRegister;
 
 public class CommandDrawYoutube extends CommandBase {
     @Override

@@ -1,7 +1,8 @@
-package ruo.asdfrpg.skill;
+package ruo.asdfrpg.skill.system;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import ruo.asdfrpg.skill.system.Skill;
 
 public class SkillStack {
     private NBTTagCompound tagCompound = new NBTTagCompound();

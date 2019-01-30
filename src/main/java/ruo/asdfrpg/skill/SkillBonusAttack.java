@@ -1,6 +1,9 @@
 package ruo.asdfrpg.skill;
 
-public class SkillAutoAttack extends Skill{
+import ruo.asdfrpg.skill.system.Skill;
+import ruo.asdfrpg.skill.system.SkillStack;
+
+public class SkillBonusAttack extends Skill {
 
     @Override
     public void onEffect(SkillStack playerSkill, int data) {

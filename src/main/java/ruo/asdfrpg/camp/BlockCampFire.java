@@ -16,8 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ruo.asdfrpg.cook.CookedRecipeHelper;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.Skills;
+import ruo.asdfrpg.skill.system.SkillHelper;
+import ruo.asdfrpg.skill.system.Skills;
 import ruo.minigame.api.EntityAPI;
 
 import java.util.ArrayList;

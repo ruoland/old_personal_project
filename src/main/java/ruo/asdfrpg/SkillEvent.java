@@ -1,7 +1,7 @@
-package ruo.asdfrpg.event;
+package ruo.asdfrpg;
 
+import atomicstryker.dynamiclights.client.DynamicLights;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,11 +11,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ruo.asdfrpg.AsdfRPG;
-import ruo.asdfrpg.EntityLight;
-import ruo.asdfrpg.skill.EntityAsdfBlock;
-import ruo.asdfrpg.skill.PlayerSkill;
-import ruo.asdfrpg.skill.SkillHelper;
-import ruo.asdfrpg.skill.Skills;
+import ruo.asdfrpg.skill.entity.EntityLight;
+import ruo.asdfrpg.skill.entity.EntityLightAdapter;
+import ruo.asdfrpg.skill.entity.EntitySkillBlock;
+import ruo.asdfrpg.skill.system.PlayerSkill;
+import ruo.asdfrpg.skill.system.SkillHelper;
+import ruo.asdfrpg.skill.system.Skills;
+import ruo.minigame.api.WorldAPI;
 
 public class SkillEvent {
 
@@ -43,8 +45,8 @@ public class SkillEvent {
             System.out.println("플레이어가 공격함");
             EntityPlayer player = (EntityPlayer) e.getSource().getEntity();
             PlayerSkill playerSkill = SkillHelper.getPlayerSkill(player.getUniqueID());
-            if (playerSkill.isRegister(Skills.AUTO_ATTACK)) {
-                EntityAsdfBlock asdfBlock = new EntityAsdfBlock(player.worldObj);
+            if (playerSkill.isRegister(Skills.BONUS_ATTACK)) {
+                EntitySkillBlock asdfBlock = new EntitySkillBlock(player.worldObj);
                 asdfBlock.setPosition(player.getPosition().add(0, 3, 0));
                 if (e.getEntityLiving().isServerWorld())
                     player.worldObj.spawnEntityInWorld(asdfBlock);
@@ -56,9 +58,10 @@ public class SkillEvent {
 
     @SubscribeEvent
     public void lightSkill(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityLight) {
-            EntityLight arrow = (EntityLight) event.getEntity();
-//            DynamicLights.addLightSource(new EntityLightAdapter(arrow, SkillHelper.getPlayerSkill().getSkill(Skills.LIGHT).getLevel()));
+        if (event.getEntity() instanceof EntityLight && WorldAPI.getPlayer() != null) {
+            EntityLight light = (EntityLight) event.getEntity();
+            System.out.println(light);
+            DynamicLights.addLightSource(new EntityLightAdapter(light, SkillHelper.getPlayerSkill().getSkill(Skills.LIGHT).getLevel() * 7));
         }
     }
 

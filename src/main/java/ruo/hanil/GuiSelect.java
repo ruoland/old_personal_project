@@ -2,6 +2,7 @@ package ruo.hanil;
 
 import com.ruoland.customclient.beta.GuiCustom;
 import com.ruoland.customclient.component.GuiCusButton;
+import com.ruoland.customclient.component.GuiString;
 import com.ruoland.customclient.component.GuiTexture;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,6 +21,7 @@ public class GuiSelect extends GuiCustom {
     private int delay = 0, phase;//phase = 0은 이름 선택, 1은 대륙, 2는 과거 직업
     private HashMap<Integer, Float> hashMap = new HashMap<>();
     private String playerName;
+
     public GuiSelect() {
         super("customgui/han");
         playerNameField = new GuiTextField(124, mc.fontRendererObj, 175, 80, 80, 20);
@@ -31,6 +33,10 @@ public class GuiSelect extends GuiCustom {
         for (GuiTexture guiTexture : guiData.getTextureList()) {
             hashMap.put(guiTexture.id, guiTexture.alpha);
         }
+        for (GuiButton button : buttonList) {
+            GuiCusButton cusButton = (GuiCusButton) button;
+            hashMap.put(button.id, cusButton.alpha);
+        }
         findButton("결정하기").height = 20;
         updatePhase();
     }
@@ -39,29 +45,38 @@ public class GuiSelect extends GuiCustom {
         if (phase == 0) {
             playerNameField.setVisible(true);
 
-            for (GuiButton guiTexture : buttonList) {
-                GuiCusButton button2 = (GuiCusButton) guiTexture;
+            for (GuiButton guiButton : buttonList) {
+                GuiCusButton button2 = (GuiCusButton) guiButton;
                 if (button2.canEdit)
                     button2.setVisible(true);
             }
-            for (GuiButton guiTexture : buttonList) {
-                GuiCusButton button = (GuiCusButton) guiTexture;
+            for (GuiButton guiButton : buttonList) {
+                GuiCusButton button = (GuiCusButton) guiButton;
                 System.out.println(button.getTexture());
-                if (button.getTexture().toString().contains("your")) {
-                    guiTexture.visible = false;
+                if (button.getTexture().toString().contains("your") || button.getTexture().toString().contains("back")) {
+                    button.visible = false;
                 }
             }
         }
         if (phase == 1) {
             playerNameField.setVisible(false);
-            for (GuiTexture guiTexture : guiData.getTextureList()) {
-                if (guiTexture.resourceLocation.toString().contains("your")) {
-                    guiTexture.visible = true;
-                }
+            for (GuiButton guiButton : buttonList) {
+                GuiCusButton button2 = (GuiCusButton) guiButton;
+                if (button2.canEdit && button2.buttonTextures.toString().contains("your"))//대륙 선택
+                    button2.setVisible(true);
             }
         }
-        if(phase == 2){
-
+        if (phase == 2) {
+            for (GuiButton guiButton : buttonList) {
+                GuiCusButton button2 = (GuiCusButton) guiButton;
+                if (button2.canEdit && button2.buttonTextures.toString().contains("your"))//대륙 선택
+                    button2.setVisible(false);
+                if (button2.canEdit && button2.buttonTextures.toString().contains("back"))
+                    button2.setVisible(true);
+            }
+            for (GuiString string : getGuiData().getStringList()) {
+                string.setVisible(true);
+            }
         }
     }
 
@@ -69,7 +84,7 @@ public class GuiSelect extends GuiCustom {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         playerNameField.drawTextBox();
-        if(playerName != null)
+        if (playerName != null)
             fontRendererObj.drawString(playerName, 195, 100, 0xFFFFFF);
 
         if (clickButton) {
@@ -77,8 +92,8 @@ public class GuiSelect extends GuiCustom {
                 guiTexture.alpha -= 0.01;
 
             }
-            for (GuiButton guiTexture : buttonList) {
-                GuiCusButton button = (GuiCusButton) guiTexture;
+            for (GuiButton guibutton : buttonList) {
+                GuiCusButton button = (GuiCusButton) guibutton;
                 button.alpha -= 0.03;
                 if (button.alpha < -0.3)
                     moveStart = true;
@@ -97,37 +112,34 @@ public class GuiSelect extends GuiCustom {
                 if (guiTexture.alpha < hashMap.get(guiTexture.id))
                     guiTexture.alpha += 0.05;
             }
-            for (GuiButton guiTexture : buttonList) {
-                if(!isDefaultButton(guiTexture)) {
-                    ((GuiCusButton) guiTexture).alpha += 0.05;
+            for (GuiButton guiButton : buttonList) {
+                GuiCusButton cusButton = (GuiCusButton) guiButton;
+                if (!isDefaultButton(cusButton)) {
+                    if (cusButton.alpha < hashMap.get(cusButton.id))
+                        cusButton.alpha += 0.05;
                 }
             }
         }
     }
 
-    public boolean isDefaultButton(GuiButton button){
+    public boolean isDefaultButton(GuiButton button) {
         return button.displayString.equalsIgnoreCase("결정하기") || button.displayString.equalsIgnoreCase("뒤로 가기");
     }
+
     public void moveEnd() {
         moveStart = false;
         clickButton = false;
         findButton("결정하기").displayStringVisible = true;
         findButton("뒤로 가기").displayStringVisible = true;
-        for (GuiButton guiTexture : buttonList) {
-            GuiCusButton button2 = (GuiCusButton) guiTexture;
-            if (button2.canEdit)
-                button2.setVisible(true);
-        }
-
+        updatePhase();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
         if (button.displayString.equalsIgnoreCase("결정하기")) {
-            if(phase == 0){
-                if(playerNameField.getText().equalsIgnoreCase(""))
-                {
+            if (phase == 0) {
+                if (playerNameField.getText().equalsIgnoreCase("")) {
                     return;
                 }
                 playerName = playerNameField.getText();
@@ -140,7 +152,7 @@ public class GuiSelect extends GuiCustom {
             findButton("뒤로 가기").displayStringVisible = false;
 
             phase++;
-            updatePhase();
+
         }
     }
 

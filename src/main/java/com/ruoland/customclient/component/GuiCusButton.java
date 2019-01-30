@@ -1,6 +1,7 @@
 package com.ruoland.customclient.component;
 
 import com.ruoland.customclient.GuiCustomBase;
+import com.ruoland.customclient.RenderAPI;
 import com.ruoland.customclient.URLDownload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -9,13 +10,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import ruo.minigame.api.RenderAPI;
 
 import java.io.File;
 
 public class GuiCusButton extends GuiButton implements IGuiComponent {
     public boolean canEdit = true, displayStringVisible = true;
-    public float alpha = 0.6F;
+    public float alpha = 1F;
+    public boolean isLock;
     public ResourceLocation dynamicLocation;
     public ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
 
@@ -30,6 +31,8 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
         this.canEdit = canEdit;
         visible = canEdit;
+        if(!canEdit)
+            alpha = 0.5F;
 
     }
     /**
@@ -98,6 +101,7 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
         compound.setBoolean("Visible", visible);
         compound.setBoolean("displayStringVisible", displayStringVisible);
         compound.setFloat("alpha", alpha);
+        compound.setBoolean("isLock", isLock);
         return compound;
     }
 
@@ -114,6 +118,7 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
             alpha = compound.getFloat("alpha");
             if(compound.hasKey("displayStringVisible"))
                 displayStringVisible = compound.getBoolean("displayStringVisible");
+            isLock = compound.getBoolean("isLock");
         }
 
     }
@@ -134,12 +139,12 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
     }
 
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
@@ -151,6 +156,16 @@ public class GuiCusButton extends GuiButton implements IGuiComponent {
     @Override
     public boolean isVisible() {
         return visible;
+    }
+
+    @Override
+    public boolean isLock() {
+        return isLock;
+    }
+
+    @Override
+    public void setLock(boolean lock) {
+        isLock = lock;
     }
 
     @Override

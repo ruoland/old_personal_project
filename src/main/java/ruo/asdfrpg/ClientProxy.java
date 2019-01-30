@@ -1,11 +1,9 @@
 package ruo.asdfrpg;
 
-import ruo.asdfrpg.CommonProxy;
-import ruo.asdfrpg.EntityLight;
 import ruo.asdfrpg.camp.TileCampFire;
 import ruo.asdfrpg.camp.TileCampFireRenderer;
-import ruo.asdfrpg.skill.RenderLight;
-import ruo.cmplus.deb.DebAPI;
+import ruo.asdfrpg.skill.entity.EntityLight;
+import ruo.asdfrpg.skill.entity.RenderLight;
 import ruo.minigame.api.RenderAPI;
 
 public class ClientProxy extends CommonProxy {
