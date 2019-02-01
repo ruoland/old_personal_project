@@ -9,8 +9,8 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
-import rmap.lopre2.EntityPreBlock;
-import rmap.lopre2.jump1.EntityLavaBlock;
+import map.lopre2.EntityPreBlock;
+import map.lopre2.jump1.EntityLavaBlock;
 
 public class CommandMg extends CommandPlusBase {
 

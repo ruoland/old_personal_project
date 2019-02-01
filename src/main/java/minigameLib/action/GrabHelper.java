@@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Loader;
-import rmap.lopre2.EntityPreBlock;
+import map.lopre2.EntityPreBlock;
 
 import java.util.ArrayList;
 import java.util.HashMap;

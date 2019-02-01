@@ -9,7 +9,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import rmap.lopre2.CommandJB;
+import map.lopre2.CommandJB;
 
 import java.util.List;
 

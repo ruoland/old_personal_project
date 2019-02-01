@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import rmap.lopre2.LoPre2;
+import map.lopre2.LoPre2;
 
 public class ScrollEvent {
     public ScrollEvent() {

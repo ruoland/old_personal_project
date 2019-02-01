@@ -10,8 +10,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import rmap.lopre2.CommandJB;
-import rmap.lopre2.EntityPreBlock;
+import map.lopre2.CommandJB;
+import map.lopre2.EntityPreBlock;
 
 public class EntityJumpDoubleReset extends EntityPreBlock {
     private static final DataParameter<Integer> INVISIBLE_TIME = EntityDataManager.createKey(EntityJumpDoubleReset.class, DataSerializers.VARINT);

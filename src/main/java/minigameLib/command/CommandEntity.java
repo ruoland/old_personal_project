@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import rmap.lopre2.EntityPreBlock;
+import map.lopre2.EntityPreBlock;
 
 import java.util.List;
 

@@ -35,8 +35,8 @@ public class Scroll extends AbstractMiniGame {
         Camera.getCamera().playerCamera(true);
         s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);
         pos(Keyboard.KEY_A);//카메라 초기화
-        ActionEffect.doubleJump(true);
-        ActionEffect.crawl(true);
+        KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), false);
+
         return super.start();
     }
 

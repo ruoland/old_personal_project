@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import rmap.lopre2.CommandJB;
+import map.lopre2.CommandJB;
 
 public class EntityJumpLavaCreator extends EntityDefaultNPC {
     public EntityJumpLavaCreator(World world)

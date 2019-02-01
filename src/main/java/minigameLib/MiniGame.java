@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import rmap.lopre2.CommandJumpThree;
+import map.lopre2.CommandJumpThree;
 
 import java.util.logging.Logger;
 
@@ -61,7 +61,7 @@ public class MiniGame {
     public static SimpleNetworkWrapper network;
     public static Block blockInvisible = new BlockInvisible(Material.ANVIL);
 
-    @SidedProxy(clientSide = "ruo.minigame.ClientProxy", serverSide = "ruo.minigame.CommonProxy")
+    @SidedProxy(clientSide = "minigameLib.ClientProxy", serverSide = "minigameLib.CommonProxy")
     public static CommonProxy proxy;
 
     @Instance("MiniGame")

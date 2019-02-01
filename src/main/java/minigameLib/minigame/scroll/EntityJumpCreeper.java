@@ -7,7 +7,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import rmap.lopre2.CommandJB;
+import map.lopre2.CommandJB;
 
 import java.util.List;
 

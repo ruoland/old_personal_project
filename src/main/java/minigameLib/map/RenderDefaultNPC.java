@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import rmap.lopre2.jump1.EntityBuildBlock;
+import map.lopre2.jump1.EntityBuildBlock;
 
 import static minigameLib.map.TypeModel.BLOCK;
 
