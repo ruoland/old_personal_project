@@ -252,7 +252,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
         Vec3d vec = Minecraft.getMinecraft().thePlayer.getLookVec();
         this.setPosition((WorldAPI.x() + vec.xCoord * ax),
-                WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight() + vec.yCoord * ax,
+                WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight()+ vec.yCoord * ax,
                 WorldAPI.z() + vec.zCoord * ax);
         int xyz = 1;
         if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL))

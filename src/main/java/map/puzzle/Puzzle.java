@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid ="PuzzleMap", name = "Puzzle Map")
@@ -24,5 +25,11 @@ public class Puzzle {
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent e){
         MinecraftForge.EVENT_BUS.register(new PuEvent());
+    }
+
+    @Mod.EventHandler
+    public void server(FMLServerStartingEvent e){
+        e.registerServerCommand(new CommandPuzzle());
+        e.registerServerCommand(new CommandPuzzlem());
     }
 }

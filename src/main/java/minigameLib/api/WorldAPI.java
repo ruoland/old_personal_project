@@ -551,7 +551,10 @@ public class WorldAPI {
 //        if(client)
 //            command(Minecraft.getMinecraft().thePlayer, command);
 //        else if(server)
+        if(WorldAPI.getPlayer() != null)
             command(WorldAPI.getPlayer(), command);
+        else
+            System.out.println("플레이어가 없어 명령어가 실행되지 않았습니다."+command);
     }
 
     public static void command(ICommandSender sender, String command) {
