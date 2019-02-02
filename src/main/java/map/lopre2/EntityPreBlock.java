@@ -49,6 +49,10 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         this.setDeathTimer(-1);
     }
 
+    public boolean doesEntityNotTriggerPressurePlate() {
+        return true;
+    }
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -104,18 +108,18 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                 return super.processInteract(player, hand, stack);
             }
 
-                if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
-                    setInv(!isInv());
-                    setInvisible(isInv());
-                    System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨");
-                    return super.processInteract(player, hand, stack);
-                }
-                if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
-                    setTeleportLock(!canTeleportLock());
-                    System.out.println("isLock이" + canTeleportLock() + "으로 설정됨");
-                    return super.processInteract(player, hand, stack);
-                }
-            if (player.isSneaking()) {
+            if (DebAPI.isKeyDown(Keyboard.KEY_COMMA)) {
+                setInv(!isInv());
+                setInvisible(isInv());
+                System.out.println("블럭의 투명이" + isInvisible() + isInv() + "으로 설정됨");
+                return super.processInteract(player, hand, stack);
+            }
+            if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_L)) {
+                setTeleportLock(!canTeleportLock());
+                System.out.println("isLock이" + canTeleportLock() + "으로 설정됨");
+                return super.processInteract(player, hand, stack);
+            }
+            if (player.isSneaking() && player.isCreative()) {
                 setTeleport(true);
                 return super.processInteract(player, hand, stack);
             }
@@ -132,11 +136,11 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     }
 
-    public String getJumpName(){
+    public String getJumpName() {
         return dataManager.get(JUMP_NAME);
     }
 
-    public void setJumpName(String name){
+    public void setJumpName(String name) {
         dataManager.set(JUMP_NAME, name);
     }
 
@@ -156,6 +160,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
+
         if (CommandJB.isDebMode) {
             if (source.getEntity() != null && (source.getEntity().isSneaking() || WorldAPI.equalsHeldItem(Items.BONE) || WorldAPI.equalsHeldItem(Items.ARROW))) {
                 if (WorldAPI.equalsHeldItem(Items.ARROW)) {
@@ -353,7 +358,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         //super.despawnEntity();
     }
 
-    public void dataCopy(EntityLavaBlock lavaBlock, double x, double y, double z){
+    public void dataCopy(EntityPreBlock lavaBlock, double x, double y, double z) {
         lavaBlock.setTeleportLock(canTeleportLock());
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
@@ -374,8 +379,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         compound.setBoolean("falling", canTeleportLock());
         compound.setBoolean("isInv", isInv());
         compound.setInteger("difficulty", getDifficulty());
-        if(!getJumpName().isEmpty())
-        compound.setString("jumpname", getJumpName());
+        if (!getJumpName().isEmpty())
+            compound.setString("jumpname", getJumpName());
     }
 
     @Override
@@ -386,8 +391,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
         setDifficulty(compound.getInteger("difficulty"));
-        if(compound.hasKey("jumpname"))
-        setJumpName(compound.getString("jumpname"));
+        if (compound.hasKey("jumpname"))
+            setJumpName(compound.getString("jumpname"));
     }
 
     @Override

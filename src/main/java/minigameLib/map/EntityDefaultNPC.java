@@ -304,7 +304,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void teleportSpawnPos() {
-        setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
+        setPositionAndUpdate(getSpawnX(), getSpawnY(), getSpawnZ());
     }
 
     public double getSpawnX() {

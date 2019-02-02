@@ -150,16 +150,13 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
-        if (LoPre2.checkWorld()) {
-
-            if (event.getEntityLiving() instanceof EntityPlayer) {
-                if (event.getSource() == DamageSource.onFire || event.getSource() == DamageSource.inFire) {
-                    event.setCanceled(true);
-                    event.getEntityLiving().extinguish();
-                    fireAttack = true;
-                } else
-                    fireAttack = false;
-            }
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            if (event.getSource() == DamageSource.onFire || event.getSource() == DamageSource.inFire) {
+                event.setCanceled(true);
+                event.getEntityLiving().extinguish();
+                fireAttack = true;
+            } else
+                fireAttack = false;
         }
     }
 

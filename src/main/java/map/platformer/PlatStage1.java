@@ -1,11 +1,11 @@
 package map.platformer;
 
+import map.platformer.chapter1.EntityCowBumo;
 import minigameLib.api.ScriptAPI;
 import minigameLib.api.WorldAPI;
 import net.minecraft.init.Blocks;
 import map.platformer.chapter1.EntityBabyCow;
 import map.platformer.chapter1.EntityBossHorse;
-import map.platformer.chapter1.EntityCowBumo;
 
 public class PlatStage1 extends PlatStage {
     private ScriptAPI.Script stage1;
