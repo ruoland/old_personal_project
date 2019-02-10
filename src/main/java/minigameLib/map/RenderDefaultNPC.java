@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 import map.lopre2.jump1.EntityBuildBlock;
 
 import static minigameLib.map.TypeModel.BLOCK;
+import static minigameLib.map.TypeModel.SHAPE_BLOCK;
 
 @SideOnly(Side.CLIENT)
 public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<EntityDefaultNPC> {
@@ -87,26 +88,27 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 return;
             }
 
-            if (npc instanceof EntityDefaultBlock) {
+            if (npc.getModel() == SHAPE_BLOCK) {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableAlpha();
                 GlStateManager.enableBlend();
                 GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
                 GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
                 GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-                GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
+                GlStateManager.translate(npc.getTraX(), -2 + npc.getTraY(), npc.getTraZ());
                 GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
                 GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
-                EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
+                if(npc instanceof EntityDefaultBlock) {
+                    EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
 
-                for (EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()) {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
-
-                    this.bindTexture(blockData.getTexture());
-                    this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                    GlStateManager.popMatrix();
+                    for (EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()) {
+                        GlStateManager.pushMatrix();
+                        GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
+                        this.bindTexture(blockData.getTexture());
+                        this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                        GlStateManager.popMatrix();
+                    }
                 }
 
                 this.bindTexture(npc.getTexture());
@@ -197,6 +199,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         }
         if(entity.getModel() == BLOCK && !DEFAULT_RES_LOC.equals(RenderAPI.getBlockTexture(entity.getCurrentBlock()))){
             DEFAULT_RES_LOC = RenderAPI.getBlockTexture(entity.getCurrentBlock());
+        }
+        if(entity.getModel() == SHAPE_BLOCK && !DEFAULT_RES_LOC.equals(RenderAPI.getBlockTexture(entity.getCurrentBlock()))){
+            DEFAULT_RES_LOC = RenderAPI.getBlockTexture(entity.getCurrentBlock());
+            mainModel = new ModelDefaultBlock();
         }
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }

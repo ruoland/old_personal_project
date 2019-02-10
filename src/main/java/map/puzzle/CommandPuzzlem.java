@@ -18,8 +18,8 @@ public class CommandPuzzlem extends CommandPlusBase {
             EntityDefaultNPC entitydefClient = (EntityDefaultNPC) entity;
 
             if(args[0].equalsIgnoreCase("com")){
-                EntityPuzzleBlock serverBlock = (EntityPuzzleBlock) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
-                EntityPuzzleBlock clientBlock = (EntityPuzzleBlock) entity;
+                EntityPuzzleBlockButton serverBlock = (EntityPuzzleBlockButton) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
+                EntityPuzzleBlockButton clientBlock = (EntityPuzzleBlockButton) entity;
                 serverBlock.setCommand(t.getCommand(args, 1, args.length));
             }
         }

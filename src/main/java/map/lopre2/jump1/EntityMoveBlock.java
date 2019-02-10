@@ -198,6 +198,7 @@ public class EntityMoveBlock extends EntityPreBlock {
             endPos[0] = compound.getDouble("endPosX");
             endPos[1] = compound.getDouble("endPosY");
             endPos[2] = compound.getDouble("endPosZ");
+            if(posX != getSpawnX() && posY != getSpawnY() && posZ != getSpawnZ())
             teleportSpawnPos();
         }
     }

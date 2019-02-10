@@ -195,7 +195,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (eyeCloseTime > 0 && getModel() == TypeModel.NPC) {
             eyeCloseTime--;
         }
-        if (isSturn()) {
+        if (dataManager.get(LOCK_PITCH) != 0 || dataManager.get(LOCK_YAW) != 0 || isSturn()) {
             this.rotationPitch = getDataManager().get(LOCK_PITCH);
             this.rotationYaw = getDataManager().get(LOCK_YAW);
             this.rotationYawHead = getDataManager().get(LOCK_YAW);
@@ -408,6 +408,18 @@ public class EntityDefaultNPC extends EntityModelNPC {
         onSturn();
     }
 
+    public void setLockYawPitch(float yaw, float pitch){
+        dataManager.set(LOCK_YAW, yaw);
+        dataManager.set(LOCK_PITCH, pitch);
+    }
+
+    public void setLockYaw(float yaw){
+        dataManager.set(LOCK_YAW, yaw);
+    }
+
+    public void setLockPitch(float pitch){
+        dataManager.set(LOCK_PITCH, pitch);
+    }
     /**
      * 스턴 걸렸을 때나 해제됐을 때 호출되는 메서드
      */

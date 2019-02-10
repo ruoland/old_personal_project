@@ -238,8 +238,7 @@ class EntityModelNPC extends EntityMob {
     public void setBlockMode(ItemStack stack) {
         this.setSize(1F, 1F);
         setModel(TypeModel.BLOCK);
-        setBlockMetadata(stack.getMetadata());
-        this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
+        setBlock(stack);
     }
 
     public void setBlock(Block block) {
@@ -341,7 +340,7 @@ class EntityModelNPC extends EntityMob {
             setTexture(compound.getString("texture"));
         if ((Block.getBlockById(compound.getInteger("BlockID")) != Blocks.AIR)) {
             setBlockMode(Block.getBlockById(compound.getInteger("BlockID")));
-//            setTexture(compound.getString("blockTexture"));
+            setTexture(compound.getString("blockTexture"));
         }
         setBlockMetadata(compound.getInteger("BlockMetadata"));
         dataManager.set(HEAD_BLOCK_ID, compound.getInteger("HEAD_BLOCK_ID"));
@@ -370,6 +369,7 @@ class EntityModelNPC extends EntityMob {
         npc.setScale(getScaleX(), getScaleY(), getScaleZ());
         npc.setTransparency(getTransparency());
         npc.setRGB(getRed(), getGreen(), getBlue());
+        npc.typeModel = typeModel;
     }
 
     public void printModel() {

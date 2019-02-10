@@ -2,6 +2,7 @@ package map.puzzle;
 
 import cmplus.cm.v17.CommandClip;
 import cmplus.util.CommandPlusBase;
+import minigameLib.CommandMg;
 import minigameLib.api.WorldAPI;
 import minigameLib.map.EntityDefaultNPC;
 import net.minecraft.client.Minecraft;

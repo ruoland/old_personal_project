@@ -212,8 +212,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         } else
             setInvisible(isInv());
 
-        this.rotationYaw = 0;
-        this.renderYawOffset = 0;
         if (delayTick > 0) {
             delayTick--;
         }
@@ -227,8 +225,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             }
         }
         super.onLivingUpdate();
-        this.rotationYaw = 0;
-        this.renderYawOffset = 0;
     }
 
     protected void resetHeight() {
@@ -367,10 +363,10 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         lavaBlock.setBlockMode(getCurrentBlock());
         this.copyModel(lavaBlock);
         lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
-
         lavaBlock.setBlockMetadata(getBlockMetadata());
         lavaBlock.setInv(isInv());
         lavaBlock.setInvisible(isInvisible());
+        lavaBlock.setModel(typeModel);
     }
 
     @Override

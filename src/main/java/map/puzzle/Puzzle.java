@@ -19,7 +19,13 @@ public class Puzzle {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e){
         DebAPI.registerEntity(this, "PuzzleBlock", EntityPuzzleBlock.class);
+
+        DebAPI.registerEntity(this, "PuzzleBlockButton", EntityPuzzleBlockButton.class);
+        DebAPI.registerEntity(this, "PuzzleBlockArrow", EntityPuzzleBlockArrow.class);
+
         RenderAPI.registerRender(EntityPuzzleBlock.class);
+        RenderAPI.registerRender(EntityPuzzleBlockButton.class);
+        RenderAPI.registerRender(EntityPuzzleBlockArrow.class);
     }
 
     @Mod.EventHandler

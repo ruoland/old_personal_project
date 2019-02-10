@@ -40,6 +40,19 @@ public class CommandMg extends CommandPlusBase {
                 entitydefServer.setBlockMode(Block.getBlockFromName(arg1));
                 entitydefClient.setBlockMode(Block.getBlockFromName(arg1));
             }
+            if (type.equalsIgnoreCase("yp")) {
+                entitydefServer.setLockYawPitch((float) parseDouble(arg1), (float)parseDouble(args[2]));
+                entitydefClient.setLockYawPitch((float) parseDouble(arg1), (float)parseDouble(args[2]));
+
+            }
+            if (type.equalsIgnoreCase("yaw")) {
+                entitydefServer.setLockYaw((float) parseDouble(arg1));
+                entitydefClient.setLockYaw((float) parseDouble(arg1));
+            }
+            if (type.equalsIgnoreCase("pitch")) {
+                entitydefServer.setLockPitch((float) parseDouble(arg1));
+                entitydefClient.setLockPitch((float) parseDouble(arg1));
+            }
             if (type.equalsIgnoreCase("rotate") || type.equalsIgnoreCase("ro")) {
                 x = t.math(arg1, entitydefServer.getRotateX(), Float.valueOf(args[2]));
                 y = t.math(arg1, entitydefServer.getRotateY(), Float.valueOf(args[3]));

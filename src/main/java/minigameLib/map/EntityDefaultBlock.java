@@ -45,11 +45,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
     }
 
     @Override
-    public void setDead() {
-        super.setDead();
-    }
-
-    @Override
     protected void entityInit() {
         super.entityInit();
         dataManager.register(CAN_KNOCK_BACK, true);
@@ -88,6 +83,13 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
         blockTexture = RenderAPI.getBlockTexture(((ItemBlock) stack.getItem()).getBlock());
         System.out.println(blockTexture);
         dataManager.set(ENTITY_SKIN, blockTexture.toString());
+    }
+
+    public ResourceLocation getTexture() {
+        if (!dataManager.get(ENTITY_SKIN).equalsIgnoreCase(blockTexture.toString()))
+            blockTexture = new ResourceLocation(dataManager.get(ENTITY_SKIN));
+
+        return blockTexture;
     }
 
     public void addBlock(Block block, BlockPos pos) {
@@ -136,13 +138,6 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
 
         return defaultBlock;
 
-    }
-
-    public ResourceLocation getTexture() {
-        if (!dataManager.get(ENTITY_SKIN).equalsIgnoreCase(blockTexture.toString()))
-            blockTexture = new ResourceLocation(dataManager.get(ENTITY_SKIN));
-
-        return blockTexture;
     }
 
     @Override
