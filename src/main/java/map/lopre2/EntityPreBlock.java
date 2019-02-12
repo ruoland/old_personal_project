@@ -2,6 +2,7 @@ package map.lopre2;
 
 import cmplus.deb.DebAPI;
 import minigameLib.api.EntityAPI;
+import minigameLib.api.RenderAPI;
 import minigameLib.api.WorldAPI;
 import minigameLib.map.EntityDefaultNPC;
 import net.minecraft.block.Block;
@@ -66,8 +67,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        if (getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0)
-            setRotate(90, 90, 90);
         this.setTeleport(true);
 
         return super.onInitialSpawn(difficulty, livingdata);
@@ -103,6 +102,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             }
             if (stack != null && Block.getBlockFromItem(stack.getItem()) != null) {
                 setBlock(stack);
+                setTexture(RenderAPI.getBlockTexture(getCurrentBlock()));
                 prevBlock = Block.getBlockFromItem(stack.getItem());
                 System.out.println("블럭 교체됨" + stack.getItem());
                 return super.processInteract(player, hand, stack);
@@ -317,7 +317,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             } else {
                 setDead();
                 setTeleport(false);
-                System.out.println(isDead + " - " + isTeleport() + " - " + lavaBlock.isTeleport());
             }
         }
         if (isServerWorld() && DebAPI.isKeyDown(Keyboard.KEY_J) && delayTick == 0) {

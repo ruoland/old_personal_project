@@ -27,8 +27,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.internal.EntitySpawnHandler;
 import org.lwjgl.Sys;
 
 import java.util.List;
@@ -40,7 +42,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
     public EntityPuzzleBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
-        setBlockMode(Blocks.QUARTZ_BLOCK);
+        setBlockMode(Blocks.DISPENSER);
         setJumpName("퍼즐 블럭");
         setTeleportLock(true);
         this.setModel(TypeModel.SHAPE_BLOCK);
@@ -71,6 +73,9 @@ public class EntityPuzzleBlock extends EntityPreBlock {
     @Override
     protected void collideWithEntity(Entity entityIn) {
         entityIn.applyEntityCollision(this);
+        if (this.getCurrentBlock() == Blocks.EMERALD_BLOCK) {
+            ((EntityLivingBase) entityIn).knockBack(this, 1.4F, this.posX - entityIn.posX, this.posZ - entityIn.posZ);
+        }
         if (entityIn instanceof EntityPreBlock)
             setVelocity(0, 0, 0);
         super.collideWithEntity(entityIn);
@@ -83,9 +88,18 @@ public class EntityPuzzleBlock extends EntityPreBlock {
             if (player.isSneaking()) {
                 setTeleport(true);
                 this.setTransparency(0.5F);
+            } else {
+                isFly = true;
+                System.out.println("플라이" + isFly);
             }
         }
         return super.processInteract(player, hand, stack);
+    }
+
+    @Override
+    public void teleport() {
+        super.teleport();
+        isFly = true;
     }
 
     @Override
@@ -96,7 +110,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (isTeleport() && source.getEntity() != null && !source.getEntity().isSneaking()) {
+        if (source.getEntity() instanceof EntityPlayer && isTeleport() && source.getEntity() != null && !source.getEntity().isSneaking()) {
             this.setTeleport(false);
             this.addVelocity(source.getEntity().getLookVec().xCoord * 3, source.getEntity().getLookVec().yCoord * 6, source.getEntity().getLookVec().zCoord * 3);
             dataManager.set(THROW_STATE, true);
@@ -112,7 +126,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
         super.onLivingUpdate();
 
         //나무버튼이거나 텔포 중에는 떨어지지 않게 함
-        isFly = isTeleport();
+
         if (dataManager.get(THROW_STATE)) {
             addThrowTime();
             if (getThrowTime() > 100) {
@@ -126,14 +140,14 @@ public class EntityPuzzleBlock extends EntityPreBlock {
         }
 
         if (getCurrentBlock() == Blocks.EMERALD_BLOCK) {
-            double knockbackSize = 0.9;
+            double knockbackSize = 1.5D;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - knockbackSize, this.posY, this.posZ - knockbackSize, this.posX + knockbackSize, this.posY + 1.5, this.posZ + knockbackSize));
             if (!list.isEmpty()) {
                 for (Entity entity : list) {
                     if ((entity instanceof EntityPuzzleBlock) && !entity.noClip) {
-                        ((EntityLivingBase) entity).knockBack(this, 0.4F, this.posX - entity.posX, this.posZ - entity.posZ);
-
+                        System.out.println("블럭 찾음");
+                        ((EntityLivingBase) entity).knockBack(this, 1.4F, this.posX - entity.posX, this.posZ - entity.posZ);
                     }
                 }
             }
@@ -143,7 +157,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
     @Override
     public void setBlock(ItemStack stack) {
         super.setBlock(stack);
-        setTexture(RenderAPI.getBlockTexture(((ItemBlock)stack.getItem()).block));
+        setTexture(RenderAPI.getBlockTexture(((ItemBlock) stack.getItem()).block));
     }
 
 
@@ -168,8 +182,10 @@ public class EntityPuzzleBlock extends EntityPreBlock {
             worldObj.spawnEntityInWorld(lavaBlock);
         }
         lavaBlock.setBlock(getCurrentBlock());
+        System.out.println(getCurrentBlock());
         return lavaBlock;
     }
+
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
@@ -187,4 +203,8 @@ public class EntityPuzzleBlock extends EntityPreBlock {
         System.out.println("RR  블럭" + getCurrentBlock() + typeModel + getTexture());
     }
 
+    @Override
+    public void setPositionAndUpdate(double x, double y, double z) {
+        super.setPositionAndUpdate(x, y, z);
+    }
 }

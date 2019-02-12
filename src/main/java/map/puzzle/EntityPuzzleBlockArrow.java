@@ -40,6 +40,7 @@ public class EntityPuzzleBlockArrow extends EntityPreBlock {
         setJumpName("퍼즐 블럭");
         setTeleportLock(true);
         this.setRotate(0,0,180);
+        isFly = true;
     }
 
     @Override
@@ -54,7 +55,6 @@ public class EntityPuzzleBlockArrow extends EntityPreBlock {
             if (player.isSneaking()) {
                 setTeleport(true);
             }
-
         }
         return super.processInteract(player, hand, stack);
     }
@@ -62,13 +62,18 @@ public class EntityPuzzleBlockArrow extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         addThrowTime();
-        if(getThrowTime() > 30){
+        if(getThrowTime() > 10){
             dataManager.set(THROW_TIME, 0);
             EntityArrow arrow = new EntityTippedArrow(worldObj);
-            arrow.setPosition(posHelper.getX(Direction.FORWARD, 1, true),posY,posHelper.getZ(Direction.FORWARD, 1, true));
+            arrow.setPosition(posHelper.getX(Direction.FORWARD, 1, true),posY+1,posHelper.getZ(Direction.FORWARD, 1, true));
             arrow.setAim(this, rotationPitch, rotationYaw, 0, 1, 1 );
+            arrow.setNoGravity(true);
             if(isServerWorld())
             worldObj.spawnEntityInWorld(arrow);
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            arrow.writeEntityToNBT(tagCompound);
+            tagCompound.setShort("life", (short)1100);
+            arrow.readEntityFromNBT(tagCompound);
             arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
     }
@@ -97,12 +102,14 @@ public class EntityPuzzleBlockArrow extends EntityPreBlock {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("delay", getThrowTime());
+
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         dataManager.set(THROW_TIME, compound.getInteger("delay"));
+
     }
 
 }
