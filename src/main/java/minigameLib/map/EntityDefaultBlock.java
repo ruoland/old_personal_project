@@ -267,6 +267,10 @@ public class EntityDefaultBlock extends EntityDefaultNPC {
         public ResourceLocation getTexture(){
             return texture;
         }
+
+        public void setY(double y) {
+            this.y = y;
+        }
     }
 
 }

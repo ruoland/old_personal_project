@@ -2,6 +2,7 @@ package minigameLib;
 
 import minigameLib.command.CommandEntity;
 import minigameLib.map.EntityDefaultNPC;
+import minigameLib.map.EnumModel;
 import minigameLib.map.TypeModel;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandException;
@@ -10,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import map.lopre2.EntityPreBlock;
 import map.lopre2.jump1.EntityLavaBlock;
+import net.minecraft.util.math.Rotations;
 
 public class CommandMge extends CommandEntity {
 
@@ -26,6 +28,9 @@ public class CommandMge extends CommandEntity {
         String type = args[1], arg1 = args[2];
         float	x,y,z;
 
+        if(type.equalsIgnoreCase("print")){
+            entitydefServer.printModel();
+        }
         if(type.equalsIgnoreCase("model")) {
             entitydefServer.setModel(TypeModel.valueOf(arg1));
             entitydefClient.setModel(TypeModel.valueOf(arg1));
@@ -35,11 +40,12 @@ public class CommandMge extends CommandEntity {
             entitydefClient.setBlockMode(Block.getBlockFromName(arg1));
         }
         if(type.equalsIgnoreCase("rotate") || type.equalsIgnoreCase("ro")){
-            x = t.math(arg1, entitydefServer.getRotateX(), Float.valueOf(args[3]));
-            y = t.math(arg1, entitydefServer.getRotateY(), Float.valueOf(args[4]));
-            z = t.math(arg1, entitydefServer.getRotateZ(), Float.valueOf(args[5]));
-            entitydefServer.setRotate(x,y,z);
-            entitydefClient.setRotate(x,y,z);
+            Rotations rotations = entitydefServer.getRotationXYZ();
+            x = t.math(arg1,rotations.getX(), Float.valueOf(args[3]));
+            y = t.math(arg1, rotations.getY(), Float.valueOf(args[4]));
+            z = t.math(arg1, rotations.getZ(), Float.valueOf(args[5]));
+            entitydefServer.setXYZ(EnumModel.ROTATION, x,y,z);
+            entitydefClient.setXYZ(EnumModel.ROTATION, x,y,z);
         }
         if(type.equalsIgnoreCase("sc") || args[0].equalsIgnoreCase("scale")){
             x = t.math(arg1, entitydefServer.getScaleX(), Float.valueOf(args[3]));
@@ -47,7 +53,6 @@ public class CommandMge extends CommandEntity {
             z = t.math(arg1, entitydefServer.getScaleZ(), Float.valueOf(args[5]));
             entitydefServer.setScale(x,y,z);
             entitydefClient.setScale(x,y,z);
-
         }
         if(type.equalsIgnoreCase("move") || type.equalsIgnoreCase("tra")){
             x = t.math(arg1, entitydefServer.getTraX(), Float.valueOf(args[3]));
@@ -99,5 +104,16 @@ public class CommandMge extends CommandEntity {
             entitydefServer.setRGB(x,y,z);
             entitydefClient.setRGB(x,y,z);
         }
+        for(EnumModel model : EnumModel.values()) {
+            if (model.name().equalsIgnoreCase(type)) {
+                Rotations rotations = entitydefServer.getRotations(model);
+                x = t.math(arg1, rotations.getX(), Float.valueOf(args[3]));
+                y = t.math(arg1, rotations.getY(), Float.valueOf(args[4]));
+                z = t.math(arg1, rotations.getZ(), Float.valueOf(args[5]));
+                entitydefServer.setXYZ(model, x, y, z);
+                entitydefClient.setXYZ(model, x, y, z);
+            }
+        }
+
     }
 }

@@ -21,10 +21,12 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Random;
 
 
 class EntityModelNPC extends EntityMob {
+    private static final HashMap<EnumModel, Rotations> MODEL_ROTATIONS_MAP = new HashMap<>();
     private static final DataParameter<Boolean> IS_ELYTRA = EntityDataManager.createKey(EntityModelNPC.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_SIT = EntityDataManager.createKey(EntityModelNPC.class,
@@ -55,6 +57,14 @@ class EntityModelNPC extends EntityMob {
     private static final DataParameter<Rotations> RGB_COLOR = EntityDataManager.createKey(EntityModelNPC.class,
             DataSerializers.ROTATIONS);
 
+    private static final DataParameter<Rotations> ANGLE_ARM_LEFT = EntityDataManager.createKey(EntityModelNPC.class,
+            DataSerializers.ROTATIONS);
+    private static final DataParameter<Rotations> ANGLE_ARM_RIGHT = EntityDataManager.createKey(EntityModelNPC.class,
+            DataSerializers.ROTATIONS);
+    private static final DataParameter<Rotations> ANGLE_LEG_LEFT = EntityDataManager.createKey(EntityModelNPC.class,
+            DataSerializers.ROTATIONS);
+    private static final DataParameter<Rotations> ANGLE_LEG_RIGHT = EntityDataManager.createKey(EntityModelNPC.class,
+            DataSerializers.ROTATIONS);
     protected TypeModel typeModel = TypeModel.NPC;
     private ModelBase customModel;
     private ResourceLocation texture;
@@ -66,10 +76,14 @@ class EntityModelNPC extends EntityMob {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ROTATION_XYZ, new Rotations(0, 0, 0));
-        this.dataManager.register(TRANSLATION_XYZ, new Rotations(0, 0, 0));
-        this.dataManager.register(SCALE_XYZ, new Rotations(1, 1, 1));
-        this.dataManager.register(RGB_COLOR, new Rotations(1, 1, 1));
+        this.dataManager.register(ANGLE_ARM_LEFT, putRotation(EnumModel.LEFT_ARM));
+        this.dataManager.register(ANGLE_ARM_RIGHT, putRotation(EnumModel.RIGHT_ARM));
+        this.dataManager.register(ANGLE_LEG_LEFT, putRotation(EnumModel.LEFT_LEG));
+        this.dataManager.register(ANGLE_LEG_RIGHT, putRotation(EnumModel.RIGHT_LEG));
+        this.dataManager.register(ROTATION_XYZ, putRotation(EnumModel.ROTATION));
+        this.dataManager.register(TRANSLATION_XYZ, putRotation(EnumModel.TRANSLATION));
+        this.dataManager.register(SCALE_XYZ, putRotation(EnumModel.SCALE, 1, 1,1));
+        this.dataManager.register(RGB_COLOR, putRotation(EnumModel.RGB, 255, 255,255));
         this.dataManager.register(TRANSPARENCY, 1F);
         this.dataManager.register(IS_ELYTRA, false);
         this.dataManager.register(IS_SIT, false);
@@ -82,28 +96,49 @@ class EntityModelNPC extends EntityMob {
         this.dataManager.register(HEAD_BLOCK_METADATA, 0);
     }
 
+    public Rotations putRotation(EnumModel model) {
+        return putRotation(model, new Rotations(0, 0, 0));
+    }
+
+    public Rotations putRotation(EnumModel model, float x, float y, float z) {
+        return putRotation(model, new Rotations(x, y, z));
+    }
+
+    public Rotations putRotation(EnumModel model, Rotations rotations) {
+        return MODEL_ROTATIONS_MAP.put(model, rotations);
+    }
+
     public Rotations getRGBColor() {
         return getDataManager().get(RGB_COLOR);
     }
 
-    public float getRed() {
-        return getRGBColor().getX();
+    public Rotations getRotationXYZ() {
+        return getDataManager().get(ROTATION_XYZ);
     }
 
-    public float getGreen() {
-        return getRGBColor().getY();
+    //Translate
+    public Rotations getTraXYZ() {
+        return getDataManager().get(TRANSLATION_XYZ);
     }
 
-    public float getBlue() {
-        return getRGBColor().getZ();
+    public Rotations getScaleXYZ() {
+        return dataManager.get(SCALE_XYZ);
     }
 
-    public void addRGB(float red, float green, float blue) {
-        setRGB(getRed() + red, getGreen() + green, getBlue() + blue);
+    public Rotations getAngleArmLeft() {
+        return dataManager.get(ANGLE_ARM_LEFT);
     }
 
-    public void setRGB(float red, float green, float blue) {
-        getDataManager().set(RGB_COLOR, new Rotations(red, green, blue));
+    public Rotations getAngleArmRight() {
+        return dataManager.get(ANGLE_ARM_RIGHT);
+    }
+
+    public Rotations getAngleLegLeft() {
+        return dataManager.get(ANGLE_LEG_LEFT);
+    }
+
+    public Rotations getAngleLegRight() {
+        return dataManager.get(ANGLE_LEG_RIGHT);
     }
 
     public void addTransparency(float a) {
@@ -118,9 +153,19 @@ class EntityModelNPC extends EntityMob {
         return getDataManager().get(TRANSPARENCY);
     }
 
-    //Rotate
-    public Rotations getRotationXYZ() {
-        return getDataManager().get(ROTATION_XYZ);
+    public Rotations getRotations(EnumModel model){
+        return MODEL_ROTATIONS_MAP.get(model);
+    }
+    public float getX(EnumModel model) {
+        return MODEL_ROTATIONS_MAP.get(model).getX();
+    }
+
+    public float getY(EnumModel model) {
+        return MODEL_ROTATIONS_MAP.get(model).getY();
+    }
+
+    public float getZ(EnumModel model) {
+        return MODEL_ROTATIONS_MAP.get(model).getZ();
     }
 
     public float getRotateX() {
@@ -144,9 +189,40 @@ class EntityModelNPC extends EntityMob {
         setRotate(getRotateX() + x, getRotateY() + y, getRotateZ() + z);
     }
 
-    //Scale
-    public Rotations getScaleXYZ() {
-        return getDataManager().get(SCALE_XYZ);
+    public Rotations getXYZ(EnumModel model) {
+        return MODEL_ROTATIONS_MAP.get(model);
+    }
+
+    public void printXYZ(EnumModel model) {
+        System.out.println(model + " - " + getX(model) + " - " + getY(model) + " - " + getZ(model));
+    }
+
+    public void setXYZ(EnumModel model, float x, float y, float z) {
+        putRotation(model);
+        switch (model) {
+            case SCALE:
+                getDataManager().set(SCALE_XYZ, new Rotations(x, y, z));
+                return;
+            case RGB:
+                getDataManager().set(RGB_COLOR, new Rotations(x, y, z));
+                return;
+            case ROTATION:
+                getDataManager().set(ROTATION_XYZ, new Rotations(x, y, z));
+                return;
+            case TRANSLATION:
+                getDataManager().set(TRANSLATION_XYZ, new Rotations(x, y, z));
+                return;
+            default:
+                System.out.println(model + "은 설정되지 않았습니다");
+        }
+    }
+
+    public void addXYZ(EnumModel model, float x, float y, float z) {
+        setXYZ(model, getX(model) + x, getY(model) + y, getZ(model) + z);
+    }
+
+    public void addXYZ(EnumModel model, float value) {
+        setXYZ(model, getX(model) + value, getY(model) + value, getZ(model) + value);
     }
 
     public void addScale(float value) {
@@ -173,11 +249,6 @@ class EntityModelNPC extends EntityMob {
         return getScaleXYZ().getZ();
     }
 
-    //Translate
-    public Rotations getTraXYZ() {
-        return getDataManager().get(TRANSLATION_XYZ);
-    }
-
     public float getTraX() {
         return getTraXYZ().getX();
     }
@@ -196,6 +267,27 @@ class EntityModelNPC extends EntityMob {
 
     public void setTra(float x, float y, float z) {
         getDataManager().set(TRANSLATION_XYZ, new Rotations(x, y, z));
+    }
+
+
+    public float getRed() {
+        return getRGBColor().getX();
+    }
+
+    public float getGreen() {
+        return getRGBColor().getY();
+    }
+
+    public float getBlue() {
+        return getRGBColor().getZ();
+    }
+
+    public void addRGB(float red, float green, float blue) {
+        setRGB(getRed() + red, getGreen() + green, getBlue() + blue);
+    }
+
+    public void setRGB(float red, float green, float blue) {
+        getDataManager().set(RGB_COLOR, new Rotations(red, green, blue));
     }
 
     //엔피씨 모델
@@ -261,7 +353,9 @@ class EntityModelNPC extends EntityMob {
     public void setHeadBlock(ItemStack stack) {
         dataManager.set(HEAD_BLOCK_METADATA, stack.getMetadata());
         dataManager.set(HEAD_BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
-    }   public int getHeadBlockMetadata() {
+    }
+
+    public int getHeadBlockMetadata() {
         return this.getDataManager().get(HEAD_BLOCK_METADATA);
     }
 
@@ -304,6 +398,11 @@ class EntityModelNPC extends EntityMob {
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
+        for(EnumModel model : EnumModel.values()){
+            if(MODEL_ROTATIONS_MAP.containsKey(model))
+            compound.setTag(model.name(), MODEL_ROTATIONS_MAP.get(model).writeToNBT());
+        }
+
         compound.setTag("SCALEXYZ", getScaleXYZ().writeToNBT());
         compound.setTag("ROTATIONXYZ", getRotationXYZ().writeToNBT());
         compound.setTag("TRANSLATIONXYZ", getTraXYZ().writeToNBT());
@@ -326,6 +425,11 @@ class EntityModelNPC extends EntityMob {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
+        getDataManager().set(ANGLE_ARM_LEFT, getRotations(compound, "angleArmLeft"));
+        getDataManager().set(ANGLE_ARM_RIGHT, getRotations(compound, "angleArmRight"));
+        getDataManager().set(ANGLE_LEG_LEFT, getRotations(compound, "angleLegLeft"));
+        getDataManager().set(ANGLE_LEG_RIGHT, getRotations(compound, "angleLegRight"));
+
         getDataManager().set(SCALE_XYZ, getRotations(compound, "SCALEXYZ"));
         getDataManager().set(ROTATION_XYZ, getRotations(compound, "ROTATIONXYZ"));
         getDataManager().set(TRANSLATION_XYZ, getRotations(compound, "TRANSLATIONXYZ"));
@@ -347,7 +451,7 @@ class EntityModelNPC extends EntityMob {
         dataManager.set(HEAD_BLOCK_METADATA, compound.getInteger("HEAD_BLOCK_METADATA"));
     }
 
-    public Block getHeadBlock(){
+    public Block getHeadBlock() {
         return Block.getBlockById(dataManager.get(HEAD_BLOCK_ID));
     }
 
@@ -364,11 +468,11 @@ class EntityModelNPC extends EntityMob {
      * @param npc
      */
     public void copyModel(EntityDefaultNPC npc) {
-        npc.setTra(getTraX(), getTraY(), getTraZ());
-        npc.setRotate(getRotateX(), getRotateY(), getRotateZ());
-        npc.setScale(getScaleX(), getScaleY(), getScaleZ());
+        npc.putRotation(EnumModel.TRANSLATION, getTraXYZ());
+        npc.putRotation(EnumModel.ROTATION, getRotationXYZ());
+        npc.putRotation(EnumModel.SCALE, getScaleXYZ());
+        npc.putRotation(EnumModel.RGB, getRGBColor());
         npc.setTransparency(getTransparency());
-        npc.setRGB(getRed(), getGreen(), getBlue());
         npc.typeModel = typeModel;
     }
 
@@ -381,12 +485,11 @@ class EntityModelNPC extends EntityMob {
             System.out.println("BlockID" + dataManager.get(BLOCK_ID));
         }
         System.out.println("Texture" + getTexture());
-
-        System.out.println("Translate" + getTraX() + " - " + getTraY() + " - " + getTraZ());
-        System.out.println("Rotate" + getRotateX() + " - " + getRotateY() + " - " + getRotateZ());
-        System.out.println("Scale" + getScaleX() + " - " + getScaleY() + " - " + getScaleZ());
+        printXYZ(EnumModel.TRANSLATION);
+        printXYZ(EnumModel.SCALE);
+        printXYZ(EnumModel.ROTATION);
         System.out.println("getTransparency" + getTransparency());
-        System.out.println("RGB" + getRed() + " - " + getGreen() + " - " + getBlue());
+        printXYZ(EnumModel.RGB);
         System.out.println("-------------------------------------------------------------------");
     }
 
@@ -400,14 +503,19 @@ class EntityModelNPC extends EntityMob {
         switch (enumfacing) {
             case SOUTH:
                 setSleepRotate(0);
+                return;
             case NORTH:
                 setSleepRotate(180);
+                return;
             case WEST:
                 setSleepRotate(270);
+                return;
             case EAST:
                 setSleepRotate(90);
+                return;
             default:
                 setSleepRotate(90);
+                return;
         }
     }
 

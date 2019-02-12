@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Rotations;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,11 +47,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                     return;
                 }
                 GlStateManager.pushMatrix();
-                GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-                GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-                GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-                GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
-                GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
+                modelRender(npc);
                 RenderAPI.renderBlock(block.blockPosList, block.blockList, npc);
                 GlStateManager.popMatrix();
                 return;
@@ -72,12 +69,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                         GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
                     }
 
-                    GlStateManager.translate(npc.getTraX(), npc.getTraY() + 1, npc.getTraZ());
-                    GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-                    GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-                    GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-                    GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-                    GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+                    modelRender(npc);
                     RenderAPI.renderBlock(npc.getCurrentStack(), npc);
 
                     if (flag1) {
@@ -92,16 +84,9 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 GlStateManager.pushMatrix();
                 GlStateManager.enableAlpha();
                 GlStateManager.enableBlend();
-                GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-                GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-                GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-                GlStateManager.translate(npc.getTraX(), -2 + npc.getTraY(), npc.getTraZ());
-                GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+                modelRender(npc);
                 if(npc instanceof EntityDefaultBlock) {
                     EntityDefaultBlock entitylivingbaseIn = (EntityDefaultBlock) npc;
-
                     for (EntityDefaultBlock.BlockData blockData : entitylivingbaseIn.getBlockList()) {
                         GlStateManager.pushMatrix();
                         GlStateManager.translate(blockData.getX(), blockData.getY(), blockData.getZ());
@@ -126,13 +111,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 GlStateManager.translate(0, 0.7, 0);
                 GlStateManager.scale(0.7, 0.7, 0.6);
             } else {
-                GlStateManager.translate(npc.getTraX(), npc.getTraY(), npc.getTraZ());
-                GlStateManager.rotate(npc.getRotateX(), 1, 0, 0);
-                GlStateManager.rotate(npc.getRotateY(), 0, 1, 0);
-                GlStateManager.rotate(npc.getRotateZ(), 0, 0, 1);
-                GlStateManager.scale(npc.getScaleX(), npc.getScaleY(), npc.getScaleZ());
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.color(npc.getRed(), npc.getGreen(), npc.getBlue(), npc.getTransparency());
+                modelRender(npc);
             }
             super.renderModel(npc, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             GlStateManager.color(0, 0, 0, 1F);
@@ -142,6 +121,19 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         }
     }
 
+    public void modelRender(EntityDefaultNPC npc){
+        Rotations translation = npc.getTraXYZ();
+        Rotations rotations = npc.getRotationXYZ();
+        Rotations scale = npc.getScaleXYZ();
+        Rotations rgb = npc.getRGBColor();
+        GlStateManager.translate(translation.getX(), translation.getY(), translation.getZ());
+        GlStateManager.rotate(rotations.getX(), 1, 0, 0);
+        GlStateManager.rotate(rotations.getY(), 0, 1, 0);
+        GlStateManager.rotate(rotations.getZ(), 0, 0, 1);
+        GlStateManager.scale(scale.getX(), scale.getY(), scale.getZ());
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(rgb.getX(), rgb.getY(), rgb.getZ(), npc.getTransparency());
+    }
     @Override
     public void doRender(EntityDefaultNPC entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.mainModel.isChild = entity.isChild();
@@ -209,6 +201,26 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
 
     @Override
     protected void rotateCorpse(EntityDefaultNPC entityLiving2, float p_77043_2_, float p_77043_3_, float partialTicks) {
+
+        if(mainModel instanceof ModelBiped){
+            ModelBiped modelBiped = (ModelBiped) mainModel;
+            Rotations leftArm = entityLiving2.getRotations(EnumModel.LEFT_ARM);
+            Rotations rightArm = entityLiving2.getRotations(EnumModel.RIGHT_ARM);
+            Rotations leftLeg = entityLiving2.getRotations(EnumModel.LEFT_LEG);
+            Rotations rightLeg = entityLiving2.getRotations(EnumModel.RIGHT_LEG);
+            modelBiped.bipedLeftArm.rotateAngleX = leftArm.getX();
+            modelBiped.bipedLeftArm.rotateAngleY = leftArm.getY();
+            modelBiped.bipedLeftArm.rotateAngleZ = leftArm.getZ();
+            modelBiped.bipedRightArm.rotateAngleX = rightArm.getX();
+            modelBiped.bipedRightArm.rotateAngleY = rightArm.getY();
+            modelBiped.bipedRightArm.rotateAngleZ = rightArm.getZ();
+            modelBiped.bipedLeftLeg.rotateAngleX = leftLeg.getX();
+            modelBiped.bipedLeftLeg.rotateAngleY = leftLeg.getY();
+            modelBiped.bipedLeftLeg.rotateAngleZ = leftLeg.getZ();
+            modelBiped.bipedRightLeg.rotateAngleX = rightLeg.getX();
+            modelBiped.bipedRightLeg.rotateAngleY = rightLeg.getY();
+            modelBiped.bipedRightLeg.rotateAngleZ = rightLeg.getZ();
+        }
         if (entityLiving2.isSleep()) {
             GlStateManager.rotate(entityLiving2.getSleepRotate(), 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(90, 0.0F, 0.0F, 1.0F);

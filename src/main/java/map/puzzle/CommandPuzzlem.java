@@ -1,7 +1,7 @@
 package map.puzzle;
 
 import cmplus.util.CommandPlusBase;
-import map.lopre2.EntityPreBlock;
+import map.puzzle.base.EntityPuzzleDoorBase;
 import minigameLib.map.EntityDefaultNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
@@ -22,6 +22,17 @@ public class CommandPuzzlem extends CommandPlusBase {
                 EntityPuzzleBlockButton clientBlock = (EntityPuzzleBlockButton) entity;
                 serverBlock.setCommand(t.getCommand(args, 1, args.length));
             }
+            if(args[0].equalsIgnoreCase("name")){
+                EntityPuzzleDoorBase serverBlock = (EntityPuzzleDoorBase) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
+                EntityPuzzleDoorBase clientBlock = (EntityPuzzleDoorBase) entity;
+                serverBlock.setDoorName(t.getCommand(args, 1, args.length));
+            }
+            if(args[0].equalsIgnoreCase("mincount")){
+                EntityPuzzleDoorBase serverBlock = (EntityPuzzleDoorBase) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
+                EntityPuzzleDoorBase clientBlock = (EntityPuzzleDoorBase) entity;
+                serverBlock.setOpenMinCount(parseInt(args[1]));
+            }
+
         }
     }
 }

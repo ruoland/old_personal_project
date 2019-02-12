@@ -1,18 +1,14 @@
 package map.puzzle;
 
-import cmplus.cm.v17.CommandClip;
 import cmplus.util.CommandPlusBase;
-import minigameLib.CommandMg;
+import map.puzzle.base.EntityPuzzleDoorBase;
 import minigameLib.api.WorldAPI;
 import minigameLib.map.EntityDefaultNPC;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -44,5 +40,14 @@ public class CommandPuzzle extends CommandPlusBase {
                     .append(" ").append(y2).append(" ").append(z2);
             board.setContents(new StringSelection(builder.toString()), null);
         }
+        if(args[0].equalsIgnoreCase("open")){
+            EntityPuzzleDoorBase doorBlock = (EntityPuzzleDoorBase) EntityDefaultNPC.getNPC(args[1]);
+            doorBlock.open();
+        }
+        if(args[0].equalsIgnoreCase("close")){
+            EntityPuzzleDoorBase doorBlock = (EntityPuzzleDoorBase) EntityDefaultNPC.getNPC(args[1]);
+            doorBlock.close();
+        }
+
     }
 }

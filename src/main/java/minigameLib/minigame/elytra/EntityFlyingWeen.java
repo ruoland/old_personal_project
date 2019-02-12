@@ -9,6 +9,7 @@ import minigameLib.effect.TickRegister;
 import minigameLib.fakeplayer.EntityFakePlayer;
 import minigameLib.fakeplayer.FakePlayerHelper;
 import minigameLib.map.EntityDefaultNPC;
+import minigameLib.map.EnumModel;
 import minigameLib.map.TypeModel;
 import minigameLib.minigame.elytra.miniween.old.EntityElytraWeenCore;
 import minigameLib.minigame.elytra.miniween.old.EntityElytraWeenTNT;
