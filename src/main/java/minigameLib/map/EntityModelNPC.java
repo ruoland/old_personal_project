@@ -205,8 +205,6 @@ class EntityModelNPC extends EntityMob {
 
     public void setXYZ(EnumModel model, float x, float y, float z) {
         putRotation(model);
-        System.out.println(model + " : " + x + " - " + y + " - " + z);
-        System.out.println(model + " : " + getRotations(model).getX() + " - " + getRotations(model).getY() + " - " + getRotations(model).getZ());
 
         switch (model) {
 

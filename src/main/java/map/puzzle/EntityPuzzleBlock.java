@@ -89,7 +89,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
                 setTeleport(true);
                 this.setTransparency(0.5F);
             } else {
-                isFly = true;
+                isFly = !isFly;
                 System.out.println("플라이" + isFly);
             }
         }

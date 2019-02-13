@@ -21,7 +21,8 @@ public class Puzzle {
         DebAPI.registerEntity(this, "PuzzleWindBlock", EntityPuzzleWindEntity.EntityPuzzleWindBlock.class);
         DebAPI.registerEntity(this, "PuzzleWindPlayer", EntityPuzzleWindEntity.class);
         DebAPI.registerEntity(this, "PuzzleDoor", EntityPuzzleDoor.class);
-
+        DebAPI.registerEntity(this, "PuzzleMonster", EntityPuzzleMonster.class);
+        DebAPI.registerEntity(this, "PuzzlePathFinder", EntityPuzzlePathCreeper.class);
         DebAPI.registerEntity(this, "RespawnZombie", EntityRespawnZombie.class);
         RenderAPI.registerRender(EntityPuzzleBlock.class);
         RenderAPI.registerRender(EntityPuzzleBlockButton.class);
@@ -30,6 +31,8 @@ public class Puzzle {
         RenderAPI.registerRender(EntityPuzzleWindEntity.class);
         RenderAPI.registerRender(EntityPuzzleDoor.class);
         RenderAPI.registerRender(EntityRespawnZombie.class);
+        RenderAPI.registerRender(EntityPuzzleMonster.class);
+        RenderAPI.registerRender(EntityPuzzlePathCreeper.class);
     }
 
     @Mod.EventHandler

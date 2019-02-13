@@ -254,7 +254,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
      */
     protected ResourceLocation getEntityTexture(EntityDefaultNPC entity) {
         EntityDefaultNPC entityLiving = (EntityDefaultNPC) entity;
-        if (entityLiving.getTexture() != null)
+        if (!entityLiving.getTexture().toString().equalsIgnoreCase("minecraft:"))
             return entityLiving.getTexture();
         else
             return DEFAULT_RES_LOC;
