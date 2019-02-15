@@ -25,6 +25,8 @@ import minigameLib.minigame.elytra.miniween.*;
 import minigameLib.minigame.elytra.playerarrow.EntityHomingTNT;
 import minigameLib.minigame.elytra.playerarrow.EntityTNTArrow;
 import minigameLib.minigame.minerun.*;
+import minigameLib.minigame.minerun.invisibleblock.BlockInvisible;
+import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
 import minigameLib.minigame.scroll.*;
 import minigameLib.minigame.starmine.CommandStarMine;
 import minigameLib.minigame.starmine.StarMine;
@@ -120,7 +122,7 @@ public class MiniGame {
     public void init(FMLInitializationEvent e) {
         //스크롤 메이커용
         //DebAPI.registerEntity(this, "ScrollMouse", EntityScrollMouse.class);
-        GameRegistry.registerBlock(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("minigame:blockInvisible"));
+        DebAPI.registerTileEntity(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("minigame:blockInvisible"), TileInvisible.class);
         //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //스크롤 용

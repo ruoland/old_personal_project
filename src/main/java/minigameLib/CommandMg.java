@@ -3,14 +3,18 @@ package minigameLib;
 import cmplus.util.CommandPlusBase;
 import minigameLib.map.EntityDefaultNPC;
 import minigameLib.map.TypeModel;
+import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import map.lopre2.EntityPreBlock;
 import map.lopre2.jump1.EntityLavaBlock;
+import net.minecraft.util.math.BlockPos;
 
 public class CommandMg extends CommandPlusBase {
 
@@ -18,6 +22,21 @@ public class CommandMg extends CommandPlusBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
         Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
+        IBlockState block = sender.getEntityWorld().getBlockState(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+        BlockPos pos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
+        if(block.getBlock() != Blocks.AIR){
+            if(args[0].equalsIgnoreCase("com"))
+            {
+                TileInvisible tileInvisible = (TileInvisible) sender.getEntityWorld().getTileEntity(pos);
+                tileInvisible.setCommand((t.getCommand(args, 1, args.length)));
+
+            }
+            if(args[0].equalsIgnoreCase("delay"))
+            {
+                TileInvisible tileInvisible = (TileInvisible) sender.getEntityWorld().getTileEntity(pos);
+                tileInvisible.setDefaultDelay(parseInt(args[1]));
+            }
+        }
         if (entity != null) {
             EntityDefaultNPC entitydefServer = EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
             EntityDefaultNPC entitydefClient = (EntityDefaultNPC) entity;

@@ -30,7 +30,7 @@ public class CommandPuzzlem extends CommandPlusBase {
                 }else{
                     EntityPuzzlePathCreeper serverPath = (EntityPuzzlePathCreeper) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
                     EntityPuzzlePathCreeper clientPath = (EntityPuzzlePathCreeper) entity;
-                    serverPath.setCustomNameTag(args[1]);
+                    serverPath.setCustomNameTag(args[1 ]);
                 }
             }
             if(args[0].equalsIgnoreCase("mincount")){

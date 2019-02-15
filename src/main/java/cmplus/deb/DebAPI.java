@@ -8,15 +8,18 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
@@ -50,7 +53,11 @@ public class DebAPI {
         this.dey = (float) y;
         this.dez = (float) z;
     }
-
+    public static void registerTileEntity(Block block, Class<? extends TileEntity> tileEntity) {
+        GameRegistry.register(block);
+        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+        GameRegistry.registerTileEntity(tileEntity, block.getRegistryName().toString());
+    }
     public static void msgText(String modid, String msg) {
         if (CommandDeb.debMods.contains(modid)) {
             System.out.println("[디버그]텍스트-" + msg);
