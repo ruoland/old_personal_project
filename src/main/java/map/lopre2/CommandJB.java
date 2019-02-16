@@ -136,7 +136,7 @@ public class CommandJB extends CommandPlusBase {
                         playerMP.addChatMessage(new TextComponentString("                           "));
                         playerMP.addChatMessage(new TextComponentString("                           "));
                         playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
-                        playerMP.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
+                        playerMP.addChatMessage(new TextComponentString("모쿠르 1탄을 플레이 해주셔서 감사합니다!"));
                     }
                     WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 2탄으로 바로 넘어갈까요?");
                     TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.]");
@@ -158,7 +158,7 @@ public class CommandJB extends CommandPlusBase {
                     for(EntityPlayerMP playerMP : server.getPlayerList().getPlayerList()){
                         playerMP.addChatMessage(new TextComponentString("                           "));
                         playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
-                        playerMP.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
+                        playerMP.addChatMessage(new TextComponentString("모쿠르 2탄도 클리어 하셨습니다. 플레이 해주셔서 감사합니다!"));
                     }
                 }
             }
@@ -185,8 +185,10 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("inv"))
                 WorldAPI.setBlock(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], MiniGame.blockInvisible);
-            if (args[0].equalsIgnoreCase("block"))
-                Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
+            if (args[0].equalsIgnoreCase("block")) {
+                System.out.println(Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]));
+
+            }
             if (args[0].equalsIgnoreCase("save"))
                 Loop.save(sender.getEntityWorld(), args[1], pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
             if (args[0].equalsIgnoreCase("blockspawn"))

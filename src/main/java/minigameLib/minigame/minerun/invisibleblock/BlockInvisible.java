@@ -1,5 +1,6 @@
 package minigameLib.minigame.minerun.invisibleblock;
 
+import map.tycoon.block.BlockBreadDisplay;
 import map.tycoon.block.TileBreadDisplay;
 import minigameLib.api.WorldAPI;
 import net.minecraft.block.Block;
@@ -8,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -72,10 +74,10 @@ public class BlockInvisible extends BlockContainer {
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
         TileInvisible tileInvisible = (TileInvisible) worldIn.getTileEntity(pos);
-        if(tileInvisible.getRunDelay() == 0){
+        if(entityIn instanceof EntityPlayer && tileInvisible.getRunDelay() == 0 && tileInvisible.getRunCount() < tileInvisible.getMaxCount()){
             tileInvisible.setRunDelay(tileInvisible.getDefaultDelay());
+            tileInvisible.setRunCount(tileInvisible.getRunDelay()+1);
             WorldAPI.command(tileInvisible.getCommand());
-            System.out.println(""+(!worldIn.isRemote) + tileInvisible.getDefaultDelay()+tileInvisible.getCommand());
         }
     }
 }

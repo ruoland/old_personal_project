@@ -16,8 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import map.lopre2.jump1.EntityBuildBlock;
 
-import static minigameLib.map.TypeModel.BLOCK;
-import static minigameLib.map.TypeModel.SHAPE_BLOCK;
+import static minigameLib.map.TypeModel.*;
 
 @SideOnly(Side.CLIENT)
 public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<EntityDefaultNPC> {
@@ -254,6 +253,12 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
      */
     protected ResourceLocation getEntityTexture(EntityDefaultNPC entity) {
         EntityDefaultNPC entityLiving = (EntityDefaultNPC) entity;
+        if(entity.getModel() == CREEPER){
+
+        }
+        if ((entity.getModel() == TypeModel.ZOMBIE) || entity.getModel() == CREEPER || entity.getModel() == ENDERMAN) {
+            entityLiving.setTexture("minecraft:");
+        }
         if (!entityLiving.getTexture().toString().equalsIgnoreCase("minecraft:"))
             return entityLiving.getTexture();
         else

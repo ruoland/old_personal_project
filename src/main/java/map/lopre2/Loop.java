@@ -40,7 +40,7 @@ public class Loop {
         });
     }
 
-    public static void blockSet(World worldObj, int xx, int yy, int zz, int x2, int y2, int z2) {
+    public static EntityBuildBlock blockSet(World worldObj, int xx, int yy, int zz, int x2, int y2, int z2) {
         EntityBuildBlock buildBlock = new EntityBuildBlock(worldObj);
         buildBlock.setPosition(xx, yy, zz);
         buildBlock.setTeleportLock(true);
@@ -48,6 +48,7 @@ public class Loop {
         buildBlock.setTeleport(false);
         worldObj.spawnEntityInWorld(buildBlock);
         buildBlock.setBlock(xx,yy,zz,x2,y2,z2);
+        return buildBlock;
     }
     public static void saveBuildBlock(EntityBuildBlock buildBlock) {
         StringBuffer buildName = new StringBuffer("./buildblock/클릭한블럭.nbt");

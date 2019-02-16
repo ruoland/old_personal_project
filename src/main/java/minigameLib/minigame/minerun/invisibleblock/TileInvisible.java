@@ -1,6 +1,7 @@
 package minigameLib.minigame.minerun.invisibleblock;
 
 import map.tycoon.BreadData;
+import map.tycoon.block.TileBreadDisplay;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,22 +23,26 @@ import javax.annotation.Nullable;
 
 public class TileInvisible extends TileEntity {
     private String command = "";
-    private int defaultDelay = 20, runDelay;
+    private int defaultDelay = 20, runDelay, maxCount=1, runCount;
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setString("command", command);
         compound.setInteger("defaultDelay", defaultDelay);
         compound.setInteger("runDelay", runDelay);
-        System.out.println(command+compound.getString("command"));
+        compound.setInteger("maxCount", maxCount);
+        compound.setInteger("runCount", runCount);
         return super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         command = compound.getString("command");
-        System.out.println(command+compound.getString("command"));
         defaultDelay = compound.getInteger("defaultDelay");
         runDelay = compound.getInteger("runDelay");
+        maxCount = compound.getInteger("maxCount");
+        runCount = compound.getInteger("runCount");
+        if(maxCount == 0)
+            maxCount = 1;
         super.readFromNBT(compound);
     }
     @Nullable
@@ -68,9 +73,7 @@ public class TileInvisible extends TileEntity {
 
     public void setCommand(String command) {
         this.command = command;
-        System.out.println(this.command);
         sendUpdates();
-        System.out.println(this.command);
     }
     public void setDefaultDelay(int delay){
         this.defaultDelay = delay;
@@ -82,8 +85,25 @@ public class TileInvisible extends TileEntity {
         sendUpdates();
     }
 
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
+        sendUpdates();
+    }
+
+    public void setRunCount(int runCount) {
+        this.runCount = runCount;
+    }
+
+    public int getMaxCount() {
+        return maxCount;
+    }
+
     public int getRunDelay() {
         return runDelay;
+    }
+
+    public int getRunCount() {
+        return runCount;
     }
 
     public int getDefaultDelay() {

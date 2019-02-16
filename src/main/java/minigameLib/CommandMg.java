@@ -1,6 +1,7 @@
 package minigameLib;
 
 import cmplus.util.CommandPlusBase;
+import minigameLib.api.WorldAPI;
 import minigameLib.map.EntityDefaultNPC;
 import minigameLib.map.TypeModel;
 import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
@@ -22,19 +23,22 @@ public class CommandMg extends CommandPlusBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
         Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
-        IBlockState block = sender.getEntityWorld().getBlockState(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
-        BlockPos pos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
-        if(block.getBlock() != Blocks.AIR){
-            if(args[0].equalsIgnoreCase("com"))
-            {
-                TileInvisible tileInvisible = (TileInvisible) sender.getEntityWorld().getTileEntity(pos);
-                tileInvisible.setCommand((t.getCommand(args, 1, args.length)));
-
-            }
-            if(args[0].equalsIgnoreCase("delay"))
-            {
-                TileInvisible tileInvisible = (TileInvisible) sender.getEntityWorld().getTileEntity(pos);
-                tileInvisible.setDefaultDelay(parseInt(args[1]));
+        if(entity == null) {
+            IBlockState block = sender.getEntityWorld().getBlockState(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+            BlockPos pos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
+            if (block.getBlock() != Blocks.AIR) {
+                if (args[0].equalsIgnoreCase("com")) {
+                    TileInvisible tileInvisible = (TileInvisible) WorldAPI.getPlayerMP().worldObj.getTileEntity(pos);
+                    tileInvisible.setCommand((t.getCommand(args, 1, args.length)));
+                }
+                if (args[0].equalsIgnoreCase("delay")) {
+                    TileInvisible tileInvisible = (TileInvisible) WorldAPI.getPlayerMP().worldObj.getTileEntity(pos);
+                    tileInvisible.setDefaultDelay(parseInt(args[1]));
+                }
+                if (args[0].equalsIgnoreCase("maxcount")) {
+                    TileInvisible tileInvisible = (TileInvisible) WorldAPI.getPlayerMP().worldObj.getTileEntity(pos);
+                    tileInvisible.setMaxCount(parseInt(args[1]));
+                }
             }
         }
         if (entity != null) {
