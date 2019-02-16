@@ -68,7 +68,9 @@ public class TileInvisible extends TileEntity {
 
     public void setCommand(String command) {
         this.command = command;
+        System.out.println(this.command);
         sendUpdates();
+        System.out.println(this.command);
     }
     public void setDefaultDelay(int delay){
         this.defaultDelay = delay;
