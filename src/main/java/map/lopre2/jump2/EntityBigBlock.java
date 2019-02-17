@@ -42,7 +42,6 @@ public class EntityBigBlock extends EntityPreBlock {
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
         lavaBlock.setBlockMode(getCurrentBlock());
         this.copyModel(lavaBlock);
-        lavaBlock.setRotate(getRotateX(), getRotateY(), getRotateZ());
         lavaBlock.setSize(width,height);
         worldObj.spawnEntityInWorld(lavaBlock);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
@@ -95,6 +94,7 @@ public class EntityBigBlock extends EntityPreBlock {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
         setSpawnXYZ(posX, posY, posZ);
         this.setTeleport(true);
+        setFalling(false);
         return super.onInitialSpawn(difficulty, livingdata);
     }
 

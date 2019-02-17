@@ -2,26 +2,36 @@ package minigameLib.minigame.minerun;
 
 
 import cmplus.camera.Camera;
+import cmplus.deb.DebAPI;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.bcel.internal.generic.LADD;
+import map.lopre2.jump2.EntityBigBlock;
 import minigameLib.MiniGame;
+import minigameLib.api.Direction;
 import minigameLib.api.EntityAPI;
 import minigameLib.api.PosHelper;
 import minigameLib.api.WorldAPI;
 import minigameLib.fakeplayer.EntityFakePlayer;
 import minigameLib.fakeplayer.FakePlayerHelper;
 import minigameLib.minigame.AbstractMiniGame;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -89,8 +99,38 @@ public class MineRun extends AbstractMiniGame {
             curX = x;
             curY = y;
             curZ = z;
+            Vec3d teleportVec = new Vec3d(player.posX + curX, player.posY, player.posZ + curZ);
+            Block block = (player.worldObj.getBlockState(new BlockPos(teleportVec)).getBlock());
+            Block block2 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0,1,0))).getBlock());
+            Block block3 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0,2,0))).getBlock());
 
-            WorldAPI.teleport(player.posX + curX + player.motionX, player.posY, player.posZ + curZ + player.motionZ);
+            System.out.println(block);
+            System.out.println(block2);
+            System.out.println(block3);
+            if(player.isOnLadder() || block == Blocks.LADDER || block2 == Blocks.LADDER){
+                teleportVec.addVector(-(player.motionX * 1.5), 0, -(player.motionZ * 1.5));
+
+            }
+            if(player.getRidingEntity() instanceof EntityMinecartEmpty){
+                EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) player.getRidingEntity();
+                minecartEmpty.setDead();
+                EntityMinecartEmpty minecart = new EntityMinecartEmpty(minecartEmpty.worldObj);
+                if(DebAPI.isKeyDown(Keyboard.KEY_A)) {
+                    Vec3d vec3d = (playerPosHelper.getXZ(Direction.LEFT, 2, false));
+                    minecart.setPosition(minecartEmpty.posX+ vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord);
+                }
+                if(DebAPI.isKeyDown(Keyboard.KEY_D)) {
+                    Vec3d vec3d = (playerPosHelper.getXZ(Direction.RIGHT, 2, false));
+                    minecart.setPosition(minecartEmpty.posX+ vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord);
+                }
+                player.worldObj.spawnEntityInWorld(minecart);
+                player.startRiding(minecart);
+                minecart.setVelocity(minecartEmpty.motionX, minecartEmpty.motionY, minecartEmpty.motionZ);
+            }else
+            WorldAPI.teleport(teleportVec);
+
+            System.out.println(player.isOnLadder()+" - "+player.posX+"  - "+player.posY+" - "+player.posZ);
+
         }
 
         public static void setPosition (BlockPos pos){

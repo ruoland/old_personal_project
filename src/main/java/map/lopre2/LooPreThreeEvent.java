@@ -1,6 +1,7 @@
 package map.lopre2;
 
 import minigameLib.MiniGame;
+import minigameLib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -13,7 +14,7 @@ public class LooPreThreeEvent {
     private static int inputDelay;
     @SubscribeEvent
     public  void minecart(PlayerTickEvent event) {
-        if (event.player.getLowestRidingEntity() instanceof EntityMinecart) {
+        if (WorldAPI.getCurrentWorldName().equalsIgnoreCase("JumpThree") && event.player.getLowestRidingEntity() instanceof EntityMinecart) {
             inputDelay--;
             EntityMinecart entityMinecart = (EntityMinecart) event.player.getRidingEntity();
             if(event.player.getLowestRidingEntity().motionY > -0.5)

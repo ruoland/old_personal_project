@@ -60,12 +60,10 @@ public class ItemCopy extends Item {
                 } else {
                     for (double i = interval; i <= distance; i += interval) {
                         double lavaY = lavaBlock.posY;
-                        if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("YONOFF")) {
-                            lavaY = lavaBlock.posY + -(playerIn.getLookVec().yCoord * (i + lavaYP));
-                        }
                         EntityPreBlock spawnLava = lavaBlock.spawn(lavaBlock.posX + -WorldAPI.getVecXZ(playerIn, i)[0], lavaY, lavaBlock.posZ + -WorldAPI.getVecXZ(playerIn, i)[1]);
                         spawnLava.setPosition(spawnLava.getSpawnX(), spawnLava.getSpawnY(), spawnLava.getSpawnZ());
                         preBlockList.add(spawnLava);
+                        System.out.println("블럭 스폰함"+target.isServerWorld()+spawnLava+spawnLava.isServerWorld());
                     }
                 }
             }

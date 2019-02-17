@@ -135,6 +135,11 @@ public class MineRunEvent {
             if (!e.player.isInLava() && !e.player.isInWater() && respawnTime <= 0) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
+                if(e.player.getRidingEntity() != null){
+                    e.player.getRidingEntity().motionX= MineRun.xCoord();
+                    e.player.getRidingEntity().motionZ= MineRun.zCoord();
+
+                }
             }
         }
         if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
@@ -266,8 +271,6 @@ public class MineRunEvent {
                 MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
                 if (isLR)
                     lineLR--;
-                System.out.println("LINELR " + lineLR * 2);
-                System.out.println("LEFT " + posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
             }
 
             if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
@@ -280,8 +283,6 @@ public class MineRunEvent {
                 MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
                 if (isLR)
                     lineLR++;
-                System.out.println("LINELR " + lineLR * 2);
-                System.out.println("RIGHT " + posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
             }
 
         }

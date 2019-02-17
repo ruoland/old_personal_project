@@ -2,15 +2,21 @@ package minigameLib;
 
 import cmplus.deb.DebAPI;
 import minigameLib.api.LoginEvent;
+import minigameLib.api.WorldAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class MiniGameEvent {
+    @SubscribeEvent
+    public void gameoverlae(WorldEvent.Load e) {
+        WorldAPI.reloadWorldName();
+    }
 
     @SubscribeEvent
     public void gameoverlay(TickEvent.PlayerTickEvent e) {

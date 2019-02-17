@@ -2,6 +2,7 @@ package minigameLib.api;
 
 import cmplus.CMPlus;
 import cmplus.test.CMPacketCommand;
+import map.lopre2.jump2.EntityBigBlock;
 import minigameLib.MiniGame;
 import minigameLib.effect.AbstractTick;
 import minigameLib.effect.AbstractTick.BlockXYZ;
@@ -10,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiErrorScreen;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -35,6 +37,7 @@ import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -523,13 +526,31 @@ public class WorldAPI {
         return getServer().getEntityWorld();
     }
 
+    private static List<WorldSummary> saveList;;
+
     public static String getCurrentWorldName() {
         if(getServer() == null || getServer().worldServers.length == 0 || getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
             return "noworld";
         }
+
+        for(WorldSummary summary :saveList){
+            if(summary.getDisplayName().equalsIgnoreCase(getServer().getEntityWorld().getWorldInfo().getWorldName())){
+                return summary.getFileName();
+            }
+        }
         return getServer().getEntityWorld().getWorldInfo().getWorldName();
     }
 
+    public static void reloadWorldName(){
+        ISaveFormat isaveformat = Minecraft.getMinecraft().getSaveLoader();
+        if(saveList == null) {
+            try {
+                saveList = isaveformat.getSaveList();
+            } catch (AnvilConverterException anvilconverterexception) {
+                anvilconverterexception.printStackTrace();
+            }
+        }
+    }
     public static File getCurrentWorldFile() {
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
         return new File("./saves/" + getCurrentWorldName());

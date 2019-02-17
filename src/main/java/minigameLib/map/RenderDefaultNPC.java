@@ -69,7 +69,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                     }
 
                     modelRender(npc);
-                    GlStateManager.translate(0,-1,0);
+                    GlStateManager.translate(0,1,0);
                     RenderAPI.renderBlock(npc.getCurrentStack(), npc);
 
                     if (flag1) {

@@ -68,6 +68,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.setTeleport(true);
+        rotationYaw = 0;
+        renderYawOffset = 0;
 
         return super.onInitialSpawn(difficulty, livingdata);
     }

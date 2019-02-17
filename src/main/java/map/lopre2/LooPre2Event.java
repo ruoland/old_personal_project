@@ -30,20 +30,6 @@ public class LooPre2Event {
     public void a(ServerChatEvent event) {
         String dis = event.getMessage();
         if (dis != null) {
-            if (WorldAPI.equalsHeldItem(LoPre2.itemCopy) && event.getPlayer().isServerWorld()) {
-                if (dis.startsWith("yst")) {
-                    ItemStack itemStackIn = event.getPlayer().getHeldItemMainhand();
-                    NBTTagCompound compound = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : itemStackIn.serializeNBT();
-                    compound.setBoolean("YONOFF", !compound.getBoolean("YONOFF"));
-                    itemStackIn.setTagCompound(compound);
-                }
-                if (dis.startsWith("prev")) {
-                    ItemStack itemStackIn = event.getPlayer().getHeldItemMainhand();
-                    NBTTagCompound compound = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : itemStackIn.serializeNBT();
-                    compound.setBoolean("PREV", !compound.getBoolean("PREV"));
-                    itemStackIn.setTagCompound(compound);
-                }
-            }
             if (dis.startsWith("bu")) {
                 CommandJB.isDebMode = true;
                 for (EntityPreBlock preBlock : ItemCopy.getPreBlockList()) {
