@@ -10,8 +10,10 @@ import minigameLib.api.PosHelper;
 import minigameLib.api.WorldAPI;
 import minigameLib.fakeplayer.EntityFakePlayer;
 import minigameLib.fakeplayer.FakePlayerHelper;
+import minigameLib.minigame.scroll.ScrollEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -20,6 +22,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -46,7 +50,7 @@ public class MineRunEvent {
 
     @SubscribeEvent
     public void login(EntityViewRenderEvent.CameraSetup event) {
-        if (MiniGame.minerun.isStart() && MineRun.elytraMode() == 0) {
+        if (MiniGame.minerun.isStart() && MineRun.elytraMode() == 0 && (WorldAPI.getPlayer().getRidingEntity() == null)) {
             Camera.getCamera().moveCamera(EntityAPI.lookX(WorldAPI.getPlayer(), 3.5)
                             + getX(lineLR < 0 ? Direction.RIGHT : Direction.LEFT),
                     -1.5, EntityAPI.lookZ(WorldAPI.getPlayer(), 3.5)
@@ -136,9 +140,12 @@ public class MineRunEvent {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
                 if(e.player.getRidingEntity() != null){
-                    e.player.getRidingEntity().motionX= MineRun.xCoord();
-                    e.player.getRidingEntity().motionZ= MineRun.zCoord();
-
+                    EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();
+                    minecartEmpty.motionX= MineRun.xCoord();
+                    minecartEmpty.motionZ= MineRun.zCoord();
+                    if(minecartEmpty.onGround){
+                        minecartEmpty.setCanUseRail(true);
+                    }
                 }
             }
         }
@@ -163,11 +170,20 @@ public class MineRunEvent {
             }
         }
     }
-
+    @SubscribeEvent
+    public void keyInput(EntityMountEvent e) {
+        if(e.isDismounting() && MiniGame.minerun.isStart()){
+            if(e.getEntityBeingMounted() instanceof EntityMinecartEmpty){
+                if(!e.getEntityBeingMounted().isDead)
+                e.setCanceled(true);
+            }
+        }
+    }
     @SubscribeEvent
     public void keyInput(KeyInputEvent e) {
         if (!MiniGame.minerun.isStart())
             return;
+
         PosHelper posHelper = MineRun.playerPosHelper;
         if (DebAPI.isKeyDown(Keyboard.KEY_V)) {//엘리트라 모드로 변경함
             if (MineRun.elytraMode() == 2) {
@@ -284,7 +300,18 @@ public class MineRunEvent {
                 if (isLR)
                     lineLR++;
             }
+            if (DebAPI.isKeyDown(Keyboard.KEY_SPACE)) {
+                if(WorldAPI.getPlayer().getRidingEntity() != null) {
+                    EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) WorldAPI.getPlayer().getRidingEntity();
+                    minecartEmpty.setCanUseRail(false);
+                    minecartEmpty.setPosition(minecartEmpty.posX,minecartEmpty.posY+0.3,minecartEmpty.posZ);
+                    minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX,minecartEmpty.posY+0.3,minecartEmpty.posZ, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 1, false);
+                    minecartEmpty.addVelocity(0, 0.3, 0);
+                    System.out.println("점프함");
 
+
+                }
+            }
         }
 
     }

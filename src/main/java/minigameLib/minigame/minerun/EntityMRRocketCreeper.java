@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 public class EntityMRRocketCreeper extends EntityMR {
     private static final DataParameter<Boolean> RUN_MISSILE = EntityDataManager.createKey(EntityMRRocketCreeper.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> END_MISSILE = EntityDataManager.createKey(EntityMRRocketCreeper.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> RETURN_TIME = EntityDataManager.createKey(EntityMRRocketCreeper.class, DataSerializers.VARINT);
 
     private double targetX, targetY, targetZ, returnTime;
     private EntityWarningBlock[] warningBlocks = new EntityWarningBlock[2];
@@ -28,6 +29,7 @@ public class EntityMRRocketCreeper extends EntityMR {
         super.entityInit();
         dataManager.register(RUN_MISSILE, false);
         dataManager.register(END_MISSILE, false);
+        dataManager.register(RETURN_TIME, 0);
     }
 
     @Override
@@ -47,15 +49,14 @@ public class EntityMRRocketCreeper extends EntityMR {
                 if (getDistanceToEntity(WorldAPI.getPlayer()) < 10) {
                     dataManager.set(RUN_MISSILE, true);
                     targetX = posX + EntityAPI.lookX(WorldAPI.getPlayer(), 25);
-                    ;
                     targetY = posY;
                     targetZ = posZ + EntityAPI.lookZ(WorldAPI.getPlayer(), 25);
-                    ;
                     System.out.println("타겟을 설정함 " + targetX + " - " + targetY + " - " + targetZ + " - " + MineRun.xCoord() + " - " + MineRun.zCoord());
                     for (int i = 0; i < 2; i++) {
                         warningBlocks[i] = new EntityWarningBlock(worldObj);
                         warningBlocks[i].setPosition(targetX, targetY + i, targetZ);
                         warningBlocks[i].setSpawnXYZ(targetX, targetY + i, targetZ);
+                        if(isServerWorld())
                         worldObj.spawnEntityInWorld(warningBlocks[i]);
                         warningBlocks[i].setDeathTimer(100);
                     }
@@ -76,13 +77,14 @@ public class EntityMRRocketCreeper extends EntityMR {
 
         if (isEndMissle()) {
             this.setVelocity(0, -0.2, 0);
-            this.setRotate(180, 0, 0);
-            this.setTra(0,0,0);
-            returnTime++;
-            if (returnTime > 100) {
-                returnTime = 0;
+
+            dataManager.set(RETURN_TIME, getDataManager().get(RETURN_TIME)+1);
+            if (dataManager.get(RETURN_TIME) > 100) {
+                dataManager.set(RETURN_TIME, 0);
                 setInvisible(false);
                 setPosition(getSpawnPosVec());
+                this.setRotate(180, 0, 0);
+                this.setTra(0,0,0);
                 isFly = true;
                 dataManager.set(END_MISSILE, false);
                 dataManager.set(RUN_MISSILE, false);

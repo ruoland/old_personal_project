@@ -95,150 +95,153 @@ public class MineRun extends AbstractMiniGame {
         }
     }
 
-        public static void setPosition ( double x, double y, double z){
-            curX = x;
-            curY = y;
-            curZ = z;
-            Vec3d teleportVec = new Vec3d(player.posX + curX, player.posY, player.posZ + curZ);
-            Block block = (player.worldObj.getBlockState(new BlockPos(teleportVec)).getBlock());
-            Block block2 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0,1,0))).getBlock());
-            Block block3 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0,2,0))).getBlock());
+    public static void setPosition(double x, double y, double z) {
+        curX = x;
+        curY = y;
+        curZ = z;
+        Vec3d teleportVec = new Vec3d(player.posX + curX, player.posY, player.posZ + curZ);
+        Block block = (player.worldObj.getBlockState(new BlockPos(teleportVec)).getBlock());
+        Block block2 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0, 1, 0))).getBlock());
+        Block block3 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0, 2, 0))).getBlock());
 
-            System.out.println(block);
-            System.out.println(block2);
-            System.out.println(block3);
-            if(player.isOnLadder() || block == Blocks.LADDER || block2 == Blocks.LADDER){
-                teleportVec.addVector(-(player.motionX * 1.5), 0, -(player.motionZ * 1.5));
+        System.out.println(block);
+        System.out.println(block2);
+        System.out.println(block3);
+        if (player.isOnLadder() || block == Blocks.LADDER || block2 == Blocks.LADDER) {
+            teleportVec.addVector(-(player.motionX * 1.5), 0, -(player.motionZ * 1.5));
 
+        }
+        if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
+            EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) player.getRidingEntity();
+            Vec3d vec3d = null;
+            if (DebAPI.isKeyDown(Keyboard.KEY_A)) {
+                vec3d = (playerPosHelper.getXZ(Direction.LEFT, 2, false));
             }
-            if(player.getRidingEntity() instanceof EntityMinecartEmpty){
-                EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) player.getRidingEntity();
-                minecartEmpty.setDead();
-                EntityMinecartEmpty minecart = new EntityMinecartEmpty(minecartEmpty.worldObj);
-                if(DebAPI.isKeyDown(Keyboard.KEY_A)) {
-                    Vec3d vec3d = (playerPosHelper.getXZ(Direction.LEFT, 2, false));
-                    minecart.setPosition(minecartEmpty.posX+ vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord);
-                }
-                if(DebAPI.isKeyDown(Keyboard.KEY_D)) {
-                    Vec3d vec3d = (playerPosHelper.getXZ(Direction.RIGHT, 2, false));
-                    minecart.setPosition(minecartEmpty.posX+ vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord);
-                }
-                player.worldObj.spawnEntityInWorld(minecart);
-                player.startRiding(minecart);
-                minecart.setVelocity(minecartEmpty.motionX, minecartEmpty.motionY, minecartEmpty.motionZ);
-            }else
+            if (DebAPI.isKeyDown(Keyboard.KEY_D)) {
+                vec3d = (playerPosHelper.getXZ(Direction.RIGHT, 2, false));
+            }
+            minecartEmpty.setPosition(minecartEmpty.posX + vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord);
+            minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX + vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 0, false);
+
+        } else
             WorldAPI.teleport(teleportVec);
 
-            System.out.println(player.isOnLadder()+" - "+player.posX+"  - "+player.posY+" - "+player.posZ);
+        System.out.println(player.isOnLadder() + " - " + player.posX + "  - " + player.posY + " - " + player.posZ);
 
+    }
+
+    public static void setPosition(BlockPos pos) {
+        setPosition(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void setPosition(Vec3d pos) {
+        setPosition(pos.xCoord, pos.yCoord, pos.zCoord);
+    }
+
+    @Override
+    public boolean start(Object... obj) {
+        GameSettings gs = Minecraft.getMinecraft().gameSettings;
+        gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
+        gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
+        gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
+        gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
+        KeyBinding.resetKeyBindingArrayAndHash();
+        ICommandSender sender = (ICommandSender) obj[0];
+        player = (EntityPlayer) sender;
+        WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
+        spawnX = player.posX;
+        spawnY = player.posY;
+        spawnZ = player.posZ;
+        Camera.getCamera().reset();
+        Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
+        Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
+        Camera.getCamera().rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
+        Camera.getCamera().rotateZ = EntityAPI.lookX(player, 1) * 30;
+        if (player.getHorizontalFacing() == EnumFacing.NORTH) {
+            Camera.getCamera().rotateX = 30;
+            Camera.getCamera().rotateY = 0;
+            Camera.getCamera().moveCamera(0, 0, -2);
         }
-
-        public static void setPosition (BlockPos pos){
-            setPosition(pos.getX(), pos.getY(), pos.getZ());
+        if (player.getHorizontalFacing() == EnumFacing.EAST) {
+            Camera.getCamera().rotateX = 30;
+            Camera.getCamera().rotateY = 90;
+            Camera.getCamera().rotateZ = 0;
         }
+        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
+        Camera.getCamera().playerCamera(true);
+        MiniGame.mineRunEvent.lineLR = 0;
+        MiniGame.mineRunEvent.lineFB = 0;
+        MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
+        MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
+        xCoord = EntityAPI.lookX(player, 0.3);
+        zCoord = EntityAPI.lookZ(player, 0.3);
+        playerPosHelper = new PosHelper(player);
+        return super.start();
+    }
 
-        public static void setPosition (Vec3d pos){
-            setPosition(pos.xCoord, pos.yCoord, pos.zCoord);
-        }
-
-        @Override
-        public boolean start (Object...obj){
-            GameSettings gs = Minecraft.getMinecraft().gameSettings;
-            gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
-            gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
-            gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
-            gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
-            KeyBinding.resetKeyBindingArrayAndHash();
-            ICommandSender sender = (ICommandSender) obj[0];
-            player = (EntityPlayer) sender;
-            WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
-            spawnX = player.posX;
-            spawnY = player.posY;
-            spawnZ = player.posZ;
-            Camera.getCamera().reset();
-            Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
-            Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
-            Camera.getCamera().rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
-            Camera.getCamera().rotateZ = EntityAPI.lookX(player, 1) * 30;
-            if (player.getHorizontalFacing() == EnumFacing.NORTH) {
-                Camera.getCamera().rotateX = 30;
-                Camera.getCamera().rotateY = 0;
-                Camera.getCamera().moveCamera(0, 0, -2);
-            }
-            if (player.getHorizontalFacing() == EnumFacing.EAST) {
-                Camera.getCamera().rotateX = 30;
-                Camera.getCamera().rotateY = 90;
-                Camera.getCamera().rotateZ = 0;
-            }
-            Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
-            Camera.getCamera().playerCamera(true);
-            MiniGame.mineRunEvent.lineLR = 0;
-            MiniGame.mineRunEvent.lineFB = 0;
-            MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
-            MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
-            MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
-            MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
-            xCoord = EntityAPI.lookX(player, 0.3);
-            zCoord = EntityAPI.lookZ(player, 0.3);
-            playerPosHelper = new PosHelper(player);
-            return super.start();
-        }
-
-        public static double xCoord () {
+    public static double xCoord() {
+        if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
+            return xCoord * 1.5;
+        } else
             return xCoord;
-        }
+    }
 
-        public static double zCoord () {
-            return zCoord;
-        }
+    public static double zCoord() {
+        if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
+            return zCoord * 1.5;
+        } else
+        return zCoord;
+    }
 
-        public static void setFakePositionUpdate () {
-            EntityPlayer player = WorldAPI.getPlayer();
-            if (elytraMode() == 1) {
-                fakePlayer.setPosition(player.posX + curX + getLookX(), player.posY + 8, player.posZ + curZ + getLookZ());
-            } else
-                fakePlayer.setPosition(player.posX + curX + getLookX(), fakePlayer.posY + curY, player.posZ + curZ + getLookZ());
-            if (curY != 0) {
-                curY = 0;
-            }
-        }
-
-        public static double getLookX () {
-            return EntityAPI.lookX(player, 3);
-        }
-
-        public static double getLookZ () {
-            return EntityAPI.lookZ(player, 3);
-        }
-
-        public static float getYaw () {
-            return WorldAPI.getPlayer().rotationYaw;
-        }
-
-        @Override
-        public boolean end (Object...obj){
-            GameSettings gs = Minecraft.getMinecraft().gameSettings;
-            gs.keyBindLeft.setKeyCode(Keyboard.KEY_A);
-            gs.keyBindRight.setKeyCode(Keyboard.KEY_D);
-            gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
-            gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
-            gs.keyBindUseItem.resetKeyBindingArrayAndHash();
-            setElytra(0);
-
-            curX = 0;
+    public static void setFakePositionUpdate() {
+        EntityPlayer player = WorldAPI.getPlayer();
+        if (elytraMode() == 1) {
+            fakePlayer.setPosition(player.posX + curX + getLookX(), player.posY + 8, player.posZ + curZ + getLookZ());
+        } else
+            fakePlayer.setPosition(player.posX + curX + getLookX(), fakePlayer.posY + curY, player.posZ + curZ + getLookZ());
+        if (curY != 0) {
             curY = 0;
-            curZ = 0;
-            xCoord = 0;
-            zCoord = 0;
-            MiniGame.mineRunEvent.lineFB = 0;
-            MiniGame.mineRunEvent.lineX = 0;
-            MiniGame.mineRunEvent.lineZ = 0;
-            MiniGame.mineRunEvent.lineLR = 0;
-            MiniGame.mineRunEvent.lineUD = 0;
-            MiniGame.mineRunEvent.lineFBX = 0;
-            MiniGame.mineRunEvent.lineFBZ = 0;
-            WorldAPI.command("/minerun lava");
-            Camera.getCamera().reset();
-            return super.end();
         }
     }
+
+    public static double getLookX() {
+        return EntityAPI.lookX(player, 3);
+    }
+
+    public static double getLookZ() {
+        return EntityAPI.lookZ(player, 3);
+    }
+
+    public static float getYaw() {
+        return WorldAPI.getPlayer().rotationYaw;
+    }
+
+    @Override
+    public boolean end(Object... obj) {
+        GameSettings gs = Minecraft.getMinecraft().gameSettings;
+        gs.keyBindLeft.setKeyCode(Keyboard.KEY_A);
+        gs.keyBindRight.setKeyCode(Keyboard.KEY_D);
+        gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
+        gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
+        gs.keyBindUseItem.resetKeyBindingArrayAndHash();
+        setElytra(0);
+
+        curX = 0;
+        curY = 0;
+        curZ = 0;
+        xCoord = 0;
+        zCoord = 0;
+        MiniGame.mineRunEvent.lineFB = 0;
+        MiniGame.mineRunEvent.lineX = 0;
+        MiniGame.mineRunEvent.lineZ = 0;
+        MiniGame.mineRunEvent.lineLR = 0;
+        MiniGame.mineRunEvent.lineUD = 0;
+        MiniGame.mineRunEvent.lineFBX = 0;
+        MiniGame.mineRunEvent.lineFBZ = 0;
+        WorldAPI.command("/minerun lava");
+        Camera.getCamera().reset();
+        return super.end();
+    }
+}
