@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.GameRules;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -123,7 +124,12 @@ public class CMPlusEvent {
             event.player.worldObj.setRainStrength(0);
         }
     }
-
+    @SubscribeEvent
+    public void login(ExplosionEvent event) {
+        if (event.getWorld().getGameRules().getBoolean("antiExplosion")) {
+            event.setCanceled(true);
+        }
+    }
     @SubscribeEvent
     public void worldLoad(WorldEvent.Load e) {
         GameRules rules = e.getWorld().getGameRules();
@@ -131,6 +137,8 @@ public class CMPlusEvent {
             rules.addGameRule("noHunger", "false", GameRules.ValueType.BOOLEAN_VALUE);
         if (!rules.hasRule("weatherChange"))
             rules.addGameRule("weatherChange", "true", GameRules.ValueType.BOOLEAN_VALUE);
+        if (!rules.hasRule("antiExplosion"))
+            rules.addGameRule("antiExplosion", "false", GameRules.ValueType.BOOLEAN_VALUE);
 
     }
 

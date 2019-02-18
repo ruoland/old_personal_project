@@ -45,10 +45,6 @@ public class EntityMRMissileCreeper extends EntityMR {
                     targetX = posX+ (-MineRun.xCoord() * 50);
                     targetY = posY;
                     targetZ = posZ+ (-MineRun.zCoord() * 50);
-                    System.out.println("플레  좌표 "+WorldAPI.getPlayer().getPosition().getX() + " - "+getPosition().getY()+ " - "+WorldAPI.getPlayer().getPosition().getZ());
-
-                    System.out.println("지금 좌표 "+getPosition().getX() + " - "+getPosition().getY()+ " - "+getPosition().getZ());
-                    System.out.println("타겟 "+targetX + " - "+targetY+ " - "+targetZ);
                     this.addRotate((int)MineRun.xCoord() * 90, 0, (int)MineRun.zCoord() * 90);
                     isLookPlayer = false;
                     lookPitch = rotationPitch;

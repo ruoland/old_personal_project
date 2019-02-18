@@ -53,7 +53,7 @@ public class EntityMR extends EntityDefaultNPC {
                 this.setDead();
             }
         }
-        return super.attackEntityFrom(source, amount);
+        return false;
     }
 
     @Override
@@ -67,6 +67,7 @@ public class EntityMR extends EntityDefaultNPC {
         super.onLivingUpdate();
         if (isLookPlayer && WorldAPI.getPlayer() != null)
             this.faceEntity(WorldAPI.getPlayer(), 360, 360);
+        if(isFly)
         this.setVelocity(0,0,0);
     }
 }

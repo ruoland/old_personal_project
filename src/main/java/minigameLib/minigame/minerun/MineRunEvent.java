@@ -20,12 +20,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -183,7 +185,6 @@ public class MineRunEvent {
     public void keyInput(KeyInputEvent e) {
         if (!MiniGame.minerun.isStart())
             return;
-
         PosHelper posHelper = MineRun.playerPosHelper;
         if (DebAPI.isKeyDown(Keyboard.KEY_V)) {//엘리트라 모드로 변경함
             if (MineRun.elytraMode() == 2) {
