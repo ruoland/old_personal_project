@@ -63,7 +63,7 @@ public class EntityMRMissileCreeper extends EntityMR {
         }
         if (isEndMissle()) {
             dataManager.set(RETURN_TIME, getDataManager().get(RETURN_TIME)+1);
-            if(getDataManager().get(RETURN_TIME) > 60) {
+            if(getDataManager().get(RETURN_TIME) > 120) {
                 dataManager.set(RETURN_TIME, 0);
                 System.out.println("원래 장소로 돌아감");
                 teleportSpawnPos();

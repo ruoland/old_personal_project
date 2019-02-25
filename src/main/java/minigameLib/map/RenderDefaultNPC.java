@@ -67,9 +67,9 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                     if (flag1) {
                         GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
                     }
+                    GlStateManager.translate(0,1,0);
 
                     modelRender(npc);
-                    GlStateManager.translate(0,1,0);
                     RenderAPI.renderBlock(npc.getCurrentStack(), npc);
 
                     if (flag1) {
@@ -126,10 +126,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         Rotations rotations = npc.getRotationXYZ();
         Rotations scale = npc.getScaleXYZ();
         Rotations rgb = npc.getRGBColor();
-        GlStateManager.translate(translation.getX(), translation.getY(), translation.getZ());
         GlStateManager.rotate(rotations.getX(), 1, 0, 0);
         GlStateManager.rotate(rotations.getY(), 0, 1, 0);
         GlStateManager.rotate(rotations.getZ(), 0, 0, 1);
+        GlStateManager.translate(translation.getX(), translation.getY(), translation.getZ());
         GlStateManager.scale(scale.getX(), scale.getY(), scale.getZ());
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(rgb.getX(), rgb.getY(), rgb.getZ(), npc.getTransparency());

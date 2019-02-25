@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class EntityMRFallingBlock extends EntityMR {
     public EntityMRFallingBlock(World worldIn) {
         super(worldIn);
-        setBlockMode(Blocks.ANVIL);
+        setBlockMode(Blocks.STONE);
         this.setCollision(true);
         isFly =false;
     }
