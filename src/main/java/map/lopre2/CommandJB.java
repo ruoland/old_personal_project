@@ -7,6 +7,7 @@ import map.lopre2.jump1.EntityBuildBlock;
 import map.lopre2.jump2.EntityTeleportBlock;
 import minigameLib.MiniGame;
 import minigameLib.action.ActionEffect;
+import minigameLib.action.ActionEvent;
 import minigameLib.api.WorldAPI;
 import minigameLib.effect.AbstractTick;
 import minigameLib.effect.TickRegister;
@@ -53,6 +54,16 @@ public class CommandJB extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("tutorial")) {
+                EntityPlayer player = getPlayer(server,sender, args[1]);
+                player.addChatComponentMessage(new TextComponentString("1.블럭이 안보이면 나갔다가 들어와 주세요."));
+                player.addChatComponentMessage(new TextComponentString("2.블럭에 끼었을 때 /jb up 명령어를 입력해주세요"));
+                player.addChatComponentMessage(new TextComponentString("3.heal 명령어를 입력하면 체력과 배고픔이 회복됩니다"));
+                player.addChatComponentMessage(new TextComponentString("4.R키를 누르면 스폰포인트로 이동합니다"));
+                player.addChatComponentMessage(new TextComponentString("5./jb help 명령어를 입력하면 위에 내용을 다시 볼 수 있습니다.."));
+
+
+            }
             if (args[0].equalsIgnoreCase("spider") || args[0].equalsIgnoreCase("spi")) {
                 EntityPlayer player = (EntityPlayer) sender;
                 EntityJumpSpider spider = new EntityJumpSpider(WorldAPI.getWorld());
@@ -136,10 +147,10 @@ public class CommandJB extends CommandPlusBase {
                         playerMP.addChatMessage(new TextComponentString("                           "));
                         playerMP.addChatMessage(new TextComponentString("                           "));
                         playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
-                        playerMP.addChatMessage(new TextComponentString("모쿠르 1탄을 플레이 해주셔서 감사합니다!"));
+                        playerMP.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
                     }
-                    WorldAPI.addMessage("점프맵 1탄을 클리어 하셨습니다. 2탄으로 바로 넘어갈까요?");
-                    TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.]");
+                    WorldAPI.addMessage("1탄을 클리어 하셨습니다. 2탄으로 바로 넘어갈까요?");
+                    TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.](게임이 잠깐 멈춥니다)");
                     Style style = new Style();
                     style.setColor(TextFormatting.BOLD);
                     textComponent.setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb jump2")));
@@ -233,35 +244,16 @@ public class CommandJB extends CommandPlusBase {
 
     public void worldLoad(String diffu) {
         Minecraft mc = Minecraft.getMinecraft();
-        TickRegister.register(new AbstractTick(Type.CLIENT, 1, false) {
-            @Override
-            public void run(Type type) {
-                mc.theWorld.sendQuittingDisconnectingPacket();
-                mc.loadWorld((WorldClient) null);
-                ISaveFormat isaveformat = mc.getSaveLoader();
-                String worldName = "JumpMap Sea2";
-                if (diffu.equalsIgnoreCase("easy"))
-                    mc.gameSettings.difficulty = EnumDifficulty.EASY;
-                else if (diffu.equalsIgnoreCase("normal"))
-                    mc.gameSettings.difficulty = EnumDifficulty.NORMAL;
 
-                if (isaveformat.canLoadWorld(worldName)) {
-                    try {
-                        for (WorldSummary summary : isaveformat.getSaveList()) {
-                            if (summary.getDisplayName().equalsIgnoreCase(worldName)) {
-                                net.minecraftforge.fml.client.FMLClientHandler.instance().tryLoadExistingWorld(new GuiWorldSelection(new GuiMainMenu()), summary);
-                                LooPre2Event.spawnCount = 0;
-                                LooPre2Event.healCount = 0;
-                                LooPre2Event.gamemodeCount = 0;
-                                LooPre2Event.deathCount = 0;
-                                break;
-                            }
-                        }
-                    } catch (AnvilConverterException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        LooPre2Event.spawnCount = 0;
+        LooPre2Event.healCount = 0;
+        LooPre2Event.gamemodeCount = 0;
+        LooPre2Event.deathCount = 0;
+        String worldName = "JumpMap Sea2";
+        if (diffu.equalsIgnoreCase("easy"))
+            mc.gameSettings.difficulty = EnumDifficulty.EASY;
+        else if (diffu.equalsIgnoreCase("normal"))
+            mc.gameSettings.difficulty = EnumDifficulty.NORMAL;
+        WorldAPI.worldLoad(worldName);
     }
 }

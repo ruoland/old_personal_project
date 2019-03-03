@@ -35,7 +35,7 @@ import java.util.List;
 public abstract class EntityPreBlock extends EntityDefaultNPC {
     protected static Block prevBlock = Blocks.STONE;
     private static final DataParameter<String> JUMP_NAME = EntityDataManager.createKey(EntityPreBlock.class, DataSerializers.STRING);
-    private static final DataParameter<Boolean> ISINV = EntityDataManager.createKey(EntityPreBlock.class,
+    private static final DataParameter<Boolean> IS_INVSIVLE = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FORCE_SPAWN = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.BOOLEAN);//클라이언트 월드에서 엔티티가 스폰 될 수 있게 함, 가짜 블럭 생성용
@@ -58,7 +58,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(TELEPORT_LOCK, false);
-        dataManager.register(ISINV, false);
+        dataManager.register(IS_INVSIVLE, false);
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(DIFFICULTY, -1);
         dataManager.register(JUMP_NAME, "");
@@ -75,7 +75,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public void setInv(boolean is) {
-        dataManager.set(ISINV, is);
+        dataManager.set(IS_INVSIVLE, is);
     }
 
     @Override
@@ -84,7 +84,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public boolean isInv() {
-        return dataManager.get(ISINV);
+        return dataManager.get(IS_INVSIVLE);
     }
 
 

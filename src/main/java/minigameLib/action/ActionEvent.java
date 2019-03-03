@@ -98,7 +98,7 @@ public class ActionEvent {
                 }
             }
         }
-        if (ActionEffect.canCrawl()) {
+        if (false && ActionEffect.canCrawl()) {
             GameSettings gs = Minecraft.getMinecraft().gameSettings;
             if (ClientProxy.grab.isKeyDown()) {
                 System.out.println("키 다운 상태");

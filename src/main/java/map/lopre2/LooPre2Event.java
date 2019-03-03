@@ -23,7 +23,6 @@ import map.lopre2.jump1.EntityLavaBlock;
 
 
 public class LooPre2Event {
-    private int currentStage;
     public static int deathCount, gamemodeCount, spawnCount, healCount;
 
     @SubscribeEvent
@@ -79,22 +78,6 @@ public class LooPre2Event {
         }
     }
 
-    @SubscribeEvent
-    public void a(CommandEvent event) {
-        if (LoPre2.checkWorld()) {
-            if (event.getCommand().getCommandName().equalsIgnoreCase("waypoint")) {
-                if (event.getParameters()[0].indexOf("stage") != -1) {
-                    try {
-                        currentStage = Integer.valueOf(event.getParameters()[0].replace("stage", ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("현재 스테이지 " + currentStage);
-            }
-        }
-    }
-
     public static boolean nightVision = true, posYDead = true, fireAttack;
 
     @SubscribeEvent
@@ -136,19 +119,22 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayer) {
-            if (event.getSource() == DamageSource.onFire || event.getSource() == DamageSource.inFire) {
-                event.setCanceled(true);
-                event.getEntityLiving().extinguish();
-                fireAttack = true;
-            } else
-                fireAttack = false;
+        if (LoPre2.checkWorld()) {
+
+            if (event.getEntityLiving() instanceof EntityPlayer) {
+                if (event.getSource() == DamageSource.onFire || event.getSource() == DamageSource.inFire) {
+                    event.setCanceled(true);
+                    event.getEntityLiving().extinguish();
+                    fireAttack = true;
+                } else
+                    fireAttack = false;
+            }
         }
     }
 
     @SubscribeEvent
     public void event(LoginEvent event) {
-        if (WorldAPI.equalsWorldName("JumpMap") || WorldAPI.equalsWorldName("JumpMap Sea2")) {
+        if (LoPre2.checkWorld()) {
             if (Minecraft.getMinecraft().gameSettings.limitFramerate > 60) {
                 Minecraft.getMinecraft().gameSettings.limitFramerate = 60;
             }
@@ -157,17 +143,19 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void event(MouseEvent event) {
-        if (event.getDwheel() == 120) {
-            if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL)) {
-                EntityLavaBlock.ax -= 0.3;
-            } else
-                EntityLavaBlock.ax -= 0.05;
-        }
-        if (event.getDwheel() == -120) {
-            if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL)) {
-                EntityLavaBlock.ax += 0.3;
-            } else
-                EntityLavaBlock.ax += 0.05;
+        if (CommandJB.isDebMode) {
+            if (event.getDwheel() == 120) {
+                if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                    EntityLavaBlock.ax -= 0.3;
+                } else
+                    EntityLavaBlock.ax -= 0.05;
+            }
+            if (event.getDwheel() == -120) {
+                if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                    EntityLavaBlock.ax += 0.3;
+                } else
+                    EntityLavaBlock.ax += 0.05;
+            }
         }
     }
 }

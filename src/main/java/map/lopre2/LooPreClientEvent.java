@@ -27,6 +27,7 @@ public class LooPreClientEvent {
                 for(BlockPos pos : blockAPI.getPosList()){
                     if(WorldAPI.getBlock(pos) instanceof BlockBasePressurePlate){
                         WorldAPI.teleport(pos.add(0,1,0));
+                        break;
                     }
                 }
             }
