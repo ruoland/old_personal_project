@@ -2,6 +2,7 @@ package minigameLib.minigame.scroll;
 
 import cmplus.camera.Camera;
 import minigameLib.MiniGame;
+import minigameLib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,8 +26,11 @@ public class ScrollEvent {
 
     @SubscribeEvent
     public void login(WorldEvent.Unload event) {
-        if (MiniGame.scroll.isStart())
+        if (MiniGame.scroll.isStart()) {
             MiniGame.scroll.end();
+            //모드 점프맵용
+            WorldAPI.addMessage("카메라 설정이 해제 됐습니다. 다시 횡스크롤 설정으로 돌아가려면 /scroll z 명령어를 입력해주세요.");
+        }
     }
 
     @SubscribeEvent

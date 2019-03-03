@@ -1,6 +1,8 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import minigameLib.MiniGame;
+import minigameLib.action.ActionEffect;
 import minigameLib.api.LoginEvent;
 import minigameLib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
@@ -17,13 +19,27 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityLavaBlock;
 
 
 public class LooPre2Event {
     public static int deathCount, gamemodeCount, spawnCount, healCount;
+
+    @SubscribeEvent
+    public void playerTick(TickEvent.PlayerTickEvent e) {
+        if (!CommandJB.isDebMode && e.side == Side.SERVER && e.phase == TickEvent.Phase.END) {
+            for (ItemStack stack : e.player.inventory.mainInventory) {
+                if (stack != null && stack.getItem() instanceof ItemSpanner) {
+                    CommandJB.isDebMode = true;
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public void a(ServerChatEvent event) {
@@ -120,7 +136,6 @@ public class LooPre2Event {
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
         if (LoPre2.checkWorld()) {
-
             if (event.getEntityLiving() instanceof EntityPlayer) {
                 if (event.getSource() == DamageSource.onFire || event.getSource() == DamageSource.inFire) {
                     event.setCanceled(true);
@@ -131,7 +146,6 @@ public class LooPre2Event {
             }
         }
     }
-
     @SubscribeEvent
     public void event(LoginEvent event) {
         if (LoPre2.checkWorld()) {

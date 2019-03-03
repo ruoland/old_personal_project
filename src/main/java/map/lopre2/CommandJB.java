@@ -11,6 +11,7 @@ import minigameLib.action.ActionEvent;
 import minigameLib.api.WorldAPI;
 import minigameLib.effect.AbstractTick;
 import minigameLib.effect.TickRegister;
+import minigameLib.minigame.scroll.ScrollEvent;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -56,19 +57,11 @@ public class CommandJB extends CommandPlusBase {
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase("tutorial")) {
                 EntityPlayer player = getPlayer(server,sender, args[1]);
-                player.addChatComponentMessage(new TextComponentString("1.블럭이 안보이면 나갔다가 들어와 주세요."));
+                player.addChatComponentMessage(new TextComponentString("1.블럭이 안보이면 맵을 나갔다가 들어와 주세요."));
                 player.addChatComponentMessage(new TextComponentString("2.블럭에 끼었을 때 /jb up 명령어를 입력해주세요"));
                 player.addChatComponentMessage(new TextComponentString("3.heal 명령어를 입력하면 체력과 배고픔이 회복됩니다"));
                 player.addChatComponentMessage(new TextComponentString("4.R키를 누르면 스폰포인트로 이동합니다"));
                 player.addChatComponentMessage(new TextComponentString("5./jb help 명령어를 입력하면 위에 내용을 다시 볼 수 있습니다.."));
-
-
-            }
-            if (args[0].equalsIgnoreCase("spider") || args[0].equalsIgnoreCase("spi")) {
-                EntityPlayer player = (EntityPlayer) sender;
-                EntityJumpSpider spider = new EntityJumpSpider(WorldAPI.getWorld());
-                spider.setPosition(player.posX, player.posY, player.posZ);
-                WorldAPI.getWorld().spawnEntityInWorld(spider);
             }
             if (args[0].equalsIgnoreCase("crawl")) {
                 boolean var = t.findBoolean(args, 1, false);
@@ -96,6 +89,8 @@ public class CommandJB extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("3./fly true 를 입력하면 하늘을 날 수 있습니다"));
                 sender.addChatMessage(new TextComponentString("4.너무 어려우면 /spawnpoint (사용시 도전과제 클리어 못함)"));
                 sender.addChatMessage(new TextComponentString("5.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
+                sender.addChatMessage(new TextComponentString("6.2D 스테이지에서 맵을 나간 경우 /scoll z 명령어를 입력해주세요"));
+
             }
             if (args[0].equalsIgnoreCase("start")) {
                 startTime = System.currentTimeMillis();

@@ -36,18 +36,11 @@ public class JumpEvent2 {
 
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent e) {
-        if (LoPre2.checkWorld()) {
-            if (!CommandJB.isDebMode && e.side == Side.SERVER && e.phase == TickEvent.Phase.END) {
-                for (ItemStack stack : e.player.inventory.mainInventory) {
-                    if (stack != null && stack.getItem() instanceof ItemSpanner) {
-                        CommandJB.isDebMode = true;
-                    }
-                }
-                if(e.player.bedLocation != null)
-                ActionEffect.setYTP(e.player.bedLocation.getY() - 20, ActionEffect.getPitch(), ActionEffect.getYaw());
-
+        if (WorldAPI.getCurrentWorldName().equalsIgnoreCase("JumpMap Sea2")) {
+            if (e.player.getBedLocation() != null) {
+                if(e.player.getBedLocation().getY() - 20 > 0)
+                ActionEffect.setYTP(e.player.getBedLocation().getY() - 20, ActionEffect.getPitch(), ActionEffect.getYaw());
             }
-
         }
     }
 

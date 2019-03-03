@@ -66,8 +66,6 @@ public class ActionEffect {
 		tpYMap.put(mapName, tpy);
 		tpPitchMap.put(mapName, pitch);
 		tpYawMap.put(mapName, yaw);
-
-		System.out.println("TPY "+tpy+" - "+pitch+" - "+yaw);
 	}
 	public static void setYP(float yaw, float pitch){
 		tpPitchMap.put(mapName, pitch);
