@@ -17,7 +17,7 @@ public class PuEvent {
     }
     @SubscribeEvent
     public void event(PlayerInteractEvent.RightClickEmpty event){
-        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLarge(event.getWorld(), event.getEntityLiving(), 0,0,0));
-        event.getWorld().spawnParticle(EnumParticleTypes.FLAME, 0,0,0,0,0,0);
+//        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleLarge(event.getWorld(), event.getEntityLiving(), 0,0,0));
+//        event.getWorld().spawnParticle(EnumParticleTypes.FLAME, 0,0,0,0,0,0);
     }
 }
