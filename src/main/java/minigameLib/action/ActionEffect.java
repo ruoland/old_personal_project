@@ -83,6 +83,9 @@ public class ActionEffect {
 		return tpPitchMap.get(mapName);
 	}
 
+	public static boolean canYTP(String mapName){
+		return tpPitchMap.containsKey(mapName) && tpYMap.containsKey(mapName) && tpYawMap.containsKey(mapName);
+	}
 
 	private static ArrayList<String> crawlMapList = new ArrayList<>();
 	private static HashMap<String, Boolean> inWaterMap = new HashMap<>();//물 속에 있는 효과를 내거나 물 속에 없는 효과를 냄
@@ -99,9 +102,9 @@ public class ActionEffect {
 				MiniGame.instance.minigameConfig.get(worldName, "inWater", false).set(inWaterMap.get(worldName));
 			MiniGame.instance.minigameConfig.get(worldName, "doubleJump", false).set(djList.contains(worldName));
 			if (tpYMap.containsKey(worldName)) {
-				MiniGame.instance.minigameConfig.get(worldName, "tpY", 0).set(tpYMap.get(worldName));
-				MiniGame.instance.minigameConfig.get(worldName, "tpYaw", 0).set(tpYawMap.get(worldName));
-				MiniGame.instance.minigameConfig.get(worldName, "tpPitch", 0).set(tpPitchMap.get(worldName));
+				MiniGame.instance.minigameConfig.get(worldName, "tpYNew", 0).set(tpYMap.get(worldName));
+				MiniGame.instance.minigameConfig.get(worldName, "tpYawNew", 0).set(tpYawMap.get(worldName));
+				MiniGame.instance.minigameConfig.get(worldName, "tpPitchNew", 0).set(tpPitchMap.get(worldName));
 			}
 		}
 	}
@@ -117,10 +120,10 @@ public class ActionEffect {
 				inWaterMap.put(category, action.get("inWater").getBoolean());
 			if (action.containsKey("doubleJump")&& action.get("doubleJump").getBoolean())
 				djList.add(category);
-			if (action.containsKey("tpY")) {
-				tpYMap.put(category, action.get("tpY").getDouble());
-				tpYawMap.put(category, (float) action.get("tpYaw").getDouble());
-				tpPitchMap.put(category, (float) action.get("tpPitch").getDouble());
+			if (action.containsKey("tpYNew")) {
+				tpYMap.put(category, action.get("tpYNew").getDouble());
+				tpYawMap.put(category, (float) action.get("tpYawNew").getDouble());
+				tpPitchMap.put(category, (float) action.get("tpPitchNew").getDouble());
 			}
 		}
 	}

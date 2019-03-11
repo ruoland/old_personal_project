@@ -57,7 +57,7 @@ public class EntityRespawnZombie extends EntityDefaultNPC {
                 float a = 0;
                 @Override
                 public void run(TickEvent.Type type) {
-                    a += 1F / 5F;
+                    a += 1F;
                     setXYZ(EnumModel.ROTATION, 90F-a, 0, 90F-a);
                     if (a >= 90F) {
                         stopTick();
