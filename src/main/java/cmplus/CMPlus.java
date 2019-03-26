@@ -163,10 +163,10 @@ public class CMPlus {
     public static void saveCommandLog(String worldName){
         LocalDateTime currentDate = LocalDateTime.now();
         StringBuffer date = new StringBuffer("log-");
-        date.append(currentDate.getYear()).append(":").append(currentDate.getMonthValue()).append(":").append(currentDate.getDayOfMonth()).append(worldName).append(".txt");
+        date.append(currentDate.getYear()).append("-").append(currentDate.getMonthValue()).append("-").append(currentDate.getDayOfMonth()).append("-").append(worldName).append(".txt");
         File dir = new File("./commandLog/");
         dir.mkdir();
-        File commandLog = new File(dir+date.toString());
+        File commandLog = new File(dir+"/"+date.toString());
         try {
             commandLog.createNewFile();
         } catch (IOException e) {

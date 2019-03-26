@@ -23,11 +23,17 @@ public class ActionEffect {
     private static HashMap<String, ActionData> actionMap = new HashMap<>();
 
     public static ActionData getActionData(String mapName){
-        if(actionMap.containsKey(mapName))
-        return actionMap.get(mapName);
-        else {
-			return actionMap.put(mapName, new ActionData(mapName));
+    	if(mapName != null) {
+			if (actionMap.containsKey(mapName) && actionMap.get(mapName) != null)
+				return actionMap.get(mapName);
+			else {
+				return actionMap.put(mapName, new ActionData(mapName));
+			}
+
 		}
+		return actionMap.put("null", new ActionData("null"));
+
+
     }
 	public static void crawl(boolean onoff) {
 	    getActionData(mapName).crawl(onoff);
@@ -50,6 +56,7 @@ public class ActionEffect {
     }
 
 	public static boolean canMapDoubleJump() {
+
 		return getActionData(mapName).canMapDoubleJump();
 	}
 

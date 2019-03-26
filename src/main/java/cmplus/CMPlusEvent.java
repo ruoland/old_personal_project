@@ -155,6 +155,7 @@ public class CMPlusEvent {
 
     @SubscribeEvent
     public void worldUnLoad(WorldEvent.Unload event){
+        if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
         CMPlus.saveCommandLog(WorldAPI.getCurrentWorldName());
     }
 
