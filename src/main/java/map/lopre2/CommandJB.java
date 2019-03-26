@@ -88,6 +88,8 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("tpy")) {
                 ActionEffect.setYTP(Double.valueOf(args[1]), ActionEffect.getPitch(), ActionEffect.getYaw());
+                sender.addChatMessage(new TextComponentString("스폰포인트로 TPY 자동 갱신되게 했음 /spawnpoint 로 내려갈 것"));
+
             }
             if (args[0].equalsIgnoreCase("yp")) {
                 ActionEffect.setYP(Float.valueOf(args[1]), Float.valueOf(args[2]));

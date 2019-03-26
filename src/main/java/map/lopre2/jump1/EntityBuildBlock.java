@@ -170,16 +170,16 @@ public class EntityBuildBlock extends EntityPreBlock {
             eBlock.setTarget(1127, 247, -70, 1);
             nBlock.setTarget(1127, 247, -61, 1);
             dBlock.setTarget(1127, 249, -56);
-            Vec3d eVec = new Vec3d(-180 - eBlock.getRotateX(), 90 - eBlock.getRotateY(), -180 - eBlock.getRotateZ()).normalize().scale(0.6);
-            Vec3d nVec = new Vec3d(-180 - nBlock.getRotateX(), 0 - nBlock.getRotateY(), -180 - nBlock.getRotateZ()).normalize().scale(0.8);
-            Vec3d dVec = new Vec3d(-180 - dBlock.getRotateX(), 0 - dBlock.getRotateY(), -180 - dBlock.getRotateZ()).normalize().scale(0.3);
+            eVec = new Vec3d(-180 - eBlock.getRotateX(), 90 - eBlock.getRotateY(), -180 - eBlock.getRotateZ()).normalize().scale(0.6);
+            nVec = new Vec3d(-180 - nBlock.getRotateX(), 0 - nBlock.getRotateY(), -180 - nBlock.getRotateZ()).normalize().scale(0.8);
+            dVec = new Vec3d(-180 - dBlock.getRotateX(), 0 - dBlock.getRotateY(), -180 - dBlock.getRotateZ()).normalize().scale(0.3);
 
             eBlock.addRotate(eVec.xCoord, eVec.yCoord, eVec.zCoord);
             nBlock.addRotate(nVec.xCoord, nVec.yCoord, nVec.zCoord);
             dBlock.addRotate(dVec.xCoord, dVec.yCoord, dVec.zCoord);
         }
     }
-
+    private Vec3d eVec, nVec, dVec;
     @Override
     public void targetArrive() {
         super.targetArrive();
