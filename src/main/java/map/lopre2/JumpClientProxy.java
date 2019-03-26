@@ -1,7 +1,7 @@
 package map.lopre2;
 
 
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.*;
 import map.lopre2.jump3.EntityLavaSpawnBlock;

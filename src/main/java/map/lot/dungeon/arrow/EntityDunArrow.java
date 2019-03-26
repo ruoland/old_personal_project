@@ -2,7 +2,7 @@ package map.lot.dungeon.arrow;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

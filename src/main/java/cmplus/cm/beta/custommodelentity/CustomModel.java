@@ -1,7 +1,7 @@
 package cmplus.cm.beta.custommodelentity;
 
-import minigameLib.api.BlockAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.BlockAPI;
+import oneline.api.WorldAPI;
 
 public class CustomModel {
 	private BlockAPI list;

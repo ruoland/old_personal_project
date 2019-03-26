@@ -1,8 +1,8 @@
 package map.platformer;
 
 import map.platformer.chapter1.EntityCowBumo;
-import minigameLib.api.ScriptAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.ScriptAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.init.Blocks;
 import map.platformer.chapter1.EntityBabyCow;
 import map.platformer.chapter1.EntityBossHorse;

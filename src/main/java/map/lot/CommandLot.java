@@ -1,8 +1,8 @@
 package map.lot;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;

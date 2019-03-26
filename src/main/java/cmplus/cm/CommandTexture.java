@@ -2,7 +2,7 @@ package cmplus.cm;
 
 import cmplus.util.CommandPlusBase;
 import cmplus.util.CommandTool;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;

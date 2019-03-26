@@ -1,7 +1,7 @@
 package cmplus.cm.v17.key;
 
 import cmplus.deb.DebAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;

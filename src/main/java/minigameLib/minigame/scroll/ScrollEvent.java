@@ -2,7 +2,7 @@ package minigameLib.minigame.scroll;
 
 import cmplus.camera.Camera;
 import minigameLib.MiniGame;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiScreen;

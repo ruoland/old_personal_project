@@ -1,9 +1,9 @@
 package minigameLib;
 
-import minigameLib.api.RenderAPI;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.map.EntityDefaultBlock;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.RenderAPI;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.map.EntityDefaultBlock;
+import oneline.map.EntityDefaultNPC;
 import minigameLib.minigame.bomber.EntityBomb;
 import minigameLib.minigame.elytra.EntityFlyingWeen;
 import minigameLib.minigame.elytra.miniween.*;

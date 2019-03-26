@@ -1,10 +1,10 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.RenderAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.EntityAPI;
+import oneline.api.RenderAPI;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,6 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityBuildBlock;
-import map.lopre2.jump1.EntityLavaBlock;
 import map.lopre2.jump2.EntityBigBlock;
 
 import javax.annotation.Nullable;

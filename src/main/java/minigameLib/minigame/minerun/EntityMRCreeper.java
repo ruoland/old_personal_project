@@ -1,8 +1,8 @@
 package minigameLib.minigame.minerun;
 
 import minigameLib.MiniGame;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.TypeModel;
+import oneline.api.WorldAPI;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

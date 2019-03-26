@@ -1,7 +1,7 @@
 package map.tycoon;
 
 
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;

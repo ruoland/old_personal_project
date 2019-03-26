@@ -2,9 +2,9 @@ package cmplus;
 
 import cmplus.cm.v15.GuiCGameOver;
 import cmplus.util.Sky;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.EnumFacing;

@@ -1,6 +1,6 @@
 package map.tycoon;
 
-import minigameLib.map.EntityDefaultNPC;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.DifficultyInstance;

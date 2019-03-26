@@ -5,7 +5,7 @@ import cmplus.util.CloudRenderer;
 import cmplus.util.Sky;
 import cmplus.util.SkyRenderer;
 import cmplus.util.WorldProvider10;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.renderer.GlStateManager;

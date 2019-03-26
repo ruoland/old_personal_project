@@ -1,6 +1,6 @@
 package cmplus;
 
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Property;
 

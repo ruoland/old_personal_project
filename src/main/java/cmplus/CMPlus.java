@@ -41,7 +41,11 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.io.FileInputStream;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -155,7 +159,35 @@ public class CMPlus {
         //event.registerServerCommand(new CommandNPC());
         //event.registerServerCommand(new CommandText());
     }
+    public static ArrayList<String> commandLogList = new ArrayList<>();
+    public static void saveCommandLog(String worldName){
+        LocalDateTime currentDate = LocalDateTime.now();
+        StringBuffer date = new StringBuffer("log-");
+        date.append(currentDate.getYear()).append(":").append(currentDate.getMonthValue()).append(":").append(currentDate.getDayOfMonth()).append(worldName).append(".txt");
+        File dir = new File("./commandLog/");
+        dir.mkdir();
+        File commandLog = new File(dir+date.toString());
+        try {
+            commandLog.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(commandLog));
+            for(String com : commandLogList){
+                writer.write(com);
+                writer.newLine();
+            }
+            writer.close();;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
     public void autoRegister() {
         String jar = CMPlus.class.getProtectionDomain().getCodeSource().getLocation().toString().substring(6);
         String pac = CMPlus.class.getPackage().getName().replace(".", "/");

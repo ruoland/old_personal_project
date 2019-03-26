@@ -2,7 +2,7 @@ package map.puzzle;
 
 import cmplus.util.CommandPlusBase;
 import map.puzzle.base.EntityPuzzleDoorBase;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

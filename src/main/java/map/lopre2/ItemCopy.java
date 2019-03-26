@@ -1,7 +1,7 @@
 package map.lopre2;
 
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

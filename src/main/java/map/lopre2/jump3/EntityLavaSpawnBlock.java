@@ -1,6 +1,6 @@
 package map.lopre2.jump3;
 
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

@@ -2,7 +2,7 @@ package map.puzzle;
 
 import cmplus.deb.DebAPI;
 import map.puzzle.dungeon.EntityRespawnZombie;
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -23,6 +23,7 @@ public class Puzzle {
         DebAPI.registerEntity(this, "PuzzleDoor", EntityPuzzleDoor.class);
         DebAPI.registerEntity(this, "PuzzleMonster", EntityPuzzleMonster.class);
         DebAPI.registerEntity(this, "PuzzlePathFinder", EntityPuzzlePathCreeper.class);
+        DebAPI.registerEntity(this, "PuzzleMoveZombie", EntityPuzzleMoveZombie.class);
         DebAPI.registerEntity(this, "RespawnZombie", EntityRespawnZombie.class);
         RenderAPI.registerRender(EntityPuzzleBlock.class);
         RenderAPI.registerRender(EntityPuzzleBlockButton.class);

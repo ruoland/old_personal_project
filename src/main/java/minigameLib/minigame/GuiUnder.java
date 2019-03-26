@@ -1,6 +1,6 @@
 package minigameLib.minigame;
 
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;

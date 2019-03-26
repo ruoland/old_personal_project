@@ -1,6 +1,6 @@
 package cmplus.cm.v18.function;
 
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;

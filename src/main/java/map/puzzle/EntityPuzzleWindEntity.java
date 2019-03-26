@@ -1,9 +1,8 @@
 package map.puzzle;
 
 import map.puzzle.base.EntityPuzzleWindBase;
-import minigameLib.map.EntityDefaultNPC;
-import minigameLib.map.TypeModel;
-import minigameLib.minigame.elytra.miniween.EntityElytraPumpkinAttack;
+import oneline.map.EntityDefaultNPC;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;

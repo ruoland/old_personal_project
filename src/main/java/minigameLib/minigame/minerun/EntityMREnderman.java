@@ -1,8 +1,8 @@
 package minigameLib.minigame.minerun;
 
-import minigameLib.api.Direction;
-import minigameLib.api.PosHelper;
-import minigameLib.map.TypeModel;
+import oneline.api.Direction;
+import oneline.api.PosHelper;
+import oneline.map.TypeModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

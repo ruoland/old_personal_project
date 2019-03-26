@@ -1,6 +1,6 @@
 package cmplus.cm.beta.custommodelentity;
 
-import minigameLib.api.BlockAPI;
+import oneline.api.BlockAPI;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;

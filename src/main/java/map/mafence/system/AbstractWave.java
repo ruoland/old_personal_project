@@ -1,8 +1,8 @@
 package map.mafence.system;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import map.mafence.EntityMonster;
 import map.mafence.EntityZombieMonster;

@@ -1,6 +1,5 @@
 package minigameLib.minigame.minerun;
 
-import minigameLib.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;

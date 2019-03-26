@@ -1,6 +1,6 @@
 package map.tycoon.block;
 
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.EntityRenderer;

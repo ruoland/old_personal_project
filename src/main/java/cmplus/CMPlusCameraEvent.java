@@ -1,8 +1,8 @@
 package cmplus;
 
 import cmplus.camera.Camera;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;

@@ -1,6 +1,6 @@
 package map.mafence;
 
-import minigameLib.map.TypeModel;
+import oneline.map.TypeModel;
 import net.minecraft.world.World;
 
 public class EntityZombieMonster extends EntityMonster {

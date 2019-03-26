@@ -1,12 +1,11 @@
 package map.puzzle.base;
 
-import minigameLib.map.EntityDefaultBlock;
-import minigameLib.map.TypeModel;
+import oneline.map.EntityDefaultBlock;
+import oneline.map.TypeModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityPuzzleWindBase extends EntityDefaultBlock {

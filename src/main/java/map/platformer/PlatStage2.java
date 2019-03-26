@@ -1,8 +1,8 @@
 package map.platformer;
 
-import minigameLib.api.ScriptAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.ScriptAPI;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import map.platformer.chapter2.EntityChickenShopKeeper;

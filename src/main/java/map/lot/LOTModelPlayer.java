@@ -2,7 +2,7 @@ package map.lot;
 
 import api.player.model.ModelPlayerAPI;
 import api.player.model.ModelPlayerBase;
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import map.lot.old.LOTEffect;

@@ -1,7 +1,7 @@
 package map.platformer.chapter1;
 
-import minigameLib.map.EntityDefaultNPC;
-import minigameLib.map.TypeModel;
+import oneline.map.EntityDefaultNPC;
+import oneline.map.TypeModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;

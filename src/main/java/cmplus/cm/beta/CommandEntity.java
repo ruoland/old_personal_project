@@ -1,10 +1,10 @@
 package cmplus.cm.beta;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.ENEffect;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
+import oneline.effect.ENEffect;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;

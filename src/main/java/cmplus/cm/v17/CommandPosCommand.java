@@ -1,9 +1,9 @@
 package cmplus.cm.v17;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

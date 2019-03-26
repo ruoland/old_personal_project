@@ -2,9 +2,9 @@ package cmplus.cm.v16;
 
 import cmplus.util.CommandPlusBase;
 import cmplus.util.Sky;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;

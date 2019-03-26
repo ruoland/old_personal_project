@@ -1,6 +1,6 @@
 package map.tycoon;
 
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Comparator;

@@ -1,10 +1,10 @@
 package map.puzzle.dungeon;
 
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
-import minigameLib.map.EntityDefaultNPC;
-import minigameLib.map.EnumModel;
-import minigameLib.map.TypeModel;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
+import oneline.map.EntityDefaultNPC;
+import oneline.map.EnumModel;
+import oneline.map.TypeModel;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;

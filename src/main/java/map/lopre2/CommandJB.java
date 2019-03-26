@@ -3,20 +3,12 @@ package map.lopre2;
 import cmplus.CMPlus;
 import cmplus.test.CMPacketCommand;
 import cmplus.util.CommandPlusBase;
-import map.lopre2.jump1.EntityBuildBlock;
-import map.lopre2.jump2.EntityTeleportBlock;
 import minigameLib.MiniGame;
-import minigameLib.action.ActionEffect;
-import minigameLib.action.ActionEvent;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
-import minigameLib.minigame.scroll.ScrollEvent;
-import net.minecraft.client.AnvilConverterException;
+import oneline.action.ActionEffect;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiWorldSelection;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,8 +22,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.storage.ISaveFormat;
-import net.minecraft.world.storage.WorldSummary;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,7 +29,6 @@ import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityMoveBlock;
 import map.lopre2.jump1.EntityWaterBlockCreator;
 import map.lopre2.jump2.EntityBigInvisibleBlock;
-import map.lopre2.jump2.EntityJumpSpider;
 
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
@@ -72,7 +61,7 @@ public class CommandJB extends CommandPlusBase {
 
             }
             if (args[0].equalsIgnoreCase("dj")) {
-                if (!ActionEffect.canDoubleJump() && Boolean.valueOf(args[1])) {
+                if (!ActionEffect.canMapDoubleJump() && Boolean.valueOf(args[1])) {
                     WorldAPI.addMessage("이제 점프를 공중에서 한번더 할 수 있습니다.(달리면서 점프하면 좀 더 멀리 뛸 수 있음)");
                 }
                 ActionEffect.doubleJump(Boolean.valueOf(args[1]));

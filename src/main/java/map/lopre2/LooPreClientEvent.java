@@ -1,9 +1,7 @@
 package map.lopre2;
 
-import cmplus.cm.v18.CommandFly;
-import minigameLib.action.GrabHelper;
-import minigameLib.api.BlockAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.BlockAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;

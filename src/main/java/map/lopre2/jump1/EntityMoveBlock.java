@@ -1,8 +1,8 @@
 package map.lopre2.jump1;
 
-import minigameLib.action.GrabHelper;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
+import oneline.action.GrabHelper;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,10 +1,10 @@
 package cmplus.cm.v18;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.CMEffect;
-import minigameLib.effect.TickRegister;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.CMEffect;
+import oneline.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.command.CommandException;

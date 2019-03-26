@@ -1,6 +1,6 @@
 package map.tycoon.map;
 
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import map.tycoon.TyconHelper;
 
 public class MapHelper {

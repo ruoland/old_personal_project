@@ -1,9 +1,9 @@
 package map.lopre2;
 
 import cmplus.util.Sky;
-import minigameLib.api.NBTAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
+import oneline.api.NBTAPI;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

@@ -1,9 +1,9 @@
 package minigameLib.minigame.elytra.miniween;
 
 import minigameLib.MiniGame;
-import minigameLib.api.Direction;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.fakeplayer.FakePlayerHelper;
+import oneline.api.Direction;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.fakeplayer.FakePlayerHelper;
 import net.minecraft.world.World;
 
 public class EntityElytraPumpkinAttack extends EntityElytraPumpkin {

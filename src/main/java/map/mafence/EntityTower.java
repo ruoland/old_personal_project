@@ -1,7 +1,7 @@
 package map.mafence;
 
-import minigameLib.map.EntityDefaultNPC;
-import minigameLib.map.TypeModel;
+import oneline.map.EntityDefaultNPC;
+import oneline.map.TypeModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.network.datasync.DataParameter;

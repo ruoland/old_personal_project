@@ -1,6 +1,6 @@
 package map.hideandseek;
 
-import minigameLib.map.EntityDefaultNPC;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.world.World;
 
 //허수아비.

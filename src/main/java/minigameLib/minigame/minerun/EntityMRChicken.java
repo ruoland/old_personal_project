@@ -1,6 +1,6 @@
 package minigameLib.minigame.minerun;
 
-import minigameLib.map.TypeModel;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 

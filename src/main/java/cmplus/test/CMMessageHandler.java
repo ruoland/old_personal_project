@@ -1,8 +1,8 @@
 package cmplus.test;
 
 import cmplus.deb.DebAPI;
-import minigameLib.action.ActionEffect;
-import minigameLib.api.WorldAPI;
+import oneline.action.ActionEffect;
+import oneline.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
@@ -20,7 +20,7 @@ public class CMMessageHandler implements IMessageHandler<CMPacketCommand, IMessa
         if (message.name.contains("서버더블점프")) {
             boolean isOn = Boolean.valueOf(message.name.replace("서버더블점프", ""));
             ActionEffect.doubleJump(isOn);
-            System.out.println(ActionEffect.canDoubleJump());
+            System.out.println(ActionEffect.canMapDoubleJump());
         } else if (message.name.contains("더블점프:")) {
             EntityPlayerMP player = WorldAPI.getPlayerByName(message.name.replace("더블점프:", ""));
             ActionEffect.canDoubleJump = false;

@@ -1,7 +1,7 @@
 package map.platformer;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

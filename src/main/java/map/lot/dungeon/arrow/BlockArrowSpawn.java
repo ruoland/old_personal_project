@@ -1,7 +1,7 @@
 package map.lot.dungeon.arrow;
 
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -2,7 +2,7 @@ package map.platformer;
 
 
 import cmplus.deb.DebAPI;
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.renderer.entity.RenderHorse;

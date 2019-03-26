@@ -2,9 +2,9 @@ package map.tycoon;
 
 import cmplus.WorldConfig;
 import com.google.common.io.Files;
-import minigameLib.api.LoginEvent;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
+import oneline.api.LoginEvent;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockRedstoneLight;

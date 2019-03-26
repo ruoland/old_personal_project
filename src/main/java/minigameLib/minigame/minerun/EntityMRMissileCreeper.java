@@ -1,9 +1,8 @@
 package minigameLib.minigame.minerun;
 
-import com.sun.org.apache.regexp.internal.RE;
 import minigameLib.MiniGame;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.TypeModel;
+import oneline.api.WorldAPI;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;

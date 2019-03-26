@@ -4,7 +4,6 @@ import cmplus.cm.v18.function.FunctionIF;
 import cmplus.cm.v18.function.VAR;
 import cmplus.deb.DebAPI;
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.WorldAPI;
 import net.minecraft.command.CommandException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,14 +13,17 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import oneline.api.WorldAPI;
+
+import java.time.LocalDateTime;
 
 public class CMPlusEvent {
     private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
             .split(",");
 
-
     @SubscribeEvent
     public void event(CommandEvent e) {
+
         String[] args = e.getParameters();
         if ((e.getCommand().getCommandName().equals("while") && e.getParameters()[0].equals("off"))
                 || (e.getCommand().getCommandName().equals("if") && e.getParameters()[0].equals("off"))) {
@@ -81,6 +83,13 @@ public class CMPlusEvent {
 
             e.setCanceled(true);
         }
+        LocalDateTime currentDate = LocalDateTime.now();
+        StringBuffer commandName = new StringBuffer(e.getCommand().getCommandName());
+        for(String parameter : e.getParameters()){
+            commandName.append(" ").append(parameter);
+        }
+        CMPlus.commandLogList.add(new StringBuffer().append(currentDate.getHour()).append(":").append(currentDate.getMinute()).append(":").append(currentDate.getSecond()).append(commandName).toString());
+
     }
 
     public String replaceEntity(EntityLivingBase entity, String arg) {
@@ -124,12 +133,14 @@ public class CMPlusEvent {
             event.player.worldObj.setRainStrength(0);
         }
     }
+
     @SubscribeEvent
     public void login(ExplosionEvent event) {
         if (event.getWorld().getGameRules().getBoolean("antiExplosion")) {
             event.setCanceled(true);
         }
     }
+
     @SubscribeEvent
     public void worldLoad(WorldEvent.Load e) {
         GameRules rules = e.getWorld().getGameRules();
@@ -140,6 +151,11 @@ public class CMPlusEvent {
         if (!rules.hasRule("antiExplosion"))
             rules.addGameRule("antiExplosion", "false", GameRules.ValueType.BOOLEAN_VALUE);
 
+    }
+
+    @SubscribeEvent
+    public void worldUnLoad(WorldEvent.Unload event){
+        CMPlus.saveCommandLog(WorldAPI.getCurrentWorldName());
     }
 
 }

@@ -1,8 +1,8 @@
 package map.platformer.chapter1;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityHorse;

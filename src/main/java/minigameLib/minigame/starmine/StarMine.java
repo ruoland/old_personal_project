@@ -2,11 +2,11 @@ package minigameLib.minigame.starmine;
 
 import cmplus.camera.Camera;
 import minigameLib.MiniGame;
-import minigameLib.api.Direction;
-import minigameLib.api.PosHelper;
-import minigameLib.api.WorldAPI;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.fakeplayer.FakePlayerHelper;
+import oneline.api.Direction;
+import oneline.api.PosHelper;
+import oneline.api.WorldAPI;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.fakeplayer.FakePlayerHelper;
 import minigameLib.minigame.AbstractMiniGame;
 
 public class StarMine extends AbstractMiniGame {

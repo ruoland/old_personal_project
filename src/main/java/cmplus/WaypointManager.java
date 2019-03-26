@@ -1,6 +1,6 @@
 package cmplus;
 
-import minigameLib.api.NBTAPI;
+import oneline.api.NBTAPI;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;

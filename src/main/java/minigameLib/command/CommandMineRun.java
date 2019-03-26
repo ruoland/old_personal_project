@@ -1,12 +1,10 @@
 package minigameLib.command;
 
 import cmplus.util.Sky;
-import map.lopre2.Loop;
 import minigameLib.MiniGame;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
-import minigameLib.fakeplayer.FakePlayerHelper;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import minigameLib.minigame.minerun.MineRun;
 import minigameLib.minigame.minerun.MineRunEvent;
 import net.minecraft.command.CommandBase;

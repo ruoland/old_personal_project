@@ -1,6 +1,6 @@
 package minigameLib.minigame.scroll;
 
-import minigameLib.api.EntityAPI;
+import oneline.api.EntityAPI;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;

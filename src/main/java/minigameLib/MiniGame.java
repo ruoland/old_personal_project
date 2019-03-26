@@ -5,18 +5,18 @@ import api.player.render.RenderPlayerAPI;
 import api.player.server.ServerPlayerAPI;
 import cmplus.deb.CommandClassLoader;
 import cmplus.deb.DebAPI;
-import minigameLib.action.ActionEffect;
-import minigameLib.action.ActionEvent;
-import minigameLib.android.CommandCall;
-import minigameLib.android.CommandNotification;
+import oneline.action.ActionEffect;
+import oneline.action.ActionEvent;
+import oneline.android.CommandCall;
+import oneline.android.CommandNotification;
 import minigameLib.command.CommandBomber;
 import minigameLib.command.CommandMineRun;
 import minigameLib.command.CommandMonologue;
 import minigameLib.command.CommandScroll;
-import minigameLib.effect.TickRegister;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.map.EntityDefaultBlock;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.effect.TickRegister;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.map.EntityDefaultBlock;
+import oneline.map.EntityDefaultNPC;
 import minigameLib.minigame.bomber.Bomber;
 import minigameLib.minigame.bomber.BomberEvent;
 import minigameLib.minigame.bomber.EntityBomb;
@@ -83,7 +83,6 @@ public class MiniGame {
 
     public static StarMine starMine;
     public static StarMineEvent starMineEvent;
-    public Configuration minigameConfig;
 
     public MiniGame() {
         try {
@@ -103,10 +102,7 @@ public class MiniGame {
     public void init(FMLPreInitializationEvent e) {
         proxy.pre(e);
         network();
-        minigameConfig = new Configuration(e.getSuggestedConfigurationFile());
-        minigameConfig.load();
-        ActionEffect.load();
-        minigameConfig.save();
+
         if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MiniGame.minerun = new MineRun();
             MiniGame.scroll = new Scroll();
@@ -120,10 +116,7 @@ public class MiniGame {
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
-        //스크롤 메이커용
-        //DebAPI.registerEntity(this, "ScrollMouse", EntityScrollMouse.class);
         DebAPI.registerTileEntity(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("minigame:blockInvisible"), TileInvisible.class);
-        //reg(new ItemBlock(blockInvisible));
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //스크롤 용
         DebAPI.registerEntity(this, "ScrollCreeper", EntityJumpCreeper.class);
@@ -172,8 +165,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "VELOCITY-DefaultNPC", EntityDefaultNPC.class);
         DebAPI.registerEntity(this, "NO-EGG-DefaultBlock", EntityDefaultBlock.class);
         proxy.init(e);
-        MinecraftForge.EVENT_BUS.register(new ActionEvent());
-        MinecraftForge.EVENT_BUS.register(new TickRegister.TickRegisterEvent());
+
         MinecraftForge.EVENT_BUS.register(new MiniGameEvent());
         if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(mineRunEvent = new MineRunEvent());
@@ -206,7 +198,6 @@ public class MiniGame {
     @EventHandler
     public void init(FMLServerStoppedEvent e) {
         ActionEffect.save();
-        minigameConfig.save();
     }
 
     public void network() {

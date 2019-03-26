@@ -1,7 +1,7 @@
 package map.platformer;
 
-import minigameLib.map.EntityDefaultNPC;
-import minigameLib.map.TypeModel;
+import oneline.map.EntityDefaultNPC;
+import oneline.map.TypeModel;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 

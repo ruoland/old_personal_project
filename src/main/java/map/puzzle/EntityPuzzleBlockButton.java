@@ -1,7 +1,6 @@
 package map.puzzle;
 
 import map.lopre2.EntityPreBlock;
-import minigameLib.map.TypeModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;

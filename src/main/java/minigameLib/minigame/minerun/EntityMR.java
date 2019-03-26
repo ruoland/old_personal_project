@@ -1,7 +1,7 @@
 package minigameLib.minigame.minerun;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;

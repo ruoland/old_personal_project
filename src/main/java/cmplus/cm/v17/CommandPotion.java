@@ -1,7 +1,7 @@
 package cmplus.cm.v17;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.effect.ENEffect;
+import oneline.effect.ENEffect;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;

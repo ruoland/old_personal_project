@@ -1,14 +1,14 @@
 package map.tycoon.consumer;
 
 import cmplus.cm.CommandChat;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.AbstractTick.BlockXYZ;
-import minigameLib.effect.Move;
-import minigameLib.effect.TextEffect;
-import minigameLib.effect.TickRegister;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.AbstractTick.BlockXYZ;
+import oneline.effect.Move;
+import oneline.effect.TextEffect;
+import oneline.effect.TickRegister;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityHorse;

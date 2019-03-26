@@ -1,9 +1,9 @@
 package map.platformer;
 
 import cmplus.deb.DebAPI;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

@@ -1,11 +1,11 @@
 package minigameLib.minigame.elytra.miniween;
 
 import minigameLib.MiniGame;
-import minigameLib.api.Direction;
-import minigameLib.api.PosHelper;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.fakeplayer.FakePlayerHelper;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.Direction;
+import oneline.api.PosHelper;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.fakeplayer.FakePlayerHelper;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;

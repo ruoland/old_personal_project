@@ -1,6 +1,6 @@
 package minigameLib.minigame.minerun;
 
-import minigameLib.map.TypeModel;
+import oneline.map.TypeModel;
 import net.minecraft.world.World;
 
 public class EntityMRZombie extends EntityMR {

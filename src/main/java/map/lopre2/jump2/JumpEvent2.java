@@ -1,15 +1,11 @@
 package map.lopre2.jump2;
 
-import minigameLib.action.ActionEffect;
-import minigameLib.api.WorldAPI;
-import net.minecraft.item.ItemStack;
+import oneline.action.ActionEffect;
+import oneline.api.WorldAPI;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import map.lopre2.CommandJB;
-import map.lopre2.ItemSpanner;
 import map.lopre2.LoPre2;
 
 

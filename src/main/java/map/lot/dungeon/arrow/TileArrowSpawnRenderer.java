@@ -1,7 +1,7 @@
 package map.lot.dungeon.arrow;
 
-import minigameLib.api.RenderAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.RenderAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;

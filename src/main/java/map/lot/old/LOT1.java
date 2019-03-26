@@ -1,7 +1,7 @@
 package map.lot.old;
 
 import cmplus.cm.v18.function.Function;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.io.File;

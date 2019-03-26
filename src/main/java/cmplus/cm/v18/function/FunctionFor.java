@@ -1,8 +1,8 @@
 package cmplus.cm.v18.function;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 
 import java.util.ArrayList;

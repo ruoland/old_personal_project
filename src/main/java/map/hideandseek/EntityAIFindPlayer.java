@@ -1,6 +1,6 @@
 package map.hideandseek;
 
-import minigameLib.api.EntityAPI;
+import oneline.api.EntityAPI;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;

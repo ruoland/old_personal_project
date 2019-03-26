@@ -1,7 +1,7 @@
 package cmplus.cm.v18.customgui;
 
 import cmplus.cm.v18.function.VAR;
-import minigameLib.api.RenderAPI;
+import oneline.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;

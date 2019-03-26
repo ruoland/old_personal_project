@@ -1,9 +1,9 @@
 package minigameLib.minigame.elytra;
 
 import minigameLib.MiniGame;
-import minigameLib.api.RenderAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.fakeplayer.FakePlayerHelper;
+import oneline.api.RenderAPI;
+import oneline.api.WorldAPI;
+import oneline.fakeplayer.FakePlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

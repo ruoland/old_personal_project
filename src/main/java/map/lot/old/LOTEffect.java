@@ -1,12 +1,12 @@
 package map.lot.old;
 
 import cmplus.camera.Camera;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.IngameEffect;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.AbstractTick.BlockXYZ;
-import minigameLib.effect.TickRegister;
+import oneline.api.EntityAPI;
+import oneline.api.IngameEffect;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
+import oneline.effect.AbstractTick.BlockXYZ;
+import oneline.effect.TickRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

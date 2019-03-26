@@ -1,34 +1,19 @@
 package map.puzzle;
 
-import cmplus.cm.v17.CommandClip;
 import map.lopre2.EntityPreBlock;
-import minigameLib.api.Direction;
-import minigameLib.api.PosHelper;
-import minigameLib.api.RenderAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.TypeModel;
-import minigameLib.minigame.elytra.ElytraEvent;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import oneline.api.Direction;
+import oneline.api.PosHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class EntityPuzzleBlockArrow extends EntityPreBlock {
     private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityPuzzleBlockArrow.class, DataSerializers.VARINT);

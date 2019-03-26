@@ -1,7 +1,7 @@
 package map.tycoon.consumer;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.map.TypeModel;
+import oneline.api.WorldAPI;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 

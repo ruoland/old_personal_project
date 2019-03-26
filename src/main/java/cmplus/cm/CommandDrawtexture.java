@@ -2,8 +2,8 @@ package cmplus.cm;
 
 import cmplus.cm.v18.customgui.CMResourcePack;
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.CMEffect;
+import oneline.api.WorldAPI;
+import oneline.effect.CMEffect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;

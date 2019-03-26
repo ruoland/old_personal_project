@@ -1,11 +1,11 @@
 package minigameLib.minigame.elytra;
 
 import minigameLib.MiniGame;
-import minigameLib.api.Direction;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.PosHelper;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.fakeplayer.FakePlayerHelper;
+import oneline.api.Direction;
+import oneline.api.EntityAPI;
+import oneline.api.PosHelper;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.fakeplayer.FakePlayerHelper;
 import minigameLib.minigame.elytra.playerarrow.EntityElytraArrow;
 import minigameLib.minigame.elytra.playerarrow.EntityTNTArrow;
 import net.minecraft.client.Minecraft;

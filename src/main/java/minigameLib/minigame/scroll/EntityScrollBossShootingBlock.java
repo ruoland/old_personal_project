@@ -1,7 +1,7 @@
 package minigameLib.minigame.scroll;
 
 import minigameLib.MiniGame;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 

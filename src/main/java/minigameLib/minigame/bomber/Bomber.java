@@ -1,7 +1,7 @@
 package minigameLib.minigame.bomber;
 
 import cmplus.camera.Camera;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import minigameLib.minigame.AbstractMiniGame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

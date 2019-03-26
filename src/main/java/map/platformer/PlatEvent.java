@@ -1,7 +1,7 @@
 package map.platformer;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.map.TypeModel;
+import oneline.api.WorldAPI;
+import oneline.map.TypeModel;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Items;

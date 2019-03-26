@@ -1,6 +1,6 @@
 package minigameLib.minigame.elytra.miniween;
 
-import minigameLib.fakeplayer.EntityFakePlayer;
+import oneline.fakeplayer.EntityFakePlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;

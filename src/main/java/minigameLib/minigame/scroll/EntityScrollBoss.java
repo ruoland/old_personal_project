@@ -1,8 +1,8 @@
 package minigameLib.minigame.scroll;
 
 import minigameLib.MiniGame;
-import minigameLib.fakeplayer.FakePlayerHelper;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.fakeplayer.FakePlayerHelper;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;

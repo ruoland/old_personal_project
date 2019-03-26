@@ -1,7 +1,7 @@
 package minigameLib.minigame.elytra.miniween;
 
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.map.TypeModel;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;

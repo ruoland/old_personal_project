@@ -1,9 +1,9 @@
 package minigameLib.minigame.elytra.miniween;
 
 import minigameLib.MiniGame;
-import minigameLib.effect.AbstractTick;
-import minigameLib.effect.TickRegister;
-import minigameLib.fakeplayer.EntityFakePlayer;
+import oneline.effect.AbstractTick;
+import oneline.effect.TickRegister;
+import oneline.fakeplayer.EntityFakePlayer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;

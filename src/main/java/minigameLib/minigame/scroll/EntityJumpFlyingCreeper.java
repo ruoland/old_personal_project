@@ -1,7 +1,7 @@
 package minigameLib.minigame.scroll;
 
-import minigameLib.map.EntityFlyNPC;
-import minigameLib.map.TypeModel;
+import oneline.map.EntityFlyNPC;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILookIdle;

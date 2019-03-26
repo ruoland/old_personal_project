@@ -1,7 +1,7 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

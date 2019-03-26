@@ -1,7 +1,7 @@
 package minigameLib.minigame;
 
-import minigameLib.api.WorldAPI;
-import minigameLib.fakeplayer.FakePlayerHelper;
+import oneline.api.WorldAPI;
+import oneline.fakeplayer.FakePlayerHelper;
 
 public abstract class AbstractMiniGame {
     private long startTime, endTime;

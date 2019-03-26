@@ -1,10 +1,10 @@
 package minigameLib.minigame.elytra.miniween.old;
 
 import minigameLib.MiniGame;
-import minigameLib.api.WorldAPI;
-import minigameLib.fakeplayer.EntityFakePlayer;
-import minigameLib.fakeplayer.FakePlayerHelper;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.WorldAPI;
+import oneline.fakeplayer.EntityFakePlayer;
+import oneline.fakeplayer.FakePlayerHelper;
+import oneline.map.EntityDefaultNPC;
 import minigameLib.minigame.elytra.Elytra;
 import minigameLib.minigame.elytra.ElytraEvent;
 import net.minecraft.entity.Entity;

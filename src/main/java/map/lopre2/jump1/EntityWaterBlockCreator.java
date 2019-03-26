@@ -1,7 +1,7 @@
 package map.lopre2.jump1;
 
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;

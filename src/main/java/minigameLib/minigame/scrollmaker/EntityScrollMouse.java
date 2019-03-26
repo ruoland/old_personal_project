@@ -1,8 +1,8 @@
 package minigameLib.minigame.scrollmaker;
 
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;

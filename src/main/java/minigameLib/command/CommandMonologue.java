@@ -1,9 +1,9 @@
 package minigameLib.command;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.TextEffect;
-import minigameLib.text.Monologue;
+import oneline.api.WorldAPI;
+import oneline.effect.TextEffect;
+import oneline.text.Monologue;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;

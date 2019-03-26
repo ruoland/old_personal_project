@@ -1,7 +1,7 @@
 package minigameLib.minigame.minerun;
 
 import minigameLib.MiniGame;
-import minigameLib.api.WorldAPI;
+import oneline.api.WorldAPI;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BlockModelShapes;

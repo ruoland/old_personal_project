@@ -1,9 +1,9 @@
 package minigameLib;
 
 import cmplus.util.CommandPlusBase;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.EntityDefaultNPC;
-import minigameLib.map.TypeModel;
+import oneline.api.WorldAPI;
+import oneline.map.EntityDefaultNPC;
+import oneline.map.TypeModel;
 import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

@@ -1,8 +1,5 @@
 package minigameLib.minigame.minerun;
 
-import map.lopre2.EntityPreBlock;
-import map.lopre2.jump1.EntityFallingBlock;
-import minigameLib.map.EntityDefaultNPC;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;

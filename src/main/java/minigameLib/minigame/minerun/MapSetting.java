@@ -1,10 +1,10 @@
 package minigameLib.minigame.minerun;
 
-import minigameLib.api.Direction;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.PosHelper;
-import minigameLib.api.WorldAPI;
-import minigameLib.effect.AbstractTick;
+import oneline.api.Direction;
+import oneline.api.EntityAPI;
+import oneline.api.PosHelper;
+import oneline.api.WorldAPI;
+import oneline.effect.AbstractTick;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

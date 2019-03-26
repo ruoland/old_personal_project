@@ -1,9 +1,9 @@
 package minigameLib.minigame.minerun;
 
 import minigameLib.MiniGame;
-import minigameLib.api.EntityAPI;
-import minigameLib.api.WorldAPI;
-import minigameLib.map.TypeModel;
+import oneline.api.EntityAPI;
+import oneline.api.WorldAPI;
+import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
