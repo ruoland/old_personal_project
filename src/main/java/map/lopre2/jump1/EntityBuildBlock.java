@@ -49,6 +49,10 @@ public class EntityBuildBlock extends EntityPreBlock {
     }
 
     @Override
+    public boolean handleWaterMovement() {
+        return false;
+    }
+    @Override
     public EntityPreBlock spawn(double x, double y, double z) {
         EntityBuildBlock buildBlock = new EntityBuildBlock(worldObj);
         buildBlock.setPosition(x, y, z);
