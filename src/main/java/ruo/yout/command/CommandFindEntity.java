@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 
-public class CommandFindEntity extends CommandEntity {
+public class CommandFindEntity extends CommandBaseEntity {
     private int entityCount = 0;
 
     @Override

@@ -2,11 +2,14 @@ package ruo.yout;
 
 import cmplus.deb.DebAPI;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +42,7 @@ public class Mojae {
     public static final Item itemLock = new ItemLock();
     public static final Item itemRiding = new ItemRiding();
     public static final Item itemGod = new ItemGod();
+    public static final Item itemUp = new ItemUp();
     public static final Item itemOneShot = new ItemOneShot();
     public static final Item itemExplosion = new ItemExplosion();
     @Mod.EventHandler
@@ -70,6 +74,8 @@ public class Mojae {
         GameRegistry.register(itemGod.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("god").setUnlocalizedName("god"));
         GameRegistry.register(itemOneShot.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("oneshot").setUnlocalizedName("oneshot"));
         GameRegistry.register(itemExplosion.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("explosion").setUnlocalizedName("explosion"));
+        GameRegistry.register(itemUp.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("up").setUnlocalizedName("up"));
+
         proxy.preinit();
     }
     @Mod.EventHandler
@@ -88,5 +94,14 @@ public class Mojae {
         e.registerServerCommand(new CommandTPEntity());
         e.registerServerCommand(new CommandTeamKill());
         e.registerServerCommand(new CommandFindEntity());
+        e.registerServerCommand(new CommandMojaeY());
+    }
+
+    public static void lockEntity(EntityLiving living){
+        living.setCustomNameTag("잠금");
+        living.getEntityData().setDouble("LPX", living.posX);
+        living.getEntityData().setDouble("LPY", living.posY);
+        living.getEntityData().setDouble("LPZ", living.posZ);
+        living.addPotionEffect(new PotionEffect(Mojae.lockPotion, 400));
     }
 }

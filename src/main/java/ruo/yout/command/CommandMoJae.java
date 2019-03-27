@@ -1,5 +1,6 @@
 package ruo.yout.command;
 
+import cmplus.cm.CommandUI;
 import cmplus.util.CommandPlusBase;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandException;
@@ -17,11 +18,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oneline.api.NBTAPI;
 import oneline.api.WorldAPI;
+import ruo.yout.ItemLock;
 import ruo.yout.Mojae;
 
 import java.util.Iterator;
@@ -93,6 +96,22 @@ public class CommandMoJae extends CommandPlusBase {
         if(args[0].equalsIgnoreCase("reset")){
             WorldAPI.setBlock(sender.getEntityWorld(), 471, 5, 526,489, 4, 526, Blocks.GRASS);
             WorldAPI.command("func ui2");
+        }
+
+        if(args[0].equalsIgnoreCase("spawn")){
+            for(int i = 0; i < Integer.valueOf(args[4]) ;i++){
+                EntityLiving living = (EntityLiving) EntityList.createEntityByName(args[1], sender.getEntityWorld());
+                living.setPosition(472+(i*2), 4, 515);
+                sender.getEntityWorld().spawnEntityInWorld(living);
+                Mojae.lockEntity(living);
+            }
+            for(int i = 0; i < Integer.valueOf(args[3]) ;i++){
+                EntityLiving living = (EntityLiving) EntityList.createEntityByName(args[2], sender.getEntityWorld());
+                living.setPosition(472+(i*2), 4, 528);
+                sender.getEntityWorld().spawnEntityInWorld(living);
+                Mojae.lockEntity(living);
+            }
+            WorldAPI.command("mojae attack "+args[1]+" "+args[2]);
         }
         if(args[0].equalsIgnoreCase("locksave")){
             NBTTagList list = new NBTTagList();

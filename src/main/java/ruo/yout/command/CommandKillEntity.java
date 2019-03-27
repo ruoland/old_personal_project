@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public class CommandKillEntity extends CommandEntity {
+public class CommandKillEntity extends CommandBaseEntity {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {

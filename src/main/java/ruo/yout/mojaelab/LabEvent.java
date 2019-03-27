@@ -45,6 +45,8 @@ public class LabEvent {
         System.out.println("소스오브 " + event.getSource().getSourceOfDamage());
         System.out.println("엔티티 " + event.getSource().getEntity());
         System.out.println("이벤트" + event.getEntityLiving());
+        if(event.getEntityLiving() instanceof EntityPlayer)
+        WorldAPI.addMessage("받은 데미지 : "+event.getAmount());
     }
 
     @SubscribeEvent

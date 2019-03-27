@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public class CommandHealthEntity extends CommandEntity {
+public class CommandHealthEntity extends CommandBaseEntity {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         super.execute(server, sender, args);

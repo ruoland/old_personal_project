@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
-public abstract class CommandEntity extends CommandPlusBase {
+public abstract class CommandBaseEntity extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         for(Entity entity : sender.getEntityWorld().loadedEntityList){
