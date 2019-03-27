@@ -45,6 +45,7 @@ public class MineRunEvent {
 
     private ItemStack stack = new ItemStack(Items.NETHER_STAR);
     private int pickupCount;
+    public static boolean halfMode = false;
 
     @SubscribeEvent
     public void login(EntityViewRenderEvent.CameraSetup event) {
@@ -63,6 +64,7 @@ public class MineRunEvent {
     public double getZ(Direction direction) {
         return EntityAPI.getZ(WorldAPI.getPlayer(), direction, absLR() * 2, false);
     }
+
     @SubscribeEvent
     public void login(LivingHurtEvent event) {
         if (MiniGame.minerun.isStart() && event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHealth() - event.getAmount() <= 0) {
@@ -110,7 +112,7 @@ public class MineRunEvent {
             respawnTime--;
 
             if (respawnTime == 60) {
-                WorldAPI.teleport(new Vec3d(e.player.getBedLocation()).addVector(0.5,0,0));
+                WorldAPI.teleport(new Vec3d(e.player.getBedLocation()).addVector(0.5, 0, 0));
                 WorldAPI.addMessage("3초 뒤에 시작됩니다.");
             }
             if (respawnTime == 40) {
@@ -137,11 +139,11 @@ public class MineRunEvent {
             if (!e.player.isInLava() && !e.player.isInWater() && respawnTime <= 0) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
-                if(e.player.getRidingEntity() != null){
+                if (e.player.getRidingEntity() != null) {
                     EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();
-                    minecartEmpty.motionX= MineRun.xCoord();
-                    minecartEmpty.motionZ= MineRun.zCoord();
-                    if(minecartEmpty.onGround){
+                    minecartEmpty.motionX = MineRun.xCoord();
+                    minecartEmpty.motionZ = MineRun.zCoord();
+                    if (minecartEmpty.onGround) {
                         minecartEmpty.setCanUseRail(true);
                     }
                 }
@@ -168,15 +170,17 @@ public class MineRunEvent {
             }
         }
     }
+
     @SubscribeEvent
     public void keyInput(EntityMountEvent e) {
-        if(e.isDismounting() && MiniGame.minerun.isStart()){
-            if(e.getEntityBeingMounted() instanceof EntityMinecartEmpty){
-                if(!e.getEntityBeingMounted().isDead)
-                e.setCanceled(true);
+        if (e.isDismounting() && MiniGame.minerun.isStart()) {
+            if (e.getEntityBeingMounted() instanceof EntityMinecartEmpty) {
+                if (!e.getEntityBeingMounted().isDead)
+                    e.setCanceled(true);
             }
         }
     }
+
     @SubscribeEvent
     public void keyInput(KeyInputEvent e) {
         if (!MiniGame.minerun.isStart())
@@ -281,7 +285,11 @@ public class MineRunEvent {
                     lineLR++;
                     isLR = true;
                 }
-                MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
+                if (halfMode)
+                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 1, false));
+                else
+                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
+
                 if (isLR)
                     lineLR--;
             }
@@ -293,16 +301,20 @@ public class MineRunEvent {
                     lineLR--;
                     isLR = true;
                 }
-                MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
+                if (halfMode) {
+                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 1, false));
+                }
+                else
+                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
                 if (isLR)
                     lineLR++;
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_SPACE)) {
-                if(WorldAPI.getPlayer().getRidingEntity() != null) {
+                if (WorldAPI.getPlayer().getRidingEntity() != null) {
                     EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) WorldAPI.getPlayer().getRidingEntity();
                     minecartEmpty.setCanUseRail(false);
-                    minecartEmpty.setPosition(minecartEmpty.posX,minecartEmpty.posY+0.3,minecartEmpty.posZ);
-                    minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX,minecartEmpty.posY+0.3,minecartEmpty.posZ, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 1, false);
+                    minecartEmpty.setPosition(minecartEmpty.posX, minecartEmpty.posY + 0.3, minecartEmpty.posZ);
+                    minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX, minecartEmpty.posY + 0.3, minecartEmpty.posZ, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 1, false);
                     minecartEmpty.addVelocity(0, 0.3, 0);
                     System.out.println("점프함");
 

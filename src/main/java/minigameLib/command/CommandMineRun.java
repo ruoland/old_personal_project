@@ -72,6 +72,10 @@ public class CommandMineRun extends CommandBase {
                 WorldAPI.command("/minerun lava");
                 return;
             }
+            if (args[0].equals("half")) {
+                MineRunEvent.halfMode =  parseBoolean(args[1]);
+                return;
+            }
         }
         if (args.length > 0 && (args[0].equalsIgnoreCase("end") || args[0].equalsIgnoreCase("stop")))
             MiniGame.minerun.end();
