@@ -3,13 +3,13 @@ package minigameLib.minigame.minerun;
 import cmplus.camera.Camera;
 import cmplus.deb.DebAPI;
 import minigameLib.MiniGame;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import oneline.action.ActionEffect;
 import oneline.api.Direction;
 import oneline.api.EntityAPI;
 import oneline.api.PosHelper;
 import oneline.api.WorldAPI;
-import oneline.fakeplayer.EntityFakePlayer;
-import oneline.fakeplayer.FakePlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -34,26 +34,135 @@ import org.lwjgl.input.Keyboard;
 
 public class MineRunEvent {
     public static short respawnTime;
-    //엘리트라 모드1용 - 7월 14일
-    public int lineLR = 0, lineFB = 0;
-
-    //엘리트라 모드2용 - 7월 14일
+    public int lineLR = 0;
     public int lineUD = 0;
 
     //line은 왼쪽라인 오른쪽라인으로 갈 수 있는 값을 담고 있음, FB는 Forward Back 앞뒤 값 말함 - 7월 14일
-    protected double lineX, lineZ, lineFBX, lineFBZ;
+    protected double lineX, lineZ;
 
     private ItemStack stack = new ItemStack(Items.NETHER_STAR);
     private int pickupCount;
     public static boolean halfMode = false;
 
     @SubscribeEvent
-    public void login(EntityViewRenderEvent.CameraSetup event) {
-        if (MiniGame.minerun.isStart() && MineRun.elytraMode() == 0 && (WorldAPI.getPlayer().getRidingEntity() == null)) {
-            Camera.getCamera().moveCamera(EntityAPI.lookX(WorldAPI.getPlayer(), 3.5)
-                            + getX(lineLR < 0 ? Direction.RIGHT : Direction.LEFT),
-                    -1.5, EntityAPI.lookZ(WorldAPI.getPlayer(), 3.5)
-                            + getZ(lineLR < 0 ? Direction.RIGHT : Direction.LEFT));
+    public void playerTick(PlayerTickEvent e) {
+        if (!MiniGame.minerun.isStart() || e.player.isDead)
+            return;
+        if (respawnTime == 0 && MineRun.elytraMode() == EnumElytra.RUNNING) {
+            if (!e.player.isInLava() && !e.player.isInWater() && respawnTime <= 0 && MineRun.runner.isNotColliding()) {
+                e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
+                e.player.motionZ = MineRun.zCoord();
+                MineRun.setFakePositionUpdate();
+                if (e.player.getRidingEntity() != null) {
+                    EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();
+                    minecartEmpty.motionX = MineRun.xCoord();
+                    minecartEmpty.motionZ = MineRun.zCoord();
+                    if (minecartEmpty.onGround) {
+                        minecartEmpty.setCanUseRail(true);
+                    }
+                }
+            } else {
+                e.player.motionX = 0;
+                e.player.motionZ = 0;
+            }
+            double runnery = MineRun.runner.posY;
+            double playery = e.player.posY;
+            int distance = 2;
+
+            double value = runnery + distance - playery;
+            if(value != 0)
+            e.player.motionY = value / 10;
+            else
+                e.player.motionY = 0;
+        }
+
+        EntityMineRunner runner = MineRun.runner;
+
+        if (MineRun.elytraMode() != EnumElytra.RUNNING && runner != null) {
+            if (MineRun.elytraMode() == EnumElytra.ELYTRA) {//이건 런너가 움직이는 모션을 주기 위해서 있음!
+                MineRun.setFakePositionUpdate();
+                runner.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
+                runner.motionY = 0;
+                runner.motionZ = MineRun.zCoord();//?걷는 모션? 다리를 움직이는 모션 아닌가? 2019년 3월 31일
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void keyInput(KeyInputEvent e) {
+        if (!MiniGame.minerun.isStart())
+            return;
+        PosHelper posHelper = MineRun.playerPosHelper;
+        if (MineRun.elytraMode() == EnumElytra.ELYTRA && MineRun.runner != null) {
+            if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
+                MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
+                lineUD++;
+                System.out.println(lineUD);
+            }
+            if (lineUD > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
+                MineRun.setPosition(MineRun.curX, -1, MineRun.curZ);
+                lineUD--;
+                System.out.println(lineUD);
+            }
+            if (lineUD == 0) {
+                if (DebAPI.isKeyDown(Keyboard.KEY_W))
+                    MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
+                if (DebAPI.isKeyDown(Keyboard.KEY_S))
+                    MineRun.setPosition(MineRun.curX, -1, MineRun.curZ);
+            }
+            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
+                lineLR++;
+                MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR(), false));
+            }
+            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
+                lineLR--;
+                MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR(), false));
+            }
+        }
+        if (MineRun.elytraMode() == EnumElytra.RUNNING) {
+            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A)) {
+                lineLR++;
+                if (lineLR == 0) {
+                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, 0, false));
+                    System.out.println("posHelper Left"+posHelper.getXZ(Direction.LEFT, 0, false));
+                }
+                else if (halfMode)
+                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 1, false));
+                else {
+                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
+                    System.out.println("posHelper Left"+posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
+                }
+                MineRun.setFakePositionUpdate();
+
+            }
+
+            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
+                lineLR--;
+                if (lineLR == 0) {
+                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, 0, false));
+                    System.out.println("posHelper Left"+posHelper.getXZ(Direction.RIGHT, 0, false));
+                }
+                else if (halfMode) {
+                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 1, false));
+                } else {
+                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
+                    System.out.println("posHelper Right"+posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
+
+                }
+                MineRun.setFakePositionUpdate();
+            }
+            System.out.println("lineLR "+lineLR+" - "+absLR());
+
+            if (DebAPI.isKeyDown(Keyboard.KEY_SPACE)) {
+                if (WorldAPI.getPlayer().getRidingEntity() != null) {
+                    EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) WorldAPI.getPlayer().getRidingEntity();
+                    minecartEmpty.setCanUseRail(false);
+                    minecartEmpty.setPosition(minecartEmpty.posX, minecartEmpty.posY + 0.3, minecartEmpty.posZ);
+                    minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX, minecartEmpty.posY + 0.3, minecartEmpty.posZ, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 1, false);
+                    minecartEmpty.addVelocity(0, 0.42, 0);
+                    System.out.println("점프함");
+                }
+            }
         }
     }
 
@@ -65,8 +174,71 @@ public class MineRunEvent {
         return EntityAPI.getZ(WorldAPI.getPlayer(), direction, absLR() * 2, false);
     }
 
+    public int absLR() {
+        return Math.abs(lineLR);
+    }
+
+    public int getLR() {
+        return (lineLR);
+    }
+
     @SubscribeEvent
-    public void login(LivingHurtEvent event) {
+    public void mountCancelEvent(EntityMountEvent e) {
+        if (e.isDismounting() && MiniGame.minerun.isStart()) {
+            if (e.getEntityBeingMounted() instanceof EntityMinecartEmpty) {
+                if (!e.getEntityBeingMounted().isDead)
+                    e.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void jumpRunner(KeyInputEvent e) {
+        if (!MiniGame.minerun.isStart())
+            return;
+        GameSettings settings = Minecraft.getMinecraft().gameSettings;
+        if(GameSettings.isKeyDown(settings.keyBindJump) && !MineRun.runner.isJumping())
+        MineRun.runner.jump();
+    }
+    @SubscribeEvent
+    public void changeElytra(KeyInputEvent e) {
+        if (!MiniGame.minerun.isStart())
+            return;
+        PosHelper posHelper = MineRun.playerPosHelper;
+        if (DebAPI.isKeyDown(Keyboard.KEY_V)) {//엘리트라 모드로 변경함
+            if (MineRun.elytraMode() == EnumElytra.ELYTRA) {
+                MineRun.setElytra(EnumElytra.RUNNING);
+                System.out.println(MineRun.elytraMode());
+                return;
+            }
+            if (MineRun.elytraMode() == EnumElytra.RUNNING) {
+                MineRun.setElytra(EnumElytra.ELYTRA);
+                System.out.println(MineRun.elytraMode());
+                return;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void logout(PlayerEvent.PlayerLoggedOutEvent e) {
+        if (MiniGame.minerun.isStart())
+            MiniGame.minerun.end();
+    }
+
+
+    //@SubscribeEvent
+    public void cameraMove(EntityViewRenderEvent.CameraSetup event) {
+        if (MiniGame.minerun.isStart() && MineRun.elytraMode() == EnumElytra.RUNNING && (WorldAPI.getPlayer().getRidingEntity() == null)) {
+            Camera.getCamera().moveCamera(EntityAPI.lookX(WorldAPI.getPlayer(), 3.5)
+                            + getX(lineLR < 0 ? Direction.RIGHT : Direction.LEFT),
+                    -1.5, EntityAPI.lookZ(WorldAPI.getPlayer(), 3.5)
+                            + getZ(lineLR < 0 ? Direction.RIGHT : Direction.LEFT));
+        }
+    }
+
+
+    @SubscribeEvent
+    public void playerDeadEvent(LivingHurtEvent event) {
         if (MiniGame.minerun.isStart() && event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHealth() - event.getAmount() <= 0) {
             if (respawnTime > 0) {
                 event.setCanceled(true);
@@ -101,16 +273,28 @@ public class MineRunEvent {
     }
 
     @SubscribeEvent
-    public void playerTick(PlayerTickEvent e) {
+    public void waterDamage(PlayerTickEvent e) {
         if (!MiniGame.minerun.isStart() || e.player.isDead)
             return;
+
         if (e.player.isInWater()) {
             e.player.attackEntityFrom(DamageSource.drown, 4);
         }
+    }
+
+    @SubscribeEvent
+    public void playerRespawn(PlayerTickEvent e) {
+        if (!MiniGame.minerun.isStart() || e.player.isDead)
+            return;
 
         if (e.side == Side.SERVER && e.phase == TickEvent.Phase.START && respawnTime > 0) {
             respawnTime--;
+            if(e.player.getBedLocation() == null) {
+                WorldAPI.addMessage("부활 장소가 없어 게임이 중단됐습니다.");
+                MiniGame.minerun.end();
+                return;
 
+            }
             if (respawnTime == 60) {
                 WorldAPI.teleport(new Vec3d(e.player.getBedLocation()).addVector(0.5, 0, 0));
                 WorldAPI.addMessage("3초 뒤에 시작됩니다.");
@@ -134,212 +318,6 @@ public class MineRunEvent {
             }
             return;
         }
-        EntityFakePlayer fakePlayer = FakePlayerHelper.fakePlayer;
-        if (MineRun.elytraMode() == 0) {
-            if (!e.player.isInLava() && !e.player.isInWater() && respawnTime <= 0) {
-                e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
-                e.player.motionZ = MineRun.zCoord();
-                if (e.player.getRidingEntity() != null) {
-                    EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();
-                    minecartEmpty.motionX = MineRun.xCoord();
-                    minecartEmpty.motionZ = MineRun.zCoord();
-                    if (minecartEmpty.onGround) {
-                        minecartEmpty.setCanUseRail(true);
-                    }
-                }
-            }
-        }
-        if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
-            if (MineRun.elytraMode() == 2) {
-                fakePlayer.motionY = 0;
-                MineRun.setFakePositionUpdate();
-                fakePlayer.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
-                fakePlayer.motionZ = MineRun.zCoord();
-            }
-            if (MineRun.elytraMode() == 1) {
-                //엘리트라 모드1은 아래에서 위를 봄
-                //플레이어를 페이크 아래에 배치함
-                e.player.motionY = 0.1;
-                MineRun.setFakePositionUpdate();
-                fakePlayer.fallDistance = 0;
-            }
-            if (fakePlayer.fallDistance > 1242345 && e.player.getBedLocation(0) != null) {//추락시 스폰지점으로 - 7월 14일
-                fakePlayer.fallDistance = 0;
-                ActionEffect.teleportSpawnPoint(WorldAPI.getPlayer());
-                MineRun.setFakePositionUpdate();
-            }
-        }
     }
 
-    @SubscribeEvent
-    public void keyInput(EntityMountEvent e) {
-        if (e.isDismounting() && MiniGame.minerun.isStart()) {
-            if (e.getEntityBeingMounted() instanceof EntityMinecartEmpty) {
-                if (!e.getEntityBeingMounted().isDead)
-                    e.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void keyInput(KeyInputEvent e) {
-        if (!MiniGame.minerun.isStart())
-            return;
-        PosHelper posHelper = MineRun.playerPosHelper;
-        if (DebAPI.isKeyDown(Keyboard.KEY_V)) {//엘리트라 모드로 변경함
-            if (MineRun.elytraMode() == 2) {
-                MineRun.setElytra(1);
-                System.out.println(MineRun.elytraMode());
-                return;
-            }
-            if (MineRun.elytraMode() == 1) {
-                MineRun.setElytra(0);
-                System.out.println(MineRun.elytraMode());
-                return;
-            }
-            if (MineRun.elytraMode() == 0) {
-                MineRun.setElytra(2);
-                System.out.println(MineRun.elytraMode());
-                return;
-            }
-        }
-        if (MineRun.elytraMode() > 0 && FakePlayerHelper.fakePlayer != null) {
-            if (MineRun.elytraMode() == 2) {
-                if (lineUD < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
-                    MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
-                    lineUD++;
-                    System.out.println(lineUD);
-                }
-                if (lineUD > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
-                    MineRun.setPosition(MineRun.curX, -1, MineRun.curZ);
-                    lineUD--;
-                    System.out.println(lineUD);
-                }
-                if (lineUD == 0) {
-                    if (DebAPI.isKeyDown(Keyboard.KEY_W))
-                        MineRun.setPosition(MineRun.curX, 1, MineRun.curZ);
-                    if (DebAPI.isKeyDown(Keyboard.KEY_S))
-                        MineRun.setPosition(MineRun.curX, -1, MineRun.curZ);
-                }
-                if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
-                    lineLR++;
-                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR(), false));
-                }
-                if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
-                    lineLR--;
-                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR(), false));
-                }
-            }
-            if (MineRun.elytraMode() == 1) {
-                if (lineFB < 1 && DebAPI.isKeyDown(Keyboard.KEY_W) && Keyboard.getEventKeyState()) {
-                    lineFB++;
-                    //abs는 앞으로만 이동하게 하기 위해서 함
-                    MineRun.setPosition(EntityAPI.forwardX(WorldAPI.getPlayer(), absFB(), false), 0, EntityAPI.forwardZ(WorldAPI.getPlayer(), absFB(), false));
-                    if (lineLR == 1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.FORWARD_LEFT, absLR(), false));
-                    }
-                    if (lineLR == -1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.FORWARD_RIGHT, absLR(), false));
-                    }
-                }
-                if (lineFB > -1 && DebAPI.isKeyDown(Keyboard.KEY_S) && Keyboard.getEventKeyState()) {
-                    lineFB--;
-                    MineRun.setPosition(EntityAPI.backX(WorldAPI.getPlayer(), absFB(), false), 0, EntityAPI.backZ(WorldAPI.getPlayer(), absFB(), false));
-                    if (lineLR == 1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.BACK_LEFT, absLR(), false));
-                    }
-                    if (lineLR == -1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.BACK_RIGHT, absLR(), false));
-                    }
-                }
-                if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A) && Keyboard.getEventKeyState()) {
-                    lineLR++;
-                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR(), false));
-                    if (lineFB == 1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.FORWARD_LEFT, absLR(), false));
-                    }
-                    if (lineFB == -1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.BACK_LEFT, absLR(), false));
-                    }
-                }
-                if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D) && Keyboard.getEventKeyState()) {
-                    lineLR--;
-                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR(), false));
-
-                    if (lineFB == 1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.FORWARD_LEFT, absLR(), false));
-                    }
-                    if (lineFB == -1) {
-                        MineRun.setPosition(posHelper.getXZ(Direction.FORWARD_RIGHT, absLR(), false));
-                    }
-                }
-                System.out.println(lineLR + " - " + lineFB);
-
-            }
-        }
-        if (MineRun.elytraMode() == 0) {
-            if (lineLR < 1 && DebAPI.isKeyDown(Keyboard.KEY_A)) {
-                lineLR++;
-                boolean isLR = false;
-                if (lineLR == 0) {
-                    lineLR++;
-                    isLR = true;
-                }
-                if (halfMode)
-                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 1, false));
-                else
-                    MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
-
-                if (isLR)
-                    lineLR--;
-            }
-
-            if (lineLR > -1 && DebAPI.isKeyDown(Keyboard.KEY_D)) {
-                lineLR--;
-                boolean isLR = false;
-                if (lineLR == 0) {//가운데로 보내기 위해서 1 깎음
-                    lineLR--;
-                    isLR = true;
-                }
-                if (halfMode) {
-                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 1, false));
-                }
-                else
-                    MineRun.setPosition(posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
-                if (isLR)
-                    lineLR++;
-            }
-            if (DebAPI.isKeyDown(Keyboard.KEY_SPACE)) {
-                if (WorldAPI.getPlayer().getRidingEntity() != null) {
-                    EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) WorldAPI.getPlayer().getRidingEntity();
-                    minecartEmpty.setCanUseRail(false);
-                    minecartEmpty.setPosition(minecartEmpty.posX, minecartEmpty.posY + 0.3, minecartEmpty.posZ);
-                    minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX, minecartEmpty.posY + 0.3, minecartEmpty.posZ, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 1, false);
-                    minecartEmpty.addVelocity(0, 0.3, 0);
-                    System.out.println("점프함");
-
-
-                }
-            }
-        }
-
-    }
-
-    public int absFB() {
-        return Math.abs(lineFB);
-    }
-
-    public int absLR() {
-        return Math.abs(lineLR);
-    }
-
-    public int getLR() {
-        return (lineLR);
-    }
-
-    @SubscribeEvent
-    public void logout(PlayerEvent.PlayerLoggedOutEvent e) {
-        if (MiniGame.minerun.isStart())
-            MiniGame.minerun.end();
-    }
 }

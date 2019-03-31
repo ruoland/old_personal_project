@@ -5,6 +5,7 @@ import cmplus.camera.Camera;
 import cmplus.deb.DebAPI;
 import com.google.common.collect.Lists;
 import minigameLib.MiniGame;
+import net.minecraft.world.World;
 import oneline.api.Direction;
 import oneline.api.EntityAPI;
 import oneline.api.PosHelper;
@@ -32,97 +33,105 @@ import org.lwjgl.input.Keyboard;
 import java.util.List;
 
 public class MineRun extends AbstractMiniGame {
-    public static List<BlockPos> removeLavaPos = Lists.newArrayList();
+    public static List<BlockPos> removeLavaPos = Lists.newArrayList();//용암
     public static List<IBlockState> removeLavaState = Lists.newArrayList();
     public static PosHelper playerPosHelper;
-    private static int elytra = 0;//1 = 위로 2 = 앞으로
+    public static PosHelper runnerPosHelper;
+    private static EnumElytra elytra = EnumElytra.RUNNING;
     private static double xCoord, zCoord;
     protected static double curX, curY, curZ, spawnX, spawnY, spawnZ;
-    private static EntityFakePlayer fakePlayer;
     private static EntityPlayer player;
-
-    public static int elytraMode() {
+    public static EntityMineRunner runner;
+    private static World worldObj;
+    public static EnumElytra elytraMode() {
         return elytra;
     }
 
-    public static void setElytra(int elytraMode) {
+    public static void setElytra(EnumElytra elytraMode) {
         elytra = elytraMode;
-        if (elytraMode == 1 || elytraMode == 2) {
-            if (fakePlayer == null) {
-                fakePlayer = FakePlayerHelper.spawnFakePlayer(false);
+        System.out.println(elytraMode);
+        if (elytraMode == EnumElytra.ELYTRA) {
+            if (runner == null) {
+                runner = new EntityMineRunner(player.worldObj);
+                runner.setPosition(playerPosHelper.getPosition());
+                player.worldObj.spawnEntityInWorld(runner);
                 player.noClip = !player.noClip;
                 player.capabilities.isFlying = true;
                 player.sendPlayerAbilities();
-                WorldAPI.teleport(fakePlayer.posX + EntityAPI.lookX(fakePlayer, -2), fakePlayer.posY + 1, fakePlayer.posZ + EntityAPI.lookZ(fakePlayer, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
+                Camera.getCamera().reset();
+                //플레이어를 러너뒤로 보냄
+                WorldAPI.teleport(runner.posX + EntityAPI.lookX(runner, -2), runner.posY + 1, runner.posZ + EntityAPI.lookZ(runner, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
             }
-            if (fakePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST) == null) {
-                ItemStack itemstack = new ItemStack(Items.ELYTRA);
-                fakePlayer.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemstack);
-            }
-        }
-        if (elytraMode == 2) {
-            fakePlayer.setElytra(true);
+            runner.setElytra(true);
             curY++;
-        } else if (elytraMode == 1) {
-            fakePlayer.setElytra(false);
-            Camera.getCamera().rotateX = -Camera.getCamera().rotateX;
-            Camera.getCamera().rotateZ = -Camera.getCamera().rotateZ;
-            System.out.println("엘리트라 모드 해제");
+            if (runner.getItemStackFromSlot(EntityEquipmentSlot.CHEST) == null) {
+                ItemStack itemstack = new ItemStack(Items.ELYTRA);
+                runner.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemstack);
+            }
         } else {
             System.out.println("엘리트라 취소됨");
-
             player.noClip = !player.noClip;
             player.capabilities.isFlying = false;
             player.sendPlayerAbilities();
-            MiniGame.mineRunEvent.lineFB = 0;
             MiniGame.mineRunEvent.lineX = 0;
             MiniGame.mineRunEvent.lineZ = 0;
             MiniGame.mineRunEvent.lineLR = 0;
             MiniGame.mineRunEvent.lineUD = 0;
-            MiniGame.mineRunEvent.lineFBX = 0;
-            MiniGame.mineRunEvent.lineFBZ = 0;
-            if (fakePlayer != null) {
+            if (runner != null) {
                 setFakePositionUpdate();
-                fakePlayer.setElytra(false);
-                WorldAPI.teleport(fakePlayer.posX, fakePlayer.posY, fakePlayer.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
-                fakePlayer = null;
+                runner.setElytra(false);
+                WorldAPI.teleport(runner.posX, runner.posY, runner.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
+                runner.setDead();
+                runner = null;
+
             }
         }
     }
 
+    /**
+     * 플레이어의 좌표를 갱신함
+     */
     public static void setPosition(double x, double y, double z) {
         curX = x;
         curY = y;
         curZ = z;
-        Vec3d teleportVec = new Vec3d(player.posX + curX, player.posY, player.posZ + curZ);
-        Block block = (player.worldObj.getBlockState(new BlockPos(teleportVec)).getBlock());
-        Block block2 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0, 1, 0))).getBlock());
-        Block block3 = (player.worldObj.getBlockState(new BlockPos(teleportVec.addVector(0, 2, 0))).getBlock());
+        World worldObj = runner.worldObj;
+        Vec3d teleportVec = new Vec3d(runner.posX + curX, runner.posY, runner.posZ + curZ);
 
-        System.out.println(block);
-        System.out.println(block2);
-        System.out.println(block3);
-        if (player.isOnLadder() || block == Blocks.LADDER || block2 == Blocks.LADDER) {
-            teleportVec.addVector(-(player.motionX * 1.5), 0, -(player.motionZ * 1.5));
+        //플레이어가 이동할 지역에 있는 블럭을 가져옴
+        Block block = (worldObj.getBlockState(new BlockPos(teleportVec)).getBlock());
+        Block block2 = (worldObj.getBlockState(new BlockPos(teleportVec.addVector(0, 1, 0))).getBlock());
 
+        //플레이어가 이동할 지역에 사다리가 있거나 플레이어가 사다리를 타고 있는 경우
+        //플레이어가 이동할 지역에 조금 뒤로 이동하게 함
+        if (runner.isOnLadder() || block == Blocks.LADDER || block2 == Blocks.LADDER) {
+            teleportVec.addVector(-(runner.motionX * 1.5), 0, -(runner.motionZ * 1.5));
+            System.out.println("사다리에 올라탐");
         }
-        if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
-            EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) player.getRidingEntity();
+
+        //플레이어가 마인카트에 타고 있으면 마인카트의 좌표를 설정함
+        if (runner.getRidingEntity() instanceof EntityMinecartEmpty) {
+            EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) runner.getRidingEntity();
             Vec3d vec3d = null;
             if (DebAPI.isKeyDown(Keyboard.KEY_A)) {
-                vec3d = (playerPosHelper.getXZ(Direction.LEFT, 2, false));
+                vec3d = (runner.getXZ(Direction.LEFT, 2, false));
             }
             if (DebAPI.isKeyDown(Keyboard.KEY_D)) {
-                vec3d = (playerPosHelper.getXZ(Direction.RIGHT, 2, false));
+                vec3d = (runner.getXZ(Direction.RIGHT, 2, false));
             }
             minecartEmpty.setPosition(minecartEmpty.posX + vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord);
             minecartEmpty.setPositionAndRotationDirect(minecartEmpty.posX + vec3d.xCoord, minecartEmpty.posY, minecartEmpty.posZ + vec3d.zCoord, minecartEmpty.rotationYaw, minecartEmpty.rotationPitch, 0, false);
 
-        } else
-            WorldAPI.teleport(teleportVec);
-
-        System.out.println(player.isOnLadder() + " - " + player.posX + "  - " + player.posY + " - " + player.posZ);
-
+        } else if (elytraMode() == EnumElytra.RUNNING) {
+            runner.setPosition(teleportVec);
+            runner.setPositionAndUpdate(teleportVec.xCoord, teleportVec.yCoord, teleportVec.zCoord);
+            System.out.println(teleportVec.xCoord + " - "+teleportVec.zCoord+"로 이동함");
+        } else if (elytraMode() == EnumElytra.ELYTRA) {
+            Vec3d pos = playerPosHelper.getPosition().addVector(EntityAPI.lookX(runner, 6), -3, EntityAPI.lookZ(runner, 6));
+            runner.setPosition(pos);
+            runner.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
+        }
+        MineRun.setFakePositionUpdate();
     }
 
     public static void setPosition(BlockPos pos) {
@@ -135,18 +144,37 @@ public class MineRun extends AbstractMiniGame {
 
     @Override
     public boolean start(Object... obj) {
-        GameSettings gs = Minecraft.getMinecraft().gameSettings;
-        gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
-        gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
-        gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
-        gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
-        KeyBinding.resetKeyBindingArrayAndHash();
+        keySetting(true);
+
         ICommandSender sender = (ICommandSender) obj[0];
         player = (EntityPlayer) sender;
-        WorldAPI.teleport(player.posX, player.posY, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
+        worldObj = player.getEntityWorld();
+
+        WorldAPI.teleport(player.posX, player.posY+2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);//플레이어 pitch를 70으로
         spawnX = player.posX;
         spawnY = player.posY;
         spawnZ = player.posZ;
+
+        //cameraSetting();
+
+        MiniGame.mineRunEvent.lineLR = 0;
+        MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
+        MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
+        xCoord = EntityAPI.lookX(player, 0.3);
+        zCoord = EntityAPI.lookZ(player, 0.3);
+        playerPosHelper = new PosHelper(player);
+        runner = new EntityMineRunner(sender.getEntityWorld());
+        runner.setPosition(playerPosHelper.getPosition());
+        worldObj.spawnEntityInWorld(runner);
+        runnerPosHelper = new PosHelper(runner);
+        runner.rotationYaw = player.rotationYaw;
+        runner.rotationPitch = player.rotationPitch;
+        runner.renderYawOffset = player.renderYawOffset;
+
+        return super.start();
+    }
+
+    private void cameraSetting(){
         Camera.getCamera().reset();
         Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
         Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
@@ -164,18 +192,22 @@ public class MineRun extends AbstractMiniGame {
         }
         Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
         Camera.getCamera().playerCamera(true);
-        MiniGame.mineRunEvent.lineLR = 0;
-        MiniGame.mineRunEvent.lineFB = 0;
-        MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
-        MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
-        MiniGame.mineRunEvent.lineFBX = EntityAPI.lookX(player, 1);
-        MiniGame.mineRunEvent.lineFBZ = EntityAPI.lookZ(player, 1);
-        xCoord = EntityAPI.lookX(player, 0.3);
-        zCoord = EntityAPI.lookZ(player, 0.3);
-        playerPosHelper = new PosHelper(player);
-        return super.start();
     }
-
+    private void keySetting(boolean isStart){
+        GameSettings gs = Minecraft.getMinecraft().gameSettings;
+        if(isStart) {
+            gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
+            gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
+            gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
+            gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
+        }else{
+            gs.keyBindLeft.setKeyCode(Keyboard.KEY_A);
+            gs.keyBindRight.setKeyCode(Keyboard.KEY_D);
+            gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
+            gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
+        }
+        KeyBinding.resetKeyBindingArrayAndHash();
+    }
     public static double xCoord() {
         if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
             return xCoord * 1.5;
@@ -187,15 +219,14 @@ public class MineRun extends AbstractMiniGame {
         if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
             return zCoord * 1.5;
         } else
-        return zCoord;
+            return zCoord;
     }
 
     public static void setFakePositionUpdate() {
         EntityPlayer player = WorldAPI.getPlayer();
-        if (elytraMode() == 1) {
-            fakePlayer.setPosition(player.posX + curX + getLookX(), player.posY + 8, player.posZ + curZ + getLookZ());
-        } else
-            fakePlayer.setPosition(player.posX + curX + getLookX(), fakePlayer.posY + curY, player.posZ + curZ + getLookZ());
+        runner.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), runner.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
+        runner.setPositionAndUpdate(player.posX + curX + EntityAPI.lookX(player, 3), runner.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
+
         if (curY != 0) {
             curY = 0;
         }
@@ -209,32 +240,20 @@ public class MineRun extends AbstractMiniGame {
         return EntityAPI.lookZ(player, 3);
     }
 
-    public static float getYaw() {
-        return WorldAPI.getPlayer().rotationYaw;
-    }
 
     @Override
     public boolean end(Object... obj) {
-        GameSettings gs = Minecraft.getMinecraft().gameSettings;
-        gs.keyBindLeft.setKeyCode(Keyboard.KEY_A);
-        gs.keyBindRight.setKeyCode(Keyboard.KEY_D);
-        gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
-        gs.keyBindBack.setKeyCode(Keyboard.KEY_S);
-        gs.keyBindUseItem.resetKeyBindingArrayAndHash();
-        setElytra(0);
-
+        keySetting(false);
+        setElytra(EnumElytra.RUNNING);
         curX = 0;
         curY = 0;
         curZ = 0;
         xCoord = 0;
         zCoord = 0;
-        MiniGame.mineRunEvent.lineFB = 0;
         MiniGame.mineRunEvent.lineX = 0;
         MiniGame.mineRunEvent.lineZ = 0;
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineUD = 0;
-        MiniGame.mineRunEvent.lineFBX = 0;
-        MiniGame.mineRunEvent.lineFBZ = 0;
         WorldAPI.command("/minerun lava");
         Camera.getCamera().reset();
         return super.end();

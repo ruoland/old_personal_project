@@ -24,14 +24,16 @@ public class ActionEffect {
 
     public static ActionData getActionData(String mapName){
     	if(mapName != null) {
-			if (actionMap.containsKey(mapName) && actionMap.get(mapName) != null)
+			if (actionMap.containsKey(mapName) && actionMap.get(mapName) != null) {
 				return actionMap.get(mapName);
-			else {
-				return actionMap.put(mapName, new ActionData(mapName));
 			}
-
+			else {
+				actionMap.put(mapName, new ActionData(mapName));
+				return actionMap.get(mapName);
+			}
 		}
-		return actionMap.put("null", new ActionData("null"));
+		actionMap.put("널", new ActionData("널"));;
+		return actionMap.get("널");
 
 
     }
@@ -56,7 +58,6 @@ public class ActionEffect {
     }
 
 	public static boolean canMapDoubleJump() {
-
 		return getActionData(mapName).canMapDoubleJump();
 	}
 
@@ -87,8 +88,8 @@ public class ActionEffect {
 	}
 
 	public static void load() {
-    	System.out.println(getActionData(mapName));
-        getActionData(mapName).load();
+		actionMap.put("널", new ActionData("널"));
+		getActionData(mapName).load();
 	}
 }
 

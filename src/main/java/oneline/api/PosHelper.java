@@ -22,8 +22,8 @@ public class PosHelper {
         ((EntityDefaultNPC) base).setSpawnXYZ(x,y,z);
         base.rotationYaw = facing.getHorizontalAngle();
     }
-    public BlockPos getPosition(){
-        return base.getPosition();
+    public Vec3d getPosition(){
+        return new Vec3d(base.posX, base.posY, base.posZ);
     }
     public Vec3d getXZ(Direction spawnDirection, double plus, boolean pos) {
         return new Vec3d(EntityAPI.getX(base, spawnDirection, plus, pos), pos ? base.posY : 0, EntityAPI.getZ(base, spawnDirection, plus, pos));

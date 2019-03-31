@@ -74,10 +74,11 @@ public class CommandMineRun extends CommandBase {
             }
             if (args[0].equals("half")) {
                 MineRunEvent.halfMode =  parseBoolean(args[1]);
+                MiniGame.minerun.start(sender, args);
                 return;
             }
         }
-        if (args.length > 0 && (args[0].equalsIgnoreCase("end") || args[0].equalsIgnoreCase("stop")))
+        if (args.length > 0 && (args[0].equalsIgnoreCase("stop") || args[0].equalsIgnoreCase("s")))
             MiniGame.minerun.end();
         else
             MiniGame.minerun.start(sender, args);

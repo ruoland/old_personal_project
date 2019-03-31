@@ -131,6 +131,8 @@ public class MiniGame {
         DebAPI.registerEntity(this, "ScrollFlyingCreeper", EntityJumpFlyingCreeper.class);
 
         //마인런 게임용
+        DebAPI.registerEntity(this, "MRRunner", EntityMineRunner.class);
+
         DebAPI.registerEntity(this, "MRTNTCart", EntityMRTNTCart.class);
 
         DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);

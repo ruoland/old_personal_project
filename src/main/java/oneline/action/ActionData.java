@@ -25,7 +25,8 @@ public class ActionData {
 
     public ActionData(String mapName) {
         this.mapName = mapName;
-        System.out.println("주의 맵 이름이 null임");
+        if(mapName != null || mapName.equalsIgnoreCase("널"))
+        System.out.println("주의 맵 이름이 널");
         load();
     }
 
