@@ -43,6 +43,7 @@ public class MineRun extends AbstractMiniGame {
     private static EntityPlayer player;
     public static EntityMineRunner runner;
     private static World worldObj;
+    public static Vec3d spawnPoint = null;
     public static EnumElytra elytraMode() {
         return elytra;
     }
@@ -150,6 +151,7 @@ public class MineRun extends AbstractMiniGame {
         player = (EntityPlayer) sender;
         worldObj = player.getEntityWorld();
 
+        player.noClip = !player.noClip;
         WorldAPI.teleport(player.posX, player.posY+2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);//플레이어 pitch를 70으로
         spawnX = player.posX;
         spawnY = player.posY;
@@ -223,7 +225,6 @@ public class MineRun extends AbstractMiniGame {
     }
 
     public static void setFakePositionUpdate() {
-        EntityPlayer player = WorldAPI.getPlayer();
         runner.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), runner.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
         runner.setPositionAndUpdate(player.posX + curX + EntityAPI.lookX(player, 3), runner.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
 

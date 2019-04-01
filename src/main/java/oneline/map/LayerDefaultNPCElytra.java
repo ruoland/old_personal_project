@@ -1,5 +1,6 @@
 package oneline.map;
 
+import net.minecraft.client.renderer.entity.layers.LayerElytra;
 import oneline.api.WorldAPI;
 import net.minecraft.client.model.ModelElytra;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,8 +25,8 @@ public class LayerDefaultNPCElytra implements LayerRenderer<EntityDefaultNPC> {
         if (WorldAPI.equalsItem(entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Items.ELYTRA) || entitylivingbaseIn.isElytra() || entitylivingbaseIn.isElytraFlying()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableBlend();
-
             this.renderNPC.bindTexture(TEXTURE_ELYTRA);
+
             GlStateManager.pushMatrix();
             renderNPC.modelRender(entitylivingbaseIn);
             GlStateManager.translate(0.0F, 0.0F, 0.125F);

@@ -67,6 +67,11 @@ public class CommandMineRun extends CommandBase {
                 }
                 return;
             }
+            if (args[0].equals("spawnpoint")) {
+                MineRun.spawnPoint = MineRun.runner.getPositionVector();
+
+                return;
+            }
             if (args[0].equals("respawn")) {
                 MineRunEvent.respawnTime = 61;
                 WorldAPI.command("/minerun lava");
