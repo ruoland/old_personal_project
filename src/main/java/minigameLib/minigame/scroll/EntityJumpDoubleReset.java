@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
 
+//TODO 설치할 때 무조건 블럭 가운데 설치되게 하기
+//TODO  충돌 범위 늘리기
 public class EntityJumpDoubleReset extends EntityPreBlock {
     private static final DataParameter<Integer> INVISIBLE_TIME = EntityDataManager.createKey(EntityJumpDoubleReset.class, DataSerializers.VARINT);
 

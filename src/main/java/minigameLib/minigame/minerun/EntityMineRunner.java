@@ -11,6 +11,7 @@ import oneline.map.EntityDefaultNPC;
 import oneline.map.TypeModel;
 import org.lwjgl.input.Keyboard;
 
+//TODO 러너가 라바 블럭을 못올라감
 public class EntityMineRunner extends EntityDefaultNPC {
     private static final DataParameter<Boolean> isCollision = EntityDataManager.createKey(EntityMineRunner.class, DataSerializers.BOOLEAN);
     public EntityMineRunner(World worldIn) {
