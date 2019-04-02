@@ -15,7 +15,8 @@ public class Scroll extends AbstractMiniGame {
     private GameSettings s;
     public boolean x, z, xR, zR;
     public float moveX, moveZ;//카메라
-    public float yaw=-1, pitch=-1;//요는 좌우
+    public float yaw = -1, pitch = -1;//요는 좌우
+    public double startX, startZ;
 
     public Scroll() {
         mc = Minecraft.getMinecraft();
@@ -35,7 +36,8 @@ public class Scroll extends AbstractMiniGame {
         s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);
         pos(Keyboard.KEY_A);//카메라 초기화
         KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), false);
-
+        startX = mc.thePlayer.posX;
+        startZ = mc.thePlayer.posZ;
         return super.start();
     }
 
@@ -69,19 +71,20 @@ public class Scroll extends AbstractMiniGame {
 
         return super.end();
     }
-    public double getForwardXZ(){
-        if(x){
-            if(mc.thePlayer.rotationYaw == 90)
+
+    public double getForwardXZ() {
+        if (x) {
+            if (mc.thePlayer.rotationYaw == 90)
                 return -1;
-            else if(mc.thePlayer.rotationYaw == -90){
+            else if (mc.thePlayer.rotationYaw == -90) {
                 return 1;
             }
         }
-        if(z){
+        if (z) {
 
-            if(mc.thePlayer.rotationYaw == 0)
+            if (mc.thePlayer.rotationYaw == 0)
                 return 1;
-            else if(mc.thePlayer.rotationYaw == 180){
+            else if (mc.thePlayer.rotationYaw == 180) {
                 return -1;
             }
         }
@@ -89,52 +92,56 @@ public class Scroll extends AbstractMiniGame {
     }
 
 
-    public double getBackX(){
-        if(x){
+    public double getBackX() {
+        if (x) {
             return 0;
         }
-        if(z)
+        if (z)
             return -1;
         return 0;
     }
-    public double getBackZ(){
-        if(x){
+
+    public double getBackZ() {
+        if (x) {
             return 1;
         }
-        if(z)
+        if (z)
             return 0;
         return 0;
     }
-    public double getLookX(){
-        if(x){
+
+    public double getLookX() {
+        if (x) {
             return -1;
         }
-        if(z)
+        if (z)
             return 0;
         return 0;
     }
-    public double getRightZ(){
-        if(x){
+
+    public double getRightZ() {
+        if (x) {
             return 0;
         }
-        if(z)
+        if (z)
             return 1;
         return 0;
     }
 
-    public double getLeftX(){
-        if(x){
+    public double getLeftX() {
+        if (x) {
             return 1;
         }
-        if(z)
+        if (z)
             return 0;
         return 0;
     }
-    public double getLeftZ(){
-        if(x){
+
+    public double getLeftZ() {
+        if (x) {
             return 0;
         }
-        if(z)
+        if (z)
             return -1;
         return 0;
     }
@@ -160,19 +167,19 @@ public class Scroll extends AbstractMiniGame {
                     Camera.getCamera().rotateCamera(0, 180, 0);
                 }
                 if (MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? -90: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? -90 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 0, 0);
                 }
             }
             if (MiniGame.scroll.z) {
                 if (!zR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? 0: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 0 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);//원래 값은 x 6.7 y 0.199 z 0
                     Camera.getCamera().rotateCamera(0, 90, 0);
                 }
                 if (zR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? 180: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 180 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, -90, 0);
                 }
@@ -191,24 +198,24 @@ public class Scroll extends AbstractMiniGame {
             KeyBinding.setKeyBindState(s.keyBindSprint.getKeyCode(), isSprintKeyDown);
             if (MiniGame.scroll.x) {
                 if (!MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? 270: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 270 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199F, moveZ);
                     Camera.getCamera().rotateCamera(0, 180, 0);
                 }
                 if (MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? 90: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 90 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 0, 0);
                 }
             }
             if (MiniGame.scroll.z) {
                 if (!zR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? 180: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 180 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, 90, 0);
                 }
                 if (zR) {
-                    Camera.getCamera().lockCamera(true,  yaw == -1 ? 0: yaw, pitch == -1 ? 0 : pitch);
+                    Camera.getCamera().lockCamera(true, yaw == -1 ? 0 : yaw, pitch == -1 ? 0 : pitch);
                     Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
                     Camera.getCamera().rotateCamera(0, -90, 0);
                 }

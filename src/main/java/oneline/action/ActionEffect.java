@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class ActionEffect {
 	static String mapName;
-	public static boolean canDoubleJump, isPlayerJump;
+	public static boolean canDoubleJump, isPlayerJump, forceJump;
 	public static boolean isUseShield(EntityPlayer player) {
 		return ItemStack.areItemsEqualIgnoreDurability(player.getActiveItemStack(), new ItemStack(Items.SHIELD));
 	}

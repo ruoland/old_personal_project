@@ -2,6 +2,7 @@ package minigameLib.minigame.scroll;
 
 import cmplus.camera.Camera;
 import minigameLib.MiniGame;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import oneline.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
@@ -13,6 +14,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import map.lopre2.LoPre2;
@@ -45,10 +47,24 @@ public class ScrollEvent {
         //bow.onPlayerStoppedUsing(event.getBow(), event.getWorld(), event.getEntityPlayer(), 100);
         //event.setAction(ActionResult.newResult(EnumActionResult.SUCCESS, event.getBow()));
     }
+
+    @SubscribeEvent
+    public void login(TickEvent.PlayerTickEvent event) {
+        Scroll scroll = MiniGame.scroll;
+        if (scroll.x && event.player.posZ != scroll.startZ) {
+            event.player.setPosition(event.player.posZ, event.player.posY, scroll.startZ);
+            System.out.println("위치 조정됨 x");
+        }
+        if (scroll.z && event.player.posX != scroll.startX) {
+            event.player.setPosition(scroll.startX, event.player.posY, event.player.posZ);
+            System.out.println("위치 조정됨 z");
+        }
+    }
+
     @SubscribeEvent
     public void login(ClientTickEvent event) {
-        if(LoPre2.checkWorld() && mc.currentScreen instanceof GuiGameOver){
-            if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+        if (LoPre2.checkWorld() && mc.currentScreen instanceof GuiGameOver) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 this.mc.thePlayer.respawnPlayer();
                 this.mc.displayGuiScreen((GuiScreen) null);
             }

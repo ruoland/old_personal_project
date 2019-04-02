@@ -121,4 +121,8 @@ public class LoPre2 {
                 || worldName.equalsIgnoreCase("JumpMap Sea2")
                 || worldName.equalsIgnoreCase("JumpThree");
     }
+    public static boolean checkJumpThree() {
+        String worldName = WorldAPI.getCurrentWorldName();
+        return worldName.equalsIgnoreCase("JumpThree");
+    }
 }

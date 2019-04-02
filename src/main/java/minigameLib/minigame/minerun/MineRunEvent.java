@@ -51,7 +51,7 @@ public class MineRunEvent {
         if (!MiniGame.minerun.isStart() || e.player.isDead)
             return;
         if (respawnTime == 0 && MineRun.elytraMode() == EnumElytra.RUNNING) {
-            if (!e.player.isInLava() && !e.player.isInWater() && respawnTime <= 0 && MineRun.runner.isNotColliding()) {
+            if (!runner.isInLava() && !runner.isInWater() && respawnTime <= 0 && MineRun.runner.isNotColliding()) {
                 e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                 e.player.motionZ = MineRun.zCoord();
                 MineRun.setFakePositionUpdate();
@@ -86,6 +86,7 @@ public class MineRunEvent {
                 runner.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
                 runner.motionY = 0;
                 runner.motionZ = MineRun.zCoord();//?걷는 모션? 다리를 움직이는 모션 아닌가? 2019년 3월 31일
+
             }
         }
     }

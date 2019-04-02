@@ -5,6 +5,8 @@ import cmplus.camera.Camera;
 import cmplus.deb.DebAPI;
 import com.google.common.collect.Lists;
 import minigameLib.MiniGame;
+import net.minecraft.command.CommandGameMode;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import oneline.api.Direction;
 import oneline.api.EntityAPI;
@@ -151,12 +153,11 @@ public class MineRun extends AbstractMiniGame {
         player = (EntityPlayer) sender;
         worldObj = player.getEntityWorld();
 
-        player.noClip = !player.noClip;
-        WorldAPI.teleport(player.posX, player.posY+2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);//플레이어 pitch를 70으로
+        WorldAPI.teleport(player.posX, player.posY+2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 30);//플레이어 pitch를 70으로
         spawnX = player.posX;
         spawnY = player.posY;
         spawnZ = player.posZ;
-
+        player.setGameType(GameType.SPECTATOR);
         //cameraSetting();
 
         MiniGame.mineRunEvent.lineLR = 0;
@@ -225,9 +226,9 @@ public class MineRun extends AbstractMiniGame {
     }
 
     public static void setFakePositionUpdate() {
-        runner.setPosition(player.posX + curX + EntityAPI.lookX(player, 3), runner.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
-        runner.setPositionAndUpdate(player.posX + curX + EntityAPI.lookX(player, 3), runner.posY + curY, player.posZ + curZ + EntityAPI.lookZ(player, 3));
-
+        double posX = player.posX + curX + EntityAPI.lookX(player, 3);
+        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 3);
+        runner.moveEntity(posX - runner.posX, 0, posZ - runner.posZ);
         if (curY != 0) {
             curY = 0;
         }
@@ -257,6 +258,7 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineUD = 0;
         WorldAPI.command("/minerun lava");
         Camera.getCamera().reset();
+        player.setGameType(GameType.CREATIVE);
         return super.end();
     }
 }

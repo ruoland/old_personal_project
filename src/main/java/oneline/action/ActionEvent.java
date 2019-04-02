@@ -3,7 +3,10 @@ package oneline.action;
 import cmplus.CMPlus;
 import cmplus.deb.DebAPI;
 import cmplus.test.CMPacketCommand;
+import map.lopre2.LoPre2;
 import minigameLib.ClientProxy;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import oneline.api.BlockAPI;
 import oneline.api.LoginEvent;
 import oneline.api.WorldAPI;
@@ -36,6 +39,12 @@ public class ActionEvent {
     }
 
     @SubscribeEvent
+    public void rotate(LivingFallEvent e) {
+        if(e.getEntityLiving() instanceof EntityPlayer){
+                e.setDistance(e.getDistance() - 3);
+        }
+    }
+    @SubscribeEvent
     public void rotate(LivingEvent.LivingJumpEvent e) {
         if (ActionEffect.canMapDoubleJump() && e.getEntityLiving() instanceof EntityPlayer) {
             ActionEffect.isPlayerJump = true;
@@ -52,11 +61,12 @@ public class ActionEvent {
                     ActionEffect.canDoubleJump = true;
                 }
                 boolean isCanJump = (ActionEffect.canDoubleJump && gs.keyBindJump.isPressed() && !event.player.onGround && ActionEffect.isPlayerJump);
-                if (isCanJump) {
+                if (isCanJump || ActionEffect.forceJump) {
                     ActionEffect.canDoubleJump = false;
                     ActionEffect.isPlayerJump = false;
+                    ActionEffect.forceJump = false;
                     System.out.println("더블점프함");
-                    event.player.motionY = 0.5F;
+                    event.player.motionY = 0.57F;
                     event.player.fallDistance = 0;
                     DebAPI.msgText("MiniGame", "더블점프함");
                     if (event.player.isSprinting()) {

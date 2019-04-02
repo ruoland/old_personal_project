@@ -1,6 +1,8 @@
 package minigameLib.minigame.minerun;
 
 import cmplus.deb.DebAPI;
+import map.lopre2.EntityPreBlock;
+import map.lopre2.jump1.EntityLavaBlock;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -14,6 +16,11 @@ public class EntityMineRunner extends EntityDefaultNPC {
     public EntityMineRunner(World worldIn) {
         super(worldIn);
         this.setModel(TypeModel.NPC);
+    }
+
+    @Override
+    public boolean canRenderOnFire() {
+        return false;
     }
 
     @Override

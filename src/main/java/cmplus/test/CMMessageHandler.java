@@ -25,7 +25,8 @@ public class CMMessageHandler implements IMessageHandler<CMPacketCommand, IMessa
             EntityPlayerMP player = WorldAPI.getPlayerByName(message.name.replace("더블점프:", ""));
             ActionEffect.canDoubleJump = false;
             ActionEffect.isPlayerJump = false;
-            player.motionY = 0.5F;
+            player.motionY = 0.57F;
+            player.jump();
             player.fallDistance = 0;
             DebAPI.msgText("MiniGame", "더블점프함");
             if (player.isSprinting()) {

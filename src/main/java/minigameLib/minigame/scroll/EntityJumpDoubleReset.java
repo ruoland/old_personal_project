@@ -19,7 +19,7 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
     public EntityJumpDoubleReset(World world) {
         super(world);
         this.setBlockMode(Blocks.WOOL);
-        setScale(0.3F,0.3F,0.3F);
+        setScale(0.4F,0.4F,0.4F);
         this.setSize(0.3F,0.3F);
         this.setTra(0,0.35F,0);
         this.setCollision(false);
@@ -45,6 +45,7 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
         if(isServerWorld() && !isTeleport() && entityIn instanceof EntityPlayer && !isInv() && getEntityBoundingBox().intersectsWith(entityIn.getEntityBoundingBox())) {
             ActionEffect.canDoubleJump = true;
             ActionEffect.isPlayerJump = true;
+            ActionEffect.forceJump = true;
             setInv(true);
             setInvisible(true);
             entityIn.fallDistance = 0;
