@@ -49,9 +49,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         this.setDeathTimer(-1);
     }
 
-    public boolean doesEntityNotTriggerPressurePlate() {
-        return true;
-    }
 
     @Override
     protected void entityInit() {
@@ -207,6 +204,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
                 setInv(true);
                 setCollision(false);
             }
+
         }
         if (CommandJB.isLavaInvisible && !(this instanceof EntityBigBlock)) {
             setInvisible(!isInv());
@@ -226,14 +224,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             }
         }
         super.onLivingUpdate();
-    }
-
-    protected void resetHeight() {
-        float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-        this.playSound(this.getSplashSound(), f, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
     }
 
     public boolean canTeleportLock() {
@@ -367,6 +357,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         lavaBlock.setInv(isInv());
         lavaBlock.setInvisible(isInvisible());
         lavaBlock.setModel(typeModel);
+        lavaBlock.isFly = isFly;
     }
 
     @Override

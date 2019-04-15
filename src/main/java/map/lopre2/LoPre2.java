@@ -32,12 +32,12 @@ public class LoPre2 {
     public static Achievement achievementNoGameMode1 = new Achievement("achievement.nogamemode1", "nogamemode1", 0, 2, Items.GOLDEN_APPLE, null);
     public static Achievement achievementApple = new Achievement("achievement.apple", "apple", 0, 3, new ItemStack(Items.GOLDEN_APPLE), LoPre2.achievementNoGameMode1);
     public static Achievement achievementHidePath3 = new Achievement("achievement.hidepath3", "hidepath3", 0, 4, Items.GOLDEN_APPLE, null);
-    public static Achievement achievementHidePath1= new Achievement("achievement.hidepath1", "hidepath1", 0, 6, Items.FEATHER, null);
+    public static Achievement achievementHidePath1 = new Achievement("achievement.hidepath1", "hidepath1", 0, 6, Items.FEATHER, null);
 
     public static Achievement achievementTwoClear = new Achievement("achievement.twoclear", "twoclear", 1, 0, Items.FIREWORKS, null);
     public static Achievement achievementNoDie2 = new Achievement("achievement.nodie2", "nodie2", 1, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode2);
     public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 1, 2, Items.GOLDEN_APPLE, null);
-    public static Achievement achievementHidePath2= new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
+    public static Achievement achievementHidePath2 = new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
 
 
     //점프맵 2 코드
@@ -50,6 +50,7 @@ public class LoPre2 {
 
     @SidedProxy(serverSide = "map.lopre2.JumpCommonProxy", clientSide = "map.lopre2.JumpClientProxy")
     public static JumpCommonProxy proxy;
+
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
         GameRegistry.register(itemSpanner.setUnlocalizedName("spanner").setRegistryName("looppre2:spanner"));
@@ -72,14 +73,14 @@ public class LoPre2 {
         achievementHidePath2.registerStat();
         AchievementPage.registerAchievementPage(new AchievementPage("모드 점프맵 도전과제", new Achievement[]{
                 achievementHidePath1, achievementHidePath2,
-                achievementTwoClear, achievementOneClear, achievementNoGameMode1,achievementNoDie1,achievementNoGameMode2,achievementNoDie2,achievementApple, achievementHidePath1, achievementHidePath2
+                achievementTwoClear, achievementOneClear, achievementNoGameMode1, achievementNoDie1, achievementNoGameMode2, achievementNoDie2, achievementApple, achievementHidePath1, achievementHidePath2
         }));
         //점프맵 2 코드
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         MinecraftForge.EVENT_BUS.register(new LooPre2Event());
         MinecraftForge.EVENT_BUS.register(new LooPreThreeEvent());
-        if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
-        MinecraftForge.EVENT_BUS.register(new LooPreClientEvent());
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+            MinecraftForge.EVENT_BUS.register(new LooPreClientEvent());
 
         DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
 
@@ -100,6 +101,7 @@ public class LoPre2 {
         //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
+        DebAPI.registerEntity(this, "TestB", EntityTestB.class);
 
         proxy.init();
 
@@ -107,6 +109,19 @@ public class LoPre2 {
 
     @EventHandler
     public void init(FMLPostInitializationEvent e) {
+
+    }
+
+    public static int compare(double a, double b) {
+        a = Math.round(a * 1000) / 1000.0;
+        b = Math.round(b * 1000) / 1000.0;
+        if (a < b)
+            return -1;
+        else if (a > b)
+            return 1;
+        else if ( a== b)
+            return 0;
+        else return -10;
 
     }
 
@@ -121,6 +136,7 @@ public class LoPre2 {
                 || worldName.equalsIgnoreCase("JumpMap Sea2")
                 || worldName.equalsIgnoreCase("JumpThree");
     }
+
     public static boolean checkJumpThree() {
         String worldName = WorldAPI.getCurrentWorldName();
         return worldName.equalsIgnoreCase("JumpThree");

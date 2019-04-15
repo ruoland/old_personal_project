@@ -21,7 +21,7 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
     public EntityJumpDoubleReset(World world) {
         super(world);
         this.setBlockMode(Blocks.WOOL);
-        setScale(0.4F,0.4F,0.4F);
+        setScale(0.5F,0.5F,0.5F);
         this.setSize(0.3F,0.3F);
         this.setTra(0,0.35F,0);
         this.setCollision(false);

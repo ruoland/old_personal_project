@@ -19,7 +19,7 @@ import java.util.TimerTask;
 
 public class TextEffect {
 	private EntityLivingBase base;
-	private static TextEffect nullEffect;
+	private static final TextEffect nullEffect  = new TextEffect();
 	public static HashMap<String, EntityMob> lookMob = new HashMap<String, EntityMob>();//
 	
 	public TextEffect() {
@@ -28,44 +28,21 @@ public class TextEffect {
 		this.base = base;
 	}
 	public static TextEffect getHelper(){
-		if(nullEffect == null)
-			nullEffect = new TextEffect();
 		return nullEffect;
-	}
-	public static TextEffect getHelper(EntityLivingBase base){
-		if(base != null){
-			lookMob.put(base.getName(), base instanceof EntityMob ? (EntityMob) base : null);
-		}
-		return new TextEffect(base);
-	}
-	public static TextEffect getPlayerHelper(){
-		return new TextEffect(WorldAPI.getPlayer());
 	}
 
 	public void addChat(int time, String text){
 		addChat(time, text, null);
 	}
-	public void addChat(int distance, int time, String text){
-		addChat(distance, time, text, null);
-	}
-	public void addChat(int time, String text, String tick){
- 		addChat(base, time, text, tick);
-	}
-	public void addChat(int distance, int time, String text, String tick){
- 		addChat(distance, base, time, text, tick);
+	public void addChat(int time, String text, AbstractTick absTick){
+ 		addChat(base, time, text, absTick);
 	}
 	public void addChat(EntityLivingBase mob, int time, String text){
 		addChat(mob, time, text, null);
 	}
-	public void addChat(int distance, EntityLivingBase mob, int time, String text){
-		addChat(mob, time, text+"/distance:"+distance+":dis/", null);
-	}
-	public void addChat(int distance, EntityLivingBase mob, int time, String text, String tick){
-		addChat(mob, time, text+"/distance:"+distance+":dis/", tick);
-	}
 	Timer timer;
-	public void addChat(EntityLivingBase mob, int time, String text, String tick){
- 		TimerTask t = timerChat(mob, text, gm(tick));
+	public void addChat(EntityLivingBase mob, int time, String text, AbstractTick absTick){
+ 		TimerTask t = timerChat(mob, text, absTick);
  		timer = new Timer();
 		timer.schedule(t, time);
 	}
@@ -75,37 +52,37 @@ public class TextEffect {
 		timer.cancel();
 		timer = new Timer();
 	}
-	private TimerTask timerChat(final EntityLivingBase mob, final String message, final Method tick){
+	private TimerTask timerChat(final EntityLivingBase mob, final String message, final AbstractTick absTick){
 		return new TimerTask() {
 			@Override
 			public void run() {
-				if(mob != null && WorldAPI.getPlayer() != null && WorldAPI.getWorld() != null){
-					invoke(tick);
+				if(mob != null && WorldAPI.getPlayer() != null){
+					absTick.run();
 					String s2 = message.replace("/look:player:lo/", "").replace("/look:remove:lo/", "").replace("/bold/", "");
 
-					DebAPI.msgText("MiniGame","메세지:"+s2);
-					if(message.indexOf("/com:") != -1){
+					DebAPI.msgText("MiniGame","[TextEffect] 출력할 메세지:"+s2);
+					if(message.contains("/com:")){
 						String command = parsing(message, "/com:", ":com/");
-						DebAPI.msgText("MiniGame","명령어 "+command);
+						DebAPI.msgText("MiniGame","[TextEffect] 명령어 "+command);
 						WorldAPI.command(command);
 						s2 = s2.replace(command, "").replace("/com:", "").replace(":com/", "");
 
 					}
-					if(message.indexOf("/tp:") != -1){
+					if(message.contains("/tp:")){
 						String look = parsing(message, "/tp:", ":tp/");
 						String[] split = look.split(",");
 						double[] xyz = WorldAPI.valueOfStr(split[1], split[2], split[3]);
 						mob.setPositionAndUpdate(xyz[0], xyz[1], xyz[2]);
-						DebAPI.msgText("MiniGame","텔레포트 발견함-"+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
+						DebAPI.msgText("MiniGame","[TextEffect] 텔레포트 발견함-"+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 					}
-					if(message.indexOf("/look:") != -1){
+					if(message.contains("/look:")){
 						String look = parsing(message, "/look:", ":lo/");
-						if(look.indexOf(",") != -1){
+						if(look.contains(",")){
 							String[] split = look.split(",");
 							EntityAPI.look(lookMob.get(split[0]), lookMob.get(split[1]));
-							DebAPI.msgText("MiniGame","특정 몬스터 LOOK 발견함-"+look);
-							DebAPI.msgText("MiniGame","대상 몬스터-"+lookMob.get(split[0]));
-							DebAPI.msgText("MiniGame","대상 몬스터2-"+lookMob.get(split[1]));
+							DebAPI.msgText("MiniGame","[TextEffect] 특정 몬스터 LOOK 발견함-"+look);
+							DebAPI.msgText("MiniGame","[TextEffect] 대상 몬스터-"+lookMob.get(split[0]));
+							DebAPI.msgText("MiniGame","[TextEffect] 대상 몬스터2-"+lookMob.get(split[1]));
 						}
 						else if(look.equals("player"))
 							EntityAPI.look((EntityMob) mob, WorldAPI.getPlayer());
@@ -114,35 +91,35 @@ public class TextEffect {
 							EntityAPI.removeLook((EntityMob) mob);
 						else
 							EntityAPI.look((EntityMob) mob, lookMob.get(look));
-						DebAPI.msgText("MiniGame","LOOK 발견함-"+look);
+						DebAPI.msgText("MiniGame","[TextEffect] LOOK 발견함-"+look);
 					}
 				
-					if(message.indexOf("/move:") != -1){
+					if(message.contains("/move:")){
 						String move = parsing(message, "/move:", ":mo/");
 						String[] split = move.split(",");
 						if(split.length == 3){
 							double[] xyz = WorldAPI.valueOfStr(split[0], split[1], split[2]);
 							EntityAPI.move((EntityMob) mob, xyz[0], xyz[1], xyz[2]);
-							DebAPI.msgText("MiniGame","이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
+							DebAPI.msgText("MiniGame","[TextEffect] 이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
 						}
 						if(split.length == 4){
 							double[] xyz = WorldAPI.valueOfStr(split[1], split[2], split[3]);
 							EntityAPI.move(lookMob.get(split[0]), xyz[0], xyz[1], xyz[2]);
-							DebAPI.msgText("MiniGame","특정 몬스터 이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
-							DebAPI.msgText("MiniGame","대상 몬스터-"+lookMob.get(split[0]));
+							DebAPI.msgText("MiniGame","[TextEffect] 특정 몬스터 이동 발견함-"+move+xyz[0]+"   "+xyz[1]+"   "+xyz[2]);
+							DebAPI.msgText("MiniGame","[TextEffect] 대상 몬스터-"+lookMob.get(split[0]));
 						}
 
 					}
 					Style style = new Style();
 
-					if(message.indexOf("/bold/")!= -1){
+					if(message.contains("/bold/")){
 						style.setBold(true);
 					}
-					if(message.indexOf("/color:") != -1) {
+					if(message.contains("/color:")) {
 						s2 = s2.replace(parsing(message, "/color:"+"/color:", ":color/")+":color/", "");
 						style.setColor(TextFormatting.getValueByName(parsing(message, "/color:", ":color/")));
 					}
-					if(message.indexOf("/distance:") != -1){
+					if(message.contains("/distance:")){
 						String move = message.substring(message.indexOf("/distance:"), message.indexOf(":dis/"));
 						s2 = s2.replace(move, "").replace("/distance:", "").replace(":dis/", "");
 						int distance = Integer.valueOf(move.replace("/distance:", ""));
@@ -161,7 +138,7 @@ public class TextEffect {
 					WorldAPI.getPlayer().addChatComponentMessage(new TextComponentString(mob.getName()+":"+s2).setStyle(style));
 				}
 				else{
-					invoke(tick);
+					absTick.run();
 					Style style = new Style();
 					if(message.indexOf("/bold/")!= -1){
 						style.setBold(true);
@@ -181,26 +158,11 @@ public class TextEffect {
 	
 	private String parsing(String message, String first, String second) {
 		String move = message.substring(message.indexOf(first), message.indexOf(second)).replace(first, "");
-		if(message.indexOf(message) != -1){
+		if(message.contains(message)){
 			message = message.replace(first+move+second, "");
 			replaceList.add(first+move+second);
 		}
 		return move;
-	}
-	private void invoke(Method tick){
-		if(tick != null){
-			try {
-				tick.setAccessible(true);
-				if(command != null)
-					tick.invoke(null, command == null ? null : command);
-				else
-					tick.invoke(null);
-
-				command = null;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
  	public static boolean isTextEnd() {
 		return TextEvent.isTextEnd();
@@ -213,34 +175,6 @@ public class TextEffect {
 				TextEvent.getTextEvent().addNext();
 			}
 		};
-	}
-	
-	private Class gmClass;
-	private String command;
-	
-	public Method gm(String name){
-		try {
-			if(gmClass == null && name != null) {
-				DebAPI.msgText("MiniGame","클래스가 없음!"+name);
-				return null;
-			}
-			DebAPI.msgText("MiniGame","메소드 이름:"+name);
-			if(name != null){
-				if(name.startsWith("명령어:")){
-					command = name.replace("명령어:", "");
-					return WorldAPI.class.getMethod("command", String.class);
-				}
-				else
-					return gmClass.getDeclaredMethod(name);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public void setClass(Class c){
-		gmClass = c;
 	}
 	
 	public static Monologue monologue(StringBuffer... s){

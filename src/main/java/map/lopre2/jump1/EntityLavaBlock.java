@@ -1,5 +1,6 @@
 package map.lopre2.jump1;
 
+import map.lopre2.LoPre2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +29,6 @@ public class EntityLavaBlock extends EntityPreBlock {
         super(worldIn);
         this.setCollision(true);
         setBlockMode(Blocks.STONE);
-        this.noClip = !noClip;
         isFly = true;
         setJumpName("라바 블럭");
     }
@@ -67,7 +67,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         }
         lavaBlock.setWidth(getWidth());
         lavaBlock.setHeight(getHeight());
-        lavaBlock.setSize(getWidth(), getHeight());
+        lavaBlock.updateSize();
         return lavaBlock;
     }
 
@@ -77,17 +77,13 @@ public class EntityLavaBlock extends EntityPreBlock {
         if(getScaleX() != 1 || getScaleZ() != 1){
             this.setHeight(1);
             this.setWidth(0.5F);
-            this.setSize(getWidth(), getHeight());
+            updateSize();
         }
     }
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (canTeleportLock()) {
-            motionY = 0;
-            motionX = 0;
-            motionZ = 0;
-        }
+
         if (!canTeleportLock()) {
             boolean isFly = true;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
@@ -101,7 +97,8 @@ public class EntityLavaBlock extends EntityPreBlock {
             }else
                 isFly = true;
             if (isFly) {
-                if(posY < getSpawnY()) {
+                if(LoPre2.compare(posY, getSpawnY()) == -1) {
+                    System.out.println("올라가는 중"+(posY - getSpawnY()));
                     motionZ= 0;
                     motionY = downSpeed;
                     motionX = 0;
@@ -115,12 +112,14 @@ public class EntityLavaBlock extends EntityPreBlock {
             if (!isFly) {
                 motionZ= 0;
                 motionY = -downSpeed;
+                System.out.println("내려가는 중");
                 motionX = 0;
             }
         }
 
         if(getWidth() != 0 && getHeight() != 0 && (width != getWidth() || height != getHeight())){
-            setSize(getWidth(),getHeight());
+            updateSize();
+            System.out.println("사이즈가 다름");
         }
 
     }
@@ -134,20 +133,22 @@ public class EntityLavaBlock extends EntityPreBlock {
 
     public void setWidth(float width){
         dataManager.set(WIDTH, width);
-        if(getWidth() != 0 && getHeight() != 0){
-            this.setSize(getWidth(), getHeight());
-        }
+        updateSize();
         System.out.println("라바블럭 사이즈 width 설정함 "+getWidth() + " - "+width);
 
     }
 
     public void setHeight(float height){
         dataManager.set(HEIGHT, height);
+        updateSize();
+        System.out.println("라바블럭 사이즈 height 설정함 "+getHeight() + " - "+height);
+
+    }
+
+    public void updateSize(){
         if(getWidth() != 0 && getHeight() != 0){
             this.setSize(getWidth(), getHeight());
         }
-        System.out.println("라바블럭 사이즈 height 설정함 "+getHeight() + " - "+height);
-
     }
 
     @Override
@@ -164,7 +165,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         super.readEntityFromNBT(compound);
         dataManager.set(WIDTH, compound.getFloat("widthl"));
         dataManager.set(HEIGHT, compound.getFloat("heightl"));
-        setSize(getWidth(), getHeight());
+        updateSize();
         downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
     }

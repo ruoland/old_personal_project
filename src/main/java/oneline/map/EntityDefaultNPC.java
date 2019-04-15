@@ -31,31 +31,36 @@ import java.util.UUID;
 
 public class EntityDefaultNPC extends EntityModelNPC {
 
-
     //스턴 관련 코드. 스턴 상태로 설정하면  얼굴회전 그리고 이동을 멈춤
     private static final DataParameter<Boolean> IS_STURN = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);
+
+    private static final DataParameter<Integer> STURN_TICK = EntityDataManager.createKey(EntityDefaultNPC.class,
+            DataSerializers.VARINT);
+
     private static final DataParameter<Float> LOCK_YAW = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.FLOAT);
     private static final DataParameter<Float> LOCK_PITCH = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.FLOAT);
+
     private static final DataParameter<Boolean> ON_DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);//데드 타이머가 켜져있는지 여부
+
     private static final DataParameter<Integer> DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.VARINT);
-    private static final DataParameter<Integer> STURN_TICK = EntityDataManager.createKey(EntityDefaultNPC.class,
-            DataSerializers.VARINT);
+
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
             .createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_TELEPORT = EntityDataManager.createKey(EntityDefaultNPC.class,
-            DataSerializers.BOOLEAN);
+            DataSerializers.BOOLEAN);//라바 블럭에 쓰이던 텔레포트 기능임
+
     private static HashMap<String, EntityDefaultNPC> npcHash = new HashMap<>();
     private static HashMap<String, EntityDefaultNPC> uuidHash = new HashMap<>();
     private PosHelper posHelper;
     public boolean isFly;
     public TextEffect eft;
     private Vec3d targetPosition, targetVec;
-    private double distance = 0.8;
+    private double moveDistance = 0.8;
     private double targetMoveSpeed;
     public int eyeCloseTime = 0;
     public double eyeCloseScaleY;
@@ -67,7 +72,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
-        this.eft = TextEffect.getHelper(this);
+        this.eft = new TextEffect(this);
         posHelper = new PosHelper(this);
         this.setSize(0.6F, 1.95F);
         PathNavigateGround path = (PathNavigateGround) this.getNavigator();
@@ -171,11 +176,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public boolean isTargetArrive() {
-        return !noTarget() && getDistance(targetPosition) < distance;
+        return !noTarget() && getDistance(targetPosition) < moveDistance;
     }
 
     public void setDistance(double distance) {
-        this.distance = distance;
+        this.moveDistance = distance;
     }
 
     public void setTeleport(boolean a) {
@@ -203,7 +208,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (targetPosition != null) {
             System.out.println(targetVec.scale(targetMoveSpeed)+" - "+targetMoveSpeed);
             moveEntity(targetVec.scale(targetMoveSpeed));
-            if (getDistance(targetPosition) < distance) {
+            if (getDistance(targetPosition) < moveDistance) {
                 targetArrive();
             }
         } else if (isFly) {
@@ -218,8 +223,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
                 uuidHash.put(this.getUniqueID().toString(), this);
             }
 
-        }
-        if (isServerWorld()) {
             if (getDataManager().get(ON_DEATH_TIMER) && getDeathTime() >= 0) {
                 setDeathTimer(getDeathTime() - 1);
                 if (getDeathTime() <= 0) {
@@ -236,9 +239,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
         }
     }
 
-    public void moveEntity(Vec3d vec3d){
-        super.moveEntity(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
-    }
 
     public void onTimerDeath() {
         this.setDead();
@@ -258,7 +258,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
             compound.setDouble("targetZ", targetPosition.zCoord);
             compound.setDouble("speed", targetMoveSpeed);
         }
-        compound.setDouble("distance", distance);
+        compound.setDouble("distance", moveDistance);
         compound.setDouble("STURN_TICK", dataManager.get(STURN_TICK));
         compound.setDouble("spawnX", spawnX);
         compound.setDouble("spawnY", spawnY);
@@ -271,6 +271,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
         compound.setBoolean("canCollision", canCollision());
         compound.setBoolean("IS_STURN", isSturn());
         compound.setInteger("STURN_TICK", dataManager.get(STURN_TICK));
+        compound.setBoolean("isFly", isFly);
         super.writeEntityToNBT(compound);
     }
 
@@ -296,7 +297,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
         if (compound.hasKey("targetX"))
             setTarget(compound.getDouble("targetX"), compound.getDouble("targetY"), compound.getDouble("targetZ"), compound.getDouble("speed"));
         setDistance(compound.getDouble("distance"));
+        isFly = compound.getBoolean("isFly");
 
+    }
+    public void moveEntity(Vec3d vec3d){
+        super.moveEntity(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
     @Override
@@ -354,15 +359,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     public void setDeathTimer(int deathTimer) {
             dataManager.set(DEATH_TIMER, deathTimer);
             dataManager.set(ON_DEATH_TIMER, true);
-    }
-
-    public void deathTimerCancel(int deathTimer) {
-        dataManager.set(ON_DEATH_TIMER, false);
-
-    }
-
-    public BlockPos getSpawnPos() {
-        return new BlockPos(getSpawnX(), getSpawnY(), getSpawnZ());
     }
 
     public Vec3d getSpawnPosVec() {
@@ -502,21 +498,18 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
 
-    public void addChat(int second, String te) {
-        if (eft == null)
-            eft = TextEffect.getHelper(this);
-        eft.addChat(Integer.valueOf((second + "000")), te, null);
-    }
-
-    public void addChat(int second, String text, String tick) {
-        if (eft == null)
-            eft = TextEffect.getHelper(this);
-        eft.addChat(this, Integer.valueOf((second + "000")), text, tick);
+    public void addChat(int second, String text) {
+        getEFT().addChat(this, Integer.valueOf((second + "000")), text);
     }
 
     public void cancel() {
-        if (eft != null)
-            eft.cancel();
+        getEFT().cancel();
+    }
+
+    public TextEffect getEFT(){
+        if(eft == null)
+            eft = new TextEffect(this);
+        return eft;
     }
 
     public Vec3d getXZ(Direction spawnDirection, double plus, boolean pos) {
@@ -553,5 +546,9 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public boolean isAttackTargetPlayer() {
         return getAttackTarget() != null && getAttackTarget() instanceof EntityPlayer;
+    }
+
+    public void printData(){
+
     }
 }

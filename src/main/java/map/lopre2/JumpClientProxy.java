@@ -1,6 +1,9 @@
 package map.lopre2;
 
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import oneline.api.RenderAPI;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.*;
@@ -25,5 +28,6 @@ public class JumpClientProxy extends JumpCommonProxy {
         RenderAPI.registerRender(EntityPreBlock.class);
         RenderAPI.registerRender(EntityBuildBlock.class);
         RenderAPI.registerRender(EntityInvisibleBlock.class);
+        RenderAPI.registerRender(EntityTestB.class, new RenderBiped<EntityTestB>(Minecraft.getMinecraft().getRenderManager(), new ModelBiped(1F),1));
     }
 }

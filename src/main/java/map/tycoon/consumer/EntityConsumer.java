@@ -198,7 +198,7 @@ public class EntityConsumer extends EntityDefaultNPC {
                 if (WorldAPI.getPlayer().getDistance(posX, posY, posZ) < 5) {
                     if (findPlayer == 0) {
                         consumer.cancel();
-                        TextEffect.getPlayerHelper().addChat(0, "빵의 개수는 " + TyconHelper.calcBreadAmount(consumer)
+                        WorldAPI.addMessage(  "빵의 개수는 " + TyconHelper.calcBreadAmount(consumer)
                                 + "이고 " + TyconHelper.calcBread(consumer) + "원.");
                         absDefTick = 20;
                         findPlayer++;
@@ -211,7 +211,7 @@ public class EntityConsumer extends EntityDefaultNPC {
                             int money = Integer.valueOf(va);
                             CommandChat.deleteChatLine(0);
                             if (money > TyconHelper.calcBreadAmount(consumer) + 1000) {
-                                TextEffect.getPlayerHelper().addChat(0, "너무 비쌈");
+                               WorldAPI.addMessage( "너무 비쌈");
                             }
                             if (lackWallet) {
                                 boolean lackWallet2 = false;//빵을 두개 이상 들고 있는지
@@ -223,7 +223,7 @@ public class EntityConsumer extends EntityDefaultNPC {
                                     }
                                 }
                                 if(lackWallet2 || breadAllAmount > 2) {
-                                    TextEffect.getPlayerHelper().addChat(0, "돈을 덜 들고 옴");
+                                    WorldAPI.addMessage( "돈을 덜 들고 옴");
                                     int subBread = worldObj.rand.nextInt(breadAllAmount - 1);//빵 뺄 개수
                                     for(BreadData breadData : breadList){
                                         if(0 >= subBread)
@@ -241,7 +241,7 @@ public class EntityConsumer extends EntityDefaultNPC {
                                 }
                             }
                             if (isNoWallet) {
-                                TextEffect.getPlayerHelper().addChat(0, "지갑을 안 갖고 옴");
+                                WorldAPI.addMessage( "지갑을 안 갖고 옴");
                             } else
                                 TyconHelper.playermoney += money;
                         }
@@ -298,9 +298,7 @@ public class EntityConsumer extends EntityDefaultNPC {
         }.setDistance(3));
         TyconHelper.removeTable(currentTable);
         System.out.println("10초가 지나서 밖으로 나감");
-
     }
-
 
     private EntityConsumer setRider() {
         switch (worldObj.rand.nextInt(10)) {

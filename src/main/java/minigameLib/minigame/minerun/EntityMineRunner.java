@@ -17,6 +17,7 @@ public class EntityMineRunner extends EntityDefaultNPC {
     public EntityMineRunner(World worldIn) {
         super(worldIn);
         this.setModel(TypeModel.NPC);
+        this.setCollision(true);
     }
 
     @Override
