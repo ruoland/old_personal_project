@@ -430,7 +430,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     @Override
     public void moveEntityWithHeading(float strafe, float forward) {
-        if (!(isSturn() && onGround))
+        if (!(isSturn()))
             super.moveEntityWithHeading(strafe, forward);
     }
 

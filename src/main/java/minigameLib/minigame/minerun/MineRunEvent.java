@@ -73,7 +73,7 @@ public class MineRunEvent {
 
             double value = runnery + distance - playery;
             if (value != 0)
-                e.player.motionY = value / 10;
+                e.player.motionY = value / 20;
             else
                 e.player.motionY = 0;
         }
@@ -85,7 +85,7 @@ public class MineRunEvent {
                 MineRun.setFakePositionUpdate();
                 runner.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
                 runner.motionY = 0;
-                runner.motionZ = MineRun.zCoord();//?걷는 모션? 다리를 움직이는 모션 아닌가? 2019년 3월 31일
+                runner.motionZ = MineRun.zCoord();//?걷는 모션? 다리를 움직이는 모션 아닌가? 2019년 3월 31일 --- 4월 16일 걷는 모션이 다리를 움직이는 모션이지.. 이걸 왜 생각 못했지?
 
             }
         }
