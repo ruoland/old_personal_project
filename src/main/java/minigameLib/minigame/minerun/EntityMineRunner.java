@@ -59,6 +59,17 @@ public class EntityMineRunner extends EntityDefaultNPC {
         dataManager.set(isCollision, true);
     }
 
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+        extinguish();
+    }
+
+    @Override
+    public boolean isOnLadder() {
+        return super.isOnLadder();
+    }
+
     public void updatePos(){
         dataManager.set(isCollision, false);
     }

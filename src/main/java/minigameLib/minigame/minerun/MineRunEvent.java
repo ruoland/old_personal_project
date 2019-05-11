@@ -52,8 +52,18 @@ public class MineRunEvent {
             return;
         if (respawnTime == 0 && MineRun.elytraMode() == EnumElytra.RUNNING) {
             if (!runner.isInLava() && !runner.isInWater() && respawnTime <= 0 && MineRun.runner.isNotColliding()) {
-                e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
-                e.player.motionZ = MineRun.zCoord();
+                if (!MineRun.runner.isOnLadder()) {
+                    e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
+                    e.player.motionZ = MineRun.zCoord();
+                } else {
+                    double posX = e.player.posX + curX + EntityAPI.lookX(e.player, 2.8);
+                    double posZ = e.player.posZ + curZ + EntityAPI.lookZ(e.player, 2.8);
+                    if(posX != 0)
+                    e.player.motionX = MineRun.runner.posX - posX;//앞으로 나아가게 함 - 7월 14일
+                    if(posZ != 0)
+                    e.player.motionZ = MineRun.runner.posZ - posZ;
+                }
+
                 MineRun.setFakePositionUpdate();
                 if (e.player.getRidingEntity() != null) {
                     EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();
@@ -66,6 +76,7 @@ public class MineRunEvent {
             } else {
                 e.player.motionX = 0;
                 e.player.motionZ = 0;
+
             }
             double runnery = MineRun.runner.posY;
             double playery = e.player.posY;

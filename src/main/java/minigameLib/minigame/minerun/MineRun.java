@@ -228,14 +228,17 @@ public class MineRun extends AbstractMiniGame {
     public static void setFakePositionUpdate() {
         double posX = player.posX + curX + EntityAPI.lookX(player, 2.8);
         double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 2.8);
-        //TODO 러너가 라바 블럭을 못올라감
         //TODO 러너가 사다리를 못탐
+        if(MineRun.runner.isOnLadder()){
+            runner.motionY = 0.02;
+        }
         runner.moveEntity(posX - runner.posX, 0, posZ - runner.posZ);
         runner.rotationYaw = player.rotationYaw;
         runner.rotationPitch = player.rotationPitch;
         if (curY != 0) {
             curY = 0;
         }
+
     }
 
     public static double getLookX() {

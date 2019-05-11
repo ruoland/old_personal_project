@@ -42,6 +42,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DIFFICULTY = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IS_THREE_BLOCK = EntityDataManager.createKey(EntityPreBlock.class, DataSerializers.BOOLEAN);
+
 
     public EntityPreBlock(World worldObj) {
         super(worldObj);
@@ -58,6 +60,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         dataManager.register(FORCE_SPAWN, false);
         dataManager.register(DIFFICULTY, -1);
         dataManager.register(JUMP_NAME, "");
+        dataManager.register(IS_THREE_BLOCK, false);
     }
 
     @Nullable
@@ -87,9 +90,14 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND) {
+            if (stack == null) {
+                WorldAPI.addMessage(""+(posY - player.posY));
+                dataManager.set(IS_THREE_BLOCK, !dataManager.get(IS_THREE_BLOCK));
+            }
             if (stack != null && stack.getItem() == (LoPre2.itemCopy)) {
                 return false;
             }
+
             if (WorldAPI.equalsHeldItem(LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(LoPre2.itemCopy)) {
                 List<EntityPreBlock> list = EntityAPI.getEntity(worldObj, this.getEntityBoundingBox(), EntityPreBlock.class);
                 System.out.println("카운트" + list.size());
@@ -238,9 +246,13 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     public void teleport() {
 
         Vec3d vec = Minecraft.getMinecraft().thePlayer.getLookVec();
+        double posY = WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight()+ vec.yCoord * ax;
+        if(posY > 2.1 && dataManager.get(IS_THREE_BLOCK))
+            posY = 2.1;
         this.setPosition((WorldAPI.x() + vec.xCoord * ax),
-                WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight()+ vec.yCoord * ax,
+                posY,
                 WorldAPI.z() + vec.zCoord * ax);
+
         int xyz = 1;
         if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL))
             xyz = 3;
