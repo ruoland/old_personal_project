@@ -20,12 +20,12 @@ public class EntityAIFindSound extends net.minecraft.entity.ai.EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        return soundPos != null;
+        return theEntity.getAttackTarget() == null && soundPos != null;
     }
 
 
     public boolean continueExecuting() {
-        return soundPos != null;
+        return  theEntity.getAttackTarget() == null && soundPos != null;
     }
 
     public void resetTask() {

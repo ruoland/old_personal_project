@@ -39,7 +39,7 @@ import java.util.Random;
 public class WildEvent {
     @SubscribeEvent
     public void findSound(PlaySoundEvent event) {
-        if (WorldAPI.getWorld() != null  && event.getSound().getCategory() != SoundCategory.MUSIC
+        if (WorldAPI.getServer() != null  && event.getSound().getCategory() != SoundCategory.MUSIC
                 && event.getSound().getCategory() != SoundCategory.WEATHER
                 && event.getSound().getCategory() != SoundCategory.AMBIENT
                 &&( event.getName().contains("player") || event.getName().contains("block"))) {
@@ -113,10 +113,12 @@ public class WildEvent {
         World world = event.getWorld();
         if (event.getEntityLiving() instanceof EntityCreature && event.getEntityLiving() instanceof IMob) {
             EntityCreature mob = (EntityCreature) event.getEntityLiving();
-            mob.tasks.addTask(0, new EntityAIAvoidEntityCreeper(mob,  6.0F, 1.3D, 1.5D));
+            if(!(mob instanceof EntityCreeper)) {
+                mob.tasks.addTask(0, new EntityAIAvoidEntityCreeper(mob, 6.0F, 0.5D, 0.5D));
+            }
             mob.tasks.addTask(5, new EntityAIFindSound(mob));
             mob.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128);
-            if (event.getEntityLiving() instanceof EntityZombie && !(event.getEntityLiving() instanceof EntityWildZombie)) {
+            if (event.getEntityLiving() instanceof EntityZombie && !(event.getEntityLiving() instanceof EntityWildZombie)) {//일반 좀비를 와일드 좀비로 변경
                 NBTTagCompound tagCompound = new NBTTagCompound();
                 event.getEntityLiving().writeEntityToNBT(tagCompound);
                 EntityWildZombie wildZombie = new EntityWildZombie(event.getEntityLiving().worldObj);
@@ -161,10 +163,10 @@ public class WildEvent {
 
     @SubscribeEvent
     public void serverChat(ServerChatEvent event) {
-        if (event.getMessage().indexOf("호출") != -1 || event.getMessage().indexOf("이리와") != -1) {
+        if (event.getMessage().contains("호출") || event.getMessage().contains("이리와")) {
             List<EntityAnimal> mobList = EntityAPI.getEntity(event.getPlayer().worldObj, event.getPlayer().getEntityBoundingBox().expandXyz(64), EntityAnimal.class);
             for (EntityAnimal horse : mobList) {
-                if (horse.hasCustomName() && event.getMessage().indexOf(horse.getCustomNameTag()) != -1) {
+                if (horse.hasCustomName() && event.getMessage().contains(horse.getCustomNameTag())) {
                     EntityAPI.move(horse, event.getPlayer().posX, event.getPlayer().posY, event.getPlayer().posZ);
                     WorldAPI.addMessage(horse.getCustomNameTag() + "을 불렀습니다");
                     return;

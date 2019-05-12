@@ -1,6 +1,6 @@
 package ruo.yout;
 
-public class CommonProxy {
+public class MojaeCommonProxy {
 
     public void init(){
 

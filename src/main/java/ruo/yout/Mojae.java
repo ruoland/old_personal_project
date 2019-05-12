@@ -2,7 +2,6 @@ package ruo.yout;
 
 import cmplus.deb.DebAPI;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
@@ -35,8 +34,8 @@ public class Mojae {
 
     public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = true, wither;
     public static int arrow_count= 1, skelDelay = -1;
-    @SidedProxy(clientSide = "ruo.yout.ClientProxy", serverSide = "ruo.yout.CommonProxy")
-    public static CommonProxy proxy;
+    @SidedProxy(clientSide = "ruo.yout.MojaeClientProxy", serverSide = "ruo.yout.MojaeCommonProxy")
+    public static MojaeCommonProxy proxy;
     public static final PotionLock lockPotion = new PotionLock(false, 0);
     public static final PotionGod godPotion = new PotionGod(false, 0);
     public static final Item itemLock = new ItemLock();
