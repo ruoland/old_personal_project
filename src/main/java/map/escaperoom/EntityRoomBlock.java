@@ -1,4 +1,4 @@
-package map.puzzle;
+package map.escaperoom;
 
 import map.lopre2.EntityPreBlock;
 import oneline.api.RenderAPI;
@@ -22,11 +22,11 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityPuzzleBlock extends EntityPreBlock {
-    private static final DataParameter<Boolean> THROW_STATE = EntityDataManager.createKey(EntityPuzzleBlock.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityPuzzleBlock.class, DataSerializers.VARINT);
+public class EntityRoomBlock extends EntityPreBlock {
+    private static final DataParameter<Boolean> THROW_STATE = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.VARINT);
 
-    public EntityPuzzleBlock(World worldIn) {
+    public EntityRoomBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
         setBlockMode(Blocks.DISPENSER);
@@ -40,8 +40,8 @@ public class EntityPuzzleBlock extends EntityPreBlock {
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
         if (entityIn instanceof EntityPreBlock)
             setVelocity(0, 0, 0);
-        if (entityIn instanceof EntityPuzzleBlockButton) {
-            EntityPuzzleBlockButton puzzleBlock = (EntityPuzzleBlockButton) entityIn;
+        if (entityIn instanceof EntityRoomBlockButton) {
+            EntityRoomBlockButton puzzleBlock = (EntityRoomBlockButton) entityIn;
             WorldAPI.command(puzzleBlock.getCommand());
             playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1F, 1);
 
@@ -132,7 +132,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
                     this.posX - knockbackSize, this.posY, this.posZ - knockbackSize, this.posX + knockbackSize, this.posY + 1.5, this.posZ + knockbackSize));
             if (!list.isEmpty()) {
                 for (Entity entity : list) {
-                    if ((entity instanceof EntityPuzzleBlock) && !entity.noClip) {
+                    if ((entity instanceof EntityRoomBlock) && !entity.noClip) {
                         System.out.println("블럭 찾음");
                         ((EntityLivingBase) entity).knockBack(this, 1.4F, this.posX - entity.posX, this.posZ - entity.posZ);
                     }
@@ -163,7 +163,7 @@ public class EntityPuzzleBlock extends EntityPreBlock {
 
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
-        EntityPuzzleBlock lavaBlock = new EntityPuzzleBlock(worldObj);
+        EntityRoomBlock lavaBlock = new EntityRoomBlock(worldObj);
         dataCopy(lavaBlock, x, y, z);
         if (isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(lavaBlock);

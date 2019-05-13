@@ -1,4 +1,4 @@
-package map.puzzle;
+package map.escaperoom;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,10 +16,10 @@ import oneline.map.TypeModel;
 import javax.annotation.Nullable;
 
 //좌우로 움직이는 좀비
-public class EntityPuzzleMoveZombie extends EntityPuzzleMonster {
-    private static final DataParameter<String> PATH = EntityDataManager.createKey(EntityPuzzleMoveZombie.class, DataSerializers.STRING);
+public class EntityRoomMoveZombie extends EntityRoomMonster {
+    private static final DataParameter<String> PATH = EntityDataManager.createKey(EntityRoomMoveZombie.class, DataSerializers.STRING);
 
-    public EntityPuzzleMoveZombie(World worldIn) {
+    public EntityRoomMoveZombie(World worldIn) {
         super(worldIn);
         typeModel = TypeModel.ZOMBIE;
     }

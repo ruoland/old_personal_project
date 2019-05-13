@@ -1,4 +1,4 @@
-package map.puzzle;
+package map.escaperoom;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +14,10 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntityPuzzlePathCreeper extends EntityPuzzleMonster {
-    private static final DataParameter<String> RUN_COMMAND = EntityDataManager.createKey(EntityPuzzleBlock.class, DataSerializers.STRING);
+public class EntityRoomPathCreeper extends EntityRoomMonster {
+    private static final DataParameter<String> RUN_COMMAND = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.STRING);
 
-    public EntityPuzzlePathCreeper(World worldIn) {
+    public EntityRoomPathCreeper(World worldIn) {
         super(worldIn);
         typeModel = TypeModel.CREEPER;
         this.setTargetSpeed(0.001);

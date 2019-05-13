@@ -1,28 +1,18 @@
-package map.puzzle;
+package map.escaperoom;
 
 import net.minecraft.init.Items;
 import net.minecraft.util.DamageSource;
-import oneline.api.EntityAPI;
 import oneline.map.EntityDefaultNPC;
 import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
+public class EntityRoomMonster extends EntityDefaultNPC {
 
-public class EntityPuzzleMonster extends EntityDefaultNPC {
-
-    public EntityPuzzleMonster(World worldIn) {
+    public EntityRoomMonster(World worldIn) {
         super(worldIn);
         typeModel = TypeModel.ZOMBIE;
     }

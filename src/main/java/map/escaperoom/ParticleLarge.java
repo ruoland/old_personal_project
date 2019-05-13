@@ -1,4 +1,4 @@
-package map.puzzle;
+package map.escaperoom;
 
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.VertexBuffer;

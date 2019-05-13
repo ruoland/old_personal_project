@@ -1,5 +1,6 @@
 package map.lopre2.jump1;
 
+import map.lopre2.EntityPreBlock;
 import map.lopre2.LoPre2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
@@ -12,7 +13,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import map.lopre2.EntityPreBlock;
 
 import java.util.List;
 
@@ -27,8 +27,8 @@ public class EntityLavaBlock extends EntityPreBlock {
     protected double downSpeed = 0.001;
     public EntityLavaBlock(World worldIn) {
         super(worldIn);
-        this.setCollision(true);
         setBlockMode(Blocks.STONE);
+        this.setCollision(true);
         isFly = true;
         setJumpName("라바 블럭");
     }
@@ -122,6 +122,7 @@ public class EntityLavaBlock extends EntityPreBlock {
             System.out.println("사이즈가 다름");
         }
 
+
     }
     public float getWidth() {
         return dataManager.get(WIDTH);
@@ -133,21 +134,17 @@ public class EntityLavaBlock extends EntityPreBlock {
 
     public void setWidth(float width){
         dataManager.set(WIDTH, width);
-        updateSize();
-        System.out.println("라바블럭 사이즈 width 설정함 "+getWidth() + " - "+width);
-
     }
 
     public void setHeight(float height){
         dataManager.set(HEIGHT, height);
-        updateSize();
-        System.out.println("라바블럭 사이즈 height 설정함 "+getHeight() + " - "+height);
-
     }
 
+    //width 랑 height 가 0이 아닐 때만 사이즈가 설정되게 하기 위해서 있음
     public void updateSize(){
-        if(getWidth() != 0 && getHeight() != 0){
+        if(getWidth() != 0 && getHeight() != 0 && (width != getWidth() || height != getHeight())){
             this.setSize(getWidth(), getHeight());
+            System.out.println("사이즈 업데이트 됨"+getWidth() + " - "+getHeight());
         }
     }
 
@@ -156,6 +153,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         super.writeEntityToNBT(compound);
         compound.setDouble("downSpeed",downSpeed);
         compound.setFloat("widthl", getWidth());
+
         compound.setFloat("heightl", getHeight());
         compound.setBoolean("deb", dataManager.get(DEB_MOVE));
     }
@@ -163,8 +161,8 @@ public class EntityLavaBlock extends EntityPreBlock {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        dataManager.set(WIDTH, compound.getFloat("widthl"));
-        dataManager.set(HEIGHT, compound.getFloat("heightl"));
+        setWidth(compound.getFloat("widthl"));
+        setHeight(compound.getFloat("heightl"));
         updateSize();
         downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));

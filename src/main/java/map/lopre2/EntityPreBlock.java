@@ -386,7 +386,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         setTeleportLock(compound.getBoolean("falling"));
-        setSize(compound.getFloat("widthl"), compound.getFloat("heightl"));
         setInvisible(compound.getBoolean("isInv"));
         setInv(compound.getBoolean("isInv"));
         setDifficulty(compound.getInteger("difficulty"));

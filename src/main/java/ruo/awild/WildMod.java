@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
-@Mod(modid =  "WildPlus", name =  "WildPlus")
+//@Mod(modid =  "WildPlus", name =  "WildPlus")
 public class WildMod {
 
     @SidedProxy(serverSide = "ruo.awild.CommonProxy", clientSide = "ruo.awild.ClientProxy")

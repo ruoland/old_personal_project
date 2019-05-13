@@ -1,4 +1,4 @@
-package map.puzzle;
+package map.escaperoom;
 
 import map.lopre2.EntityPreBlock;
 import net.minecraft.init.Blocks;
@@ -8,10 +8,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
-public class EntityPuzzleBlockButton extends EntityPuzzleBlock {
-    private static final DataParameter<String> RUN_COMMAND = EntityDataManager.createKey(EntityPuzzleBlock.class, DataSerializers.STRING);
+public class EntityRoomBlockButton extends EntityRoomBlock {
+    private static final DataParameter<String> RUN_COMMAND = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.STRING);
 
-    public EntityPuzzleBlockButton(World worldIn) {
+    public EntityRoomBlockButton(World worldIn) {
         super(worldIn);
         setBlockMode(Blocks.WOODEN_BUTTON);
     }
@@ -52,7 +52,7 @@ public class EntityPuzzleBlockButton extends EntityPuzzleBlock {
 
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
-        EntityPuzzleBlockButton lavaBlock = new EntityPuzzleBlockButton(worldObj);
+        EntityRoomBlockButton lavaBlock = new EntityRoomBlockButton(worldObj);
         dataCopy(lavaBlock, x, y, z);
         if (isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(lavaBlock);

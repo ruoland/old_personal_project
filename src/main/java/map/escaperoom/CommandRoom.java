@@ -1,7 +1,7 @@
-package map.puzzle;
+package map.escaperoom;
 
 import cmplus.util.CommandPlusBase;
-import map.puzzle.base.EntityPuzzleDoorBase;
+import map.escaperoom.base.EntityRoomDoorBase;
 import oneline.api.WorldAPI;
 import oneline.map.EntityDefaultNPC;
 import net.minecraft.command.CommandException;
@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
-public class CommandPuzzle extends CommandPlusBase {
+public class CommandRoom extends CommandPlusBase {
     private int x,y,z, x2,y2,z2;
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
@@ -41,11 +41,11 @@ public class CommandPuzzle extends CommandPlusBase {
             board.setContents(new StringSelection(builder.toString()), null);
         }
         if(args[0].equalsIgnoreCase("open")){
-            EntityPuzzleDoorBase doorBlock = (EntityPuzzleDoorBase) EntityDefaultNPC.getNPC(args[1]);
+            EntityRoomDoorBase doorBlock = (EntityRoomDoorBase) EntityDefaultNPC.getNPC(args[1]);
             doorBlock.open();
         }
         if(args[0].equalsIgnoreCase("close")){
-            EntityPuzzleDoorBase doorBlock = (EntityPuzzleDoorBase) EntityDefaultNPC.getNPC(args[1]);
+            EntityRoomDoorBase doorBlock = (EntityRoomDoorBase) EntityDefaultNPC.getNPC(args[1]);
             doorBlock.close();
         }
 

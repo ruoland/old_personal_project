@@ -1,4 +1,4 @@
-package map.puzzle;
+package map.escaperoom;
 
 import map.lopre2.EntityPreBlock;
 import oneline.api.Direction;
@@ -15,10 +15,10 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class EntityPuzzleBlockArrow extends EntityPreBlock {
-    private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityPuzzleBlockArrow.class, DataSerializers.VARINT);
+public class EntityRoomBlockArrow extends EntityPreBlock {
+    private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlockArrow.class, DataSerializers.VARINT);
     private PosHelper posHelper = new PosHelper(this);
-    public EntityPuzzleBlockArrow(World worldIn) {
+    public EntityRoomBlockArrow(World worldIn) {
         super(worldIn);
         this.setCollision(true);
         setBlockMode(Blocks.DISPENSER);
@@ -66,7 +66,7 @@ public class EntityPuzzleBlockArrow extends EntityPreBlock {
 
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
-        EntityPuzzleBlockArrow lavaBlock = new EntityPuzzleBlockArrow(worldObj);
+        EntityRoomBlockArrow lavaBlock = new EntityRoomBlockArrow(worldObj);
         dataCopy(lavaBlock, x, y, z);
         if (isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(lavaBlock);

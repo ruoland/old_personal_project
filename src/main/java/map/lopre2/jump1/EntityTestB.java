@@ -6,13 +6,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import oneline.map.EntityDefaultNPC;
 
 import java.util.List;
 
-public class EntityTestB extends EntityDefaultNPC {
+public class EntityTestB extends EntityPreBlock {
+    private static final DataParameter<Float> WIDTH = EntityDataManager.createKey(EntityTestB.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> HEIGHT = EntityDataManager.createKey(EntityTestB.class, DataSerializers.FLOAT);
     public EntityTestB(World worldIn) {
         super(worldIn);
         setSize(1, 1);
@@ -20,6 +26,19 @@ public class EntityTestB extends EntityDefaultNPC {
         setCollision(true);
         isFly = true;
     }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        dataManager.register(WIDTH, 0F);
+        dataManager.register(HEIGHT, 0F);
+    }
+
+    @Override
+    public boolean handleWaterMovement() {
+        return false;
+    }
+
     @Override
     public void applyEntityCollision(Entity entityIn) {
     }
@@ -70,4 +89,59 @@ public class EntityTestB extends EntityDefaultNPC {
             }
     }
 
+
+    @Override
+    public EntityPreBlock spawn(double x, double y, double z) {
+        EntityTestB lavaBlock = new EntityTestB(worldObj);
+        dataCopy(lavaBlock, x,y,z);
+        if(isServerWorld() || canForceSpawn()) {
+            worldObj.spawnEntityInWorld(lavaBlock);
+        }
+        lavaBlock.setWidth(getWidth());
+        lavaBlock.setHeight(getHeight());
+        lavaBlock.updateSize();
+        return lavaBlock;
+    }
+
+    public float getWidth() {
+        return dataManager.get(WIDTH);
+    }
+
+    public float getHeight() {
+        return dataManager.get(HEIGHT);
+    }
+
+    public void setWidth(float width){
+        dataManager.set(WIDTH, width);
+    }
+
+    public void setHeight(float height){
+        dataManager.set(HEIGHT, height);
+    }
+
+    //width 랑 height 가 0이 아닐 때만 사이즈가 설정되게 하기 위해서 있음
+    public void updateSize(){
+        if(getWidth() != 0 && getHeight() != 0 && getWidth() != 1 && getHeight() != 1 && (width != getWidth() || height != getHeight())){
+            this.setSize(getWidth(), getHeight());
+            System.out.println("사이즈 업데이트 됨"+getWidth() + " - "+getHeight());
+        }
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setFloat("widthl", getWidth());
+        System.out.println("저장한 값"+isServerWorld()+compound.getFloat("widthl"));
+
+        compound.setFloat("heightl", getHeight());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        System.out.println("읽은 값"+isServerWorld()+compound.getFloat("widthl"));
+        setWidth(compound.getFloat("widthl"));
+        setHeight(compound.getFloat("heightl"));
+        updateSize();
+    }
 }

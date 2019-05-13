@@ -1,12 +1,12 @@
-package map.puzzle;
+package map.escaperoom;
 
-import map.puzzle.base.EntityPuzzleDoorBase;
+import map.escaperoom.base.EntityRoomDoorBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-public class EntityPuzzleDoor extends EntityPuzzleDoorBase {
+public class EntityRoomDoor extends EntityRoomDoorBase {
 
-    public EntityPuzzleDoor(World worldIn) {
+    public EntityRoomDoor(World worldIn) {
         super(worldIn);
 
         this.setBlockMode(Blocks.STONE);

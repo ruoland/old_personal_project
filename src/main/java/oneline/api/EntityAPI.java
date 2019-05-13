@@ -384,11 +384,21 @@ public class EntityAPI {
     public static List<EntityItem> getEntityItem(World worldObj, AxisAlignedBB aabb) {
         return worldObj.getEntitiesWithinAABB(EntityItem.class, aabb);
     }
-
+    public static List<EntityItem> getEntityItem(World worldObj, double x, double y, double z, double expand) {
+        return worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(x-expand,y-expand,z-expand,x+expand,y+expand,z+expand));
+    }
     public static Item getPlayerItem() {
         if (WorldAPI.getPlayer().getHeldItemMainhand() == null)
             return null;
         return WorldAPI.getPlayer().getHeldItemMainhand().getItem();
+    }
+
+    public static EntityItem spawnItem(World world, ItemStack itemStack, double x, double y, double z){
+        EntityItem item = new EntityItem(world);
+        item.setPosition(x,y,z);
+        item.setEntityItemStack(itemStack);
+        world.spawnEntityInWorld(item);
+        return item;
     }
 
     /**

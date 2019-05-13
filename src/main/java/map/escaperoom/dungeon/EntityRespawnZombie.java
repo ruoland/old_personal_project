@@ -1,4 +1,4 @@
-package map.puzzle.dungeon;
+package map.escaperoom.dungeon;
 
 import oneline.effect.AbstractTick;
 import oneline.effect.TickRegister;

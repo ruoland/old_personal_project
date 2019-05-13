@@ -1,6 +1,6 @@
-package map.puzzle;
+package map.escaperoom;
 
-import map.puzzle.base.EntityPuzzleWindBase;
+import map.escaperoom.base.EntityRoomWindBase;
 import oneline.map.EntityDefaultNPC;
 import oneline.map.TypeModel;
 import net.minecraft.entity.Entity;
@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityPuzzleWindEntity extends EntityPuzzleWindBase {
+public class EntityRoomWindEntity extends EntityRoomWindBase {
 
-    public EntityPuzzleWindEntity(World worldIn) {
+    public EntityRoomWindEntity(World worldIn) {
         super(worldIn);
         this.setBlockMode(Blocks.PUMPKIN);
         this.typeModel = TypeModel.SHAPE_BLOCK;

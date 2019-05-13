@@ -1,4 +1,4 @@
-package map.puzzle.base;
+package map.escaperoom.base;
 
 import oneline.map.EntityDefaultBlock;
 import oneline.map.TypeModel;
@@ -8,10 +8,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
-public class EntityPuzzleWindBase extends EntityDefaultBlock {
-    private static final DataParameter<Integer> DELAY = EntityDataManager.createKey(EntityPuzzleWindBase.class, DataSerializers.VARINT);
+public class EntityRoomWindBase extends EntityDefaultBlock {
+    private static final DataParameter<Integer> DELAY = EntityDataManager.createKey(EntityRoomWindBase.class, DataSerializers.VARINT);
 
-    public EntityPuzzleWindBase(World worldIn) {
+    public EntityRoomWindBase(World worldIn) {
         super(worldIn);
         this.setBlockMode(Blocks.PUMPKIN);
         this.typeModel = TypeModel.SHAPE_BLOCK;
