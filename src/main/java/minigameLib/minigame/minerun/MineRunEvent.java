@@ -83,7 +83,6 @@ public class MineRunEvent {
 
             double value = runnery + distance - playery;
             if (value != 0) {
-                System.out.println(runnery + " - "+playery+" - "+value);
                 e.player.motionY = value / 20;
             }
             else

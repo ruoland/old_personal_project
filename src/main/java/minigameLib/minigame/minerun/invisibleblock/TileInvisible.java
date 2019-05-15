@@ -29,7 +29,7 @@ public class TileInvisible extends TileEntity {
         compound.setString("command", command);
         compound.setInteger("defaultDelay", defaultDelay);
         compound.setInteger("runDelay", runDelay);
-        compound.setInteger("maxCount", maxCount);
+        //compound.setInteger("maxCount", maxCount);
         compound.setInteger("runCount", runCount);
         return super.writeToNBT(compound);
     }

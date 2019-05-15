@@ -2,6 +2,8 @@ package map.escaperoom;
 
 import cmplus.util.CommandPlusBase;
 import map.escaperoom.base.EntityRoomDoorBase;
+import map.lopre2.EntityPreBlock;
+import map.lopre2.jump1.EntityLavaBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import oneline.api.WorldAPI;
@@ -16,7 +18,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
-import static oneline.map.EntityDefaultNPC.ax;
 
 public class CommandRoom extends CommandPlusBase {
     private int x,y,z, x2,y2,z2;
@@ -34,7 +35,7 @@ public class CommandRoom extends CommandPlusBase {
                 if(entity instanceof EntityRoomBlockJumpMap){
                     entity.setDead();
                     EntityRoomBlockJumpMap.jump_count = 0;
-                    EntityDefaultNPC.ax = 3;
+                    EntityPreBlock.ax = 3;
                 }
             }
         }

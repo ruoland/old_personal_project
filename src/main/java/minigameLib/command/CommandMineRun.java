@@ -82,6 +82,10 @@ public class CommandMineRun extends CommandBase {
                 MiniGame.minerun.start(sender, args);
                 return;
             }
+            if (args[0].equals("reset")) {
+                //TODO 투명 블럭에 명령어 저장하는 기능 실행횟수를 0으로 하는 기능 넣어야함
+                return;
+            }
         }
         if (args.length > 0 && (args[0].equalsIgnoreCase("stop") || args[0].equalsIgnoreCase("s")))
             MiniGame.minerun.end();

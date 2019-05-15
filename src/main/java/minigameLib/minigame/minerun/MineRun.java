@@ -163,8 +163,8 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineX = EntityAPI.getFacingX(player.rotationYaw - 90);
         MiniGame.mineRunEvent.lineZ = EntityAPI.getFacingZ(player.rotationYaw - 90);
-        xCoord = EntityAPI.lookX(player, 0.3);
-        zCoord = EntityAPI.lookZ(player, 0.3);
+        xCoord = EntityAPI.lookX(player, 0.2);
+        zCoord = EntityAPI.lookZ(player, 0.2);
         playerPosHelper = new PosHelper(player);
         runner = new EntityMineRunner(sender.getEntityWorld());
         runner.setPosition(playerPosHelper.getPosition());
@@ -228,7 +228,7 @@ public class MineRun extends AbstractMiniGame {
     public static void runnerMove() {
         double posX = player.posX + curX + EntityAPI.lookX(player, 3.8);
         double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 3.8);
-        //TODO 러너가 사다리를 못탐
+        //TODO 더블 점프 기능 필요
         if(MineRun.runner.isOnLadder()){
             runner.motionY = 0.02;
         }

@@ -30,7 +30,6 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-//TODO 러너가 라바 블럭을 못올라감
 public class EntityMineRunner extends EntityDefaultNPC {
     private static final DataParameter<Boolean> isCollision = EntityDataManager.createKey(EntityMineRunner.class, DataSerializers.BOOLEAN);
     public EntityMineRunner(World worldIn) {
