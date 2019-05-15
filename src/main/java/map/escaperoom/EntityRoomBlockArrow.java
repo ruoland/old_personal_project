@@ -14,6 +14,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import oneline.api.WorldAPI;
 
 public class EntityRoomBlockArrow extends EntityPreBlock {
     private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlockArrow.class, DataSerializers.VARINT);
@@ -47,7 +48,7 @@ public class EntityRoomBlockArrow extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         addThrowTime();
-        if(getThrowTime() > 10){
+        if(getThrowTime() > 10 && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getDistanceToEntity(this) < 5){
             dataManager.set(THROW_TIME, 0);
             EntityArrow arrow = new EntityTippedArrow(worldObj);
             arrow.setPosition(posHelper.getX(Direction.FORWARD, 1, true),posY+1,posHelper.getZ(Direction.FORWARD, 1, true));

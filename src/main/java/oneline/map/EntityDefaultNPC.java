@@ -68,7 +68,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private boolean isTargetArriveStop = true;//타겟에 도착하면 이동하지 않음
     private PosHelper spawnPosHelper;
     private double spawnX, spawnY, spawnZ;
-    public static double ax = 3;
 
     public EntityDefaultNPC(World worldIn) {
         super(worldIn);
@@ -206,7 +205,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
             this.rotationYawHead = getDataManager().get(LOCK_YAW);
         }
         if (targetPosition != null) {
-            System.out.println(targetVec.scale(targetMoveSpeed)+" - "+targetMoveSpeed);
             moveEntity(targetVec.scale(targetMoveSpeed));
             if (getDistance(targetPosition) < moveDistance) {
                 targetArrive();

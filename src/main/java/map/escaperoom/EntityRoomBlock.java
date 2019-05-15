@@ -35,7 +35,7 @@ public class EntityRoomBlock extends EntityPreBlock {
     public EntityRoomBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
-        setBlockMode(Blocks.DISPENSER);
+        setBlockMode(Blocks.QUARTZ_BLOCK);
         setJumpName("퍼즐 블럭");
         setTeleportLock(true);
         this.setModel(TypeModel.SHAPE_BLOCK);

@@ -43,6 +43,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     private static final DataParameter<Integer> DIFFICULTY = EntityDataManager.createKey(EntityPreBlock.class,
             DataSerializers.VARINT);
     private static final DataParameter<Boolean> IS_THREE_BLOCK = EntityDataManager.createKey(EntityPreBlock.class, DataSerializers.BOOLEAN);
+    public static double ax = 3;
 
 
     public EntityPreBlock(World worldObj) {
@@ -222,9 +223,17 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
         if (delayTick > 0) {
             delayTick--;
         }
-        if (isTeleport()) {
-            teleport();
+        if (isTeleport() ) {
+            if(WorldAPI.getPlayer() != null && WorldAPI.getPlayer().isEntityAlive()) {
+                teleport();
+            }else {
+                setTeleport(false);
+                teleportSpawnPos();
+
+            }
         }
+
+
         if (canTeleportLock() && !isTeleport() && getSpawnX() != 0 && getSpawnZ() != 0) {
             if (MathHelper.floor_double(posX) != MathHelper.floor_double(getSpawnX()) || MathHelper.floor_double(posZ) != MathHelper.floor_double(getSpawnZ())) {
                 this.setPosition(getSpawnX(), getSpawnY(), getSpawnZ());
@@ -244,7 +253,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public void teleport() {
-
         Vec3d vec = Minecraft.getMinecraft().thePlayer.getLookVec();
         double posY = WorldAPI.y() + WorldAPI.getPlayerMP().getEyeHeight()+ vec.yCoord * ax;
         if(posY > 2.1 && dataManager.get(IS_THREE_BLOCK))

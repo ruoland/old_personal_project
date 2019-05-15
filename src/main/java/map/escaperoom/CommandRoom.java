@@ -2,6 +2,8 @@ package map.escaperoom;
 
 import cmplus.util.CommandPlusBase;
 import map.escaperoom.base.EntityRoomDoorBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityArrow;
 import oneline.api.WorldAPI;
 import oneline.map.EntityDefaultNPC;
 import net.minecraft.command.CommandException;
@@ -14,10 +16,28 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
+import static oneline.map.EntityDefaultNPC.ax;
+
 public class CommandRoom extends CommandPlusBase {
     private int x,y,z, x2,y2,z2;
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if(args[0].equalsIgnoreCase("cleararrow")){
+            for(Entity entity : sender.getEntityWorld().loadedEntityList){
+                if(entity instanceof EntityArrow){
+                    entity.setDead();
+                }
+            }
+        }
+        if(args[0].equalsIgnoreCase("jumpclear")){
+            for(Entity entity : sender.getEntityWorld().loadedEntityList){
+                if(entity instanceof EntityRoomBlockJumpMap){
+                    entity.setDead();
+                    EntityRoomBlockJumpMap.jump_count = 0;
+                    EntityDefaultNPC.ax = 3;
+                }
+            }
+        }
         if(args[0].equalsIgnoreCase("pos1")){
             BlockPos vec3d = sender.getPosition();
             x = vec3d.getX();
