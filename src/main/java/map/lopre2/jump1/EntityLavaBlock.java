@@ -2,6 +2,8 @@ package map.lopre2.jump1;
 
 import map.lopre2.EntityPreBlock;
 import map.lopre2.LoPre2;
+import minigameLib.MiniGame;
+import minigameLib.minigame.minerun.EntityMineRunner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +15,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import oneline.api.WorldAPI;
 
 import java.util.List;
 
@@ -98,7 +101,6 @@ public class EntityLavaBlock extends EntityPreBlock {
                 isFly = true;
             if (isFly) {
                 if(LoPre2.compare(posY, getSpawnY()) == -1) {
-                    System.out.println("올라가는 중"+(posY - getSpawnY()));
                     motionZ= 0;
                     motionY = downSpeed;
                     motionX = 0;
@@ -114,6 +116,18 @@ public class EntityLavaBlock extends EntityPreBlock {
                 motionY = -downSpeed;
                 System.out.println("내려가는 중");
                 motionX = 0;
+            }
+        }
+        if(MiniGame.minerun.isStart()){
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
+                    this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
+            if (!list.isEmpty()) {
+                for (Entity entity : list) {
+                    if ((entity instanceof EntityMineRunner) && !entity.noClip) {
+                        entity.moveEntity(0,0.2,0);
+                        entity.fallDistance = 0;
+                    }
+                }
             }
         }
 

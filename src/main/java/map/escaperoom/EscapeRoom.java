@@ -2,6 +2,11 @@ package map.escaperoom;
 
 import cmplus.deb.DebAPI;
 import map.escaperoom.dungeon.EntityRespawnZombie;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import oneline.api.RenderAPI;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -12,10 +17,15 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid ="PuzzleMap", name = "Puzzle Map")
 public class EscapeRoom {
 
+    @SidedProxy(clientSide =  "map.escaperoom.EscapeClientProxy", serverSide = "map.escaperoom.EscapeServerProxy")
+    public static EscapeServerProxy proxy;
+    public static Block blockJumper = new BlockJumper(Material.ANVIL).setRegistryName("PuzzleMap", "jumper").setUnlocalizedName("jumper").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Block blockForward = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "forward").setUnlocalizedName("forward").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Block blockWhatBlock = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "whatblock").setUnlocalizedName("whatBlock").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent e){
         DebAPI.registerEntity(this, "PuzzleBlock", EntityRoomBlock.class);
-
         DebAPI.registerEntity(this, "PuzzleBlockButton", EntityRoomBlockButton.class);
         DebAPI.registerEntity(this, "PuzzleBlockArrow", EntityRoomBlockArrow.class);
         DebAPI.registerEntity(this, "PuzzleWindBlock", EntityRoomWindEntity.EntityPuzzleWindBlock.class);
@@ -25,20 +35,19 @@ public class EscapeRoom {
         DebAPI.registerEntity(this, "PuzzlePathFinder", EntityRoomPathCreeper.class);
         DebAPI.registerEntity(this, "PuzzleMoveZombie", EntityRoomMoveZombie.class);
         DebAPI.registerEntity(this, "RespawnZombie", EntityRespawnZombie.class);
-        RenderAPI.registerRender(EntityRoomBlock.class);
-        RenderAPI.registerRender(EntityRoomBlockButton.class);
-        RenderAPI.registerRender(EntityRoomBlockArrow.class);
-        RenderAPI.registerRender(EntityRoomWindEntity.EntityPuzzleWindBlock.class);
-        RenderAPI.registerRender(EntityRoomWindEntity.class);
-        RenderAPI.registerRender(EntityRoomDoor.class);
-        RenderAPI.registerRender(EntityRespawnZombie.class);
-        RenderAPI.registerRender(EntityRoomMonster.class);
-        RenderAPI.registerRender(EntityRoomPathCreeper.class);
+        DebAPI.registerEntity(this, "PuzzleFallingBlock", EntityRoomFallingBlock.class);
+
+        proxy.init();
     }
 
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent e){
+        DebAPI.registerBlock(blockJumper);
+        DebAPI.registerBlock(blockForward);
+        DebAPI.registerBlock(blockWhatBlock);
+
         MinecraftForge.EVENT_BUS.register(new PuEvent());
+        proxy.preInit();;
     }
 
     @Mod.EventHandler

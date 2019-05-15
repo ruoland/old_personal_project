@@ -22,6 +22,12 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+/**
+ * 들 수 있는 블럭
+ * 블럭을 버튼에 던지면 명령어 실행시키는 기능 있음
+ * 에메랄드 블럭일 떄 엔티티를 맞추면 밀쳐내기 가능
+ *
+ */
 public class EntityRoomBlock extends EntityPreBlock {
     private static final DataParameter<Boolean> THROW_STATE = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.VARINT);
@@ -33,8 +39,8 @@ public class EntityRoomBlock extends EntityPreBlock {
         setJumpName("퍼즐 블럭");
         setTeleportLock(true);
         this.setModel(TypeModel.SHAPE_BLOCK);
-
     }
+
 
     @Override
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
@@ -103,6 +109,10 @@ public class EntityRoomBlock extends EntityPreBlock {
             dataManager.set(THROW_STATE, true);
             setTeleportLock(false);
             this.setTransparency(1F);
+        }
+        if(source == DamageSource.fallingBlock){
+            setHealth(getHealth() - amount);
+            return true;
         }
         return super.attackEntityFrom(source, amount);
     }

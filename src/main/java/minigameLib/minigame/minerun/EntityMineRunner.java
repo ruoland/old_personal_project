@@ -11,12 +11,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -63,6 +65,16 @@ public class EntityMineRunner extends EntityDefaultNPC {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         extinguish();
+    }
+
+    @Override
+    public void knockBack(Entity entityIn, float strenght, double xRatio, double zRatio) {
+        //super.knockBack(entityIn, strenght, xRatio, zRatio);
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override

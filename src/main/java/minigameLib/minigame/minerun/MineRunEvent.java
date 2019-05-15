@@ -42,9 +42,8 @@ public class MineRunEvent {
     //line은 왼쪽라인 오른쪽라인으로 갈 수 있는 값을 담고 있음, FB는 Forward Back 앞뒤 값 말함 - 7월 14일
     protected double lineX, lineZ;
 
-    private ItemStack stack = new ItemStack(Items.NETHER_STAR);
     private int pickupCount;
-    public static boolean halfMode = false;
+    public static boolean halfMode = false;//1.5블럭만 움직이는 모드
 
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
@@ -56,15 +55,15 @@ public class MineRunEvent {
                     e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
                     e.player.motionZ = MineRun.zCoord();
                 } else {
-                    double posX = e.player.posX + curX + EntityAPI.lookX(e.player, 2.8);
-                    double posZ = e.player.posZ + curZ + EntityAPI.lookZ(e.player, 2.8);
-                    if(posX != 0)
-                    e.player.motionX = MineRun.runner.posX - posX;//앞으로 나아가게 함 - 7월 14일
-                    if(posZ != 0)
-                    e.player.motionZ = MineRun.runner.posZ - posZ;
+                    double posX = e.player.posX + curX + EntityAPI.lookX(e.player, 1.8);
+                    double posZ = e.player.posZ + curZ + EntityAPI.lookZ(e.player, 1.8);
+                    if (posX != 0)
+                        e.player.motionX = MineRun.runner.posX - posX;//앞으로 나아가게 함 - 7월 14일
+                    if (posZ != 0)
+                        e.player.motionZ = MineRun.runner.posZ - posZ;
                 }
 
-                MineRun.setFakePositionUpdate();
+                MineRun.runnerMove();
                 if (e.player.getRidingEntity() != null) {
                     EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();
                     minecartEmpty.motionX = MineRun.xCoord();
@@ -83,8 +82,10 @@ public class MineRunEvent {
             int distance = 2;
 
             double value = runnery + distance - playery;
-            if (value != 0)
+            if (value != 0) {
+                System.out.println(runnery + " - "+playery+" - "+value);
                 e.player.motionY = value / 20;
+            }
             else
                 e.player.motionY = 0;
         }
@@ -93,7 +94,7 @@ public class MineRunEvent {
 
         if (MineRun.elytraMode() != EnumElytra.RUNNING && runner != null) {
             if (MineRun.elytraMode() == EnumElytra.ELYTRA) {//이건 런너가 움직이는 모션을 주기 위해서 있음!
-                MineRun.setFakePositionUpdate();
+                MineRun.runnerMove();
                 runner.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
                 runner.motionY = 0;
                 runner.motionZ = MineRun.zCoord();//?걷는 모션? 다리를 움직이는 모션 아닌가? 2019년 3월 31일 --- 4월 16일 걷는 모션이 다리를 움직이는 모션이지.. 이걸 왜 생각 못했지?
@@ -145,7 +146,7 @@ public class MineRunEvent {
                     MineRun.setPosition(posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
                     System.out.println("posHelper Left" + posHelper.getXZ(Direction.LEFT, absLR() * 2, false));
                 }
-                MineRun.setFakePositionUpdate();
+                MineRun.runnerMove();
 
             }
 
@@ -161,7 +162,7 @@ public class MineRunEvent {
                     System.out.println("posHelper Right" + posHelper.getXZ(Direction.RIGHT, absLR() * 2, false));
 
                 }
-                MineRun.setFakePositionUpdate();
+                MineRun.runnerMove();
             }
             System.out.println("lineLR " + lineLR + " - " + absLR());
 
@@ -251,7 +252,7 @@ public class MineRunEvent {
 
     @SubscribeEvent
     public void playerDeadEvent(LivingHurtEvent event) {
-        if (MiniGame.minerun.isStart() && event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().getHealth() - event.getAmount() <= 0) {
+        if (MiniGame.minerun.isStart() && event.getEntityLiving() instanceof EntityMineRunner && event.getEntityLiving().getHealth() - event.getAmount() <= 0) {
             if (respawnTime > 0) {
                 event.setCanceled(true);
                 return;
@@ -306,13 +307,13 @@ public class MineRunEvent {
             if (MineRun.spawnPoint == null) {
                 WorldAPI.addMessage("부활 장소가 없어 게임이 중단됐습니다.");
                 MiniGame.minerun.end();
+                respawnTime = 0;
                 return;
             }
             if (respawnTime == 60) {
                 WorldAPI.teleport(MineRun.spawnPoint.addVector(-EntityAPI.lookX(runner, 3), 2, -EntityAPI.lookZ(runner, 3)));
                 lineLR = 0;
                 MineRun.setPosition(0, 0, 0);
-                MineRun.setFakePositionUpdate();
                 WorldAPI.addMessage("3초 뒤에 시작됩니다.");
             }
             if (respawnTime == 40) {

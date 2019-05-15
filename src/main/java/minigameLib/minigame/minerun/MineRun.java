@@ -81,7 +81,7 @@ public class MineRun extends AbstractMiniGame {
             MiniGame.mineRunEvent.lineLR = 0;
             MiniGame.mineRunEvent.lineUD = 0;
             if (runner != null) {
-                setFakePositionUpdate();
+                runnerMove();
                 runner.setElytra(false);
                 WorldAPI.teleport(runner.posX, runner.posY, runner.posZ, player.getHorizontalFacing().getHorizontalAngle(), 70);
                 runner.setDead();
@@ -134,7 +134,7 @@ public class MineRun extends AbstractMiniGame {
             runner.setPosition(pos);
             runner.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
         }
-        MineRun.setFakePositionUpdate();
+        MineRun.runnerMove();
     }
 
     public static void setPosition(BlockPos pos) {
@@ -225,14 +225,15 @@ public class MineRun extends AbstractMiniGame {
             return zCoord;
     }
 
-    public static void setFakePositionUpdate() {
-        double posX = player.posX + curX + EntityAPI.lookX(player, 2.8);
-        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 2.8);
+    public static void runnerMove() {
+        double posX = player.posX + curX + EntityAPI.lookX(player, 3.8);
+        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 3.8);
         //TODO 러너가 사다리를 못탐
         if(MineRun.runner.isOnLadder()){
             runner.motionY = 0.02;
         }
-        runner.moveEntity(posX - runner.posX, 0, posZ - runner.posZ);
+        //runner.setPositionAndUpdate(runner.posX +(posX - runner.posX), runner.posY, runner.posZ+(posZ - runner.posZ));
+        runner.moveEntity((posX - runner.posX) / 2, 0, (posZ - runner.posZ) / 2);
         runner.rotationYaw = player.rotationYaw;
         runner.rotationPitch = player.rotationPitch;
         if (curY != 0) {
