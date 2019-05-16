@@ -2,8 +2,8 @@ package map.escaperoom;
 
 import net.minecraft.init.Items;
 import net.minecraft.util.DamageSource;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,6 +1,6 @@
 package minigameLib.minigame.minerun;
 
-import oneline.map.EntityDefaultNPC;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;

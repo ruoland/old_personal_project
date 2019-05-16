@@ -6,14 +6,11 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.ItemSpectralArrow;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import ruo.yout.ItemUp;
 
 import java.util.List;

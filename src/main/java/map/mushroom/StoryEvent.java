@@ -10,12 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import oneline.api.EntityAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.api.EntityAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 
 import java.util.List;
 

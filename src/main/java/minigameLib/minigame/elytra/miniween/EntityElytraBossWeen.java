@@ -2,11 +2,11 @@ package minigameLib.minigame.elytra.miniween;
 
 import cmplus.util.Sky;
 import minigameLib.MiniGame;
-import oneline.api.Direction;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
-import oneline.map.EntityDefaultNPC;
+import olib.api.Direction;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -14,7 +14,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import static oneline.fakeplayer.FakePlayerHelper.fakePlayer;
+import static olib.fakeplayer.FakePlayerHelper.fakePlayer;
 
 public class EntityElytraBossWeen extends EntityElytraPumpkin {
     private static final DataParameter<Integer> PATTERN = EntityDataManager.createKey(EntityElytraBossWeen.class, DataSerializers.VARINT);

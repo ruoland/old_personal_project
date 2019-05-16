@@ -2,9 +2,11 @@ package minigameLib.command;
 
 import cmplus.util.Sky;
 import minigameLib.MiniGame;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
+import net.minecraft.tileentity.TileEntity;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import minigameLib.minigame.minerun.MineRun;
 import minigameLib.minigame.minerun.MineRunEvent;
 import net.minecraft.command.CommandBase;
@@ -14,6 +16,8 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import java.util.List;
 
 public class CommandMineRun extends CommandBase {
 
@@ -83,7 +87,13 @@ public class CommandMineRun extends CommandBase {
                 return;
             }
             if (args[0].equals("reset")) {
-                //TODO 투명 블럭에 명령어 저장하는 기능 실행횟수를 0으로 하는 기능 넣어야함
+                List<TileEntity> tileEntityList = sender.getEntityWorld().loadedTileEntityList;
+                for(TileEntity tileEntity : tileEntityList){
+                    if(tileEntity instanceof TileInvisible){
+                        TileInvisible invisible = (TileInvisible) tileEntity;
+                        invisible.setRunCount(0);
+                    }
+                }
                 return;
             }
         }

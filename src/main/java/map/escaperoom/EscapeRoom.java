@@ -6,14 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import oneline.api.RenderAPI;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import oneline.map.EntityDefaultNPC;
 
 @Mod(modid ="PuzzleMap", name = "Puzzle Map")
 public class EscapeRoom {

@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import oneline.api.RenderAPI;
+import olib.api.RenderAPI;
 import ruo.yout.command.*;
 import ruo.yout.mojaelab.LabEvent;
 

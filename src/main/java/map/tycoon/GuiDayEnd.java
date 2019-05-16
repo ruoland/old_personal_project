@@ -1,6 +1,6 @@
 package map.tycoon;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

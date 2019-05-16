@@ -1,6 +1,6 @@
 package minigameLib.minigame.elytra.playerarrow;
 
-import oneline.map.EntityDefaultNPC;
+import olib.map.EntityDefaultNPC;
 import minigameLib.minigame.elytra.miniween.EntityElytraPumpkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;

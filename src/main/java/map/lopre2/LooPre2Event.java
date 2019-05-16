@@ -1,7 +1,7 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
-import oneline.api.LoginEvent;
+import olib.api.LoginEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;

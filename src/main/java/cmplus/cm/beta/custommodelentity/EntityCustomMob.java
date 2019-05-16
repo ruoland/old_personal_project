@@ -1,7 +1,7 @@
 package cmplus.cm.beta.custommodelentity;
 
-import oneline.api.BlockAPI;
-import oneline.api.WorldAPI;
+import olib.api.BlockAPI;
+import olib.api.WorldAPI;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.nbt.NBTTagCompound;

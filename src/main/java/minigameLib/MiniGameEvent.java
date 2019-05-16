@@ -1,8 +1,8 @@
 package minigameLib;
 
 import cmplus.deb.DebAPI;
-import oneline.api.LoginEvent;
-import oneline.api.WorldAPI;
+import olib.api.LoginEvent;
+import olib.api.WorldAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;

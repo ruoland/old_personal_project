@@ -1,7 +1,7 @@
 package map.tycoon.consumer;
 
-import oneline.api.WorldAPI;
-import oneline.map.TypeModel;
+import olib.api.WorldAPI;
+import olib.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 

@@ -1,7 +1,7 @@
 package cmplus.util;
 
-import oneline.api.WorldAPI;
-import oneline.map.EntityDefaultNPC;
+import olib.api.WorldAPI;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.EntityNotFoundException;

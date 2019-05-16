@@ -1,6 +1,6 @@
 package map.tycoon;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 

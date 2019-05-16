@@ -4,8 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.world.World;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
 import ruo.awild.ai.EntityAIFindSound;
 
 import java.util.List;

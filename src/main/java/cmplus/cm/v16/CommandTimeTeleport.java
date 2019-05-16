@@ -1,9 +1,9 @@
 package cmplus.cm.v16;
 
 import cmplus.util.CommandPlusBase;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;

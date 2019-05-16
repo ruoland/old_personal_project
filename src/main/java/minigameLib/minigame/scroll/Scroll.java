@@ -3,7 +3,7 @@ package minigameLib.minigame.scroll;
 import cmplus.CMManager;
 import cmplus.camera.Camera;
 import minigameLib.MiniGame;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.fakeplayer.FakePlayerHelper;
 import minigameLib.minigame.AbstractMiniGame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;

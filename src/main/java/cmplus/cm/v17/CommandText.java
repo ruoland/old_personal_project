@@ -1,7 +1,7 @@
 package cmplus.cm.v17;
 
 import cmplus.util.CommandPlusBase;
-import oneline.effect.TextEffect;
+import olib.effect.TextEffect;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;

@@ -1,6 +1,6 @@
 package cmplus.cm.v18.customgui;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;

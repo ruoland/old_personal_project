@@ -1,8 +1,8 @@
 package minigameLib.minigame.elytra.miniween;
 
-import oneline.api.WorldAPI;
-import oneline.fakeplayer.EntityFakePlayer;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.api.WorldAPI;
+import olib.fakeplayer.EntityFakePlayer;
+import olib.fakeplayer.FakePlayerHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;

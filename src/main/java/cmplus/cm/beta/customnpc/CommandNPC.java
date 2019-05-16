@@ -1,8 +1,8 @@
 package cmplus.cm.beta.customnpc;
 
 import cmplus.util.CommandPlusBase;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

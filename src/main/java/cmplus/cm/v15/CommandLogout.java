@@ -1,8 +1,8 @@
 package cmplus.cm.v15;
 
 import cmplus.util.CommandTool;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.gui.GuiMainMenu;

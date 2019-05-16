@@ -3,8 +3,8 @@ package ruo.asdfwild.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import oneline.api.EntityAPI;
-import oneline.map.EntityDefaultNPC;
+import olib.api.EntityAPI;
+import olib.map.EntityDefaultNPC;
 
 import java.util.List;
 

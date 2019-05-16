@@ -1,9 +1,9 @@
 package minigameLib;
 
 import minigameLib.command.CommandEntity;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.EnumModel;
-import oneline.map.TypeModel;
+import olib.map.EntityDefaultNPC;
+import olib.map.EnumModel;
+import olib.map.TypeModel;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

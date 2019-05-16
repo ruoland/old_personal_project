@@ -1,7 +1,7 @@
 package minigameLib.minigame.scroll;
 
 import com.google.common.collect.Lists;
-import oneline.map.EntityDefaultNPC;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;

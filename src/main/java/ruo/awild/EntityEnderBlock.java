@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import oneline.map.EntityFlyNPC;
+import olib.map.EntityFlyNPC;
 
 public class EntityEnderBlock extends EntityFlyNPC {
 

@@ -9,9 +9,9 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import oneline.api.Direction;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.api.Direction;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 
 import javax.annotation.Nullable;
 

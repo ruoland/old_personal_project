@@ -1,7 +1,7 @@
 package cmplus.cm.beta.custommodelentity;
 
-import oneline.api.BlockAPI;
-import oneline.api.WorldAPI;
+import olib.api.BlockAPI;
+import olib.api.WorldAPI;
 
 public class CustomModel {
 	private BlockAPI list;

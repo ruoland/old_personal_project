@@ -2,7 +2,7 @@ package cmplus.cm.v18;
 
 import cmplus.WaypointManager;
 import cmplus.util.CommandPlusBase;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;

@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 
 public class EntityMojaeArrow extends EntityTippedArrow {
     public EntityMojaeArrow(World worldIn) {

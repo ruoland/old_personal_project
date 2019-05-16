@@ -1,8 +1,8 @@
 package map.lopre2.jump1;
 
 import cmplus.deb.DebAPI;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

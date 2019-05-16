@@ -1,8 +1,8 @@
 package map.escaperoom;
 
 import map.lopre2.EntityPreBlock;
-import oneline.api.Direction;
-import oneline.api.PosHelper;
+import olib.api.Direction;
+import olib.api.PosHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
@@ -14,7 +14,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 
 public class EntityRoomBlockArrow extends EntityPreBlock {
     private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlockArrow.class, DataSerializers.VARINT);

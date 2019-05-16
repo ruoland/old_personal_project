@@ -1,8 +1,8 @@
 package cmplus.cm.v16;
 
 import cmplus.util.CommandPlusBase;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;

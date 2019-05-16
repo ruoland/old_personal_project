@@ -1,6 +1,6 @@
 package map.tycoon.wheat;
 
-import oneline.map.EntityDefaultNPC;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.world.World;
 
 public class EntityWheat extends EntityDefaultNPC {

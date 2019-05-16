@@ -5,15 +5,12 @@ import cmplus.camera.Camera;
 import cmplus.deb.DebAPI;
 import com.google.common.collect.Lists;
 import minigameLib.MiniGame;
-import net.minecraft.command.CommandGameMode;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import oneline.api.Direction;
-import oneline.api.EntityAPI;
-import oneline.api.PosHelper;
-import oneline.api.WorldAPI;
-import oneline.fakeplayer.EntityFakePlayer;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.api.Direction;
+import olib.api.EntityAPI;
+import olib.api.PosHelper;
+import olib.api.WorldAPI;
 import minigameLib.minigame.AbstractMiniGame;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -226,9 +223,8 @@ public class MineRun extends AbstractMiniGame {
     }
 
     public static void runnerMove() {
-        double posX = player.posX + curX + EntityAPI.lookX(player, 3.8);
-        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 3.8);
-        //TODO 더블 점프 기능 필요
+        double posX = player.posX + curX + EntityAPI.lookX(player, 3.4);
+        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 3.4);
         if(MineRun.runner.isOnLadder()){
             runner.motionY = 0.02;
         }

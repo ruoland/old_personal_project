@@ -1,10 +1,10 @@
 package map.escaperoom.dungeon;
 
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.EnumModel;
-import oneline.map.TypeModel;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
+import olib.map.EntityDefaultNPC;
+import olib.map.EnumModel;
+import olib.map.TypeModel;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;

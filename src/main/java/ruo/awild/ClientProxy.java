@@ -6,7 +6,7 @@ import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.client.renderer.entity.RenderHorse;
 import net.minecraft.client.renderer.entity.RenderZombie;
-import oneline.api.RenderAPI;
+import olib.api.RenderAPI;
 
 public class ClientProxy extends CommonProxy {
     @Override

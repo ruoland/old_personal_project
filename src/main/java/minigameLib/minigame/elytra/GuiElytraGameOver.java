@@ -1,6 +1,6 @@
 package minigameLib.minigame.elytra;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiScreen;

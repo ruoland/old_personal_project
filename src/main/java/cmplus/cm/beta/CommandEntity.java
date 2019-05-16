@@ -1,10 +1,10 @@
 package cmplus.cm.beta;
 
 import cmplus.util.CommandPlusBase;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
-import oneline.effect.ENEffect;
-import oneline.map.EntityDefaultNPC;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
+import olib.effect.ENEffect;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;

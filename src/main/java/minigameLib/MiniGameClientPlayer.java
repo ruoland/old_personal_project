@@ -2,7 +2,7 @@ package minigameLib;
 
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.fakeplayer.FakePlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHand;

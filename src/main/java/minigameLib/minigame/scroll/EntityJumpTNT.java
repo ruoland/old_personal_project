@@ -1,6 +1,6 @@
 package minigameLib.minigame.scroll;
 
-import oneline.map.EntityDefaultNPC;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import oneline.api.WorldAPI;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.api.WorldAPI;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 
 import javax.annotation.Nullable;
 

@@ -1,7 +1,7 @@
 package cmplus.cm.v18.customgui;
 
 import cmplus.cm.v18.function.VAR;
-import oneline.api.RenderAPI;
+import olib.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 
 public class GuiString {

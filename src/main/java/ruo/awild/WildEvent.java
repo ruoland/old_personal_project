@@ -27,9 +27,9 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import oneline.api.BlockAPI;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
+import olib.api.BlockAPI;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
 import ruo.awild.ai.EntityAIAvoidEntityCreeper;
 import ruo.awild.ai.EntityAIFindSound;
 

@@ -3,7 +3,6 @@ package map.lopre2.jump1;
 import map.lopre2.EntityPreBlock;
 import map.lopre2.LoPre2;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +11,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import oneline.map.EntityDefaultNPC;
 
 import java.util.List;
 

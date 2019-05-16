@@ -1,7 +1,7 @@
 package map.lopre2;
 
-import oneline.api.BlockAPI;
-import oneline.api.WorldAPI;
+import olib.api.BlockAPI;
+import olib.api.WorldAPI;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;

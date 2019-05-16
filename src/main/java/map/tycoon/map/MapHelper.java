@@ -1,6 +1,6 @@
 package map.tycoon.map;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import map.tycoon.TyconHelper;
 
 public class MapHelper {

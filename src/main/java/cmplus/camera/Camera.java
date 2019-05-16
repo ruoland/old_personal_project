@@ -1,8 +1,8 @@
 package cmplus.camera;
 
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;

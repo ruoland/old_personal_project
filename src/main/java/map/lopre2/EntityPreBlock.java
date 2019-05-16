@@ -1,10 +1,10 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
-import oneline.api.EntityAPI;
-import oneline.api.RenderAPI;
-import oneline.api.WorldAPI;
-import oneline.map.EntityDefaultNPC;
+import olib.api.EntityAPI;
+import olib.api.RenderAPI;
+import olib.api.WorldAPI;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

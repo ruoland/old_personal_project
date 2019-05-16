@@ -1,8 +1,8 @@
 package map.escaperoom;
 
 import map.escaperoom.base.EntityRoomWindBase;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;

@@ -1,6 +1,6 @@
 package cmplus;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Property;
 

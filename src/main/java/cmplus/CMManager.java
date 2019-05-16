@@ -2,9 +2,9 @@ package cmplus;
 
 import cmplus.cm.v15.GuiCGameOver;
 import cmplus.util.Sky;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.EnumFacing;

@@ -1,8 +1,8 @@
 package minigameLib.minigame.elytra;
 
 import minigameLib.MiniGame;
-import oneline.api.WorldAPI;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.api.WorldAPI;
+import olib.fakeplayer.FakePlayerHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

@@ -1,6 +1,6 @@
 package minigameLib.minigame.bomber;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -1,7 +1,7 @@
 package map.lopre2;
 
 import minigameLib.MiniGame;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

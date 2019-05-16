@@ -2,7 +2,7 @@ package ruo.awild.ship;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import oneline.map.EntityDefaultBlock;
+import olib.map.EntityDefaultBlock;
 
 public class EntityShip extends EntityDefaultBlock {
     public EntityShip(World worldIn) {

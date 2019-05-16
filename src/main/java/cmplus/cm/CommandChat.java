@@ -1,7 +1,7 @@
 package cmplus.cm;
 
 import cmplus.util.CommandTool;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiNewChat;

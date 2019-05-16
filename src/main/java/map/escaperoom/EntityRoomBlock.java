@@ -1,9 +1,9 @@
 package map.escaperoom;
 
 import map.lopre2.EntityPreBlock;
-import oneline.api.RenderAPI;
-import oneline.api.WorldAPI;
-import oneline.map.TypeModel;
+import olib.api.RenderAPI;
+import olib.api.WorldAPI;
+import olib.map.TypeModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

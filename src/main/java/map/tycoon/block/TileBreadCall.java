@@ -1,9 +1,9 @@
 package map.tycoon.block;
 
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.ENEffect;
-import oneline.effect.TickRegister;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.ENEffect;
+import olib.effect.TickRegister;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;

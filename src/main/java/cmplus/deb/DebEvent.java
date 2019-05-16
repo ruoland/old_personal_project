@@ -1,8 +1,8 @@
 package cmplus.deb;
 
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
-import oneline.effect.Move;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
+import olib.effect.Move;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

@@ -1,7 +1,7 @@
 package ruo.yout;
 
 import net.minecraft.entity.ai.EntityAIBase;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 
 public class EntityAIFlyingMove extends EntityAIBase {
     private EntityFlyingCreeperLab creeperLab;

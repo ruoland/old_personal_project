@@ -2,7 +2,7 @@ package minigameLib;
 
 import api.player.server.ServerPlayerAPI;
 import api.player.server.ServerPlayerBase;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.fakeplayer.FakePlayerHelper;
 import net.minecraft.util.DamageSource;
 
 public class MiniGameServerPlayer extends ServerPlayerBase

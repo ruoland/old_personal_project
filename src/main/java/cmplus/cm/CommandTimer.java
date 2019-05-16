@@ -2,9 +2,9 @@ package cmplus.cm;
 
 import cmplus.util.CommandPlusBase;
 import cmplus.util.CommandTool;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;

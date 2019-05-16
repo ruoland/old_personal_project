@@ -2,7 +2,7 @@ package cmplus.cm.v15;
 
 import cmplus.CMManager;
 import cmplus.util.CommandPlusBase;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

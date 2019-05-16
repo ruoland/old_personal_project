@@ -4,7 +4,7 @@ package map.lopre2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import oneline.api.RenderAPI;
+import olib.api.RenderAPI;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.*;
 import map.lopre2.jump3.EntityLavaSpawnBlock;

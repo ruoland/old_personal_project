@@ -1,10 +1,10 @@
 package cmplus.cm.v18;
 
 import cmplus.util.CommandPlusBase;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.CMEffect;
-import oneline.effect.TickRegister;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.CMEffect;
+import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.command.CommandException;

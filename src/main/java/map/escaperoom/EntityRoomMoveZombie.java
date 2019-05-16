@@ -10,8 +10,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import oneline.api.EntityAPI;
-import oneline.map.TypeModel;
+import olib.api.EntityAPI;
+import olib.map.TypeModel;
 
 import javax.annotation.Nullable;
 

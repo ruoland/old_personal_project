@@ -1,7 +1,7 @@
 package map.lopre2.jump2;
 
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;

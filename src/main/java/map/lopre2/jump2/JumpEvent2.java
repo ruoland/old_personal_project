@@ -1,7 +1,7 @@
 package map.lopre2.jump2;
 
-import oneline.action.ActionEffect;
-import oneline.api.WorldAPI;
+import olib.action.ActionEffect;
+import olib.api.WorldAPI;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

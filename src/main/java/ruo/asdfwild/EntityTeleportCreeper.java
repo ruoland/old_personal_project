@@ -11,7 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import ruo.asdfwild.ai.EntityAIBlockPlace;
 
 import javax.annotation.Nullable;

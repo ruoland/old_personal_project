@@ -8,11 +8,11 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import oneline.api.BlockAPI;
-import oneline.api.Direction;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
-import oneline.map.EntityDefaultNPC;
+import olib.api.BlockAPI;
+import olib.api.Direction;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
+import olib.map.EntityDefaultNPC;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package minigameLib.minigame.scroll;
 
-import oneline.api.EntityAPI;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.api.EntityAPI;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;

@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.client.renderer.entity.RenderSpider;
 import net.minecraft.client.renderer.entity.RenderZombie;
-import oneline.api.RenderAPI;
+import olib.api.RenderAPI;
 import ruo.awild.EntityWildZombie;
 
 public class SUAKGEClientProxy extends SUAKGECommonProxy {

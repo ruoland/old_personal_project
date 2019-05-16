@@ -13,7 +13,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 
 import java.time.LocalDateTime;
 

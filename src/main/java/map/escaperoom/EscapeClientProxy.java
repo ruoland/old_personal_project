@@ -1,11 +1,7 @@
 package map.escaperoom;
 
-import gooditem.GoodItem;
 import map.escaperoom.dungeon.EntityRespawnZombie;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.model.ModelLoader;
-import oneline.api.RenderAPI;
+import olib.api.RenderAPI;
 
 public class EscapeClientProxy extends EscapeServerProxy {
     @Override

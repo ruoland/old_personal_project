@@ -1,7 +1,7 @@
 package map.tycoon.block.shopping;
 
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

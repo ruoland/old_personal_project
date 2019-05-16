@@ -2,7 +2,7 @@ package map.escaperoom;
 
 import cmplus.util.CommandPlusBase;
 import map.escaperoom.base.EntityRoomDoorBase;
-import oneline.map.EntityDefaultNPC;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

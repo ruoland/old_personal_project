@@ -1,8 +1,8 @@
 package minigameLib.minigame.elytra.miniween.old;
 
-import oneline.api.Direction;
-import oneline.api.WorldAPI;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.api.Direction;
+import olib.api.WorldAPI;
+import olib.fakeplayer.FakePlayerHelper;
 import minigameLib.minigame.elytra.Elytra;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;

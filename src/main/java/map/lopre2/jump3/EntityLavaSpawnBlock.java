@@ -1,6 +1,6 @@
 package map.lopre2.jump3;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

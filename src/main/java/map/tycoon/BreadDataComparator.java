@@ -1,6 +1,6 @@
 package map.tycoon;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Comparator;

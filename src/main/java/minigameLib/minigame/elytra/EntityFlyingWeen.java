@@ -1,15 +1,15 @@
 package minigameLib.minigame.elytra;
 
 import minigameLib.MiniGame;
-import oneline.api.Direction;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.TickRegister;
-import oneline.fakeplayer.EntityFakePlayer;
-import oneline.fakeplayer.FakePlayerHelper;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
+import olib.api.Direction;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
+import olib.fakeplayer.EntityFakePlayer;
+import olib.fakeplayer.FakePlayerHelper;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 import minigameLib.minigame.elytra.miniween.old.EntityElytraWeenCore;
 import minigameLib.minigame.elytra.miniween.old.EntityElytraWeenTNT;
 import minigameLib.minigame.elytra.miniween.old.EntityElytraWeenUP;

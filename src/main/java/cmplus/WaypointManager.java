@@ -1,6 +1,6 @@
 package cmplus;
 
-import oneline.api.NBTAPI;
+import olib.api.NBTAPI;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;

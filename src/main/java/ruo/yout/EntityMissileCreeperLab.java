@@ -5,8 +5,8 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import oneline.map.EntityFlyNPC;
-import oneline.map.TypeModel;
+import olib.map.EntityFlyNPC;
+import olib.map.TypeModel;
 
 public class EntityMissileCreeperLab extends EntityFlyNPC {
     private EntityLivingBase attackTarget;

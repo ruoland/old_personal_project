@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import oneline.api.EntityAPI;
+import olib.api.EntityAPI;
 
 public class EntityAIBlockPlace extends net.minecraft.entity.ai.EntityAIBase {
     private EntityLiving theEntity;

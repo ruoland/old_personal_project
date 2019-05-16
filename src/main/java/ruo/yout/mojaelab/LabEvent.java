@@ -21,8 +21,8 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
 import ruo.yout.*;
 
 public class LabEvent {

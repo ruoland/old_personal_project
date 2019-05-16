@@ -1,34 +1,13 @@
 package minigameLib.minigame.minerun;
 
-import cmplus.deb.DebAPI;
-import map.lopre2.EntityPreBlock;
-import map.lopre2.jump1.EntityLavaBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockWall;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import oneline.map.EntityDefaultNPC;
-import oneline.map.TypeModel;
-import org.lwjgl.input.Keyboard;
-
-import java.util.List;
+import olib.map.EntityDefaultNPC;
+import olib.map.TypeModel;
 
 public class EntityMineRunner extends EntityDefaultNPC {
     private static final DataParameter<Boolean> isCollision = EntityDataManager.createKey(EntityMineRunner.class, DataSerializers.BOOLEAN);

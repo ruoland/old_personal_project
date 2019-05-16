@@ -1,6 +1,5 @@
 package ruo.yout.command;
 
-import cmplus.cm.CommandUI;
 import cmplus.util.CommandPlusBase;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandException;
@@ -16,15 +15,12 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import oneline.api.NBTAPI;
-import oneline.api.WorldAPI;
-import ruo.yout.ItemLock;
+import olib.api.NBTAPI;
+import olib.api.WorldAPI;
 import ruo.yout.Mojae;
 
 import java.util.Iterator;

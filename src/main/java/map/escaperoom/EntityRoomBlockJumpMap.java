@@ -1,27 +1,14 @@
 package map.escaperoom;
 
-import cmplus.deb.DebAPI;
-import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import oneline.api.Direction;
-import oneline.api.EntityAPI;
-import oneline.api.PosHelper;
-import oneline.api.WorldAPI;
-
-import java.util.List;
+import olib.api.WorldAPI;
 
 //점프맵 제작용 블럭
 public class EntityRoomBlockJumpMap extends EntityPreBlock {

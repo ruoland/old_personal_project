@@ -1,6 +1,6 @@
 package minigameLib.minigame.scroll;
 
-import oneline.action.ActionEffect;
+import olib.action.ActionEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,9 +45,8 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
     protected void collideWithEntity(Entity entityIn) {
         super.collideWithEntity(entityIn);
         if(isServerWorld() && !isTeleport() && entityIn instanceof EntityPlayer && !isInv() && getEntityBoundingBox().intersectsWith(entityIn.getEntityBoundingBox())) {
-            ActionEffect.canDoubleJump = true;
+            ActionEffect.resetDoubleJump();
             ActionEffect.isPlayerJump = true;
-            ActionEffect.forceJump = true;
             setInv(true);
             setInvisible(true);
             entityIn.fallDistance = 0;

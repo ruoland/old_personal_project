@@ -9,7 +9,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import oneline.api.EntityAPI;
+import olib.api.EntityAPI;
 
 import java.util.List;
 

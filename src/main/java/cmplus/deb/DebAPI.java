@@ -3,7 +3,7 @@ package cmplus.deb;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

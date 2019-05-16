@@ -8,8 +8,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import oneline.api.BlockAPI;
-import oneline.api.WorldAPI;
+import olib.api.BlockAPI;
+import olib.api.WorldAPI;
 
 import java.util.ArrayList;
 import java.util.Collections;

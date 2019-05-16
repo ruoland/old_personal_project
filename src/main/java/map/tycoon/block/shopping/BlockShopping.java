@@ -1,6 +1,6 @@
 package map.tycoon.block.shopping;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

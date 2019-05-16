@@ -1,11 +1,11 @@
 package map.lopre2;
 
 import cmplus.util.CommandPlusBase;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.Move;
-import oneline.effect.TickRegister;
-import oneline.map.EntityDefaultNPC;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.Move;
+import olib.effect.TickRegister;
+import olib.map.EntityDefaultNPC;
 import minigameLib.minigame.scroll.EntityJumpCreeper;
 import minigameLib.minigame.scroll.EntityJumpFlyingCreeper;
 import net.minecraft.command.CommandException;

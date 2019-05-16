@@ -1,14 +1,13 @@
 package map.tycoon.consumer;
 
 import cmplus.cm.CommandChat;
-import oneline.api.EntityAPI;
-import oneline.api.WorldAPI;
-import oneline.effect.AbstractTick;
-import oneline.effect.AbstractTick.BlockXYZ;
-import oneline.effect.Move;
-import oneline.effect.TextEffect;
-import oneline.effect.TickRegister;
-import oneline.map.EntityDefaultNPC;
+import olib.api.EntityAPI;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.AbstractTick.BlockXYZ;
+import olib.effect.Move;
+import olib.effect.TickRegister;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityHorse;

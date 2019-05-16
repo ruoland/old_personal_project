@@ -1,12 +1,12 @@
 package minigameLib.minigame.starmine;
 
 import minigameLib.MiniGame;
-import oneline.api.Direction;
-import oneline.api.EntityAPI;
-import oneline.api.PosHelper;
-import oneline.api.WorldAPI;
-import oneline.fakeplayer.EntityFakePlayer;
-import oneline.fakeplayer.FakePlayerHelper;
+import olib.api.Direction;
+import olib.api.EntityAPI;
+import olib.api.PosHelper;
+import olib.api.WorldAPI;
+import olib.fakeplayer.EntityFakePlayer;
+import olib.fakeplayer.FakePlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.init.SoundEvents;

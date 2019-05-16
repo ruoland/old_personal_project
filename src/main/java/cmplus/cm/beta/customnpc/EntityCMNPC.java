@@ -1,8 +1,8 @@
 package cmplus.cm.beta.customnpc;
 
 import cmplus.cm.v18.function.Function;
-import oneline.api.WorldAPI;
-import oneline.map.EntityDefaultNPC;
+import olib.api.WorldAPI;
+import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

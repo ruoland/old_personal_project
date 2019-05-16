@@ -1,6 +1,6 @@
 package cmplus.cm.v15;
 
-import oneline.api.WorldAPI;
+import olib.api.WorldAPI;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;

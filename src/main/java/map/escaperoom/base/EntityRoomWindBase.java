@@ -1,7 +1,7 @@
 package map.escaperoom.base;
 
-import oneline.map.EntityDefaultBlock;
-import oneline.map.TypeModel;
+import olib.map.EntityDefaultBlock;
+import olib.map.TypeModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
