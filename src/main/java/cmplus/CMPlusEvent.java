@@ -52,7 +52,10 @@ public class CMPlusEvent {
                     Entity entity = args[i].contains("@플레이어") ? WorldAPI.getPlayer()
                             : CommandPlusBase.getPlusEntity(e.getSender().getServer(), e.getSender(),
                             key.split("[.]")[0].replace("@", ""));
-                    args[i] = args[i].replace("@플레이어", "@" + WorldAPI.getPlayer().getName());
+                    if (WorldAPI.getPlayer() == null) {
+                        System.err.println("플레이어가 없는데 플레이어를 호출하는 명령어가 실행됨");
+                    } else
+                        args[i] = args[i].replace("@플레이어", "@" + WorldAPI.getPlayer().getName());
                     if (entity != null) {
                         args[i] = args[i].replace("@" + entity.getName(), "@" + entity.getName());
                         DebAPI.msgVar("커멘드 이벤트-몬스터 인자를 발견함 - 발견한 몬스터" + entity.getName());
@@ -85,7 +88,7 @@ public class CMPlusEvent {
         }
         LocalDateTime currentDate = LocalDateTime.now();
         StringBuffer commandName = new StringBuffer(e.getCommand().getCommandName());
-        for(String parameter : e.getParameters()){
+        for (String parameter : e.getParameters()) {
             commandName.append(" ").append(parameter);
         }
         CMPlus.commandLogList.add(new StringBuffer().append(currentDate.getHour()).append(":").append(currentDate.getMinute()).append(":").append(currentDate.getSecond()).append(commandName).toString());
@@ -154,9 +157,9 @@ public class CMPlusEvent {
     }
 
     @SubscribeEvent
-    public void worldUnLoad(WorldEvent.Unload event){
-        if(!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
-        CMPlus.saveCommandLog(WorldAPI.getCurrentWorldName());
+    public void worldUnLoad(WorldEvent.Unload event) {
+        if (!WorldAPI.getCurrentWorldName().equalsIgnoreCase("noworld"))
+            CMPlus.saveCommandLog(WorldAPI.getCurrentWorldName());
     }
 
 }

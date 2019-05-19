@@ -9,293 +9,298 @@ import java.io.*;
 import java.util.HashMap;
 
 public class ScriptAPI {
-	private static Script start(String name, boolean isScript, boolean run) {
-		Script thread = new Script();
-		thread.init(WorldAPI.getCurrentWorldFile()+"/commandplus/"+name, isScript, run);
-		return thread;
-	}
+    private static HashMap<String, Script> scriptMap = new HashMap<>();
 
-	public static Script createScript(String filename, boolean runThread) {
-		return start(filename, false, runThread);
-	}
+    private static Script start(String name, boolean isScript, boolean run) {
+        if (scriptMap.containsKey(name)) {
+            return scriptMap.get(name);
+        } else {
+            Script thread = new Script();
+            thread.init(name, isScript, run);
+            scriptMap.put(name, thread);
+            return thread;
+        }
+    }
 
-	/**
-	 * 스크립트를 만들고 파일이름을 가진 메서드를 추가합니다
-	 */
-	public static Script createScriptMethod(String filename, boolean runThread) {
-		Script s = start(filename, false, runThread);
-		s.addFunction(filename, "", "");
-		return s;
-	}
+    public static Script createScript(String filename, boolean runThread) {
+        return start(filename, false, runThread);
+    }
 
-	/**
-	 * 메서드를 만들고 실행합니단
-	 */
-	public static Script createScriptMethod(String filename, boolean runThread, Object... para) {
-		Script s = start(filename, false, runThread);
-		s.addFunction(filename, "", "");
-		s.runFunction(filename, para);
-		return s;
-	}
+    /**
+     * 스크립트를 만들고 파일이름을 가진 메서드를 추가합니다
+     */
+    public static Script createScriptMethod(String filename, boolean runThread, String retu) {
+        if(scriptMap.containsKey(filename))
+            return scriptMap.get(filename);
+        Script s = start(filename, false, runThread);
+        s.addFunction(filename, "", retu);
+        return s;
+    }
 
-	public static Script getNewScript(String script, boolean runThread) {
-		return start(script, true, runThread);
-	}
+    public static Script getNewScript(String script, boolean runThread) {
+        return start(script, true, runThread);
+    }
 
-	public static ScriptAPI instance() {
-		return new ScriptAPI();
-	}
+    public static ScriptAPI instance() {
+        return new ScriptAPI();
+    }
 
-	public static class Script {
-		public HashMap<String, String> replace = new HashMap<String, String>();
-		public HashMap<String, String> replaceRe = new HashMap<String, String>();
+    public static class Script {
+        public HashMap<String, String> replace = new HashMap<String, String>();
+        public HashMap<String, String> replaceRe = new HashMap<String, String>();
 
-		private boolean runThread;
+        private boolean runThread;
 
-		public void addScript(String custom, String code) {
-			replace.put(custom, code);
-			replaceRe.put(code, custom);
-		}
+        public void addScript(String custom, String code) {
+            replace.put(custom, code);
+            replaceRe.put(code, custom);
+        }
 
-		public void init(String init, boolean isScriptFile, boolean runT) {
-			this.runThread = runT;
-			this.isScriptFile = isScriptFile;
-			if (!isScriptFile)
-				initJS(init + ".js");
-			else
-				initJS(init);
-			addObject("system", System.out);
-		}
-		public String replaceFunction(String line) {
-			try {
-				int index = line.indexOf("function");
-				if (index != -1) {
-					String ss = line.substring(index);
-					ss = ss.replace("function", "function");
-					ss = ss.substring(ss.indexOf("function"), ss.indexOf("("));
-					ss = ss.replace("function ", "");
-					if (replace.containsKey(ss)) {
-						ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss)).replace("function ", "");
-						return "function "+ss;
-					}
-				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return line;
+        public void init(String init, boolean isScriptFile, boolean runT) {
+            this.runThread = runT;
+            this.isScriptFile = isScriptFile;
+            if (!isScriptFile)
+                initJS(init + ".js");
+            else
+                initJS(init);
+            addObject("system", System.out);
+        }
 
-		}
-		public String replace(String line) {
-			try {
-				int index = line.indexOf("@");
-				if (index != -1) {
-					String ss = line.substring(index);
-					ss = ss.substring(ss.indexOf("@"), ss.indexOf("("));
+        public String replaceFunction(String line) {
+            try {
+                int index = line.indexOf("function");
+                if (index != -1) {
+                    String ss = line.substring(index);
+                    ss = ss.replace("function", "function");
+                    ss = ss.substring(ss.indexOf("function"), ss.indexOf("("));
+                    ss = ss.replace("function ", "");
+                    if (replace.containsKey(ss)) {
+                        ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss)).replace("function ", "");
+                        return "function " + ss;
+                    }
+                }
 
-					if (replace.containsKey(ss)) {
-						ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss));
-						if (ss.trim().indexOf("@") != -1) {
-							String ss2 = ss.substring(ss.indexOf("@"));
-							ss2 = ss2.substring(ss2.indexOf("@"), ss2.indexOf("("));
-							ss = ss.replace(replaceRe.get(replace.get(ss2)), replace.get(ss2));
-						} else
-							return ss;
-						return ss;
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return line;
-		}
-		public String replace2(String line) {
-			try {
-				int index = line.indexOf("$");
-				if (index != -1 && line.indexOf(",") != -1) {
-					String ss = line.substring(index);
-					ss = ss.substring(ss.indexOf("$"), ss.indexOf(","));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return line;
 
-					if (replace.containsKey(ss)) {
-						ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss));
-						if (ss.trim().indexOf("$") != -1) {
-							String ss2 = ss.substring(ss.indexOf("$"));
-							ss2 = ss2.substring(ss2.indexOf("$"), ss2.indexOf(","));
-							ss = ss.replace(replaceRe.get(replace.get(ss2)), replace.get(ss2));
-						} else
-							return ss;
-						return ss;
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return line;
-		}
-		private final ScriptEngineManager em = new ScriptEngineManager(null);
-		private ScriptEngine engine;
-		private StringBuffer script = new StringBuffer();
-		private long lastEdit = 0;
-		private File f;
-		public boolean isScriptFile;//파일에 저장되는 경우 true
+        }
 
-		public void initJS(String dir) {
-			engine = em.getEngineByName("Nashorn");
-			if (engine == null)
-				engine = em.getEngineByName("JavaScript");
-			try {
-				if (!isScriptFile) {
-					f = new File(dir);
-					if (!f.isFile()) {
-						f.createNewFile();
-					}
-				}
+        public String replace(String line) {
+            try {
+                int index = line.indexOf("@");
+                if (index != -1) {
+                    String ss = line.substring(index);
+                    ss = ss.substring(ss.indexOf("@"), ss.indexOf("("));
 
-				else {
-					script = new StringBuffer(dir);
-				}
-				reload();
+                    if (replace.containsKey(ss)) {
+                        ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss));
+                        if (ss.trim().indexOf("@") != -1) {
+                            String ss2 = ss.substring(ss.indexOf("@"));
+                            ss2 = ss2.substring(ss2.indexOf("@"), ss2.indexOf("("));
+                            ss = ss.replace(replaceRe.get(replace.get(ss2)), replace.get(ss2));
+                        } else
+                            return ss;
+                        return ss;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return line;
+        }
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        public String replace2(String line) {
+            try {
+                int index = line.indexOf("$");
+                if (index != -1 && line.indexOf(",") != -1) {
+                    String ss = line.substring(index);
+                    ss = ss.substring(ss.indexOf("$"), ss.indexOf(","));
 
-		public void reload() {
-			try {
-				if (script.indexOf("@") != -1 || script.indexOf("function") != -1 || !isScriptFile && isChange()) {
-					BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-					script = new StringBuffer();
-					for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+                    if (replace.containsKey(ss)) {
+                        ss = line.replace(replaceRe.get(replace.get(ss)), replace.get(ss));
+                        if (ss.trim().indexOf("$") != -1) {
+                            String ss2 = ss.substring(ss.indexOf("$"));
+                            ss2 = ss2.substring(ss2.indexOf("$"), ss2.indexOf(","));
+                            ss = ss.replace(replaceRe.get(replace.get(ss2)), replace.get(ss2));
+                        } else
+                            return ss;
+                        return ss;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return line;
+        }
 
-						script.append(replaceFunction(replace(replace2(s))));
-						
-					}
-					reader.close();
-					lastEdit = f.lastModified();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        private final ScriptEngineManager em = new ScriptEngineManager(null);
+        private ScriptEngine engine;
+        private StringBuffer script = new StringBuffer();
+        private long lastEdit = 0;
+        private File f;
+        public boolean isScriptFile;//파일에 저장되는 경우 true
 
-		public void addObject(String key, Object value) {
-			engine.put(key.toLowerCase(), value);
-		}
+        public void initJS(String dir) {
+            engine = em.getEngineByName("Nashorn");
+            if (engine == null)
+                engine = em.getEngineByName("JavaScript");
+            try {
+                if (!isScriptFile) {
+                    f = new File(dir);
+                    if (!f.isFile()) {
+                        f.createNewFile();
+                    }
+                } else {
+                    script = new StringBuffer(dir);
+                }
+                reload();
 
-		public String getScript() {
-			return script.toString();
-		}
-		public boolean addFunction(String methodName, String Parameter, String retu) {
-			try {
-				if (getScript().indexOf("function " + methodName + "(" + Parameter + ")") != -1)
-					return false;
-				BufferedWriter b = new BufferedWriter(new FileWriter(f, true));
-				b.newLine();
-				b.append("function " + methodName + "(" + Parameter + ")");
-				b.newLine();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-				b.write("{");
-				b.newLine();
-				if (!retu.equals("")) {
-					b.write("		return " + retu + ";");
-					b.newLine();
-				}
-				b.write("}");
-				b.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return true;
-		}
+        public void reload() {
+            try {
+                if (script.indexOf("@") != -1 || script.indexOf("function") != -1 || !isScriptFile && isChange()) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+                    script = new StringBuffer();
+                    for (String s = reader.readLine(); s != null; s = reader.readLine()) {
 
-		public boolean addFunction(String help, String methodName, String Parameter, String retu) {
-			try {
-				if (getScript().indexOf("function " + methodName + "(" + Parameter + ")") != -1)
-					return false;
-				BufferedWriter b = new BufferedWriter(new FileWriter(f, true));
-				b.newLine();
-				b.append("//"+help);
-				b.newLine();
-				b.append("function " + methodName + "(" + Parameter + ")");
-				b.newLine();
+                        script.append(replaceFunction(replace(replace2(s))));
 
-				b.write("{");
-				b.newLine();
-				if (!retu.equals("")) {
-					b.write("		return " + retu + ";");
-					b.newLine();
-				}
-				b.write("}");
-				b.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return true;
-		}
+                    }
+                    reader.close();
+                    lastEdit = f.lastModified();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-		public boolean isChange() {
-			return f.lastModified() != lastEdit;
-		}
-		public boolean isFile() {
-			return f.exists();
-		}
-		public Object runNoThreadFunction(String method, Object... obj) {
-			reload();
-			method = replace.get(method);
+        public void addObject(String key, Object value) {
+            engine.put(key.toLowerCase(), value);
+        }
 
-			try {
-				engine.eval(getScript());
-				Invocable c = (Invocable) engine;
-				return c.invokeFunction(method, obj);
-			} catch (Exception e) {
-				// if(Minecraft.getMinecraft().thePlayer != null)
-				// Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new
-				// ChatComponentText(e.getMessage()));
-				e.printStackTrace();
-			}
-			return null;
-		}
+        public String getScript() {
+            return script.toString();
+        }
 
-		public Object runFunction(String method, Object... obj) {
-			reload();
-			method = replace.get(method);
-			ScriptAPIFunction thread = new ScriptAPIFunction(engine, getScript(), method, obj);
+        public boolean addFunction(String methodName, String Parameter, String retu) {
+            try {
+                if (getScript().indexOf("function " + methodName + "(" + Parameter + ")") != -1)
+                    return false;
+                BufferedWriter b = new BufferedWriter(new FileWriter(f, true));
+                b.newLine();
+                b.append("function " + methodName + "(" + Parameter + ")");
+                b.newLine();
 
-			if (runThread) {
-				thread.start();
-				return thread.function();
-			} else {
-				try {
-					engine.eval(getScript());
-					Invocable c = (Invocable) engine;
-					if(obj.length == 0)
-						return c.invokeFunction(method);
-					else
-						return c.invokeFunction(method, obj);
-				} catch (Exception e) {
-					if (Minecraft.getMinecraft().thePlayer != null)
-						// Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new
-						// ChatComponentText(e.getMessage()));
-						e.printStackTrace();
-				}
-			}
-			return null;
-		}
+                b.write("{");
+                b.newLine();
+                if (!retu.equals("")) {
+                    b.write("		return " + retu + ";");
+                    b.newLine();
+                }
+                b.write("}");
+                b.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
 
-		public ScriptAPIFunction runDebugFunction(String method, Object... obj) {
-			reload();
-			method = replace.get(method);
+        public boolean addFunction(String help, String methodName, String Parameter, String retu) {
+            try {
+                if (getScript().indexOf("function " + methodName + "(" + Parameter + ")") != -1)
+                    return false;
+                BufferedWriter b = new BufferedWriter(new FileWriter(f, true));
+                b.newLine();
+                b.append("//" + help);
+                b.newLine();
+                b.append("function " + methodName + "(" + Parameter + ")");
+                b.newLine();
 
-			ScriptAPIFunction thread = new ScriptAPIFunction(engine, getScript(), method, obj);
+                b.write("{");
+                b.newLine();
+                if (!retu.equals("")) {
+                    b.write("		return " + retu + ";");
+                    b.newLine();
+                }
+                b.write("}");
+                b.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
 
-			if (runThread) {
-				thread.start();
-				return thread;
-			}
+        public boolean isChange() {
+            return f.lastModified() != lastEdit;
+        }
 
-			return null;
-		}
-	}
+        public boolean isFile() {
+            return f.exists();
+        }
+
+        public Object runNoThreadFunction(String method, Object... obj) {
+            reload();
+            method = replace.get(method);
+
+            try {
+                engine.eval(getScript());
+                Invocable c = (Invocable) engine;
+                return c.invokeFunction(method, obj);
+            } catch (Exception e) {
+                // if(Minecraft.getMinecraft().thePlayer != null)
+                // Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new
+                // ChatComponentText(e.getMessage()));
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        public Object runFunction(String method, Object... obj) {
+            reload();
+            if (replace.containsKey(method))
+                method = replace.get(method);
+
+            ScriptAPIFunction thread = new ScriptAPIFunction(engine, getScript(), method, obj);
+
+            if (runThread) {
+                thread.start();
+                return thread.function();
+            } else {
+                try {
+                    engine.eval(getScript());
+                    Invocable c = (Invocable) engine;
+
+                    if (obj.length == 0)
+                        return c.invokeFunction(method);
+                    else
+                        return c.invokeFunction(method, obj);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("널이 ㅂㅎㄷ");
+            return null;
+        }
+
+        public ScriptAPIFunction runDebugFunction(String method, Object... obj) {
+            reload();
+            method = replace.get(method);
+
+            ScriptAPIFunction thread = new ScriptAPIFunction(engine, getScript(), method, obj);
+
+            if (runThread) {
+                thread.start();
+                return thread;
+            }
+
+            return null;
+        }
+    }
 
 }

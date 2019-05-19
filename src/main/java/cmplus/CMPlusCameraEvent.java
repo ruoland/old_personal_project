@@ -45,11 +45,15 @@ public class CMPlusCameraEvent {
         GL11.glRotated(cm.rotateZ, 0, 0, 1);
 
         if (cm.lockCamera) {
-            e.setPitch(0);
-            e.setYaw(0);
+            if(cm.lockCameraPitch == 0 && cm.lockCameraYaw == 0){
+                cm.lockCameraPitch = e.getPitch();
+                cm.lockCameraYaw = e.getYaw();
+            }
+            e.setPitch(cm.lockCameraPitch);
+            e.setYaw(cm.lockCameraYaw);
             EntityLivingBase entitylivingbase = Minecraft.getMinecraft().thePlayer;
-            entitylivingbase.rotationPitch = entitylivingbase.prevRotationPitch = cm.pitch;
-            entitylivingbase.rotationYaw = entitylivingbase.prevRotationYaw = entitylivingbase.rotationYawHead = entitylivingbase.renderYawOffset = cm.yaw ;
+            entitylivingbase.rotationPitch = entitylivingbase.prevRotationPitch = cm.lockPlayerPitch;
+            entitylivingbase.rotationYaw = entitylivingbase.prevRotationYaw = entitylivingbase.rotationYawHead = entitylivingbase.renderYawOffset = cm.lockPlayerYaw;
         }
         if (cm.yp) {
             e.setRoll(0);
@@ -130,8 +134,8 @@ public class CMPlusCameraEvent {
             Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA X" + Camera.getCamera().traX, 0, 50, 0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Y" + Camera.getCamera().traY, 0, 60, 0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Z" + Camera.getCamera().traZ, 0, 70, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YAW" + Camera.getCamera().yaw, 0, 80, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 PITCH" + Camera.getCamera().pitch, 0, 90,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YAW" + Camera.getCamera().lockPlayerYaw, 0, 80, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 PITCH" + Camera.getCamera().lockPlayerPitch, 0, 90,
                     0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("카메라 락" + Camera.getCamera().lockCamera, 0, 100,
                     0xFFFFFF);

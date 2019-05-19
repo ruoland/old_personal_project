@@ -1,5 +1,7 @@
-package minigameLib.minigame.minerun;
+package minigameLib.minigame.minerun.monster;
 
+import minigameLib.minigame.minerun.EntityMR;
+import minigameLib.minigame.minerun.EntityWarningBlock;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;

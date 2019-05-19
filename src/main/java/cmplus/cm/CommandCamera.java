@@ -63,8 +63,8 @@ public class CommandCamera extends CommandPlusBase {
 		if(t.argCheck(args[0], "yaw", "요")){
 			float yaw;
 			if(Camera.getCamera().isLock()){
-				yaw = (float) t.math(args[1], Camera.getCamera().yaw, args[2]);
-				renderer.yaw = yaw;
+				yaw = (float) t.math(args[1], Camera.getCamera().lockPlayerYaw, args[2]);
+				renderer.lockPlayerYaw = yaw;
 			}
 			else{
 				yaw = (float)t.math(args[1], p.rotationYaw, args[2]);
@@ -76,8 +76,8 @@ public class CommandCamera extends CommandPlusBase {
 		if(t.argCheck(args[0], "pitch", "피치")){
 			float pitch;
 			if(Camera.getCamera().isLock()){
-				pitch = (float) t.math(args[1], renderer.pitch, args[2]);
-				renderer.pitch = pitch;
+				pitch = (float) t.math(args[1], renderer.lockPlayerPitch, args[2]);
+				renderer.lockPlayerPitch = pitch;
 			}
 			else{
 				 pitch = (float)t.math(args[1], p.rotationPitch, args[2]);

@@ -73,7 +73,7 @@ public class ScrollEvent {
 
         float y = (Mouse.getEventY() - 180F) * 0.1F;
         if (y <= 90 && y >= -90)
-            Camera.getCamera().pitch = y;
+            Camera.getCamera().lockPlayerPitch = y;
         else
             Mouse.setCursorPosition(Mouse.getEventX(), get());
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {

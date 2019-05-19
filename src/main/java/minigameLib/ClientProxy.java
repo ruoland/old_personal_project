@@ -1,5 +1,6 @@
 package minigameLib;
 
+import minigameLib.minigame.minerun.monster.*;
 import olib.api.RenderAPI;
 import olib.fakeplayer.EntityFakePlayer;
 import olib.map.EntityDefaultBlock;

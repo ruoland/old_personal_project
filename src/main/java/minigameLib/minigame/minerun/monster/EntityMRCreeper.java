@@ -1,6 +1,7 @@
-package minigameLib.minigame.minerun;
+package minigameLib.minigame.minerun.monster;
 
 import minigameLib.MiniGame;
+import minigameLib.minigame.minerun.EntityMR;
 import olib.api.WorldAPI;
 import olib.map.TypeModel;
 import net.minecraft.entity.Entity;

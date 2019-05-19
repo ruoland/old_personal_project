@@ -3,11 +3,13 @@ package minigameLib.minigame.minerun;
 import cmplus.camera.Camera;
 import cmplus.deb.DebAPI;
 import minigameLib.MiniGame;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
-import olib.api.Direction;
-import olib.api.EntityAPI;
-import olib.api.PosHelper;
-import olib.api.WorldAPI;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import olib.api.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -39,7 +41,12 @@ public class MineRunEvent {
 
     private int pickupCount;
     public static boolean halfMode = false;//1.5블럭만 움직이는 모드
-
+    @SubscribeEvent
+    public void playerTick(CommandEvent e) {
+        if(e.getCommand().getCommandName().equalsIgnoreCase("spawnpoint")){
+            WorldAPI.command("minerun spawnpoint");
+        }
+    }
     @SubscribeEvent
     public void playerTick(PlayerTickEvent e) {
         if (!MiniGame.minerun.isStart() || e.player.isDead)
@@ -47,11 +54,15 @@ public class MineRunEvent {
         if (respawnTime == 0 && MineRun.elytraMode() == EnumElytra.RUNNING) {
             if (!runner.isInLava() && !runner.isInWater() && respawnTime <= 0 && MineRun.runner.isNotColliding()) {
                 if (!MineRun.runner.isOnLadder()) {
-                    e.player.motionX = MineRun.xCoord();//앞으로 나아가게 함 - 7월 14일
-                    e.player.motionZ = MineRun.zCoord();
+                    double speed = 1.1;
+                    if(Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()){
+                        speed = 1.7;
+                    }
+                    e.player.motionX = MineRun.xCoord() * speed;//앞으로 나아가게 함 - 7월 14일
+                    e.player.motionZ = MineRun.zCoord()  * speed;
                 } else {
-                    double posX = e.player.posX + curX + EntityAPI.lookX(e.player, 1.8);
-                    double posZ = e.player.posZ + curZ + EntityAPI.lookZ(e.player, 1.8);
+                    double posX = e.player.posX + curX + EntityAPI.lookX(e.player, MineRun.speed - 2);
+                    double posZ = e.player.posZ + curZ + EntityAPI.lookZ(e.player, MineRun.speed - 2);
                     if (posX != 0)
                         e.player.motionX = MineRun.runner.posX - posX;//앞으로 나아가게 함 - 7월 14일
                     if (posZ != 0)
@@ -79,8 +90,8 @@ public class MineRunEvent {
             double value = runnery + distance - playery;
             if (value != 0) {
 
-                e.player.motionY = Math.min(value / 20, -1.3);
-                System.out.println((runnery + distance)+ " - " +(value / 20)+ " - "+value);
+                e.player.motionY = value / 20;
+                //System.out.println((runnery + distance)+ " - " +(value / 20)+ " - "+value);
             }
             else
                 e.player.motionY = 0;
@@ -307,6 +318,9 @@ public class MineRunEvent {
                 return;
             }
             if (respawnTime == 60) {
+                double x=MineRun.spawnPoint.xCoord, y=MineRun.spawnPoint.yCoord,z=MineRun.spawnPoint.zCoord;
+                MineRun.runner.setPositionAndUpdate(x,y,z);
+
                 WorldAPI.teleport(MineRun.spawnPoint.addVector(-EntityAPI.lookX(runner, 3), 2, -EntityAPI.lookZ(runner, 3)));
                 lineLR = 0;
                 MineRun.setPosition(0, 0, 0);

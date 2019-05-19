@@ -1,5 +1,6 @@
-package minigameLib.minigame.minerun;
+package minigameLib.minigame.minerun.monster;
 
+import minigameLib.minigame.minerun.EntityMR;
 import olib.api.Direction;
 import olib.api.PosHelper;
 import olib.map.TypeModel;

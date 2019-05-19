@@ -146,6 +146,7 @@ public class MineRun extends AbstractMiniGame {
     public boolean start(Object... obj) {
         keySetting(true);
 
+            Camera.getCamera().lockCamera(true);
         ICommandSender sender = (ICommandSender) obj[0];
         player = (EntityPlayer) sender;
         worldObj = player.getEntityWorld();
@@ -221,10 +222,14 @@ public class MineRun extends AbstractMiniGame {
         } else
             return zCoord;
     }
-
+    public static double speed = 3;
     public static void runnerMove() {
-        double posX = player.posX + curX + EntityAPI.lookX(player, 3.4);
-        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, 3.4);
+
+        if(Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()){
+            speed = 4;
+        }
+        double posX = player.posX + curX + EntityAPI.lookX(player, speed);
+        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, speed);
         if(MineRun.runner.isOnLadder()){
             runner.motionY = 0.02;
         }

@@ -5,6 +5,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import olib.map.EntityDefaultNPC;
 import olib.map.TypeModel;
@@ -26,6 +27,7 @@ public class EntityMineRunner extends EntityDefaultNPC {
     public void jump() {
         super.jump();
     }
+
 
     @Override
     protected void entityInit() {
@@ -63,4 +65,5 @@ public class EntityMineRunner extends EntityDefaultNPC {
     public void updatePos(){
         dataManager.set(isCollision, false);
     }
+
 }

@@ -1,5 +1,6 @@
 package minigameLib.minigame.minerun;
 
+import minigameLib.minigame.minerun.monster.EntityMRCreeper;
 import olib.api.Direction;
 import olib.api.EntityAPI;
 import olib.api.PosHelper;

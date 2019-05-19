@@ -1,5 +1,6 @@
-package minigameLib.minigame.minerun;
+package minigameLib.minigame.minerun.monster;
 
+import minigameLib.minigame.minerun.EntityMR;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;

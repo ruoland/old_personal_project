@@ -11,7 +11,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 public class Camera {
 	public double rotateX, rotateY, rotateZ, zoom = 70;
 	public double traX, traY, traZ;
-	public float yaw, pitch;
+	public float lockPlayerYaw, lockPlayerPitch;//TODO 왜 있는지 모르겠음
+	public float lockCameraYaw, lockCameraPitch;//
 	public boolean lockCamera, lockPerson, yp;
 	public static boolean isDebug = false, freeCam = false;
 	private Minecraft mc = Minecraft.getMinecraft();
@@ -22,16 +23,20 @@ public class Camera {
 		setZoom(70);
 		rotateCamera(0, 0, 0);
 		moveCamera(0, 0, 0);
+		lockCameraPitch = 0;
+		lockCameraYaw = 0;
+		lockPlayerPitch = 0;
+		lockPlayerYaw = 0;
 		playerCamera(false);
-		lockCamera(false, pitch, yaw);
+		lockCamera(false, lockPlayerPitch, lockPlayerYaw);
 		setYP(false);
 	}
 
 	public void setYP(boolean yp) {
 		EntityPlayer player = WorldAPI.getPlayer();
 		this.yp = yp;
-		pitch = 0;
-		yaw = 0;
+		lockPlayerPitch = 0;
+		lockPlayerYaw = 0;
 	}
 
 	public static Camera getCamera() {
@@ -64,14 +69,14 @@ public class Camera {
 	public void lockCamera(boolean b) {
 		EntityPlayer player = WorldAPI.getPlayer();
 		lockCamera = b;
-		pitch = player.prevRotationPitch;
-		yaw = player.prevRotationYaw;
+		lockPlayerPitch = player.prevRotationPitch;
+		lockPlayerYaw = player.prevRotationYaw;
 	}
 
 	public void lockCamera(boolean lock, float yaw, float pitch) {
 		lockCamera = lock;
-		this.pitch = pitch;
-		this.yaw = yaw;
+		this.lockPlayerPitch = pitch;
+		this.lockPlayerYaw = yaw;
 	}
 
 	public boolean isLock() {
