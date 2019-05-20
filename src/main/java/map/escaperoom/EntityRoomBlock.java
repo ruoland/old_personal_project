@@ -1,5 +1,6 @@
 package map.escaperoom;
 
+import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
 import olib.api.RenderAPI;
 import olib.api.WorldAPI;
@@ -32,13 +33,17 @@ public class EntityRoomBlock extends EntityPreBlock {
     private static final DataParameter<Boolean> THROW_STATE = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.VARINT);
 
+    private static final DataParameter<Boolean> PLACE_STATE = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> PLACE_TIME = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.VARINT);
+
     public EntityRoomBlock(World worldIn) {
         super(worldIn);
         this.setCollision(true);
         setBlockMode(Blocks.QUARTZ_BLOCK);
         setJumpName("퍼즐 블럭");
-        setTeleportLock(true);
+        setTeleportLock(false);
         this.setModel(TypeModel.SHAPE_BLOCK);
+        isFly = false;
     }
 
 
@@ -50,6 +55,7 @@ public class EntityRoomBlock extends EntityPreBlock {
             EntityRoomBlockButton puzzleBlock = (EntityRoomBlockButton) entityIn;
             WorldAPI.command(puzzleBlock.getCommand());
             playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1F, 1);
+            teleportSpawnPos();
 
         }
         return canCollision() ? getEntityBoundingBox() : super.getCollisionBox(entityIn);
@@ -60,6 +66,8 @@ public class EntityRoomBlock extends EntityPreBlock {
         super.entityInit();
         dataManager.register(THROW_STATE, false);
         dataManager.register(THROW_TIME, 0);
+        dataManager.register(PLACE_STATE, false);
+        dataManager.register(PLACE_TIME, 0);
     }
 
 
@@ -77,13 +85,18 @@ public class EntityRoomBlock extends EntityPreBlock {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        if (hand == EnumHand.MAIN_HAND) {
-            if (player.isSneaking()) {
-                setTeleport(true);
-                this.setTransparency(0.5F);
-            } else {
-                isFly = !isFly;
-                System.out.println("플라이" + isFly);
+        if (hand == EnumHand.MAIN_HAND && isServerWorld()) {
+            System.out.println(getName());
+            if(this.getName().equalsIgnoreCase("entity.PuzzleMap.PuzzleBlock.name")) {
+                if (player.isSneaking()) {
+                    setTeleport(true);
+                    this.setTransparency(0.5F);
+                } else {
+                    setPosition(posX,posY,posZ);
+                    setTeleport(false);
+                    teleportEnd();
+                    System.out.println("텔포 해제");
+                }
             }
         }
         return super.processInteract(player, hand, stack);
@@ -93,12 +106,15 @@ public class EntityRoomBlock extends EntityPreBlock {
     public void teleport() {
         super.teleport();
         isFly = true;
+        setCollision(false);
     }
 
     @Override
     public void teleportEnd() {
         super.teleportEnd();
         setTransparency(1F);
+        isFly = false;
+        setCollision(true);
     }
 
     @Override
@@ -112,7 +128,14 @@ public class EntityRoomBlock extends EntityPreBlock {
         }
         if(source == DamageSource.fallingBlock){
             setHealth(getHealth() - amount);
-            return true;
+            EntityRoomBlock roomBlock = new EntityRoomBlock(worldObj);
+            roomBlock.setPosition(this.getSpawnPosVec());
+            this.setHealth(roomBlock.getMaxHealth());
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            this.writeEntityToNBT(tagCompound);
+            roomBlock.readEntityFromNBT(tagCompound);
+            this.worldObj.spawnEntityInWorld(roomBlock);
+            return super.attackEntityFrom(source, amount);
         }
         return super.attackEntityFrom(source, amount);
     }
@@ -129,9 +152,19 @@ public class EntityRoomBlock extends EntityPreBlock {
             if (getThrowTime() > 100) {
                 teleportSpawnPos();
                 setTeleportLock(true);
-                isFly = true;
                 dataManager.set(THROW_STATE, false);
                 dataManager.set(THROW_TIME, 0);
+                System.out.println(isServerWorld() + "원래자리로 돌아옴");
+            }
+        }
+
+        if (dataManager.get(PLACE_STATE)) {
+            addPlaceTime();
+            if (getPlaceTime() > 300) {
+                teleportSpawnPos();
+                setTeleportLock(true);
+                dataManager.set(PLACE_STATE, false);
+                dataManager.set(PLACE_TIME, 0);
                 System.out.println(isServerWorld() + "원래자리로 돌아옴");
             }
         }
@@ -143,7 +176,6 @@ public class EntityRoomBlock extends EntityPreBlock {
             if (!list.isEmpty()) {
                 for (Entity entity : list) {
                     if ((entity instanceof EntityRoomBlock) && !entity.noClip) {
-                        System.out.println("블럭 찾음");
                         ((EntityLivingBase) entity).knockBack(this, 1.4F, this.posX - entity.posX, this.posZ - entity.posZ);
                     }
                 }
@@ -165,7 +197,13 @@ public class EntityRoomBlock extends EntityPreBlock {
     public int getThrowTime() {
         return dataManager.get(THROW_TIME);
     }
+    public void addPlaceTime() {
+        dataManager.set(PLACE_TIME, dataManager.get(PLACE_TIME) + 1);
+    }
 
+    public int getPlaceTime() {
+        return dataManager.get(PLACE_TIME);
+    }
     @Override
     public boolean handleWaterMovement() {
         return false;
@@ -189,7 +227,6 @@ public class EntityRoomBlock extends EntityPreBlock {
         super.writeEntityToNBT(compound);
         compound.setInteger("delay", getThrowTime());
         compound.setBoolean("ThrowState", dataManager.get(THROW_STATE));
-        System.out.println("블럭" + getCurrentBlock() + typeModel + getTexture());
     }
 
     @Override

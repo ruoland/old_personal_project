@@ -1,6 +1,9 @@
 package map.escaperoom;
 
 import cmplus.deb.DebAPI;
+import map.escaperoom.block.BlockBarrier;
+import map.escaperoom.block.BlockForward;
+import map.escaperoom.block.BlockJumper;
 import map.escaperoom.dungeon.EntityRespawnZombie;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,7 +23,7 @@ public class EscapeRoom {
     public static Block blockJumper = new BlockJumper(Material.ANVIL).setRegistryName("PuzzleMap", "jumper").setUnlocalizedName("jumper").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Block blockForward = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "forward").setUnlocalizedName("forward").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Block blockWhatBlock = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "whatblock").setUnlocalizedName("whatBlock").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Block blockBarrier = new BlockBarrier(Material.ANVIL).setRegistryName("PuzzleMap", "barrier").setUnlocalizedName("barrier").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Block blockBarrier = new BlockBarrier(Material.ANVIL).setRegistryName("PuzzleMap", "puzzlebarrier").setUnlocalizedName("barrier").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent e){
@@ -36,6 +39,8 @@ public class EscapeRoom {
         DebAPI.registerEntity(this, "RespawnZombie", EntityRespawnZombie.class);
         DebAPI.registerEntity(this, "PuzzleFallingBlock", EntityRoomFallingBlock.class);
         DebAPI.registerEntity(this, "PuzzleJumpMap", EntityRoomBlockJumpMap.class);
+        DebAPI.registerEntity(this, "PuzzleEnderman", EntityRoomEnderman.class);
+        DebAPI.registerEntity(this, "PuzzleBlockShoter", EntityRoomBlockShot.class);
 
         proxy.init();
     }

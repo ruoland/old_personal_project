@@ -8,6 +8,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import org.lwjgl.Sys;
 
 public class CommandRoomm extends CommandPlusBase {
     @Override
@@ -21,6 +22,7 @@ public class CommandRoomm extends CommandPlusBase {
                 EntityRoomBlockButton serverBlock = (EntityRoomBlockButton) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
                 EntityRoomBlockButton clientBlock = (EntityRoomBlockButton) entity;
                 serverBlock.setCommand(t.getCommand(args, 1, args.length));
+                System.out.println(t.getCommand(args, 1, args.length)+" 명령어가 부여됐습니다.");
             }
             if(args[0].equalsIgnoreCase("name")){
                 if(entity instanceof EntityRoomDoorBase) {

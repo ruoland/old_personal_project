@@ -3,6 +3,7 @@ package map.escaperoom;
 import cmplus.util.CommandPlusBase;
 import map.escaperoom.base.EntityRoomDoorBase;
 import map.lopre2.EntityPreBlock;
+import minigameLib.command.CommandEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import olib.api.WorldAPI;
@@ -38,6 +39,21 @@ public class CommandRoom extends CommandPlusBase {
                 }
             }
         }
+        if(args[0].equalsIgnoreCase("movezombie")){
+            for(Entity entity : sender.getEntityWorld().loadedEntityList){
+                if(entity instanceof EntityRoomMoveZombie){
+                    EntityRoomMoveZombie entitydefServer = (EntityRoomMoveZombie) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
+                    EntityRoomMoveZombie entitydefClient = (EntityRoomMoveZombie) entity;
+                    entitydefServer.teleportSpawnPos();
+                    entitydefServer.removeTarget();
+                    entitydefServer.startMove();
+                    entitydefClient.teleportSpawnPos();
+                    entitydefClient.removeTarget();
+                    entitydefClient.startMove();
+                }
+            }
+        }
+
         if(args[0].equalsIgnoreCase("pos1")){
             BlockPos vec3d = sender.getPosition();
             x = vec3d.getX();
@@ -56,7 +72,7 @@ public class CommandRoom extends CommandPlusBase {
 
         if(args[0].equalsIgnoreCase("clip")){
             Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringBuilder builder = new StringBuilder("puzzle set ").append(x).append(" ").append(y).append(" ").append(z).append(" ").append(x2)
+            StringBuilder builder = new StringBuilder("room set ").append(x).append(" ").append(y).append(" ").append(z).append(" ").append(x2)
                     .append(" ").append(y2).append(" ").append(z2);
             board.setContents(new StringSelection(builder.toString()), null);
         }

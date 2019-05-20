@@ -91,10 +91,6 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND) {
-            if (stack == null) {
-                WorldAPI.addMessage(""+(posY - player.posY));
-                dataManager.set(IS_THREE_BLOCK, !dataManager.get(IS_THREE_BLOCK));
-            }
             if (stack != null && stack.getItem() == (LoPre2.itemCopy)) {
                 return false;
             }

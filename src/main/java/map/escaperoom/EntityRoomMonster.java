@@ -26,9 +26,11 @@ public class EntityRoomMonster extends EntityDefaultNPC {
     @Override
     protected void collideWithEntity(Entity entityIn) {
         entityIn.applyEntityCollision(this);
-        ((EntityLivingBase) entityIn).knockBack(this, 1.4F, this.posX - entityIn.posX, this.posZ - entityIn.posZ);
+        if(!entityIn.getName().equalsIgnoreCase(this.getName()))
+            ((EntityLivingBase) entityIn).knockBack(this, 1.4F, this.posX - entityIn.posX, this.posZ - entityIn.posZ);
         super.collideWithEntity(entityIn);
     }
+
 
 
     @Override

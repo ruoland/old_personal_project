@@ -68,7 +68,6 @@ public class MineRunEvent {
                     if (posZ != 0)
                         e.player.motionZ = MineRun.runner.posZ - posZ;
                 }
-
                 MineRun.runnerMove();
                 if (e.player.getRidingEntity() != null) {
                     EntityMinecartEmpty minecartEmpty = (EntityMinecartEmpty) e.player.getRidingEntity();

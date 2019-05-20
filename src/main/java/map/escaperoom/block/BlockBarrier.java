@@ -1,4 +1,4 @@
-package map.escaperoom;
+package map.escaperoom.block;
 
 import map.lopre2.EntityPreBlock;
 import minigameLib.minigame.minerun.invisibleblock.BlockInvisible;
@@ -54,7 +54,6 @@ public class BlockBarrier extends Block {
         super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
         if(entityIn instanceof EntityPreBlock){
             ((EntityPreBlock) entityIn).setTeleport(false);
-
             ((EntityPreBlock) entityIn).teleportSpawnPos();
             ((EntityPreBlock) entityIn).teleportEnd();
 

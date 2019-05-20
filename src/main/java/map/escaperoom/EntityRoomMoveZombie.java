@@ -1,6 +1,8 @@
 package map.escaperoom;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -8,6 +10,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import olib.api.EntityAPI;
@@ -55,8 +58,15 @@ public class EntityRoomMoveZombie extends EntityRoomMonster {
 
     public void startMove() {
         EnumFacing pathFacing = EnumFacing.byName(dataManager.get(PATH));
-        if (pathFacing != null)
+        if (pathFacing != null) {
+            BlockPos pos = new BlockPos(posX + EntityAPI.getFacingX(pathFacing) * 1.5, posY, posZ + EntityAPI.getFacingZ(pathFacing) * 1.5);
+            Block block = getEntityWorld().getBlockState(pos).getBlock();
+            if(block != Blocks.AIR) {
+                pathFacing = EnumFacing.fromAngle(pathFacing.getHorizontalAngle() + 180);
+                dataManager.set(PATH, pathFacing.getName());
+            }
             setTarget(posX + (EntityAPI.getFacingX(pathFacing) * 2.5), posY, posZ + (EntityAPI.getFacingZ(pathFacing) * 2.5));
+        }
     }
 
     @Override
@@ -72,7 +82,7 @@ public class EntityRoomMoveZombie extends EntityRoomMonster {
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        compound.setString("PATH ", dataManager.get(PATH));
+        compound.setString("PATH", dataManager.get(PATH));
     }
 
     @Override

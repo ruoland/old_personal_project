@@ -1,4 +1,4 @@
-package map.escaperoom;
+package map.escaperoom.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
