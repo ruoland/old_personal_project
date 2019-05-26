@@ -1,4 +1,4 @@
-package minigameLib;
+package minigameLib.command;
 
 import minigameLib.command.CommandEntity;
 import olib.map.EntityDefaultNPC;

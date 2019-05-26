@@ -1,5 +1,7 @@
-package map.escaperoom;
+package map.escaperoom.nouse;
 
+import map.escaperoom.EntityRoomBlock;
+import map.escaperoom.EntityRoomMonster;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

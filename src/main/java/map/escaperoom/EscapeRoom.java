@@ -4,10 +4,15 @@ import cmplus.deb.DebAPI;
 import map.escaperoom.block.BlockBarrier;
 import map.escaperoom.block.BlockForward;
 import map.escaperoom.block.BlockJumper;
-import map.escaperoom.dungeon.EntityRespawnZombie;
+import map.escaperoom.nouse.dungeon.EntityRespawnZombie;
+import map.escaperoom.nouse.EntityRoomBlockJumpMap;
+import map.escaperoom.nouse.EntityRoomDoor;
+import map.escaperoom.nouse.EntityRoomEnderman;
+import map.escaperoom.nouse.EntityRoomPathCreeper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +22,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid ="PuzzleMap", name = "Puzzle Map")
 public class EscapeRoom {
-
+    public static boolean isRedMode;
     @SidedProxy(clientSide =  "map.escaperoom.EscapeClientProxy", serverSide = "map.escaperoom.EscapeServerProxy")
     public static EscapeServerProxy proxy;
     public static Block blockJumper = new BlockJumper(Material.ANVIL).setRegistryName("PuzzleMap", "jumper").setUnlocalizedName("jumper").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
@@ -40,9 +45,16 @@ public class EscapeRoom {
         DebAPI.registerEntity(this, "PuzzleFallingBlock", EntityRoomFallingBlock.class);
         DebAPI.registerEntity(this, "PuzzleJumpMap", EntityRoomBlockJumpMap.class);
         DebAPI.registerEntity(this, "PuzzleEnderman", EntityRoomEnderman.class);
-        DebAPI.registerEntity(this, "PuzzleBlockShoter", EntityRoomBlockShot.class);
+        DebAPI.registerEntity(this, "PuzzleBlockShooter", EntityRoomBlockShooter.class);
+
+        DebAPI.registerEntity(this, "PuzzleMonsterTower", EntityRoomMonsterTower.class);
+        DebAPI.registerEntity(this, "PuzzleMovingBlock", EntityRoomMovingBlock.class);
+        DebAPI.registerEntity(this, "PuzzleRedBlue", EntityRoomRedBlue.class);
+        DebAPI.registerEntity(this, "PuzzleInWall", EntityRoomInWall.class);
+        DebAPI.registerEntity(this, "PuzzleJumper", EntityRoomJumper.class);
 
         proxy.init();
+
     }
 
     @Mod.EventHandler

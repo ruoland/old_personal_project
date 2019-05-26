@@ -1,5 +1,6 @@
-package map.escaperoom;
+package map.escaperoom.nouse;
 
+import map.escaperoom.PuEvent;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;

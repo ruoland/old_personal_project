@@ -1,4 +1,4 @@
-package minigameLib;
+package minigameLib.command;
 
 import cmplus.util.CommandPlusBase;
 import olib.api.WorldAPI;
@@ -65,16 +65,17 @@ public class CommandMg extends CommandPlusBase {
             }
             if (type.equalsIgnoreCase("yp")) {
                 entitydefServer.setLockYawPitch((float) parseDouble(arg1), (float)parseDouble(args[2]));
-                entitydefClient.setLockYawPitch((float) parseDouble(arg1), (float)parseDouble(args[2]));
-
+                entitydefServer.setYawPitch((float) parseDouble(arg1), (float)parseDouble(args[2]));
             }
             if (type.equalsIgnoreCase("yaw")) {
                 entitydefServer.setLockYaw((float) parseDouble(arg1));
-                entitydefClient.setLockYaw((float) parseDouble(arg1));
+                entitydefServer.setYaw((float) parseDouble(arg1));
+                entitydefClient.setYaw((float) parseDouble(arg1));
             }
             if (type.equalsIgnoreCase("pitch")) {
                 entitydefServer.setLockPitch((float) parseDouble(arg1));
-                entitydefClient.setLockPitch((float) parseDouble(arg1));
+                entitydefServer.setPitch((float) parseDouble(arg1));
+                entitydefClient.setPitch((float) parseDouble(arg1));
             }
             if (type.equalsIgnoreCase("rotate") || type.equalsIgnoreCase("ro")) {
                 x = t.math(arg1, entitydefServer.getRotateX(), Float.valueOf(args[2]));

@@ -1,6 +1,6 @@
-package map.escaperoom;
+package map.escaperoom.nouse;
 
-import map.escaperoom.base.EntityRoomDoorBase;
+import map.escaperoom.nouse.base.EntityRoomDoorBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 

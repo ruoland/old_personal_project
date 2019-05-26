@@ -2,6 +2,8 @@ package map.escaperoom;
 
 import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
+import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 import olib.api.RenderAPI;
 import olib.api.WorldAPI;
 import olib.map.TypeModel;
@@ -27,7 +29,6 @@ import java.util.List;
  * 들 수 있는 블럭
  * 블럭을 버튼에 던지면 명령어 실행시키는 기능 있음
  * 에메랄드 블럭일 떄 엔티티를 맞추면 밀쳐내기 가능
- *
  */
 public class EntityRoomBlock extends EntityPreBlock {
     private static final DataParameter<Boolean> THROW_STATE = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.BOOLEAN);
@@ -70,7 +71,6 @@ public class EntityRoomBlock extends EntityPreBlock {
         dataManager.register(PLACE_TIME, 0);
     }
 
-
     @Override
     protected void collideWithEntity(Entity entityIn) {
         entityIn.applyEntityCollision(this);
@@ -87,12 +87,12 @@ public class EntityRoomBlock extends EntityPreBlock {
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND && isServerWorld()) {
             System.out.println(getName());
-            if(this.getName().equalsIgnoreCase("entity.PuzzleMap.PuzzleBlock.name")) {
+            if (this.getName().equalsIgnoreCase("entity.PuzzleMap.PuzzleBlock.name")) {
                 if (player.isSneaking()) {
                     setTeleport(true);
                     this.setTransparency(0.5F);
                 } else {
-                    setPosition(posX,posY,posZ);
+                    setPosition(posX, posY, posZ);
                     setTeleport(false);
                     teleportEnd();
                     System.out.println("텔포 해제");
@@ -126,7 +126,7 @@ public class EntityRoomBlock extends EntityPreBlock {
             setTeleportLock(false);
             this.setTransparency(1F);
         }
-        if(source == DamageSource.fallingBlock){
+        if (source == DamageSource.fallingBlock) {
             setHealth(getHealth() - amount);
             EntityRoomBlock roomBlock = new EntityRoomBlock(worldObj);
             roomBlock.setPosition(this.getSpawnPosVec());
@@ -168,6 +168,27 @@ public class EntityRoomBlock extends EntityPreBlock {
                 System.out.println(isServerWorld() + "원래자리로 돌아옴");
             }
         }
+        if(getCurrentBlock() == Blocks.SPONGE && isServerWorld()) {
+            BlockPos pos = getPosition();
+            while (checkLava(pos)) {
+                worldObj.setBlockState(pos, Blocks.AIR.getDefaultState());
+                for(int i = -3; i < 3;i++) {
+                    if (checkLava(pos.east(i))) {
+                        worldObj.setBlockState(pos.east(i), Blocks.AIR.getDefaultState());
+                    }
+
+                    if (checkLava(pos.west(1))) {
+                        worldObj.setBlockState(pos.west(i), Blocks.AIR.getDefaultState());
+                    }
+                }
+                pos = pos.down(1);
+
+                System.out.println("블럭 발견");
+            }
+
+
+        }
+
 
         if (getCurrentBlock() == Blocks.EMERALD_BLOCK) {
             double knockbackSize = 1.5D;
@@ -183,6 +204,10 @@ public class EntityRoomBlock extends EntityPreBlock {
         }
     }
 
+    public boolean checkLava(BlockPos pos){
+        return worldObj.getBlockState(pos).getBlock() == Blocks.LAVA || worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA;
+
+    }
     @Override
     public void setBlock(ItemStack stack) {
         super.setBlock(stack);
@@ -197,6 +222,7 @@ public class EntityRoomBlock extends EntityPreBlock {
     public int getThrowTime() {
         return dataManager.get(THROW_TIME);
     }
+
     public void addPlaceTime() {
         dataManager.set(PLACE_TIME, dataManager.get(PLACE_TIME) + 1);
     }
@@ -204,6 +230,7 @@ public class EntityRoomBlock extends EntityPreBlock {
     public int getPlaceTime() {
         return dataManager.get(PLACE_TIME);
     }
+
     @Override
     public boolean handleWaterMovement() {
         return false;

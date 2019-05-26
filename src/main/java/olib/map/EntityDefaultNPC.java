@@ -416,7 +416,15 @@ public class EntityDefaultNPC extends EntityModelNPC {
         dataManager.set(LOCK_YAW, yaw);
         dataManager.set(LOCK_PITCH, pitch);
     }
-
+    public void setYawPitch(float yaw, float pitch){
+        setPositionAndRotation(posX,posY,posZ,yaw,pitch);
+    }
+    public void setYaw(float yaw){
+        setPositionAndRotation(posX,posY,posZ,yaw,rotationPitch);
+    }
+    public void setPitch(float pitch){
+        setPositionAndRotation(posX,posY,posZ,rotationYaw,pitch);
+    }
     public void setLockYaw(float yaw){
         dataManager.set(LOCK_YAW, yaw);
     }

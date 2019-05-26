@@ -1,6 +1,6 @@
 package map.escaperoom;
 
-import map.escaperoom.base.EntityRoomWindBase;
+import map.escaperoom.nouse.base.EntityRoomWindBase;
 import olib.map.EntityDefaultNPC;
 import olib.map.TypeModel;
 import net.minecraft.entity.Entity;

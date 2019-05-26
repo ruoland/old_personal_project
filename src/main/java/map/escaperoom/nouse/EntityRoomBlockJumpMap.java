@@ -1,4 +1,4 @@
-package map.escaperoom;
+package map.escaperoom.nouse;
 
 import map.lopre2.EntityPreBlock;
 import net.minecraft.entity.player.EntityPlayer;

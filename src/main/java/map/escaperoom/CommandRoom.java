@@ -1,9 +1,9 @@
 package map.escaperoom;
 
 import cmplus.util.CommandPlusBase;
-import map.escaperoom.base.EntityRoomDoorBase;
+import map.escaperoom.nouse.base.EntityRoomDoorBase;
+import map.escaperoom.nouse.EntityRoomBlockJumpMap;
 import map.lopre2.EntityPreBlock;
-import minigameLib.command.CommandEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import olib.api.WorldAPI;
@@ -21,6 +21,7 @@ import java.awt.datatransfer.StringSelection;
 
 public class CommandRoom extends CommandPlusBase {
     private int x,y,z, x2,y2,z2;
+
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if(args[0].equalsIgnoreCase("cleararrow")){
@@ -29,6 +30,10 @@ public class CommandRoom extends CommandPlusBase {
                     entity.setDead();
                 }
             }
+        }
+        if(args[0].equalsIgnoreCase("rb")){
+            EscapeRoom.isRedMode = !EscapeRoom.isRedMode;
+            System.out.println(EscapeRoom.isRedMode);
         }
         if(args[0].equalsIgnoreCase("jumpclear")){
             for(Entity entity : sender.getEntityWorld().loadedEntityList){

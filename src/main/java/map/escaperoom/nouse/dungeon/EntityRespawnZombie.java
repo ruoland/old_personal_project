@@ -1,4 +1,4 @@
-package map.escaperoom.dungeon;
+package map.escaperoom.nouse.dungeon;
 
 import olib.effect.AbstractTick;
 import olib.effect.TickRegister;

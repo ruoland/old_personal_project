@@ -19,14 +19,15 @@ import olib.api.WorldAPI;
 public class EntityRoomBlockArrow extends EntityPreBlock {
     private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlockArrow.class, DataSerializers.VARINT);
     private PosHelper posHelper = new PosHelper(this);
+
     public EntityRoomBlockArrow(World worldIn) {
         super(worldIn);
         this.setCollision(true);
         setBlockMode(Blocks.DISPENSER);
         setJumpName("퍼즐 블럭");
         setTeleportLock(true);
-        this.setRotate(0,0,180);
-        isFly = true;
+        this.setRotate(0, 0, 180);
+        isFly = false;
     }
 
     @Override
@@ -38,27 +39,41 @@ public class EntityRoomBlockArrow extends EntityPreBlock {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND) {
+
             if (player.isSneaking()) {
                 setTeleport(true);
-            }
+            } else
+                isFly = !isFly;
+            System.out.println(getRotateX() + " - "+getRotateY() + " - "+getRotateZ());
+            System.out.println("플라이 " + isFly);
         }
         return super.processInteract(player, hand, stack);
     }
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         addThrowTime();
-        if(getThrowTime() > 10 && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getDistanceToEntity(this) < 5){
+        if (getThrowTime() > 10 && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getDistanceToEntity(this) < 10) {
             dataManager.set(THROW_TIME, 0);
             EntityArrow arrow = new EntityTippedArrow(worldObj);
-            arrow.setPosition(posHelper.getX(Direction.FORWARD, 1, true),posY+1,posHelper.getZ(Direction.FORWARD, 1, true));
-            arrow.setAim(this, rotationPitch, rotationYaw, 0, 1, 1 );
+
+            if (rotationPitch == 90)
+                arrow.setPosition(posX, posY + 1, posZ);
+            else if (getRotateX() >= 80 && getRotateX() <= 100) {
+                arrow.setPosition(posX, posY - 1, posZ);
+                rotationPitch = -90;
+            }
+            else
+                arrow.setPosition(posHelper.getX(Direction.FORWARD, 1, true), posY + 0.5, posHelper.getZ(Direction.FORWARD, 1, true));
+            arrow.setAim(this, rotationPitch, rotationYaw, 0, 1, 1);
             arrow.setNoGravity(true);
-            if(isServerWorld())
-            worldObj.spawnEntityInWorld(arrow);
+            arrow.setDamage(arrow.getDamage() * 200);
+            if (isServerWorld())
+                worldObj.spawnEntityInWorld(arrow);
             NBTTagCompound tagCompound = new NBTTagCompound();
             arrow.writeEntityToNBT(tagCompound);
-            tagCompound.setShort("life", (short)1100);
+            tagCompound.setShort("life", (short) 1124);
             arrow.readEntityFromNBT(tagCompound);
             arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
@@ -88,14 +103,14 @@ public class EntityRoomBlockArrow extends EntityPreBlock {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("delay", getThrowTime());
-
+        compound.setFloat("pitch", rotationPitch);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         dataManager.set(THROW_TIME, compound.getInteger("delay"));
-
+        rotationPitch = compound.getFloat("pitch");
     }
 
 }

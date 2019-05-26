@@ -1,4 +1,4 @@
-package map.escaperoom.base;
+package map.escaperoom.nouse.base;
 
 import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,5 +1,6 @@
-package map.escaperoom;
+package map.escaperoom.nouse;
 
+import map.escaperoom.EntityRoomBlock;
 import minigameLib.minigame.minerun.EntityMR;
 import net.minecraft.init.Blocks;
 import olib.api.Direction;

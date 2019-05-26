@@ -339,6 +339,7 @@ class EntityModelNPC extends EntityMob {
     }
 
     public void setBlock(Block block) {
+        if(block != getCurrentBlock())
         setBlock(new ItemStack(block));
     }
 

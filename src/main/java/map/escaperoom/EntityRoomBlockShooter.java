@@ -2,8 +2,6 @@ package map.escaperoom;
 
 import map.lopre2.EntityPreBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,10 +14,10 @@ import olib.api.Direction;
 import olib.api.PosHelper;
 import olib.api.WorldAPI;
 
-public class EntityRoomBlockShot extends EntityPreBlock {
-    private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlockShot.class, DataSerializers.VARINT);
+public class EntityRoomBlockShooter extends EntityPreBlock {
+    private static final DataParameter<Integer> THROW_TIME = EntityDataManager.createKey(EntityRoomBlockShooter.class, DataSerializers.VARINT);
     private PosHelper posHelper = new PosHelper(this);
-    public EntityRoomBlockShot(World worldIn) {
+    public EntityRoomBlockShooter(World worldIn) {
         super(worldIn);
         this.setCollision(true);
         setBlockMode(Blocks.DISPENSER);
@@ -61,7 +59,7 @@ public class EntityRoomBlockShot extends EntityPreBlock {
 
     @Override
     public EntityPreBlock spawn(double x, double y, double z) {
-        EntityRoomBlockShot lavaBlock = new EntityRoomBlockShot(worldObj);
+        EntityRoomBlockShooter lavaBlock = new EntityRoomBlockShooter(worldObj);
         dataCopy(lavaBlock, x, y, z);
         if (isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(lavaBlock);

@@ -68,6 +68,9 @@ public class EntityAPI {
     public static double lookZ(EntityLivingBase base, float plusYaw, double plus) {
         return lookPosZ(base, plusYaw, plus) - base.posZ;
     }
+    public static EnumFacing rotateY(EnumFacing facing, int rotate){
+        return EnumFacing.fromAngle(facing.getHorizontalAngle() + rotate);
+    }
 
     public static double lookX(EnumFacing base, double plus) {
         switch (base) {
