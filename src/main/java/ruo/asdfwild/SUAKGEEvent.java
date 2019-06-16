@@ -70,7 +70,7 @@ public class SUAKGEEvent {
 
     @SubscribeEvent
     public void event(ArrowLooseEvent e) {
-        if (EnchantmentHelper.getEnchantmentLevel(SUAKGEMod.chageEnchant, e.getBow()) != 0) {
+        if (EnchantmentHelper.getEnchantmentLevel(SUAKGEMod.chargeEnchant, e.getBow()) != 0) {
             e.setCharge(34);
         }
     }

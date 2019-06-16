@@ -4,9 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import olib.map.EntityDefaultNPC;
 import olib.map.EntityFlyNPC;
 
-public class EntityEnderBlock extends EntityFlyNPC {
+public class EntityEnderBlock extends EntityDefaultNPC {
 
     public EntityEnderBlock(World world) {
         super(world);

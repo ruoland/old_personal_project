@@ -1,4 +1,4 @@
-package map.escaperoom;
+package map.escaperoom.nouse;
 
 import map.escaperoom.nouse.base.EntityRoomWindBase;
 import olib.map.EntityDefaultNPC;

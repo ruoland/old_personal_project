@@ -1,5 +1,6 @@
 package map.escaperoom;
 
+import map.escaperoom.nouse.EntityRoomWindEntity;
 import map.escaperoom.nouse.dungeon.EntityRespawnZombie;
 import map.escaperoom.nouse.EntityRoomBlockJumpMap;
 import map.escaperoom.nouse.EntityRoomDoor;

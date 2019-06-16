@@ -22,8 +22,10 @@ public class CommandRoomm extends CommandPlusBase {
             if(args[0].equalsIgnoreCase("com")){
                 EntityRoomBlockButton serverBlock = (EntityRoomBlockButton) EntityDefaultNPC.getUUIDNPC(entity.getUniqueID());
                 EntityRoomBlockButton clientBlock = (EntityRoomBlockButton) entity;
+                clientBlock.setCommand(t.getCommand(args, 1, args.length));
                 serverBlock.setCommand(t.getCommand(args, 1, args.length));
-                System.out.println(t.getCommand(args, 1, args.length)+" 명령어가 부여됐습니다.");
+
+                System.out.println(serverBlock.getCommand()+" 명령어가 부여됐습니다.");
             }
             if(args[0].equalsIgnoreCase("name")){
                 if(entity instanceof EntityRoomDoorBase) {

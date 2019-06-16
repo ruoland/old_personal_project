@@ -7,10 +7,13 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
+import olib.api.WorldAPI;
+
+import java.util.UUID;
 
 public class EntityRoomBlockButton extends EntityRoomBlock {
     private static final DataParameter<String> RUN_COMMAND = EntityDataManager.createKey(EntityRoomBlock.class, DataSerializers.STRING);
-
+    private UUID runBlockUUID;
     public EntityRoomBlockButton(World worldIn) {
         super(worldIn);
         setBlockMode(Blocks.WOODEN_BUTTON);
@@ -65,5 +68,15 @@ public class EntityRoomBlockButton extends EntityRoomBlock {
     @Override
     public String getCustomNameTag() {
         return getJumpName() + " " + dataManager.get(RUN_COMMAND);
+    }
+
+    public void runCommand(EntityRoomBlock block) {
+        if (runBlockUUID ==null || !block.getUniqueID().toString().equalsIgnoreCase(runBlockUUID.toString())) {
+            runBlockUUID = block.getUniqueID();
+            System.out.println(""+block.getUniqueID()  +" - "+runBlockUUID+ isServerWorld() + (runBlockUUID==null) + (block.getUniqueID().toString().equalsIgnoreCase(runBlockUUID.toString())));
+
+            WorldAPI.command(getCommand());
+            System.out.println(getCommand());
+        }
     }
 }

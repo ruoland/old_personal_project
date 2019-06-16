@@ -345,6 +345,7 @@ class EntityModelNPC extends EntityMob {
 
     public void setBlock(ItemStack stack) {
         this.getDataManager().set(BLOCK_ID, Block.getIdFromBlock(Block.getBlockFromItem(stack.getItem())));
+        if(stack.getItem() != null)
         setBlockMetadata(stack.getMetadata());
     }
 

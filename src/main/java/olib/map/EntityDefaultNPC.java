@@ -43,6 +43,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
     private static final DataParameter<Float> LOCK_PITCH = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.FLOAT);
 
+    private static final DataParameter<Boolean> LOOK_PLAYER = EntityDataManager.createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
+
     private static final DataParameter<Boolean> ON_DEATH_TIMER = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);//데드 타이머가 켜져있는지 여부
 
@@ -97,6 +99,8 @@ public class EntityDefaultNPC extends EntityModelNPC {
         this.dataManager.register(ON_DEATH_TIMER, false);
         this.dataManager.register(DEATH_TIMER, -1);
         this.dataManager.register(STURN_TICK, -1);
+        this.dataManager.register(LOOK_PLAYER, false);
+
     }
 
     protected void applyEntityAttributes() {
@@ -195,9 +199,17 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return dataManager.get(IS_TELEPORT);
     }
 
+    public boolean isLookPlayer(){
+        return dataManager.get(LOOK_PLAYER);
+    }
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(isLookPlayer()){
+            if (!isSturn() && WorldAPI.getPlayer() != null)
+                faceEntity(WorldAPI.getPlayer(), 360, 360);
+        }
         if (getSpawnX() == 0 && getSpawnY() == 0 && getSpawnZ() == 0) {
             setSpawnXYZ(posX, posY, posZ);
         }

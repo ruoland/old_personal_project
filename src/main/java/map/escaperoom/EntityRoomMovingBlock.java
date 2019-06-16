@@ -35,6 +35,6 @@ public class EntityRoomMovingBlock extends EntityRoomBlock{
         if (isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(movingBlock);
         }
-        return super.spawn(x, y, z);
+        return movingBlock;
     }
 }

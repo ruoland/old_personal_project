@@ -25,7 +25,7 @@ public class SUAKGEMod {
     public static final Enchantment explosionEnchant = new ExplosionEnchant();
     public static final Enchantment levitationEnchant = new LevitaionEnchant();
     public static final Enchantment rangeEnchant = new RangeAttackEnchant();
-    public static final Enchantment chageEnchant = new ChargeEnchant();
+    public static final Enchantment chargeEnchant = new ChargeEnchant();
     public static final Enchantment rangeBreakEnchant = new RangeBreakEnchant();
 
     @SidedProxy(serverSide = "ruo.asdfwild.SUAKGECommonProxy", clientSide = "ruo.asdfwild.SUAKGEClientProxy")
@@ -49,7 +49,7 @@ public class SUAKGEMod {
         ForgeRegistries.ENCHANTMENTS.register(levitationEnchant);
         ForgeRegistries.ENCHANTMENTS.register(explosionEnchant);
         ForgeRegistries.ENCHANTMENTS.register(rangeEnchant);
-        ForgeRegistries.ENCHANTMENTS.register(chageEnchant);
+        ForgeRegistries.ENCHANTMENTS.register(chargeEnchant);
         ForgeRegistries.ENCHANTMENTS.register(bonusExpEnchant);
         ForgeRegistries.ENCHANTMENTS.register(rangeBreakEnchant);
 

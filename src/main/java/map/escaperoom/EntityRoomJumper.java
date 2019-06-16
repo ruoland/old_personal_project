@@ -15,7 +15,7 @@ public class EntityRoomJumper extends EntityRoomBlock {
     public void onCollideWithPlayer(EntityPlayer entityIn) {
         super.onCollideWithPlayer(entityIn);
         if(entityIn.posY > this.posY && entityIn.onGround){
-            entityIn.motionY += 0.5;
+            entityIn.motionY += 1;
         }
     }
 
@@ -26,6 +26,6 @@ public class EntityRoomJumper extends EntityRoomBlock {
         if (isServerWorld() || canForceSpawn()) {
             worldObj.spawnEntityInWorld(movingBlock);
         }
-        return super.spawn(x, y, z);
+        return movingBlock;
     }
 }

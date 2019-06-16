@@ -4,15 +4,11 @@ import cmplus.deb.DebAPI;
 import map.escaperoom.block.BlockBarrier;
 import map.escaperoom.block.BlockForward;
 import map.escaperoom.block.BlockJumper;
+import map.escaperoom.nouse.*;
 import map.escaperoom.nouse.dungeon.EntityRespawnZombie;
-import map.escaperoom.nouse.EntityRoomBlockJumpMap;
-import map.escaperoom.nouse.EntityRoomDoor;
-import map.escaperoom.nouse.EntityRoomEnderman;
-import map.escaperoom.nouse.EntityRoomPathCreeper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -50,7 +46,6 @@ public class EscapeRoom {
         DebAPI.registerEntity(this, "PuzzleMonsterTower", EntityRoomMonsterTower.class);
         DebAPI.registerEntity(this, "PuzzleMovingBlock", EntityRoomMovingBlock.class);
         DebAPI.registerEntity(this, "PuzzleRedBlue", EntityRoomRedBlue.class);
-        DebAPI.registerEntity(this, "PuzzleInWall", EntityRoomInWall.class);
         DebAPI.registerEntity(this, "PuzzleJumper", EntityRoomJumper.class);
 
         proxy.init();
