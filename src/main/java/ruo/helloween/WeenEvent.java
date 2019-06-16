@@ -16,7 +16,9 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import olib.api.Direction;
 import olib.api.EntityAPI;
+import olib.api.PosHelper;
 import olib.api.WorldAPI;
 import ruo.helloween.miniween.EntityMiniWeen;
 import minigameLib.MiniGame;
@@ -43,8 +45,9 @@ public class WeenEvent {
                 return;
             } else {
                 WorldAPI.addMessage("호박파이와 무한 활이 지급되었습니다.");
+                PosHelper posHelper = new PosHelper(e.getPlayer());
                 EntityWeen ween = new EntityWeen(e.getPlayer().worldObj);
-                ween.setPosition(EntityAPI.lookX(e.getPlayer(), 15), e.getPlayer().posY, EntityAPI.lookZ(e.getPlayer(),15));
+                ween.setPosition(posHelper.getX(Direction.FORWARD, 15, true), e.getPlayer().posY, posHelper.getZ(Direction.FORWARD, 15, true));
                 e.getPlayer().worldObj.spawnEntityInWorld(ween);
                 e.getPlayer().setSpawnPoint(e.getPlayer().getPosition(), true);
                 ween.startTime = System.currentTimeMillis();//스폰에그로 소환해햐 onInitialSpawn 메서드가 실행이 되서 여기서 스타트 타임을 설정함
