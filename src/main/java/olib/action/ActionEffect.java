@@ -12,10 +12,10 @@ import java.util.HashMap;
  * 방패 사용여부, 맵 액션 데이터 가져오기, 벽타기 기능 활성화, 더블 점프 등의 기능이 있는 클래스
  */
 public class ActionEffect {
+	//현재 맵 이름
 	private static String mapName;
+	//맵 정보
 	private static HashMap<String, MapActionData> mapDataMap = new HashMap<>();
-
-	public static boolean useDoubleJump, isPlayerJump;
 
 	public static boolean isUseShield(EntityPlayer player) {
 		return ItemStack.areItemsEqualIgnoreDurability(player.getActiveItemStack(), new ItemStack(Items.SHIELD));
@@ -44,23 +44,6 @@ public class ActionEffect {
 		return getActionData(mapName).canCrawl();
 	}
 
-	public static void doubleJump(boolean on) {
-        getActionData(mapName).mapDoubleJump(on);
-	}
-
-	public static boolean canMapDoubleJump() {
-		return getActionData(mapName).canMapDoubleJump();
-	}
-
-	public static boolean canUseDoubleJump(EntityPlayer player){
-		GameSettings gs = Minecraft.getMinecraft().gameSettings;
-		return (!ActionEffect.useDoubleJump && gs.keyBindJump.isPressed() && !player.onGround && ActionEffect.isPlayerJump);
-	}
-
-	public static void resetDoubleJump(){
-		useDoubleJump = false;
-		isPlayerJump = false;
-	}
 
 	public static void setYTP(double tpy, float pitch, float yaw){
         getActionData(mapName).setYTP(tpy, pitch, yaw);
@@ -84,6 +67,7 @@ public class ActionEffect {
 
 	public static void load(String mapName) {
     	ActionEffect.mapName = mapName;
+    	DoubleJump.setMapName(mapName);
 		mapDataMap.put("널", new MapActionData("널"));
 		getActionData(mapName).load();
 	}

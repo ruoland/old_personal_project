@@ -78,7 +78,6 @@ public class EntityRoomBlock extends EntityPreBlock {
 
     @Override
     protected void collideWithEntity(Entity entityIn) {
-        entityIn.applyEntityCollision(this);
         if (this.getCurrentBlock() == Blocks.EMERALD_BLOCK) {
             ((EntityLivingBase) entityIn).knockBack(this, 1.4F, this.posX - entityIn.posX, this.posZ - entityIn.posZ);
         }
@@ -92,11 +91,14 @@ public class EntityRoomBlock extends EntityPreBlock {
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND && isServerWorld()) {
             if (this.getName().equalsIgnoreCase("entity.PuzzleMap.PuzzleBlock.name")) {
-                if (WorldAPI.equalsHeldItem(player, Items.FEATHER))
-                {
+                if (WorldAPI.equalsHeldItem(player, Items.FEATHER)) {
                     setForceFly(!isFly);
-                    System.out.println("플라이 "+isFly);
+                    System.out.println("플라이 " + isFly);
                     return super.processInteract(player, hand, stack);
+                }
+                if(!CommandJB.isDebMode && isForceFly())
+                {
+                    return false;
                 }
                 if (player.isSneaking() && !isTeleport()) {
                     setTeleport(true);

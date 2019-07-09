@@ -28,6 +28,10 @@ public class EntityMineRunner extends EntityDefaultNPC {
         super.jump();
     }
 
+    @Override
+    protected float getJumpUpwardsMotion() {
+        return super.getJumpUpwardsMotion() * 1.2F;
+    }
 
     @Override
     protected void entityInit() {

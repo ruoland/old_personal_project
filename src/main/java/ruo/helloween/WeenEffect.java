@@ -16,7 +16,6 @@ import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import ruo.helloween.miniween.EntityBlockWeen;
-import ruo.helloween.miniween.EntityMiniWeen;
 
 import java.util.Random;
 

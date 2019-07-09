@@ -1,10 +1,10 @@
 package ruo.helloween.miniween;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -14,10 +14,10 @@ import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
 import ruo.helloween.EntityWeen;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityAttackMiniWeen extends EntityMiniWeen {
+    private static final DataParameter<Integer> TARGET_ARRIVE_COUNT = EntityDataManager.createKey(EntityAttackMiniWeen.class, DataSerializers.VARINT);
     private boolean isAttackReverse;
     private float explosionStrength = 2F;
     private boolean targetExplosion;
@@ -37,6 +37,12 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         setTarget(0, 0, 0, 0);
     }
 
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        dataManager.register(TARGET_ARRIVE_COUNT, 0);
+    }
+
     /**
      * 목적지에 도달한 경우 폭발함
      */
@@ -50,6 +56,13 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         this.explosionStrength = explosionStrength;
     }
 
+
+    public void setAttackReverse(boolean attackReverse) {
+        this.setTarget(getSpawnPosVec());
+        isAttackReverse = attackReverse;
+        if (isAttackReverse)
+            setTargetExplosion(true);
+    }
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -65,18 +78,6 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
     }
 
     @Override
-    protected void collideWithEntity(Entity entityIn) {
-        super.collideWithEntity(entityIn);
-    }
-
-    public void setAttackReverse(boolean attackReverse) {
-        this.setTarget(getSpawnPosVec());
-        isAttackReverse = attackReverse;
-        if (isAttackReverse)
-            setTargetExplosion(true);
-    }
-
-    @Override
     public void targetArrive() {
         super.targetArrive();
 
@@ -88,6 +89,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
                 ween.attackEntityFrom(DamageSource.causeExplosionDamage(explosion), 5);
             }
         }
+
         if (targetDead)
             setDead();
     }
@@ -114,7 +116,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         TickRegister.register(new AbstractTick(40, false) {
             @Override
             public void run(TickEvent.Type type) {
-                setTarget(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight,
+                setTarget(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight + 3,
                         WorldAPI.z() + WorldAPI.rand(3));
                 setTargetExplosion(true);
                 setExplosionStrength(3F);

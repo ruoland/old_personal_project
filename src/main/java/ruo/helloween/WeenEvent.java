@@ -1,5 +1,6 @@
 package ruo.helloween;
 
+import minigameLib.MiniGame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings.Options;
 import net.minecraft.enchantment.Enchantment;
@@ -17,11 +18,9 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import olib.api.Direction;
-import olib.api.EntityAPI;
 import olib.api.PosHelper;
 import olib.api.WorldAPI;
 import ruo.helloween.miniween.EntityMiniWeen;
-import minigameLib.MiniGame;
 
 
 public class WeenEvent {

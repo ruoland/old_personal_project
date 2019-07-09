@@ -9,12 +9,14 @@ import map.escaperoom.nouse.dungeon.EntityRespawnZombie;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid ="PuzzleMap", name = "Puzzle Map")
 public class EscapeRoom {
@@ -25,7 +27,7 @@ public class EscapeRoom {
     public static Block blockForward = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "forward").setUnlocalizedName("forward").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Block blockWhatBlock = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "whatblock").setUnlocalizedName("whatBlock").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Block blockBarrier = new BlockBarrier(Material.ANVIL).setRegistryName("PuzzleMap", "puzzlebarrier").setUnlocalizedName("barrier").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-
+    public static Item itemRB = new ItemRB().setUnlocalizedName("itemrb").setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("PuzzleMap", "itemrb");
     @Mod.EventHandler
     public void init(FMLInitializationEvent e){
         DebAPI.registerEntity(this, "PuzzleBlock", EntityRoomBlock.class);
@@ -58,6 +60,7 @@ public class EscapeRoom {
         DebAPI.registerBlock(blockForward);
         DebAPI.registerBlock(blockWhatBlock);
         DebAPI.registerBlock(blockBarrier);
+        GameRegistry.register(itemRB);
         MinecraftForge.EVENT_BUS.register(new PuEvent());
         proxy.preInit();;
     }

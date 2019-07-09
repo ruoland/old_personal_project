@@ -76,12 +76,6 @@ public class EntityTeleportCreeper extends EntityCreeper {
                         teleportDelay = 500;
                     }
             }
-            if(getPassengers().size() > 0 && getDistanceToEntity(target) < 10)//크리퍼가 거미를 데리고 있는 경우
-            {
-                Entity entity =getPassengers().get(0);
-                entity.dismountRidingEntity();
-                entity.setVelocity(getLookVec().xCoord * 3, getLookVec().yCoord * 2, getLookVec().zCoord * 3);
-            }
 
             if (teleportDelay > 0)
                 teleportDelay--;

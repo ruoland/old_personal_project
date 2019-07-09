@@ -5,20 +5,30 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import olib.api.WorldAPI;
+import olib.map.TypeModel;
 
 public class EntityRoomRedBlue extends EntityRoomBlock {
+    private static final DataParameter<Boolean> IS_SPONGE = EntityDataManager.createKey(EntityRoomRedBlue.class, DataSerializers.BOOLEAN);
     public EntityRoomRedBlue(World worldIn) {
         super(worldIn);
         setBlock(Blocks.REDSTONE_BLOCK);
         isFly = true;
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        dataManager.register(IS_SPONGE, false);
     }
 
     @Override
@@ -31,14 +41,41 @@ public class EntityRoomRedBlue extends EntityRoomBlock {
         //super.collideWithEntity(entityIn);
     }
 
+    public boolean isActive(){
+        return canCollision();
+    }
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(isActive() && dataManager.get(IS_SPONGE) && isServerWorld()) {
+            BlockPos pos = getPosition();
+            while (checkLava(pos)) {
+                worldObj.setBlockState(pos, Blocks.AIR.getDefaultState());
+                for (int i = -3; i < 3; i++) {
+                    if (checkLava(pos.east(i))) {
+                        worldObj.setBlockState(pos.east(i), Blocks.AIR.getDefaultState());
+                    }
+
+                    if (checkLava(pos.west(1))) {
+                        worldObj.setBlockState(pos.west(i), Blocks.AIR.getDefaultState());
+                    }
+                }
+                pos = pos.down(1);
+
+                System.out.println("블럭 발견");
+            }
+        }
+
     }
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (hand == EnumHand.MAIN_HAND && isServerWorld()) {
+            if(WorldAPI.equalsHeldItem(new ItemBlock(Blocks.SPONGE))){
+                dataManager.set(IS_SPONGE, !dataManager.get(IS_SPONGE));
+                System.out.println(dataManager.get(IS_SPONGE));
+                return super.processInteract(player, hand, stack);
+            }
             if (WorldAPI.equalsHeldItem(player, Items.FEATHER))
             {
                 setForceFly(!isFly);
@@ -56,7 +93,6 @@ public class EntityRoomRedBlue extends EntityRoomBlock {
             setBlock(Blocks.LAPIS_BLOCK);
         } else if (getCurrentBlock() == Blocks.REDSTONE_BLOCK)
             setBlock(Blocks.REDSTONE_BLOCK);
-
         return super.processInteract(player, hand, stack);
     }
 
@@ -69,5 +105,17 @@ public class EntityRoomRedBlue extends EntityRoomBlock {
             worldObj.spawnEntityInWorld(movingBlock);
         }
         return movingBlock;
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setBoolean("isSponge", dataManager.get(IS_SPONGE));
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        dataManager.set(IS_SPONGE , compound.getBoolean("isSponge"));
     }
 }

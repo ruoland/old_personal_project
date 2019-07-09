@@ -10,6 +10,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiMRGameOver extends GuiGameOver implements GuiYesNoCallback {
@@ -23,7 +26,7 @@ public class GuiMRGameOver extends GuiGameOver implements GuiYesNoCallback {
 
     public void initGui() {
         super.initGui();
-        buttonList.get(0).displayString = "세이브 포인트에서 이어하기";
+        buttonList.get(0).displayString = "세이브 포인트로 이동하기(스페이스바)";
         buttonList.get(1).visible = !buttonList.get(1).visible;
         buttonList.get(1).enabled = false;
     }
@@ -57,5 +60,14 @@ public class GuiMRGameOver extends GuiGameOver implements GuiYesNoCallback {
 
     public boolean doesGuiPauseGame() {
         return true;
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+        if(keyCode == Keyboard.KEY_SPACE){
+            WorldAPI.command("/minerun respawn");
+            this.mc.displayGuiScreen((GuiScreen) null);
+        }
     }
 }

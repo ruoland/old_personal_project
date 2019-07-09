@@ -5,6 +5,7 @@ import cmplus.test.CMPacketCommand;
 import cmplus.util.CommandPlusBase;
 import minigameLib.MiniGame;
 import olib.action.ActionEffect;
+import olib.action.DoubleJump;
 import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
@@ -61,10 +62,10 @@ public class CommandJB extends CommandPlusBase {
 
             }
             if (args[0].equalsIgnoreCase("dj")) {
-                if (!ActionEffect.canMapDoubleJump() && Boolean.valueOf(args[1])) {
+                if (!DoubleJump.canMapDoubleJump() && Boolean.valueOf(args[1])) {
                     WorldAPI.addMessage("이제 점프를 공중에서 한번더 할 수 있습니다.(달리면서 점프하면 좀 더 멀리 뛸 수 있음)");
                 }
-                ActionEffect.doubleJump(Boolean.valueOf(args[1]));
+                DoubleJump.doubleJump(Boolean.valueOf(args[1]));
                 CMPlus.INSTANCE.sendToAll(new CMPacketCommand("서버더블점프"+args[1]));
 
             }

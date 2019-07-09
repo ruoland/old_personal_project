@@ -2,6 +2,7 @@ package map.escaperoom;
 
 import net.minecraft.init.Items;
 import net.minecraft.util.DamageSource;
+import olib.api.WorldAPI;
 import olib.map.EntityDefaultNPC;
 import olib.map.TypeModel;
 import net.minecraft.entity.Entity;
@@ -35,7 +36,7 @@ public class EntityRoomMonster extends EntityDefaultNPC {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getEntity() instanceof EntityPlayer && ((EntityPlayer) source.getEntity()).getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD){
+        if(source.getEntity() instanceof EntityPlayer && WorldAPI.equalsHeldItem((EntityPlayer) source.getEntity(), Items.DIAMOND_SWORD)){
             setDead();
         }
         return super.attackEntityFrom(source, amount);

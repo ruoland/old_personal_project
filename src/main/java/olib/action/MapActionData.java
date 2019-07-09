@@ -13,7 +13,7 @@ public class MapActionData {
     private double yLimit;
     private float tpPitch, tpYaw;
     private boolean isPlayerJump;
-
+    private boolean canRestart;
     public MapActionData(String mapName) {
         this.mapName = mapName;
         if(mapName != null || mapName.equalsIgnoreCase("널"))
@@ -36,6 +36,14 @@ public class MapActionData {
 
     public boolean canMapDoubleJump() {
         return canUseDoubleJump;
+    }
+
+    public boolean canRestart() {
+        return canRestart;
+    }
+
+    public void setCanRestart(boolean canRestart) {
+        this.canRestart = canRestart;
     }
 
     public void setYTP(double tpy, float pitch, float yaw) {
@@ -70,6 +78,7 @@ public class MapActionData {
             OLib.config.get(worldName, "tpY", -12345).set(yLimit);
             OLib.config.get(worldName, "tpYaw", 0).set(tpYaw);
             OLib.config.get(worldName, "tpPitch", 0).set(tpPitch);
+            OLib.config.get(worldName, "canRestart", false).set(canRestart);
         }
     }
 
@@ -84,6 +93,7 @@ public class MapActionData {
             yLimit = action.get("tpY").getDouble();
             tpYaw = (float) action.get("tpYaw").getDouble();
             tpPitch = (float) action.get("tpPitch").getDouble();
+            canRestart = action.get("canRestart").getBoolean();
         }
     }
 }

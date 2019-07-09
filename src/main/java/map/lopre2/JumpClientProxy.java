@@ -28,6 +28,5 @@ public class JumpClientProxy extends JumpCommonProxy {
         RenderAPI.registerRender(EntityPreBlock.class);
         RenderAPI.registerRender(EntityBuildBlock.class);
         RenderAPI.registerRender(EntityInvisibleBlock.class);
-        RenderAPI.registerRender(EntityTestB.class, new RenderBiped<EntityTestB>(Minecraft.getMinecraft().getRenderManager(), new ModelBiped(1F),1));
     }
 }

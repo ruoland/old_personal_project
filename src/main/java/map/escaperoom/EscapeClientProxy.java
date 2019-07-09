@@ -21,6 +21,7 @@ public class EscapeClientProxy extends EscapeServerProxy {
         RenderAPI.registerRender(EntityRoomPathCreeper.class);
         RenderAPI.registerRender(EntityRoomFallingBlock.class);
         RenderAPI.registerRender(EntityRoomBlockJumpMap.class);
+        RenderAPI.registerRender(EntityRoomRedBlue.class);
 
     }
 

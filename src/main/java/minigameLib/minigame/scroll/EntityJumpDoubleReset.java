@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
+import olib.action.DoubleJump;
 
 //TODO 설치할 때 무조건 블럭 가운데 설치되게 하기
 //TODO  충돌 범위 늘리기
@@ -45,8 +46,8 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
     protected void collideWithEntity(Entity entityIn) {
         super.collideWithEntity(entityIn);
         if(isServerWorld() && !isTeleport() && entityIn instanceof EntityPlayer && !isInv() && getEntityBoundingBox().intersectsWith(entityIn.getEntityBoundingBox())) {
-            ActionEffect.resetDoubleJump();
-            ActionEffect.isPlayerJump = true;
+            DoubleJump.resetDoubleJump();
+            DoubleJump.setIsPlayerJump(true);;
             setInv(true);
             setInvisible(true);
             entityIn.fallDistance = 0;

@@ -2,6 +2,7 @@ package cmplus.test;
 
 import cmplus.deb.DebAPI;
 import olib.action.ActionEffect;
+import olib.action.DoubleJump;
 import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,12 +20,12 @@ public class CMMessageHandler implements IMessageHandler<CMPacketCommand, IMessa
         System.out.println("메세지 핸들러 " + command+ctx.side);
         if (message.name.contains("서버더블점프")) {
             boolean isOn = Boolean.valueOf(message.name.replace("서버더블점프", ""));
-            ActionEffect.doubleJump(isOn);
-            System.out.println(ActionEffect.canMapDoubleJump());
+            DoubleJump.doubleJump(isOn);
+            System.out.println(DoubleJump.canMapDoubleJump());
         } else if (message.name.contains("더블점프:")) {
             EntityPlayerMP player = WorldAPI.getPlayerByName(message.name.replace("더블점프:", ""));
-            ActionEffect.useDoubleJump = true;
-            ActionEffect.isPlayerJump = false;
+            DoubleJump.setOnDoubleJump(true);
+            DoubleJump.setIsPlayerJump(false);
             player.motionY = 0.57F;
             player.jump();
             player.fallDistance = 0;

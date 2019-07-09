@@ -39,7 +39,7 @@ public class CommandRoom extends CommandPlusBase {
         if (args[0].equalsIgnoreCase("rb")) {
             if (args.length > 1) {
                 if (args[1].equalsIgnoreCase("timer")) {
-                    TickRegister.register(new AbstractTick("rb", TickEvent.Type.SERVER, 40, true) {
+                    TickRegister.register(new AbstractTick("rb", TickEvent.Type.SERVER, 30, true) {
                         @Override
                         public void run(TickEvent.Type type) {
                             WorldAPI.command("room rb");
@@ -54,18 +54,19 @@ public class CommandRoom extends CommandPlusBase {
                 for (Entity entity : sender.getEntityWorld().loadedEntityList) {
                     if (entity instanceof EntityRoomRedBlue) {
                         EntityRoomRedBlue rb = (EntityRoomRedBlue) entity;
+
                         if ((EscapeRoom.isRedMode && rb.getCurrentBlock() == Blocks.REDSTONE_BLOCK) || (!EscapeRoom.isRedMode && rb.getCurrentBlock() == Blocks.LAPIS_BLOCK)) {
                             rb.setTransparency(1F);
                             rb.setCollision(true);
-                            System.out.println((EscapeRoom.isRedMode && rb.getCurrentBlock() == Blocks.REDSTONE_BLOCK) + " - " + (!EscapeRoom.isRedMode && rb.getCurrentBlock() == Blocks.LAPIS_BLOCK));
+                            System.out.println("asdf"+rb.getTransparency());
                         } else {
                             rb.setTransparency(0.5F);
                             rb.setCollision(false);
+                            System.out.println("asdf"+rb.getTransparency());
                         }
                     }
                 }
                 EscapeRoom.isRedMode = !EscapeRoom.isRedMode;
-                System.out.println(EscapeRoom.isRedMode);
             }
         }
 

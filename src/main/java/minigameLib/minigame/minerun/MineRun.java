@@ -2,9 +2,11 @@ package minigameLib.minigame.minerun;
 
 
 import cmplus.camera.Camera;
+import cmplus.cm.v18.CommandFlySpeed;
 import cmplus.deb.DebAPI;
 import com.google.common.collect.Lists;
 import minigameLib.MiniGame;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import olib.api.Direction;
@@ -43,6 +45,7 @@ public class MineRun extends AbstractMiniGame {
     public static EntityMineRunner runner;
     private static World worldObj;
     public static Vec3d spawnPoint = null;
+
     public static EnumElytra elytraMode() {
         return elytra;
     }
@@ -125,7 +128,7 @@ public class MineRun extends AbstractMiniGame {
         } else if (elytraMode() == EnumElytra.RUNNING) {
             runner.setPosition(teleportVec);
             runner.setPositionAndUpdate(teleportVec.xCoord, teleportVec.yCoord, teleportVec.zCoord);
-            System.out.println(teleportVec.xCoord + " - "+teleportVec.zCoord+"로 이동함");
+            System.out.println(teleportVec.xCoord + " - " + teleportVec.zCoord + "로 이동함");
         } else if (elytraMode() == EnumElytra.ELYTRA) {
             Vec3d pos = playerPosHelper.getPosition().addVector(EntityAPI.lookX(runner, 6), -3, EntityAPI.lookZ(runner, 6));
             runner.setPosition(pos);
@@ -144,14 +147,16 @@ public class MineRun extends AbstractMiniGame {
 
     @Override
     public boolean start(Object... obj) {
-        keySetting(true);
+        ICommandSender sender;
 
-            Camera.getCamera().lockCamera(true);
-        ICommandSender sender = (ICommandSender) obj[0];
-        player = (EntityPlayer) sender;
+        player = (EntityPlayer) obj[0];
+        sender = player;
         worldObj = player.getEntityWorld();
-
-        WorldAPI.teleport(player.posX, player.posY+2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 30);//플레이어 pitch를 70으로
+        keySetting(true);
+        Camera.getCamera().lockCamera(true);
+        player.capabilities.setFlySpeed(0);
+        player.sendPlayerAbilities();
+        WorldAPI.teleport(player.posX, player.posY + 2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 30);//플레이어 pitch를 70으로
         spawnX = player.posX;
         spawnY = player.posY;
         spawnZ = player.posZ;
@@ -175,7 +180,7 @@ public class MineRun extends AbstractMiniGame {
         return super.start();
     }
 
-    private void cameraSetting(){
+    private void cameraSetting() {
         Camera.getCamera().reset();
         Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
         Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
@@ -194,14 +199,15 @@ public class MineRun extends AbstractMiniGame {
         Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
         Camera.getCamera().playerCamera(true);
     }
-    private void keySetting(boolean isStart){
+
+    private void keySetting(boolean isStart) {
         GameSettings gs = Minecraft.getMinecraft().gameSettings;
-        if(isStart) {
+        if (isStart) {
             gs.keyBindLeft.setKeyCode(Keyboard.KEY_SLEEP);
             gs.keyBindRight.setKeyCode(Keyboard.KEY_DIVIDE);
             gs.keyBindForward.setKeyCode(Keyboard.KEY_NOCONVERT);
             gs.keyBindBack.setKeyCode(Keyboard.KEY_SYSRQ);
-        }else{
+        } else {
             gs.keyBindLeft.setKeyCode(Keyboard.KEY_A);
             gs.keyBindRight.setKeyCode(Keyboard.KEY_D);
             gs.keyBindForward.setKeyCode(Keyboard.KEY_W);
@@ -209,6 +215,7 @@ public class MineRun extends AbstractMiniGame {
         }
         KeyBinding.resetKeyBindingArrayAndHash();
     }
+
     public static double xCoord() {
         if (player.getRidingEntity() instanceof EntityMinecartEmpty) {
             return xCoord * 1.5;
@@ -222,15 +229,37 @@ public class MineRun extends AbstractMiniGame {
         } else
             return zCoord;
     }
-    public static double speed = 3;
-    public static void runnerMove() {
 
-        if(Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()){
-            speed = 4;
+    public static double speed = 4;
+
+    public static void ladderMove() {
+        double posX = player.posX + curX + EntityAPI.lookX(player, MineRun.speed - 2);
+        double posZ = player.posZ + curZ + EntityAPI.lookZ(player, MineRun.speed - 2);
+        if (posX != 0)
+            player.motionX = MineRun.runner.posX - posX;//앞으로 나아가게 함 - 7월 14일
+        if (posZ != 0)
+            player.motionZ = MineRun.runner.posZ - posZ;
+    }
+    public static void cameraUpdate(){
+        double runnery = MineRun.runner.posY;
+        double playery = player.posY;
+        int distance = 2;
+
+        double value = runnery + distance - playery;
+        if (value != 0) {
+            player.motionY = value / 20;
+        } else
+            player.motionY = 0;
+    }
+
+
+    public static void runnerMove() {
+        if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()) {
+            speed = 4.5;
         }
         double posX = player.posX + curX + EntityAPI.lookX(player, speed);
         double posZ = player.posZ + curZ + EntityAPI.lookZ(player, speed);
-        if(MineRun.runner.isOnLadder()){
+        if (MineRun.runner.isOnLadder()) {
             runner.motionY = 0.02;
         }
         //runner.setPositionAndUpdate(runner.posX +(posX - runner.posX), runner.posY, runner.posZ+(posZ - runner.posZ));
@@ -240,7 +269,8 @@ public class MineRun extends AbstractMiniGame {
         if (curY != 0) {
             curY = 0;
         }
-
+        runner.motionX = MineRun.xCoord();//걷는 모션을 주기 위해 있음 - 7월 14일
+        runner.motionZ = MineRun.zCoord();
     }
 
     public static double getLookX() {
@@ -268,6 +298,8 @@ public class MineRun extends AbstractMiniGame {
         WorldAPI.command("/minerun lava");
         Camera.getCamera().reset();
         player.setGameType(GameType.CREATIVE);
+        player.capabilities.setFlySpeed(0.05F);
+        player.sendPlayerAbilities();
         return super.end();
     }
 }

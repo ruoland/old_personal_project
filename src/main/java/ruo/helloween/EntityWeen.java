@@ -1,6 +1,5 @@
 package ruo.helloween;
 
-import cmplus.camera.Camera;
 import cmplus.util.Sky;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -18,8 +17,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
@@ -50,7 +47,7 @@ public class EntityWeen extends EntityDefaultNPC {
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_ROTATE = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_COMPLETEY = EntityDataManager.createKey(EntityWeen.class,
+    private static final DataParameter<Boolean> COMPLETE_Y = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> LOOK_PLAYER = EntityDataManager.createKey(EntityWeen.class,
             DataSerializers.BOOLEAN);
@@ -64,8 +61,8 @@ public class EntityWeen extends EntityDefaultNPC {
         super(worldIn);
         this.setSize(13, 13);
         this.setModel(TypeModel.BLOCK);
-        this.setTra(0, -5F, 0);
         this.addScale(12);
+        this.setTra(0, -5F, 0);
         setCollision(true);
         setRotate(0, 0, 180);
         this.setBlock(Blocks.LIT_PUMPKIN);
@@ -110,10 +107,10 @@ public class EntityWeen extends EntityDefaultNPC {
     public void onLivingUpdate() {
         if (isServerWorld()) {
             if (!isSturn() && pattern() == 1) {
-                if (!isJumpWeen())
-                    jumpStartWeen();
-                if (isJumpWeen() && isServerWorld() && isRotateComplete() && onGround && isCompleteY())
-                    fallWeen();//하늘에 올라갔다가 땅에 떨어진 경우
+                //if (!isJumpWeen())
+                    //jumpStartWeen();
+               // if (isJumpWeen() && isServerWorld() && isRotateComplete() && onGround && isCompleteY())
+                    //fallWeen();//하늘에 올라갔다가 땅에 떨어진 경우
             }
             if (pattern() == 6)
                 jumpWeenUpgrade();
@@ -158,7 +155,7 @@ public class EntityWeen extends EntityDefaultNPC {
                     public void run(Type type) {
                         System.out.println("[첫패턴]목적 Y에 도달함. 이제 추락함");
                         setRotate(90, 0, 0);
-                        dataManager.set(IS_COMPLETEY, true);
+                        dataManager.set(COMPLETE_Y, true);
                     }
                 });
             }
@@ -192,7 +189,7 @@ public class EntityWeen extends EntityDefaultNPC {
                     for (int i = 0; i < 2; i++) {
                         EntityAttackMiniWeen blockWeen = new EntityAttackMiniWeen(worldObj);
                         blockWeen.isFly = false;
-                        blockWeen.setPosition(posX + (rand.nextInt(32) - 16), posY, posZ + (rand.nextInt(32) - 16));
+                        blockWeen.setPosition(posX + (rand.nextInt(32) - 16), posY+10, posZ + (rand.nextInt(32) - 16));
                         worldObj.spawnEntityInWorld(blockWeen);
                         blockWeen.addRotate(rand.nextInt(90), rand.nextInt(90), rand.nextInt(90));
                         blockWeen.addVelocity((rand.nextInt(3) - 3), (rand.nextInt(3) - 3), (rand.nextInt(3) - 3));
@@ -216,21 +213,11 @@ public class EntityWeen extends EntityDefaultNPC {
         }
         setSturn(130);
         dataManager.set(IS_JUMP, false);
-        dataManager.set(IS_COMPLETEY, false);
+        dataManager.set(COMPLETE_Y, false);
         dataManager.set(IS_ROTATE, false);
     }
 
-    @Override
-    public void onSturn() {
-        setBlock(isSturn() ? Blocks.PUMPKIN : Blocks.LIT_PUMPKIN);
-        if (isSturn()) {
-            System.out.println("스턴 걸림");
-            this.bossHealth.setName(new TextComponentString("윈 (기절)" + getHealth()));
-        } else {
-            System.out.println("스턴 풀림");
-            this.bossHealth.setName(new TextComponentString("윈" + getHealth()));
-        }
-    }
+
 
     public void twoPattern() {
         TickRegister.register(new AbstractTick(130, false) {
@@ -530,7 +517,7 @@ public class EntityWeen extends EntityDefaultNPC {
                             miniween.setPattern(6);
                         }
                         getDataManager().set(IS_JUMP, true);
-                        dataManager.set(IS_COMPLETEY, true);
+                        dataManager.set(COMPLETE_Y, true);
                         dataManager.set(IS_ROTATE, true);
                     }
                 });
@@ -544,7 +531,7 @@ public class EntityWeen extends EntityDefaultNPC {
                 && posY < 5) {
             WeenEffect.entityKnockBackDamage(this, 30, 30, 30, 5.5F, DamageSource.fall, 7);
             getDataManager().set(IS_JUMP, false);
-            dataManager.set(IS_COMPLETEY, false);
+            dataManager.set(COMPLETE_Y, false);
             dataManager.set(IS_ROTATE, false);
             CMEffect.setCameraEarthquake2(15, 60);
             this.attackEntityFrom(DamageSource.fall, 5);
@@ -585,7 +572,7 @@ public class EntityWeen extends EntityDefaultNPC {
         long minute = sec / 60;
         long second = sec - sec / 60 * 60;
         System.out.println((endTime - EntityWeen.startTime) / 1000 + "초.");
-        ItemStack stack = EntityAPI.createBook("플레ㅣㅇ어에게", "호박", "호박 윈을 잡는데 걸린 시간 : \n " + (minute) + "분 "
+        ItemStack stack = EntityAPI.createBook(WorldAPI.getPlayer().getName()+"밈에게", "호박", "호박 윈을 잡는데 걸린 시간 : \n " + (minute) + "분 "
                 + second + "초" + "\n\n 플레이 해주셔서 감사합니다. \n\n 제가 만든 모드 점프맵도 한번 해보세요. \n (뒤에도 페이지 있음)", "\n 간단한 미니게임이 있음! \n 하려면 채팅창에 슈팅게임 이라고 입력하세요", "");
 
         if (!worldObj.isRemote)
@@ -617,7 +604,17 @@ public class EntityWeen extends EntityDefaultNPC {
             }
         });
     }
-
+    @Override
+    public void onSturn() {
+        setBlock(isSturn() ? Blocks.PUMPKIN : Blocks.LIT_PUMPKIN);
+        if (isSturn()) {
+            System.out.println("스턴 걸림");
+            this.bossHealth.setName(new TextComponentString("윈 (기절)" + getHealth()));
+        } else {
+            System.out.println("스턴 풀림");
+            this.bossHealth.setName(new TextComponentString("윈" + getHealth()));
+        }
+    }
     public boolean isJumpWeen() {
         return getDataManager().get(IS_JUMP);
     }
@@ -627,7 +624,7 @@ public class EntityWeen extends EntityDefaultNPC {
     }
 
     public boolean isCompleteY() {
-        return getDataManager().get(IS_COMPLETEY);
+        return getDataManager().get(COMPLETE_Y);
     }
 
     @Override
@@ -642,7 +639,7 @@ public class EntityWeen extends EntityDefaultNPC {
         super.entityInit();
         this.dataManager.register(IS_JUMP, false);
         this.dataManager.register(IS_ROTATE, false);
-        this.dataManager.register(IS_COMPLETEY, false);
+        this.dataManager.register(COMPLETE_Y, false);
         this.dataManager.register(PATTERN, 1F);
         this.dataManager.register(LOOK_PLAYER, true);
     }

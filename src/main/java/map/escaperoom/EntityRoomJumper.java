@@ -14,7 +14,7 @@ public class EntityRoomJumper extends EntityRoomBlock {
     @Override
     public void onCollideWithPlayer(EntityPlayer entityIn) {
         super.onCollideWithPlayer(entityIn);
-        if(entityIn.posY > this.posY && entityIn.onGround){
+        if(this.getDistanceToEntity(entityIn) < 2 && entityIn.posY > (this.posY+0.5) && entityIn.onGround){
             entityIn.motionY += 1;
         }
     }
