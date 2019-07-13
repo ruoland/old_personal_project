@@ -1,5 +1,6 @@
-package map.lopre2.jump2;
+package map.lopre2.nouse;
 
+import map.lopre2.jump2.EntityBigBlock;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

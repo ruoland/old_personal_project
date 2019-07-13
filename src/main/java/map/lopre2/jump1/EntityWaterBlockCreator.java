@@ -24,9 +24,10 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 
 	public EntityWaterBlockCreator(World worldObj) {
 		super(worldObj);
-		this.setBlockMode(Blocks.STONE);
+		this.setBlockMode(Blocks.DISPENSER);
 		this.setCollision(true);
 		this.isFly = true;
+		setJumpName("블럭 생성 블럭");
 	}
 
 	@Override
@@ -50,6 +51,12 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 		return lavaBlock;
 
 	}
+
+	@Override
+	public String getText() {
+		return "블럭을 계속 생성하는 블럭입니다.";
+	}
+
 	public void spawn2(double x, double y, double z) {
 		EntityWaterBlockCreator lavaBlock = new EntityWaterBlockCreator(worldObj);
 		lavaBlock.setSpawnXYZ(x, y, z);

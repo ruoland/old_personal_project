@@ -47,14 +47,15 @@ public class EntityMoveBlock extends EntityPreBlock {
 
     public EntityMoveBlock(World worldIn) {
         super(worldIn);
-        this.setBlockMode(Blocks.STONE);
+        this.setBlockMode(Blocks.ICE);
         this.setCollision(true);
         this.isFly = true;
+        setJumpName("이동 블럭");
     }
 
     @Override
     public String getCustomNameTag() {
-        return "MoveBlock" + " 이동 중?" + !dataManager.get(CAN_BLOCK_MOVE) + " - 목적지" + (endPos != null ? endPos[0] + " - " + endPos[1] + " - " + endPos[2] : "");
+        return getJumpName() + " 이동 중?" + !dataManager.get(CAN_BLOCK_MOVE) + " - 목적지" + (endPos != null ? endPos[0] + " - " + endPos[1] + " - " + endPos[2] : "");
     }
 
 
@@ -181,6 +182,11 @@ public class EntityMoveBlock extends EntityPreBlock {
         lavaBlock.setBlockMode(getCurrentBlock());
         worldObj.spawnEntityInWorld(lavaBlock);
         return lavaBlock;
+    }
+
+    @Override
+    public String getText() {
+        return "상하좌우로 움직일 수 있는 블럭입니다. 스패너를 들고 원하는 방향을 바라보고 우클릭 하세요.";
     }
 
     @Override

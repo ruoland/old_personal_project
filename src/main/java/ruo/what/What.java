@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.Random;
 
-@Mod(modid = "What", name = "asdf")
+//@Mod(modid = "What", name = "asdf")
 public class What {
     private static Random rand = new Random();
     @Mod.EventHandler

@@ -12,7 +12,7 @@ public class EntityInvisibleBlock extends EntityPreBlock {
 	public EntityInvisibleBlock(World worldIn) {
 		super(worldIn);
 		this.setCollision(true);
-		setBlockMode(Blocks.STONE);
+		setBlockMode(Blocks.GOLD_BLOCK);
 		this.isFly = true;
 		defaultDelay = 20;
 		setJumpName("투명 블럭");
@@ -47,6 +47,12 @@ public class EntityInvisibleBlock extends EntityPreBlock {
 		worldObj.spawnEntityInWorld(lavaBlock);
 		return lavaBlock;
 	}
+
+	@Override
+	public String getText() {
+		return "1초마다 투명해지는 블럭입니다. 투명해지더라도 밟을 수는 있습니다.";
+	}
+
 	public int defaultDelay, invDelay;
 	@Override
 	public void onLivingUpdate() {

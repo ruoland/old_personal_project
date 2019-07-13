@@ -68,6 +68,11 @@ public class EntityRoomBlockShooter extends EntityPreBlock {
         return lavaBlock;
     }
 
+    @Override
+    public String getText() {
+        return "에메랄드 블럭 발사? ";
+    }
+
     public void addThrowTime() {
         dataManager.set(THROW_TIME, dataManager.get(THROW_TIME) + 1);
     }

@@ -20,6 +20,7 @@ public class EntityKnockbackBlock extends EntityMoveBlock {
         this.setCollision(true);
         this.isFly = true;
         speed = 0.04;
+        setJumpName("넉백 블럭");
     }
 
     @Override
@@ -44,6 +45,11 @@ public class EntityKnockbackBlock extends EntityMoveBlock {
     @Override
     public void onCollideWithPlayer(EntityPlayer entityIn) {
         super.onCollideWithPlayer(entityIn);
+    }
+
+    @Override
+    public String getText() {
+        return "주변에 있는 생명체를 밀어내는 블럭입니다. 스패너를 들고 우클릭 하면 플레이어가 보는 방향으로 움직입니다.";
     }
 
     @Override

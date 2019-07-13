@@ -11,10 +11,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import olib.api.WorldAPI;
-import ruo.yout.ItemUp;
+import ruo.yout.item.ItemUp;
 
 import java.util.List;
 
+//아래로 내려가면 무슨 일이 일어나는지 실험하는 용 명령어
 public class CommandMojaeY extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
@@ -41,7 +42,7 @@ public class CommandMojaeY extends CommandPlusBase {
             WorldAPI.teleport(sender.getPosition().getX(), Double.valueOf(args[1]), sender. getPosition().getZ());
         }
         if(args[0].equalsIgnoreCase("yy")){
-            ItemUp.mo  = parseDouble(args[1]);
+            ItemUp.motion  = parseDouble(args[1]);
         }
 
     }

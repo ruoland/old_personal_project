@@ -66,14 +66,6 @@ public class ItemSpanner extends Item {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer playerIn, Entity target) {
-        if (target instanceof EntityBigBlock) {
-            EntityBigBlock lavaBlock = (EntityBigBlock) target;
-            lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() - 1);
-        }
-        if (target instanceof EntityWaterBlockCreator) {
-            EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
-            lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() - 1);
-        }
         if (target instanceof EntityLavaBlock) {
             EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
             if(lavaBlock.width == 1F && lavaBlock.height == 1 || lavaBlock.getWidth() == 1F && lavaBlock.getHeight() == 1F){
@@ -102,13 +94,6 @@ public class ItemSpanner extends Item {
             String name = target.getClass().getSimpleName().replace("Entity", "");
             lavaBlock.defaultDelay -= 5;
             lavaBlock.setCustomNameTag(name + " 딜레이:" + (lavaBlock.defaultDelay / 20F));
-        }
-        if (target instanceof EntityKnockbackBlock) {
-            EntityKnockbackBlock lavaBlock = (EntityKnockbackBlock) target;
-            if (!playerIn.isSneaking())
-                lavaBlock.knockbackSize += 0.1;
-            else
-                lavaBlock.knockbackSize -= 0.1;
         }
         return super.onLeftClickEntity(stack, playerIn, target);
     }

@@ -33,6 +33,7 @@ import map.lopre2.jump2.EntityBigInvisibleBlock;
 
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
+    public static int x,y=80,width,height;
     public static long startTime, endTime;
     public static boolean isDebMode = false, isLavaInvisible;//용암 블럭 투명화를 반대로 설정함
     //E 1127 247 -70
@@ -74,13 +75,18 @@ public class CommandJB extends CommandPlusBase {
                 isDebMode = true;
 
             if (args[0].equalsIgnoreCase("help")) {
-                sender.addChatMessage(new TextComponentString("1.블럭이 보이지 않는 경우는 나갔다 들어오기"));
-                sender.addChatMessage(new TextComponentString("2.체력과 배고픔 회복은 /heal"));
-                sender.addChatMessage(new TextComponentString("3./fly true 를 입력하면 하늘을 날 수 있습니다"));
-                sender.addChatMessage(new TextComponentString("4.너무 어려우면 /spawnpoint (사용시 도전과제 클리어 못함)"));
-                sender.addChatMessage(new TextComponentString("5.달리기 키 " + Keyboard.getKeyName(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode()) + "를 누르면 달리기가 쉬워집니다"));
-                sender.addChatMessage(new TextComponentString("6.2D 스테이지에서 맵을 나간 경우 /scoll z 명령어를 입력해주세요"));
-
+                if(args.length > 1){
+                    if(args[1].equalsIgnoreCase("2")){
+                        sender.addChatMessage(new TextComponentString(""));
+                    }
+                }else {
+                    sender.addChatMessage(new TextComponentString("블럭을 들고 K키를 누르면 블럭을 설치합니다."));
+                    sender.addChatMessage(new TextComponentString("블럭을 들고 J키를 누르면 블럭을 복사후 붙여넣기 합니다."));
+                    sender.addChatMessage(new TextComponentString("블럭을 들고 마우스 휠을 돌리면 거리를 조절할 수 있습니다."));
+                    sender.addChatMessage(new TextComponentString("블럭을 들고 화살표 키를 누르면 블럭을 회전시킬 수 있습니다."));
+                    sender.addChatMessage(new TextComponentString("블럭을 쉬프트 키를 누르고 마우스 왼클릭을 하면 블럭을 없앨 수 있습니다.."));
+                    sender.addChatMessage(new TextComponentString("블럭을 쉬프트 키를 누르고 마우스 우클릭을 하면 블럭을 들 수 있습니다.."));
+                }
             }
             if (args[0].equalsIgnoreCase("start")) {
                 startTime = System.currentTimeMillis();
@@ -99,82 +105,7 @@ public class CommandJB extends CommandPlusBase {
                 isLavaInvisible = !isLavaInvisible;
                 System.out.println(isLavaInvisible);
             }
-            if (args[0].equalsIgnoreCase("hidepath1")) {
-                WorldAPI.getPlayer().addStat(LoPre2.achievementHidePath1);
-            }
-            if (args[0].equalsIgnoreCase("hidepath2")) {
-                WorldAPI.getPlayer().addStat(LoPre2.achievementHidePath2);
-            }
-            if (args[0].equalsIgnoreCase("end")) {
-                endTime = System.currentTimeMillis();
-                long se = endTime - startTime;
-                long sec = se / (1000);
-                long minute = sec / 60;
-                long second = sec - sec / 60 * 60;
-                System.out.println((endTime - startTime) / 1000 + "초.");
 
-                if (FMLCommonHandler.instance().getSide() == Side.CLIENT && WorldAPI.equalsWorldName("JumpMap")) {
-                    int appleCount = 0;
-                    for (EntityPlayer player : server.getPlayerList().getPlayerList()) {
-                        appleCount += WorldAPI.findInventoryItemCount(player, Items.APPLE);
-                        player.addStat(LoPre2.achievementOneClear);
-                        if (appleCount > 1) {
-                            player.addStat(LoPre2.achievementApple);
-                        }
-                        if (LooPre2Event.deathCount == 0) {
-                            player.addStat(LoPre2.achievementNoDie1);
-                        }
-                        if (LooPre2Event.gamemodeCount == 0) {
-                            player.addStat(LoPre2.achievementNoGameMode1);
-                        }
-                    }
-
-                    for(EntityPlayerMP playerMP : server.getPlayerList().getPlayerList()){
-                        playerMP.addChatMessage(new TextComponentString("                           "));
-                        playerMP.addChatMessage(new TextComponentString("                           "));
-                        playerMP.addChatMessage(new TextComponentString("                           "));
-                        playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
-                        playerMP.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
-                    }
-                    WorldAPI.addMessage("1탄을 클리어 하셨습니다. 2탄으로 바로 넘어갈까요?");
-                    TextComponentString textComponent = new TextComponentString("[2탄으로 넘어가려면 이 메세지를 누르세요.](게임이 잠깐 멈춥니다)");
-                    Style style = new Style();
-                    style.setColor(TextFormatting.BOLD);
-                    textComponent.setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb jump2")));
-                    //sender.addChatMessage(textComponent);
-                    endTime = 0;
-                    startTime = 0;
-                    WorldAPI.getPlayer().addChatComponentMessage(textComponent);
-                } else if (WorldAPI.equalsWorldName("JumpMap Sea2")) {
-                    WorldAPI.getPlayer().addStat(LoPre2.achievementTwoClear);
-                    if (LooPre2Event.deathCount == 0) {
-                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoDie2);
-                    }
-                    if (LooPre2Event.gamemodeCount == 0) {
-                        WorldAPI.getPlayer().addStat(LoPre2.achievementNoGameMode2);
-                    }
-                    for(EntityPlayerMP playerMP : server.getPlayerList().getPlayerList()){
-                        playerMP.addChatMessage(new TextComponentString("                           "));
-                        playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
-                        playerMP.addChatMessage(new TextComponentString("모쿠르 2탄도 클리어 하셨습니다. 플레이 해주셔서 감사합니다!"));
-                    }
-                }
-            }
-            if (args[0].equalsIgnoreCase("jump2")) {
-                if (WorldAPI.equalsWorldName("JumpMap")) {
-                    WorldAPI.addMessage("난이도를 선택해주세요.(설정에서 난이도를 언제든지 바꿀 수 있습니다.)");
-                    TextComponentString textComponent = new TextComponentString("   ");
-                    TextComponentString normal = new TextComponentString("[쉬운 난이도]");
-                    normal.setStyle(new Style().setColor(TextFormatting.RED).setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb easy")));
-                    TextComponentString hard = new TextComponentString("[보통 난이도]");
-                    hard.setStyle(new Style().setColor(TextFormatting.GREEN).setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jb normal")));
-                    textComponent = (TextComponentString) normal.appendSibling(textComponent).appendSibling(hard);
-                    sender.addChatMessage(textComponent);
-                }
-            }
-            if (args[0].equalsIgnoreCase("easy") || args[0].equalsIgnoreCase("normal")) {
-                worldLoad(args[0]);
-            }
             if (args[0].equalsIgnoreCase("pos1")) {
                 pos1 = WorldAPI.changePosArrayInt((EntityLivingBase) sender);
             }
@@ -210,12 +141,7 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("moveStop")) {
                 EntityMoveBlock.allBlockMoveStop = Boolean.valueOf(args[1]);
             }
-            if (args[0].equalsIgnoreCase("nightvision")) {
-                LooPre2Event.nightVision = t.parseBoolean(args[1]);
-            }
-            if (args[0].equalsIgnoreCase("posy")) {
-                LooPre2Event.posYDead = t.parseBoolean(args[1]);
-            }
+
             if (args[0].equalsIgnoreCase("invlock")) {
                 EntityBigInvisibleBlock.isInvisibleLock = !EntityBigInvisibleBlock.isInvisibleLock;
             }
@@ -227,20 +153,5 @@ public class CommandJB extends CommandPlusBase {
                 WorldAPI.teleport(vec.xCoord, vec.yCoord + 1, vec.zCoord);
             }
         }
-    }
-
-    public void worldLoad(String diffu) {
-        Minecraft mc = Minecraft.getMinecraft();
-
-        LooPre2Event.spawnCount = 0;
-        LooPre2Event.healCount = 0;
-        LooPre2Event.gamemodeCount = 0;
-        LooPre2Event.deathCount = 0;
-        String worldName = "JumpMap Sea2";
-        if (diffu.equalsIgnoreCase("easy"))
-            mc.gameSettings.difficulty = EnumDifficulty.EASY;
-        else if (diffu.equalsIgnoreCase("normal"))
-            mc.gameSettings.difficulty = EnumDifficulty.NORMAL;
-        WorldAPI.worldLoad(worldName);
     }
 }

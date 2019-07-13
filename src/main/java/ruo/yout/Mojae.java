@@ -4,6 +4,7 @@ import cmplus.deb.DebAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.*;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -21,18 +22,24 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import olib.api.RenderAPI;
 import ruo.yout.command.*;
+import ruo.yout.item.*;
 import ruo.yout.mojaelab.LabEvent;
+import ruo.yout.mojaelab.StatEvent;
 
 import java.util.HashMap;
 
-//@Mod(modid =  "Mojae")
+@Mod(modid =  "Mojae")
 public class Mojae {
+    public static HashMap<String, Float> damageMap = new HashMap<>();
+    public static HashMap<String, Float> killMap = new HashMap<>();
 
     public static HashMap<String, String> monterAttack = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static HashMap<String, String> monterAttackRemove = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static boolean spawnLockMode;//소환되는 몬스터를 전부 잠금
 
-    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = true, wither;
+    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = false, wither;
+    public static boolean morespawn;
+    public static boolean statStart;
     public static int arrow_count= 1, skelDelay = -1;
     @SidedProxy(clientSide = "ruo.yout.MojaeClientProxy", serverSide = "ruo.yout.MojaeCommonProxy")
     public static MojaeCommonProxy proxy;
@@ -48,10 +55,9 @@ public class Mojae {
     public  void init(FMLInitializationEvent e){
         MinecraftForge.EVENT_BUS.register(new MoJaeEvent());
         MinecraftForge.EVENT_BUS.register(new LabEvent());
+        MinecraftForge.EVENT_BUS.register(new StatEvent());
         Blocks.GLASS.setResistance(1000000);
         Blocks.GLOWSTONE.setResistance(1000000);
-        Blocks.GRASS.setResistance(1000000);
-        Blocks.DIRT.setResistance(1000000);
         Blocks.GLOWSTONE.setLightLevel(100);
         Potion.REGISTRY.register(30, new ResourceLocation("lock"), lockPotion);
         Potion.REGISTRY.register(31, new ResourceLocation("godPotion"), godPotion);
@@ -59,9 +65,7 @@ public class Mojae {
         DebAPI.registerEntity(this, "MissileCree", EntityMissileCreeperLab.class);
         DebAPI.registerEntity(this, "FlyingCree", EntityFlyingCreeperLab.class);
         DebAPI.registerEntity(this, "VELOCITY-MojaeArrow", EntityMojaeArrow.class);
-        EntityRegistry.addSpawn(EntityFlyingCreeperLab.class, 10000,1,10, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.DEFAULT
-        ,Biomes.TAIGA, Biomes.SKY, Biomes.RIVER, Biomes.HELL, Biomes.EXTREME_HILLS, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.FOREST_HILLS, Biomes.VOID, Biomes.TAIGA_HILLS);
-        RenderAPI.registerRender(EntityFlyingCreeperLab.class);
+             RenderAPI.registerRender(EntityFlyingCreeperLab.class);
         RenderAPI.registerRender(EntityMissileCreeperLab.class);
         proxy.init();;
     }

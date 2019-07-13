@@ -269,6 +269,11 @@ public class EntityRoomBlock extends EntityPreBlock {
         return lavaBlock;
     }
 
+    @Override
+    public String getText() {
+        return "들고 던질 수 있는 블럭.";
+    }
+
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {

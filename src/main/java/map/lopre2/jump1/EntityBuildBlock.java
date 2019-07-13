@@ -45,7 +45,7 @@ public class EntityBuildBlock extends EntityPreBlock {
         this.setBlockMode(Blocks.STONE);
         isFly = true;
         this.setCollision(false);
-        setJumpName("빌드 블럭");
+        setJumpName("건물 블럭");
     }
 
     @Override
@@ -65,6 +65,11 @@ public class EntityBuildBlock extends EntityPreBlock {
         buildBlock.setSpawnXYZ(x, y, z);
         buildBlock.setPosition(x, y, z);
         return buildBlock;
+    }
+
+    @Override
+    public String getText() {
+        return "건물 형태의 블럭입니다.";
     }
 
     @Override

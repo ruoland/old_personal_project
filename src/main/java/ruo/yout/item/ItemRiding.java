@@ -1,5 +1,6 @@
-package ruo.yout;
+package ruo.yout.item;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,5 +27,12 @@ public class ItemRiding extends Item {
             }
         }
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
+    }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+        firstEntity = null;
+        secondEntity = null;
+        return super.onLeftClickEntity(stack, player, entity);
     }
 }

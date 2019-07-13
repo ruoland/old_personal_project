@@ -78,6 +78,11 @@ public class EntityRoomFallingBlock extends EntityPreBlock {
     }
 
     @Override
+    public String getText() {
+        return "떨어지고나서 1.5초 후 다시 스폰 장소로 돌아오는 블럭입니다.";
+    }
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("RETURN", getReturnDelay());

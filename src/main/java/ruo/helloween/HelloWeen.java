@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import ruo.helloween.miniween.*;
 
-@Mod(modid = "Halloween")
+//@Mod(modid = "Halloween")
 public class HelloWeen {
 	@SidedProxy(serverSide = "ruo.helloween.HWCommonProxy", clientSide = "ruo.helloween.HWClientProxy")
 	public static HWCommonProxy proxy;

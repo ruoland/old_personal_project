@@ -1,7 +1,6 @@
 package map.escaperoom;
 
 import cmplus.deb.DebAPI;
-import map.escaperoom.nouse.EntityRoomBlockJumpMap;
 import map.lopre2.jump1.EntityLavaBlock;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,22 +39,4 @@ public class PuEvent {
 //        event.getWorld().spawnParticle(EnumParticleTypes.FLAME, 0,0,0,0,0,0);
     }
 
-
-    @SubscribeEvent
-    public void event(MouseEvent event) {
-        if (EntityRoomBlockJumpMap.isTeleport) {
-            if (event.getDwheel() == 120) {
-                if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL)) {
-                    EntityLavaBlock.ax -= 0.3;
-                } else
-                    EntityLavaBlock.ax -= 0.05;
-            }
-            if (event.getDwheel() == -120) {
-                if (DebAPI.isKeyDown(Keyboard.KEY_LCONTROL)) {
-                    EntityLavaBlock.ax += 0.3;
-                } else
-                    EntityLavaBlock.ax += 0.05;
-            }
-        }
-    }
 }

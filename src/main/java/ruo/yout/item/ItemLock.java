@@ -1,4 +1,4 @@
-package ruo.yout;
+package ruo.yout.item;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
+import ruo.yout.Mojae;
 
 public class ItemLock extends Item {
     @Override

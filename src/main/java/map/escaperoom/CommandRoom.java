@@ -2,22 +2,18 @@ package map.escaperoom;
 
 import cmplus.util.CommandPlusBase;
 import map.escaperoom.nouse.base.EntityRoomDoorBase;
-import map.escaperoom.nouse.EntityRoomBlockJumpMap;
-import map.lopre2.EntityPreBlock;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -70,15 +66,6 @@ public class CommandRoom extends CommandPlusBase {
             }
         }
 
-        if (args[0].equalsIgnoreCase("jumpclear")) {
-            for (Entity entity : sender.getEntityWorld().loadedEntityList) {
-                if (entity instanceof EntityRoomBlockJumpMap) {
-                    entity.setDead();
-                    EntityRoomBlockJumpMap.jump_count = 0;
-                    EntityPreBlock.ax = 3;
-                }
-            }
-        }
         if (args[0].equalsIgnoreCase("movezombie")) {
             for (Entity entity : sender.getEntityWorld().loadedEntityList) {
                 if (entity instanceof EntityRoomMoveZombie) {

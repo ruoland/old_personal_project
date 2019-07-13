@@ -29,8 +29,9 @@ public class EntityBigBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
-        this.setTeleportLock(false);
+        this.setTeleportLock(true);
         this.noClip = !noClip;
+        setJumpName("빅 블럭");
     }
 
     @Override
@@ -52,9 +53,12 @@ public class EntityBigBlock extends EntityPreBlock {
     }
 
     @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        System.out.println(getRotateX()+ " - "+getRotateY()+" - "+getRotateZ());
+    public String getText() {
+        return "사이즈가 큰 블럭입니다. 스패너를 들고 우클릭 하면 블럭을 밟았을 때 떨어지게 할 수 있습니다.";
+    }
 
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         return super.processInteract(player, hand, stack);
     }
 
@@ -74,7 +78,7 @@ public class EntityBigBlock extends EntityPreBlock {
     }
 
     public int getDefaultDelay() {
-        return dataManager.get(DEFAULT_DELAY).intValue();
+        return dataManager.get(DEFAULT_DELAY);
     }
 
     public void setFalling(boolean is) {
@@ -82,7 +86,7 @@ public class EntityBigBlock extends EntityPreBlock {
     }
 
     public boolean isFalling() {
-        return dataManager.get(ISFALLING).booleanValue();
+        return dataManager.get(ISFALLING);
     }
 
     @Override
@@ -114,7 +118,7 @@ public class EntityBigBlock extends EntityPreBlock {
         }else if(getRotateX() == 0 && getRotateY() == 0 && getRotateZ() == 0){
             setTeleportLock(false);
         }
-        if (getCustomNameTag().indexOf("SmallBlock") != -1) {
+        if (getCustomNameTag().contains("SmallBlock")) {
             if (getScaleX() == 3) {
                 this.setSize(1, 1);
                 this.setScale(1, 1, 1);

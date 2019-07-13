@@ -1,4 +1,4 @@
-package map.lopre2.jump2;
+package map.lopre2.nouse;
 
 import olib.api.EntityAPI;
 import olib.api.WorldAPI;

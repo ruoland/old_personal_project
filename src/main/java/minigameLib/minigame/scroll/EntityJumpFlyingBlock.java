@@ -90,4 +90,9 @@ public class EntityJumpFlyingBlock extends EntityPreBlock {
         return lavaBlock;
     }
 
+    @Override
+    public String getText() {
+        return "뭔지모르겠음";
+    }
+
 }

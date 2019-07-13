@@ -24,15 +24,15 @@ import map.lopre2.LoPre2;
 //1탄에서 용암에 떨어지는 블럭으로 쓰임
 //용암에 들어서는 경우 천천히 용암속으로 사라짐
 
-public class EntityFallingBlock extends EntityPreBlock {
+public class EntityLoopFallingBlock extends EntityPreBlock {
 
-    private static final DataParameter<Float> LAVA_Y = EntityDataManager.createKey(EntityFallingBlock.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> LAVA_Y = EntityDataManager.createKey(EntityLoopFallingBlock.class, DataSerializers.FLOAT);
 
-    public EntityFallingBlock(World worldIn) {
+    public EntityLoopFallingBlock(World worldIn) {
         super(worldIn);
-        this.setBlockMode(Blocks.STONE);
+        this.setBlockMode(Blocks.GRAVEL);
         this.setCollision(true);
-        setJumpName("폴링 블럭");
+        setJumpName("떨어지는 블럭");
     }
 
     @Override
@@ -42,8 +42,8 @@ public class EntityFallingBlock extends EntityPreBlock {
     }
 
     @Override
-    public EntityFallingBlock spawn(double x, double y, double z) {
-        EntityFallingBlock lavaBlock = new EntityFallingBlock(worldObj);
+    public EntityLoopFallingBlock spawn(double x, double y, double z) {
+        EntityLoopFallingBlock lavaBlock = new EntityLoopFallingBlock(worldObj);
         lavaBlock.setSpawnXYZ(x, y, z);
         lavaBlock.setTeleport(false);
         lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());
@@ -54,6 +54,11 @@ public class EntityFallingBlock extends EntityPreBlock {
         lavaBlock.setBlockMode(getCurrentBlock());
         worldObj.spawnEntityInWorld(lavaBlock);
         return lavaBlock;
+    }
+
+    @Override
+    public String getText() {
+        return "이 블럭은 용암에 떨어지면 잠깐의 시간이 지난 후 소환된 장소로 다시 이동합니다.";
     }
 
     public float getLavaY() {

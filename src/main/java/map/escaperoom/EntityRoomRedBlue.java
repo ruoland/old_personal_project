@@ -65,7 +65,11 @@ public class EntityRoomRedBlue extends EntityRoomBlock {
                 System.out.println("블럭 발견");
             }
         }
+    }
 
+    @Override
+    public String getText() {
+        return "빨강파랑 블럭입니다. /room rb 명령어로 빨강 모드나 파랑 모드로 바꿀 수 있는데 빨강 모드 상태에서는 파랑 블럭은 반투명 상태가 되며 밟을 수도 없습니다.";
     }
 
     @Override

@@ -10,14 +10,21 @@ public class EntityBigBlockMove extends EntityMoveBlock {
     public EntityBigBlockMove(World worldIn) {
         super(worldIn);
         this.setCollision(true);
-        setBlockMode(Blocks.STONE);
+        setBlockMode(Blocks.ICE);
         this.noClip = !noClip;
         isFly = true;
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
         this.speed = 0.08;
         this.setBlockMove(true);
+        setJumpName("빅 이동 블럭");
     }
+
+    @Override
+    public String getText() {
+        return "거대한 이동 블럭입니다. 스패너를 들고 우클릭 하면 블럭이 보는 방향으로 블럭이 이동합니다.";
+    }
+
     @Override
     public String getCustomNameTag() {
         return "BigBlockMove " +getFacing().getName();

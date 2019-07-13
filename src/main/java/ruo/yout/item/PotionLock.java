@@ -1,4 +1,4 @@
-package ruo.yout;
+package ruo.yout.item;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;

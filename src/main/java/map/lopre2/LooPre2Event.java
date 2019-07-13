@@ -23,7 +23,6 @@ import map.lopre2.jump1.EntityLavaBlock;
 
 
 public class LooPre2Event {
-    public static int deathCount, gamemodeCount, spawnCount, healCount;
 
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent e) {
@@ -61,86 +60,6 @@ public class LooPre2Event {
         }
     }
 
-    @SubscribeEvent
-    public void deathCount(LivingDeathEvent event) {
-        if (LoPre2.checkWorld()) {
-            if (event.getEntityLiving() instanceof EntityPlayer) {
-                deathCount++;
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void gamemode(CommandEvent event) {
-        if (LoPre2.checkWorld()) {
-            ICommand command = event.getCommand();
-            String name = command.getCommandName();
-            if (event.getSender() instanceof EntityPlayer) {
-                if (name.equalsIgnoreCase("gamemode") && event.getParameters()[0].equalsIgnoreCase("1")) {
-                    gamemodeCount++;
-                }
-                if (name.equalsIgnoreCase("spawnpoint")) {
-                    spawnCount++;
-                }
-                if (name.equalsIgnoreCase("heal")) {
-                    healCount++;
-                }
-            }
-        }
-    }
-
-    public static boolean nightVision = true, posYDead = true, fireAttack;
-
-    @SubscribeEvent
-    public void a(PlayerTickEvent event) {
-        if (LoPre2.checkWorld()) {
-            if (event.player.getDistance(1201.4, 7.0, -548.6) < 2) {
-                event.player.addStat(LoPre2.achievementHidePath3);
-            }
-            if (event.player.getDistance(1128.6, 7.0, -574.8) < 1) {
-                event.player.addStat(LoPre2.achievementHidePath1);
-
-            }
-            event.player.setAir(0);
-            event.player.worldObj.setRainStrength(0);
-            if (fireAttack) {
-                event.player.extinguish();
-            }
-            /*
-            if (nightVision && !event.player.isInLava() && (currentStage != 9 && currentStage != 10 && currentStage != 11)) {
-                event.player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 2000));
-            } else
-                event.player.removePotionEffect(MobEffects.NIGHT_VISION);
-            */
-            if (posYDead && event.player.posY < 0) {
-                event.player.setHealth(0);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void renderUI(RenderGameOverlayEvent.Post event) {
-        if (LoPre2.checkWorld()) {
-            if (event.getType() == ElementType.ALL) {
-                Minecraft.getMinecraft().fontRendererObj.drawString("팁이 필요하면 /jb help", 0, 0,
-                        0xFFFFFF);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void event(LivingAttackEvent event) {
-        if (LoPre2.checkWorld()) {
-            if (event.getEntityLiving() instanceof EntityPlayer) {
-                if (event.getSource() == DamageSource.onFire || event.getSource() == DamageSource.inFire) {
-                    event.setCanceled(true);
-                    event.getEntityLiving().extinguish();
-                    fireAttack = true;
-                } else
-                    fireAttack = false;
-            }
-        }
-    }
     @SubscribeEvent
     public void event(LoginEvent event) {
         if (LoPre2.checkWorld()) {

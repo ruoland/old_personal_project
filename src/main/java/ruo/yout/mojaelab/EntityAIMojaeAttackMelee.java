@@ -1,4 +1,4 @@
-package ruo.yout;
+package ruo.yout.mojaelab;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIAttackMelee;

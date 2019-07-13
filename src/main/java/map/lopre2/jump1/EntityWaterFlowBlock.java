@@ -32,6 +32,7 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(Y_SPEED, -0.008F);
+        setJumpName("물 블럭");
     }
 
     @Override
@@ -79,6 +80,11 @@ public class EntityWaterFlowBlock extends EntityPreBlock {
         worldObj.spawnEntityInWorld(lavaBlock);
         return lavaBlock;
 
+    }
+
+    @Override
+    public String getText() {
+        return "물에 흘러가는 블럭입니다. 하지만 흘러갈 방향을 직접 정해야 합니다.";
     }
 
 

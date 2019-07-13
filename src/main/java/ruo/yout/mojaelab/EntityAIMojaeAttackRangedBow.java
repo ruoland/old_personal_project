@@ -1,10 +1,11 @@
-package ruo.yout;
+package ruo.yout.mojaelab;
 
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.ItemBow;
 import net.minecraft.util.EnumHand;
+import ruo.yout.Mojae;
 
 public class EntityAIMojaeAttackRangedBow extends EntityAIAttackRangedBow {
     private EntitySkeleton skeleton;

@@ -252,6 +252,10 @@ public class RenderAPI {
                                     double height) {
         drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, z, width, height, true);
     }
+    public static void drawTextureZ(String texture, float alpha, double x, double y, double z, double width,
+                                    double height) {
+        drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, z, width, height, true);
+    }
 
     public static void drawTextureZ(ResourceLocation texture, double x, double y, double z, double width,
                                     double height) {

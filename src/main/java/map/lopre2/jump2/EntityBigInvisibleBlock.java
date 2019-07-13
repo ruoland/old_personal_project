@@ -24,6 +24,7 @@ public class EntityBigInvisibleBlock extends EntityPreBlock {
         this.setScale(3, 1, 3);
         this.setSize(3, 1);
         defaultDelay = 40;
+        setJumpName("빅 투명 블럭");
     }
 
     @Override
@@ -34,7 +35,7 @@ public class EntityBigInvisibleBlock extends EntityPreBlock {
 
     @Override
     public String getCustomNameTag() {
-        return "BigInvisibleBlock 기본 딜레이:" + defaultDelay+" 현재 딜레이:"+currentDelay;
+        return  getJumpName()+" 기본 딜레이:" + defaultDelay+" 현재 딜레이:"+currentDelay;
     }
 
     @Override
@@ -64,6 +65,11 @@ public class EntityBigInvisibleBlock extends EntityPreBlock {
         worldObj.spawnEntityInWorld(lavaBlock);
         return lavaBlock;
 
+    }
+
+    @Override
+    public String getText() {
+        return "1초 간격으로 깜빡해지는 블럭입니다.";
     }
 
     public int defaultDelay, currentDelay;

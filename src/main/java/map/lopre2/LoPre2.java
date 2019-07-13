@@ -1,6 +1,8 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import map.lopre2.nouse.EntityMagmaBlock;
+import map.lopre2.nouse.EntitySmallBlock;
 import olib.api.WorldAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -39,12 +41,17 @@ public class LoPre2 {
     public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 1, 2, Items.GOLDEN_APPLE, null);
     public static Achievement achievementHidePath2 = new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
 
-
+    public static final CreativeTabs MO_BLOCK = new CreativeTabs("모쿠르") {
+        @Override
+        public Item getTabIconItem() {
+            return LoPre2.itemSpanner;
+        }
+    };
     //점프맵 2 코드
-    public static Item itemCopy = new ItemCopy().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Item itemDifficulty = new ItemDifficulty().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Item itemSpanner = new ItemSpanner().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Item itemBlockMove = new ItemBlockMove().setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    public static Item itemCopy = new ItemCopy().setCreativeTab(MO_BLOCK);
+    public static Item itemDifficulty = new ItemDifficulty().setCreativeTab(MO_BLOCK);
+    public static Item itemSpanner = new ItemSpanner().setCreativeTab(MO_BLOCK);
+    public static Item itemBlockMove = new ItemBlockMove().setCreativeTab(MO_BLOCK);
     @Instance("LoopPre2")
     public static LoPre2 instance;
 
@@ -82,27 +89,27 @@ public class LoPre2 {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
             MinecraftForge.EVENT_BUS.register(new LooPreClientEvent());
 
-        DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
 
         DebAPI.registerEntity(this, "TeleportBlock", EntityTeleportBlock.class);
-        DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
         DebAPI.registerEntity(this, "BigBlockInvisible", EntityBigInvisibleBlock.class);
         DebAPI.registerEntity(this, "BigBlockMovejump", EntityBigBlockMove.class);
-        DebAPI.registerEntity(this, "SmallBlockJump", EntitySmallBlock.class);
         DebAPI.registerEntity(this, "BigBlockjump", EntityBigBlock.class);
         DebAPI.registerEntity(this, "KnockbackBlock", EntityKnockbackBlock.class);
-        //DebAPI.registerEntity(this, "JumpSpider", EntityJumpSpider.class, new RenderJumpSpider());
         DebAPI.registerEntity(this, "VELOCITY-lavablock", EntityLavaBlock.class);
-        DebAPI.registerEntity(this, "VELOCITY-loopFallingBlock", EntityFallingBlock.class);
+        DebAPI.registerEntity(this, "VELOCITY-loopFallingBlock", EntityLoopFallingBlock.class);
         DebAPI.registerEntity(this, "VELOCITY-LoopMoveBlock", EntityMoveBlock.class);
-        DebAPI.registerEntity(this, "VELOCITY-LoopWaterBlock", EntityWaterFlowBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-VELOCITY-LoopWaterBlock", EntityWaterFlowBlock.class);
         DebAPI.registerEntity(this, "VELOCITY-loopdownblock", EntityWaterBlockCreator.class);
         DebAPI.registerEntity(this, "VELOCITY-NO-EGG-PreBlock", EntityPreBlock.class);
-        //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
 
         proxy.init();
+        //DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
+        //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);
+        //DebAPI.registerEntity(this, "JumpSpider", EntityJumpSpider.class, new RenderJumpSpider());
+        //DebAPI.registerEntity(this, "SmallBlockJump", EntitySmallBlock.class);
+        //DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
 
     }
 

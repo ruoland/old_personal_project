@@ -5,27 +5,26 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.boss.dragon.phase.PhaseList;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import olib.api.WorldAPI;
 
 import java.util.ArrayList;
 
+//모드 전반적인 것들에 관한 이벤트
+//포션 기능 등등
 public class MoJaeEvent {
     public static double attackDelay = -1;
     public static ArrayList<String> lockList = new ArrayList<>();
-    @SubscribeEvent
-    public void event(LivingHurtEvent event) {
-        if(event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equalsIgnoreCase("outOfWorld")) {
-            event.setCanceled(true);
-            event.getEntityLiving().motionY -= 1000;
-        }
-    }
+
+
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();

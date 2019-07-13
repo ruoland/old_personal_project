@@ -2,9 +2,10 @@ package map.escaperoom;
 
 import cmplus.deb.DebAPI;
 import map.escaperoom.block.BlockBarrier;
-import map.escaperoom.block.BlockForward;
-import map.escaperoom.block.BlockJumper;
-import map.escaperoom.nouse.*;
+import map.escaperoom.nouse.EntityRoomDoor;
+import map.escaperoom.nouse.EntityRoomEnderman;
+import map.escaperoom.nouse.EntityRoomPathCreeper;
+import map.escaperoom.nouse.EntityRoomWindEntity;
 import map.escaperoom.nouse.dungeon.EntityRespawnZombie;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,9 +24,6 @@ public class EscapeRoom {
     public static boolean isRedMode;
     @SidedProxy(clientSide =  "map.escaperoom.EscapeClientProxy", serverSide = "map.escaperoom.EscapeServerProxy")
     public static EscapeServerProxy proxy;
-    public static Block blockJumper = new BlockJumper(Material.ANVIL).setRegistryName("PuzzleMap", "jumper").setUnlocalizedName("jumper").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Block blockForward = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "forward").setUnlocalizedName("forward").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-    public static Block blockWhatBlock = new BlockForward(Material.ANVIL).setRegistryName("PuzzleMap", "whatblock").setUnlocalizedName("whatBlock").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Block blockBarrier = new BlockBarrier(Material.ANVIL).setRegistryName("PuzzleMap", "puzzlebarrier").setUnlocalizedName("barrier").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     public static Item itemRB = new ItemRB().setUnlocalizedName("itemrb").setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("PuzzleMap", "itemrb");
     @Mod.EventHandler
@@ -41,7 +39,6 @@ public class EscapeRoom {
         DebAPI.registerEntity(this, "PuzzleMoveZombie", EntityRoomMoveZombie.class);
         DebAPI.registerEntity(this, "RespawnZombie", EntityRespawnZombie.class);
         DebAPI.registerEntity(this, "PuzzleFallingBlock", EntityRoomFallingBlock.class);
-        DebAPI.registerEntity(this, "PuzzleJumpMap", EntityRoomBlockJumpMap.class);
         DebAPI.registerEntity(this, "PuzzleEnderman", EntityRoomEnderman.class);
         DebAPI.registerEntity(this, "PuzzleBlockShooter", EntityRoomBlockShooter.class);
 
@@ -56,9 +53,6 @@ public class EscapeRoom {
 
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent e){
-        DebAPI.registerBlock(blockJumper);
-        DebAPI.registerBlock(blockForward);
-        DebAPI.registerBlock(blockWhatBlock);
         DebAPI.registerBlock(blockBarrier);
         GameRegistry.register(itemRB);
         MinecraftForge.EVENT_BUS.register(new PuEvent());

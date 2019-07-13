@@ -74,6 +74,11 @@ public class EntityRoomBlockHunting extends EntityPreBlock {
         return lavaBlock;
     }
 
+    @Override
+    public String getText() {
+        return "블럭을 발사하는 디스펜서 블럭입니다.";
+    }
+
     public void addThrowTime() {
         dataManager.set(THROW_TIME, dataManager.get(THROW_TIME) + 1);
     }

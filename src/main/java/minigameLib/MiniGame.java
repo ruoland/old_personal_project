@@ -7,6 +7,7 @@ import cmplus.deb.CommandClassLoader;
 import cmplus.deb.DebAPI;
 import minigameLib.command.*;
 import minigameLib.minigame.minerun.monster.*;
+import net.minecraft.item.ItemMonsterPlacer;
 import olib.action.ActionEffect;
 import olib.android.CommandCall;
 import olib.android.CommandNotification;
@@ -114,31 +115,31 @@ public class MiniGame {
         DebAPI.registerTileEntity(blockInvisible.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setUnlocalizedName("blockInvisible").setRegistryName("minigame:blockInvisible"), TileInvisible.class);
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //스크롤 용
-        DebAPI.registerEntity(this, "ScrollCreeper", EntityJumpCreeper.class);
-        DebAPI.registerEntity(this, "ScrollSpider", EntityJumpSpider.class);
-        DebAPI.registerEntity(this, "ScrollBoss", EntityScrollBoss.class);
-        DebAPI.registerEntity(this, "ScrollFallingBlock", EntityScrollBossFallingBlock.class);
-        DebAPI.registerEntity(this, "ScrollWarning", EntityScrollBossWarning.class);
-        DebAPI.registerEntity(this, "ScrollShoting", EntityScrollBossShootingBlock.class);
-        DebAPI.registerEntity(this, "ScrollFlyingBlock", EntityJumpFlyingBlock.class);
-        DebAPI.registerEntity(this, "ScrollTNT", EntityJumpTNT.class);
-        DebAPI.registerEntity(this, "ScrollDoubleReset", EntityJumpDoubleReset.class);
-        DebAPI.registerEntity(this, "ScrollFlyingCreeper", EntityJumpFlyingCreeper.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollCreeper", EntityJumpCreeper.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollSpider", EntityJumpSpider.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollBoss", EntityScrollBoss.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollFallingBlock", EntityScrollBossFallingBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollWarning", EntityScrollBossWarning.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollShoting", EntityScrollBossShootingBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollFlyingBlock", EntityJumpFlyingBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollTNT", EntityJumpTNT.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollDoubleReset", EntityJumpDoubleReset.class);
+        DebAPI.registerEntity(this, "NO-EGG-ScrollFlyingCreeper", EntityJumpFlyingCreeper.class);
 
         //마인런 게임용
-        DebAPI.registerEntity(this, "MRRunner", EntityMineRunner.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRRunner", EntityMineRunner.class);
 
-        DebAPI.registerEntity(this, "MRTNTCart", EntityMRTNTCart.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRTNTCart", EntityMRTNTCart.class);
 
-        DebAPI.registerEntity(this, "MRCreeper", EntityMRCreeper.class);
-        DebAPI.registerEntity(this, "MRZombie", EntityMRZombie.class);
-        DebAPI.registerEntity(this, "MREnderman", EntityMREnderman.class);
-        DebAPI.registerEntity(this, "MRMissileCreeper", EntityMRMissileCreeper.class);
-        DebAPI.registerEntity(this, "MRRocketCreeper", EntityMRRocketCreeper.class);
-        DebAPI.registerEntity(this, "MRWalkingZombie", EntityMRWalkingZombie.class);
-        DebAPI.registerEntity(this, "MRWarningBlock", EntityWarningBlock.class);
-        DebAPI.registerEntity(this, "MRTNT", EntityMRTNT.class);
-        DebAPI.registerEntity(this, "MRFallingBlockCreator", EntityMRFallingBlockCreator.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRCreeper", EntityMRCreeper.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRZombie", EntityMRZombie.class);
+        DebAPI.registerEntity(this, "NO-EGG-MREnderman", EntityMREnderman.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRMissileCreeper", EntityMRMissileCreeper.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRRocketCreeper", EntityMRRocketCreeper.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRWalkingZombie", EntityMRWalkingZombie.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRWarningBlock", EntityWarningBlock.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRTNT", EntityMRTNT.class);
+        DebAPI.registerEntity(this, "NO-EGG-MRFallingBlockCreator", EntityMRFallingBlockCreator.class);
         DebAPI.registerEntity(this, "NO-EGG-MRFallingBlock", EntityMRFallingBlock.class);
 
         //엘리트라 슈팅 게임용
@@ -156,7 +157,7 @@ public class MiniGame {
         DebAPI.registerEntity(this, "NO-EGG-ElytraBossWeen", EntityElytraBossMini.class);
 
         //폭탄게임용
-        DebAPI.registerEntity(this, "bomb", EntityBomb.class);
+        DebAPI.registerEntity(this, "NO-EGG-bomb", EntityBomb.class);
         GameRegistry.register(Bomber.bombItem.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("tntmini").setUnlocalizedName("tntmini"));
         DebAPI.registerEntity(this, "NO-EGG-FakePlayer", EntityFakePlayer.class);
         DebAPI.registerEntity(this, "VELOCITY-DefaultNPC", EntityDefaultNPC.class);

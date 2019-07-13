@@ -114,4 +114,9 @@ public class EntityJumpDoubleReset extends EntityPreBlock {
         return lavaBlock;
     }
 
+    @Override
+    public String getText() {
+        return "플레이어가 이 블럭에 가까이 가면 더블 점프를 한번 더 할 수 있게 해주는 블럭입니다.";
+    }
+
 }

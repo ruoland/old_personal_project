@@ -32,7 +32,8 @@ public class EntityLavaBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setCollision(true);
         isFly = true;
-        setJumpName("라바 블럭");
+        setTeleportLock(true);
+        setJumpName("일반 블럭");
     }
 
     @Override
@@ -71,6 +72,11 @@ public class EntityLavaBlock extends EntityPreBlock {
         lavaBlock.setHeight(getHeight());
         lavaBlock.updateSize();
         return lavaBlock;
+    }
+
+    @Override
+    public String getText() {
+        return "평범한 블럭입니다. 스패너를 들고 우클릭 하면 블럭을 밟았을 때 블럭이 천천히 내려가게 할 수 있습니다.";
     }
 
     @Override

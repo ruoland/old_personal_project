@@ -53,6 +53,7 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
 
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -337,6 +338,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
     }
 
     public abstract EntityPreBlock spawn(double x, double y, double z);
+
+    public abstract String getText();
 
     public void setTeleportLock(boolean a) {
         this.dataManager.set(TELEPORT_LOCK, a);

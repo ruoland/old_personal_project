@@ -11,17 +11,29 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import olib.api.NBTAPI;
+import olib.api.RuoCode;
 import olib.api.WorldAPI;
+import ruo.yout.MoJaeEvent;
 import ruo.yout.Mojae;
+import ruo.yout.mojaelab.LabEvent;
 
 import java.util.Iterator;
 import java.util.List;
@@ -29,8 +41,30 @@ import java.util.List;
 public class CommandMoJae extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if(args[0].equalsIgnoreCase("night")){
+            EntityPlayer player = (EntityPlayer) sender;
+            player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1000000));
+        }
         if(args[0].equalsIgnoreCase("dog")){
             Mojae.dog_pan = Boolean.valueOf(args[1]);
+        }
+        if(args[0].equalsIgnoreCase("morespawn")){
+            Mojae.morespawn = Boolean.valueOf(args[1]);
+        }
+        if(args[0].equalsIgnoreCase("stat")){
+            if(args[1].equalsIgnoreCase("start")){
+                Mojae.statStart = true;
+                Mojae.damageMap.clear();
+                Mojae.killMap.clear();
+            }
+            else if(args[1].equalsIgnoreCase("stop")){
+                for (String str : Mojae.killMap.keySet()) {
+                    sender.addChatMessage(new TextComponentString(str + "들이 준 데미지와 죽인 수 " + Mojae.killMap.get(str)));
+                }
+                for (String str : Mojae.damageMap.keySet()) {
+                    sender.addChatMessage(new TextComponentString(str + "들이 준 데미지 " + Mojae.damageMap.get(str)));
+                }
+            }
         }
         if(args[0].equalsIgnoreCase("block")){//블럭 강도 조절하기
             Block block = Block.getBlockFromName(args[1]);

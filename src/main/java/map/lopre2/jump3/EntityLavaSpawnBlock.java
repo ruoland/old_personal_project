@@ -96,4 +96,9 @@ public class EntityLavaSpawnBlock extends EntityPreBlock {
         }
         return lavaBlock;
     }
+
+    @Override
+    public String getText() {
+        return null;
+    }
 }

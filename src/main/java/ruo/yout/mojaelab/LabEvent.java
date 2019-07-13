@@ -1,5 +1,6 @@
 package ruo.yout.mojaelab;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -7,10 +8,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemBow;
@@ -20,15 +19,70 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import olib.api.EntityAPI;
 import olib.api.WorldAPI;
-import ruo.yout.*;
+import ruo.yout.EntityFlyingCreeperLab;
+import ruo.yout.EntityMoJaeCreeper;
+import ruo.yout.EntityMojaeArrow;
+import ruo.yout.Mojae;
 
 public class LabEvent {
+    @SubscribeEvent
+    public void event(LivingHurtEvent event) {
+        if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equalsIgnoreCase("outOfWorld")) {
+            event.setCanceled(true);
+            event.getEntityLiving().motionY -= 1000;
+        }
+    }
 
     @SubscribeEvent
+    public void event(LivingSpawnEvent event) {
+        if(Minecraft.getDebugFPS() > 40 && !(event.getEntityLiving() instanceof EntityAnimal)) {
+            if (event.getEntityLiving() instanceof EntityMob && Mojae.morespawn && !event.getEntityLiving().getEntityData().hasKey("mojae")) {
+                for (int i = 0; i < 3; i++) {
+                    double x = event.getX() + WorldAPI.rand(30);
+                    double z = event.getZ() + WorldAPI.rand(30);
+                    EntityLiving creeper = null;
+                    switch (event.getWorld().rand.nextInt(5)) {
+                        case 0: {
+                            creeper = new EntityCreeper(event.getWorld());
+                            break;
+                        }
+                        case 1: {
+                            creeper = new EntityZombie(event.getWorld());
+                            break;
+                        }
+                        case 2: {
+                            creeper = new EntitySkeleton(event.getWorld());
+                            break;
+                        }
+                        case 3: {
+                            creeper = new EntitySpider(event.getWorld());
+                            break;
+                        }
+
+                        case 5: {
+                            creeper = new EntityEnderman(event.getWorld());
+                            break;
+                        }
+                    }
+                    if (creeper != null) {
+                        creeper.setPosition(x, event.getY(), z);
+                        event.getWorld().spawnEntityInWorld(creeper);
+                        creeper.onInitialSpawn(event.getWorld().getDifficultyForLocation(creeper.getPosition()), null);
+                        creeper.getEntityData().setBoolean("mojae", true);
+                    }
+
+                }
+            }
+        }else
+            event.getEntityLiving().setDead();
+    }
+    @SubscribeEvent
     public void livingAttackEvent(LivingHurtEvent event) {
+
         if (Mojae.skelreeper && event.getEntityLiving() instanceof EntitySkeleton) {
             if (event.getSource().getEntity() instanceof EntityMoJaeCreeper) {
                 event.setCanceled(true);
@@ -41,12 +95,6 @@ public class LabEvent {
             event.setAmount(0);
             event.getEntityLiving().setVelocity(0, 0, 0);
         }
-        System.out.println("타입 " + event.getSource().damageType);
-        System.out.println("소스오브 " + event.getSource().getSourceOfDamage());
-        System.out.println("엔티티 " + event.getSource().getEntity());
-        System.out.println("이벤트" + event.getEntityLiving());
-        if(event.getEntityLiving() instanceof EntityPlayer)
-        WorldAPI.addMessage("받은 데미지 : "+event.getAmount());
     }
 
     @SubscribeEvent
@@ -78,11 +126,11 @@ public class LabEvent {
                 System.out.println("  엔티티2 " + event.getEntityLiving());
                 System.out.println("  데미지"+event.getAmount());
             }
-            System.out.println("  2222타입 " + sourceIndirect.damageType);
-            System.out.println("  2222소스오브 " + sourceIndirect.getSourceOfDamage());
-            System.out.println("  2222엔티티 " + sourceIndirect.getEntity());
-            System.out.println("  2222엔티티2 " + event.getEntityLiving());
-            System.out.println("  2222데미지"+event.getAmount());
+            //System.out.println("  2222타입 " + sourceIndirect.damageType);//2222타입 arrow
+            //System.out.println("  2222소스오브 " + sourceIndirect.getSourceOfDamage());//2222소스오브 EntityTippedArrow['화살'/54558, l='test', x=415.04, y=5.64, z=-33.54]
+            //System.out.println("  2222엔티티 " + sourceIndirect.getEntity());//  2222엔티티 EntitySkeleton['스켈레톤'/49328, l='test', x=414.96, y=4.00, z=-33.65]
+            //System.out.println("  2222엔티티2 " + event.getEntityLiving());// 2222엔티티2 EntitySkeleton['스켈레톤'/20671, l='test', x=413.61, y=4.00, z=-35.18]
+            //System.out.println("  2222데미지"+event.getAmount());// 2222데미지4.0
             if ((!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
                 event.setCanceled(true);
             }

@@ -1,4 +1,4 @@
-package ruo.yout;
+package ruo.yout.item;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +10,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemUp extends Item {
-    public static double mo=100;
+    public static double motion=100;
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         target.motionY += 1000;
@@ -19,9 +19,9 @@ public class ItemUp extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        playerIn.motionY+=mo;
+        playerIn.motionY+=motion;
         if(playerIn.getRidingEntity() != null){
-            playerIn.getRidingEntity().motionY+=mo;
+            playerIn.getRidingEntity().motionY+=motion;
         }
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
