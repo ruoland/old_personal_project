@@ -1,8 +1,10 @@
 package map.lopre2;
 
+import map.escaperoom.EntityRoomRedBlue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -17,16 +19,20 @@ public class ItemSpanner extends Item {
         if(target instanceof EntityPreBlock) {
             String name = ((EntityPreBlock) target).getJumpName();
 
-            if (!target.isInvisible()) {
-                if (target instanceof EntityBuildBlock && hand == EnumHand.MAIN_HAND) {
+            if (!target.isInvisible() && hand == EnumHand.MAIN_HAND) {
+                if (target instanceof EntityRoomRedBlue) {
+                    EntityRoomRedBlue rbBlock = (EntityRoomRedBlue) target;//빌드 블럭 저장
+                    rbBlock.setBlock(rbBlock.getCurrentBlock() == Blocks.REDSTONE_BLOCK ? Blocks.LAPIS_BLOCK : Blocks.REDSTONE_BLOCK);
+                }
+                if (target instanceof EntityBuildBlock) {
                     EntityBuildBlock buildBlock = (EntityBuildBlock) target;//빌드 블럭 저장
                     Loop.saveBuildBlock(buildBlock);
                 }
-                if (target instanceof EntityWaterBlockCreator && hand == EnumHand.MAIN_HAND) {
+                if (target instanceof EntityWaterBlockCreator) {
                     EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
                     lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
                 }
-                if (target instanceof EntityLavaBlock && hand == EnumHand.MAIN_HAND) {
+                if (target instanceof EntityLavaBlock) {
                     EntityLavaBlock lavaBlock = (EntityLavaBlock) target;
                     lavaBlock.setTeleportLock(!lavaBlock.canTeleportLock());
                     System.out.println("대상 위치" + lavaBlock.posX + " - " + lavaBlock.posY + " - " + lavaBlock.posZ);

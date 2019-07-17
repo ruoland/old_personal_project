@@ -60,7 +60,11 @@ public class CommandJB extends CommandPlusBase {
                     WorldAPI.addMessage("R키를 누르고 벽으로 다가가면 벽에 매달리거나 올라갈 수 있습니다.");
                 }
                 ActionEffect.crawl(var);
-
+            }
+            if (args[0].equalsIgnoreCase("bu")) {
+                for (EntityPreBlock preBlock : ItemCopy.getUndoBlockList()) {
+                    preBlock.setDead();
+                }
             }
             if (args[0].equalsIgnoreCase("dj")) {
                 if (!DoubleJump.canMapDoubleJump() && Boolean.valueOf(args[1])) {

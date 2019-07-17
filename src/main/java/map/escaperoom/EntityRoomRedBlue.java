@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import olib.api.WorldAPI;
 import olib.map.TypeModel;
 
-public class EntityRoomRedBlue extends EntityRoomBlock {
+public class  EntityRoomRedBlue extends EntityRoomBlock {
     private static final DataParameter<Boolean> IS_SPONGE = EntityDataManager.createKey(EntityRoomRedBlue.class, DataSerializers.BOOLEAN);
     public EntityRoomRedBlue(World worldIn) {
         super(worldIn);

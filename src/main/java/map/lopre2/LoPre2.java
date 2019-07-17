@@ -3,6 +3,8 @@ package map.lopre2;
 import cmplus.deb.DebAPI;
 import map.lopre2.nouse.EntityMagmaBlock;
 import map.lopre2.nouse.EntitySmallBlock;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import olib.api.WorldAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -26,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.*;
 import map.lopre2.jump3.EntityLavaSpawnBlock;
+import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "LoopPre2", name = "LoopPre2")
 public class LoPre2 {
@@ -40,7 +43,10 @@ public class LoPre2 {
     public static Achievement achievementNoDie2 = new Achievement("achievement.nodie2", "nodie2", 1, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode2);
     public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 1, 2, Items.GOLDEN_APPLE, null);
     public static Achievement achievementHidePath2 = new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
+    public static KeyBinding KEY_ADD = new KeyBinding("복사 거리를 늘립니다.", Keyboard.KEY_ADD, "모쿠르");
+    public static KeyBinding KEY_ADD_2 = new KeyBinding("복사 거리를 늘립니다.(+와 = 같이 있는 키보드용)", Keyboard.KEY_EQUALS, "모쿠르");
 
+    public static KeyBinding KEY_MINUS = new KeyBinding("복사 거리를 줄입니다.", Keyboard.KEY_MINUS, "모쿠르");
     public static final CreativeTabs MO_BLOCK = new CreativeTabs("모쿠르") {
         @Override
         public Item getTabIconItem() {
@@ -68,7 +74,9 @@ public class LoPre2 {
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
-
+        ClientRegistry.registerKeyBinding(KEY_ADD);
+        ClientRegistry.registerKeyBinding(KEY_ADD_2);
+        ClientRegistry.registerKeyBinding(KEY_MINUS);
         achievementApple.registerStat();
         achievementNoDie1.registerStat();
         achievementNoGameMode1.registerStat();

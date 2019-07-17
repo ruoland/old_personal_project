@@ -39,12 +39,6 @@ public class LooPre2Event {
     public void a(ServerChatEvent event) {
         String dis = event.getMessage();
         if (dis != null) {
-            if (dis.startsWith("bu")) {
-                CommandJB.isDebMode = true;
-                for (EntityPreBlock preBlock : ItemCopy.getPreBlockList()) {
-                    preBlock.setDead();
-                }
-            }
             if (dis.startsWith("dis:")) {
                 CommandJB.isDebMode = true;
                 ItemCopy.setDistance(Integer.valueOf(dis.replace("dis:", "")));
