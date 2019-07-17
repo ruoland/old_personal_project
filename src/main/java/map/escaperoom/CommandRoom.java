@@ -22,7 +22,7 @@ import java.awt.datatransfer.StringSelection;
 
 public class CommandRoom extends CommandPlusBase {
     private int x, y, z, x2, y2, z2;
-
+    //테스트22asd
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args[0].equalsIgnoreCase("cleararrow")) {
