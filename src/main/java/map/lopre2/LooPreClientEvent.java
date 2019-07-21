@@ -44,11 +44,7 @@ public class LooPreClientEvent {
         if (mc.thePlayer != null && mc.objectMouseOver != null && mc.currentScreen == null) {
             if (mc.objectMouseOver.entityHit instanceof EntityPreBlock && (WorldAPI.equalsHeldItem(mc.thePlayer, LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(mc.thePlayer, LoPre2.itemCopy))) {
                 EntityPreBlock preBlock = (EntityPreBlock) mc.objectMouseOver.entityHit;
-                int x = CommandJB.x;
-                int y = CommandJB.y;
-                int w = CommandJB.width;
-                int h = CommandJB.height;
-                RenderAPI.drawTextureZ("looppre2:textures/text.png", 0.5F, x, y, 0, mc.displayWidth / 2 - 300, mc.displayHeight / 2 - 180);
+                RenderAPI.drawTextureZ("looppre2:textures/text.png", 0.5F, 0,80, 0, mc.displayWidth / 2 - 300, mc.displayHeight / 2 - 180);
                 GlStateManager.pushMatrix();
                 ;
                 GlStateManager.translate(0, 0, 10);

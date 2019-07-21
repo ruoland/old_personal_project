@@ -351,7 +351,7 @@ public class EntityAPI {
 
     public static void pauseMove(String name, boolean pause) {
         AbstractTick abs = TickRegister.getAbsTick(name + "-MOVE");
-        abs.pauseTick(pause);
+        abs.pause(pause);
     }
 
     public static void pauseMove(EntityLivingBase livingbase, boolean pause, int tick) {

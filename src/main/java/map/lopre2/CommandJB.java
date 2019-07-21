@@ -33,21 +33,21 @@ import map.lopre2.jump2.EntityBigInvisibleBlock;
 
 public class CommandJB extends CommandPlusBase {
     private int[] pos1, pos2;
-    public static int x,y=80,width,height;
     public static long startTime, endTime;
+    public static int lavaTick;
     public static boolean isDebMode = false, isLavaInvisible;//용암 블럭 투명화를 반대로 설정함
-    //E 1127 247 -70
-    //E 회전 -180 0 -180
-    //N 1127 247 -61
-    //N 회전 -180 0 -180
-    //D 1127 247 -56
-    //D 회전 -180 0 -180
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("lava")) {
+                if (args[1].equalsIgnoreCase("stop"))
+                    TickRegister.getAbsTick("ln").pause(true);
+                else if (args[1].equalsIgnoreCase("start"))
+                    TickRegister.getAbsTick("ln").pause(false);
+            }
             if (args[0].equalsIgnoreCase("tutorial")) {
-                EntityPlayer player = getPlayer(server,sender, args[1]);
+                EntityPlayer player = getPlayer(server, sender, args[1]);
                 player.addChatComponentMessage(new TextComponentString("1.블럭이 안보이면 맵을 나갔다가 들어와 주세요."));
                 player.addChatComponentMessage(new TextComponentString("2.블럭에 끼었을 때 /jb up 명령어를 입력해주세요"));
                 player.addChatComponentMessage(new TextComponentString("3.heal 명령어를 입력하면 체력과 배고픔이 회복됩니다"));
@@ -71,19 +71,18 @@ public class CommandJB extends CommandPlusBase {
                     WorldAPI.addMessage("이제 점프를 공중에서 한번더 할 수 있습니다.(달리면서 점프하면 좀 더 멀리 뛸 수 있음)");
                 }
                 DoubleJump.doubleJump(Boolean.valueOf(args[1]));
-                CMPlus.INSTANCE.sendToAll(new CMPacketCommand("서버더블점프"+args[1]));
-
+                CMPlus.INSTANCE.sendToAll(new CMPacketCommand("서버더블점프" + args[1]));
             }
 
             if (args[0].equalsIgnoreCase("deb"))
                 isDebMode = true;
 
             if (args[0].equalsIgnoreCase("help")) {
-                if(args.length > 1){
-                    if(args[1].equalsIgnoreCase("2")){
+                if (args.length > 1) {
+                    if (args[1].equalsIgnoreCase("2")) {
                         sender.addChatMessage(new TextComponentString(""));
                     }
-                }else {
+                } else {
                     sender.addChatMessage(new TextComponentString("블럭을 들고 K키를 누르면 블럭을 설치합니다."));
                     sender.addChatMessage(new TextComponentString("블럭을 들고 J키를 누르면 블럭을 복사후 붙여넣기 합니다."));
                     sender.addChatMessage(new TextComponentString("블럭을 들고 마우스 휠을 돌리면 거리를 조절할 수 있습니다."));

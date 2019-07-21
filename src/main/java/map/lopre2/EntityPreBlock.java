@@ -406,4 +406,5 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
             super.setDead();
         }
     }
+
 }

@@ -54,7 +54,9 @@ public class CommandMg extends CommandPlusBase {
                 clientBlock.setJumpName(name);
                 serverBlock.setJumpName(name);
             }
-
+            if (type.equalsIgnoreCase("print")) {
+                entitydefServer.printModel();
+            }
             if (type.equalsIgnoreCase("model")) {
                 entitydefServer.setModel(TypeModel.valueOf(arg1));
                 entitydefClient.setModel(TypeModel.valueOf(arg1));

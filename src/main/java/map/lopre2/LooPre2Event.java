@@ -1,6 +1,7 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import net.minecraftforge.event.world.WorldEvent;
 import olib.api.LoginEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
@@ -57,10 +58,18 @@ public class LooPre2Event {
     @SubscribeEvent
     public void event(LoginEvent event) {
         if (LoPre2.checkWorld()) {
+            LoPre2.worldload();
             if (Minecraft.getMinecraft().gameSettings.limitFramerate > 60) {
                 Minecraft.getMinecraft().gameSettings.limitFramerate = 60;
             }
         }
+    }
+
+    @SubscribeEvent
+    public void event(WorldEvent.Unload event) {
+        LoPre2.worldUnload();;
+
+
     }
 
     @SubscribeEvent

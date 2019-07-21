@@ -20,8 +20,8 @@ public class OLib {
     public void preInit(FMLPreInitializationEvent e){
         config = new Configuration(e.getSuggestedConfigurationFile());
         config.load();
-
         config.save();
+
     }
 
     @Mod.EventHandler

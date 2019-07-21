@@ -50,7 +50,7 @@ public abstract class AbstractTick {
 		isAbsDead = true;
 	}
 
-	public void pauseTick(boolean pause) {
+	public void pause(boolean pause) {
 		this.absPause = pause;
 	}
 
@@ -71,7 +71,7 @@ public abstract class AbstractTick {
 	}
 
 	public boolean subtraction(Type argType) {
-		if ((tickType != null && argType != this.tickType)) {
+		if ((tickType != null && argType != this.tickType) || isPause()) {
 			return false;
 		}
 		if (stopCondition())

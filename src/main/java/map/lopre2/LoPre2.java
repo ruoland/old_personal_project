@@ -1,10 +1,14 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import map.lopre2.jump3.EntityLavaInvisible;
 import map.lopre2.nouse.EntityMagmaBlock;
 import map.lopre2.nouse.EntitySmallBlock;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import olib.api.NBTAPI;
 import olib.api.WorldAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -19,33 +23,20 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.*;
 import map.lopre2.jump3.EntityLavaSpawnBlock;
+import olib.effect.AbstractTick;
+import olib.effect.TickRegister;
 import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "LoopPre2", name = "LoopPre2")
 public class LoPre2 {
-    public static Achievement achievementOneClear = new Achievement("achievement.oneclear", "oneclear", 0, 0, Items.FIREWORK_CHARGE, null);
-    public static Achievement achievementNoDie1 = new Achievement("achievement.nodie1", "nodie1", 0, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode1);
-    public static Achievement achievementNoGameMode1 = new Achievement("achievement.nogamemode1", "nogamemode1", 0, 2, Items.GOLDEN_APPLE, null);
-    public static Achievement achievementApple = new Achievement("achievement.apple", "apple", 0, 3, new ItemStack(Items.GOLDEN_APPLE), LoPre2.achievementNoGameMode1);
-    public static Achievement achievementHidePath3 = new Achievement("achievement.hidepath3", "hidepath3", 0, 4, Items.GOLDEN_APPLE, null);
-    public static Achievement achievementHidePath1 = new Achievement("achievement.hidepath1", "hidepath1", 0, 6, Items.FEATHER, null);
-
-    public static Achievement achievementTwoClear = new Achievement("achievement.twoclear", "twoclear", 1, 0, Items.FIREWORKS, null);
-    public static Achievement achievementNoDie2 = new Achievement("achievement.nodie2", "nodie2", 1, 1, new ItemStack(Blocks.SKULL), LoPre2.achievementNoGameMode2);
-    public static Achievement achievementNoGameMode2 = new Achievement("achievement.nogamemode2", "nogamemode2", 1, 2, Items.GOLDEN_APPLE, null);
-    public static Achievement achievementHidePath2 = new Achievement("achievement.hidepath2", "hidepath2", 1, 6, Items.FEATHER, null);
+    public static NBTAPI nbtapi = new NBTAPI("./mokur");
     public static KeyBinding KEY_ADD = new KeyBinding("복사 거리를 늘립니다.", Keyboard.KEY_ADD, "모쿠르");
     public static KeyBinding KEY_ADD_2 = new KeyBinding("복사 거리를 늘립니다.(+와 = 같이 있는 키보드용)", Keyboard.KEY_EQUALS, "모쿠르");
-
     public static KeyBinding KEY_MINUS = new KeyBinding("복사 거리를 줄입니다.", Keyboard.KEY_MINUS, "모쿠르");
     public static final CreativeTabs MO_BLOCK = new CreativeTabs("모쿠르") {
         @Override
@@ -77,19 +68,7 @@ public class LoPre2 {
         ClientRegistry.registerKeyBinding(KEY_ADD);
         ClientRegistry.registerKeyBinding(KEY_ADD_2);
         ClientRegistry.registerKeyBinding(KEY_MINUS);
-        achievementApple.registerStat();
-        achievementNoDie1.registerStat();
-        achievementNoGameMode1.registerStat();
-        achievementNoDie2.registerStat();
-        achievementNoGameMode2.registerStat();
-        achievementOneClear.registerStat();
-        achievementTwoClear.registerStat();
-        achievementHidePath1.registerStat();
-        achievementHidePath2.registerStat();
-        AchievementPage.registerAchievementPage(new AchievementPage("모드 점프맵 도전과제", new Achievement[]{
-                achievementHidePath1, achievementHidePath2,
-                achievementTwoClear, achievementOneClear, achievementNoGameMode1, achievementNoDie1, achievementNoGameMode2, achievementNoDie2, achievementApple, achievementHidePath1, achievementHidePath2
-        }));
+
         //점프맵 2 코드
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         MinecraftForge.EVENT_BUS.register(new LooPre2Event());
@@ -111,6 +90,7 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "VELOCITY-NO-EGG-PreBlock", EntityPreBlock.class);
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
+        DebAPI.registerEntity(this, "LavaInvisible", EntityLavaInvisible.class);
 
         proxy.init();
         //DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
@@ -118,6 +98,25 @@ public class LoPre2 {
         //DebAPI.registerEntity(this, "JumpSpider", EntityJumpSpider.class, new RenderJumpSpider());
         //DebAPI.registerEntity(this, "SmallBlockJump", EntitySmallBlock.class);
         //DebAPI.registerEntity(this, "LavaSpawnBlock", EntityLavaSpawnBlock.class);
+
+    }
+
+    public static void worldload() {
+        LoPre2.nbtapi.readNBT();
+        TickRegister.register(new AbstractTick("ln", TickEvent.Type.SERVER, 1, true) {
+            @Override
+            public void run(TickEvent.Type type) {
+                CommandJB.lavaTick = absRunCount == 200 ? absRunCount = 0 : absRunCount;
+            }
+        });
+
+    }
+
+    public static void worldUnload() {
+        LoPre2.nbtapi.saveNBT();
+        if (TickRegister.isAbsTickRun("ln"))
+            TickRegister.remove("ln");
+        CommandJB.lavaTick = LoPre2.nbtapi.getNBT().getInteger("lavaNumber");
 
     }
 
@@ -133,7 +132,7 @@ public class LoPre2 {
             return -1;
         else if (a > b)
             return 1;
-        else if ( a== b)
+        else if (a == b)
             return 0;
         else return -10;
 
