@@ -1,6 +1,7 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import map.lopre2.jump3.EntityFlowBlock;
 import map.lopre2.jump3.EntityLavaInvisible;
 import map.lopre2.nouse.EntityMagmaBlock;
 import map.lopre2.nouse.EntitySmallBlock;
@@ -91,6 +92,7 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
         DebAPI.registerEntity(this, "LavaInvisible", EntityLavaInvisible.class);
+        DebAPI.registerEntity(this, "FlowBlock", EntityFlowBlock.class);
 
         proxy.init();
         //DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);

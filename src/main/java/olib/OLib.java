@@ -3,6 +3,7 @@ package olib;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
@@ -13,6 +14,8 @@ import olib.effect.TickRegister;
 @Mod(modid = "OneLine")
 
 public class OLib {
+    @SidedProxy(clientSide = "olib.ClientProxy", serverSide = "olib.CommonProxy")
+    public static CommonProxy proxy;
 
     public static Configuration config;
 

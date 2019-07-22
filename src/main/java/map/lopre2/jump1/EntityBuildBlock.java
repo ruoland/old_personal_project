@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EntityBuildBlock extends EntityPreBlock {
-    public static EntityBuildBlock eBlock, nBlock, dBlock;
 
     private static HashMap<String, ArrayList<BlockPos>> blockPosHashMap = new HashMap<>();
     private static HashMap<String, ArrayList<ItemStack>> blockHashMap = new HashMap<>();
@@ -73,35 +72,6 @@ public class EntityBuildBlock extends EntityPreBlock {
     }
 
     @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        if (isServerWorld()) {
-            if (WorldAPI.equalsItem(stack, Items.APPLE)) {
-                dataManager.set(CUSTOM_NAME, "E 블럭");
-                System.out.println("E 블럭됨");
-                eBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
-                eBlock.setInv(true);
-                eBlock.setCustomName("빌드 블럭");
-            }
-            if (WorldAPI.equalsItem(stack, Items.BREAD)) {
-                dataManager.set(CUSTOM_NAME, "N 블럭");
-                System.out.println("N 블럭됨");
-                nBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
-                nBlock.setInv(true);
-                nBlock.setCustomName("빌드 블럭");
-            }
-            if (WorldAPI.equalsItem(stack, Items.CHICKEN)) {
-                dataManager.set(CUSTOM_NAME, "D 블럭");
-                System.out.println("D 블럭됨");
-                dBlock = (EntityBuildBlock) spawn(posX, posY, posZ);
-                dBlock.setInv(true);
-                dBlock.setCustomName("빌드 블럭");
-
-            }
-        }
-        return super.processInteract(player, hand, stack);
-    }
-
-    @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return super.getRenderBoundingBox().expandXyz(10);
     }
@@ -133,11 +103,15 @@ public class EntityBuildBlock extends EntityPreBlock {
         WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new AbstractTick.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
-                if (worldObj.getBlockState(getPos()).getBlock() != null && worldObj.getBlockState(getPos()).getBlock() != Blocks.AIR) {
+                IBlockState state = worldObj.getBlockState(getPos());
+                Block block =state.getBlock();
+                System.out.println(block);
+                if (block != null && block != Blocks.AIR) {
                     blockPosList.add(new BlockPos(xx - x, yy - y, zz - z));
-                    IBlockState state = worldObj.getBlockState(getPos());
-                    Block block = state.getBlock();
-                    blockList.add(new ItemStack(state.getBlock(), 1, block.getMetaFromState(state)));
+                    ItemStack itemStack = new ItemStack(state.getBlock(), 1, block.getMetaFromState(state));
+                    if(state.getBlock() == Blocks.LIT_REDSTONE_ORE)
+                        itemStack = new ItemStack(Blocks.REDSTONE_ORE);
+                    blockList.add(itemStack);
                 }
             }
         });
@@ -155,40 +129,7 @@ public class EntityBuildBlock extends EntityPreBlock {
             BlockPos pos2 = getPos2();
             setBlock(pos1.getX(), pos1.getY(), pos1.getZ(), pos2.getX(), pos2.getY(), pos2.getZ());
         }
-
-        if (WorldAPI.getCurrentWorldName().equalsIgnoreCase("JumpMap Sea2") && CommandJB.endTime != 0 && eBlock != null) {
-            if (!eBlock.isInv()) {
-                String customName = dataManager.get(CUSTOM_NAME);
-                System.out.println(customName + getTargetPosition());
-                if (customName.equalsIgnoreCase("E 블럭")) {
-                    setInv(true);
-                }
-                if (customName.equalsIgnoreCase("N 블럭")) {
-                    setInv(true);
-                }
-                if (customName.equalsIgnoreCase("D 블럭")) {
-                    setInv(true);
-                }
-            }
-            eBlock.setTeleportLock(false);
-            nBlock.setTeleportLock(false);
-            dBlock.setTeleportLock(false);
-            eBlock.setInv(false);
-            nBlock.setInv(false);
-            dBlock.setInv(false);
-            eBlock.setTarget(1127, 247, -70, 1);
-            nBlock.setTarget(1127, 247, -61, 1);
-            dBlock.setTarget(1127, 249, -56);
-            eVec = new Vec3d(-180 - eBlock.getRotateX(), 90 - eBlock.getRotateY(), -180 - eBlock.getRotateZ()).normalize().scale(0.6);
-            nVec = new Vec3d(-180 - nBlock.getRotateX(), 0 - nBlock.getRotateY(), -180 - nBlock.getRotateZ()).normalize().scale(0.8);
-            dVec = new Vec3d(-180 - dBlock.getRotateX(), 0 - dBlock.getRotateY(), -180 - dBlock.getRotateZ()).normalize().scale(0.3);
-
-            eBlock.addRotate(eVec.xCoord, eVec.yCoord, eVec.zCoord);
-            nBlock.addRotate(nVec.xCoord, nVec.yCoord, nVec.zCoord);
-            dBlock.addRotate(dVec.xCoord, dVec.yCoord, dVec.zCoord);
-        }
     }
-    private Vec3d eVec, nVec, dVec;
     @Override
     public void targetArrive() {
         super.targetArrive();
@@ -214,15 +155,6 @@ public class EntityBuildBlock extends EntityPreBlock {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         dataManager.set(CUSTOM_NAME, compound.getString("customName"));
-        if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("E 블럭")) {
-            eBlock = this;
-        }
-        if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("N 블럭")) {
-            nBlock = this;
-        }
-        if (dataManager.get(CUSTOM_NAME).equalsIgnoreCase("D 블럭")) {
-            dBlock = this;
-        }
         blockRead(compound);
 
     }

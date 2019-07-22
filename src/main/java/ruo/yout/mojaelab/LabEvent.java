@@ -39,7 +39,7 @@ public class LabEvent {
 
     @SubscribeEvent
     public void event(LivingSpawnEvent event) {
-        if(Minecraft.getDebugFPS() > 40 && !(event.getEntityLiving() instanceof EntityAnimal)) {
+        if(!(event.getEntityLiving() instanceof EntityAnimal)) {
             if (event.getEntityLiving() instanceof EntityMob && Mojae.morespawn && !event.getEntityLiving().getEntityData().hasKey("mojae")) {
                 for (int i = 0; i < 3; i++) {
                     double x = event.getX() + WorldAPI.rand(30);
@@ -62,8 +62,7 @@ public class LabEvent {
                             creeper = new EntitySpider(event.getWorld());
                             break;
                         }
-
-                        case 5: {
+                        case 4: {
                             creeper = new EntityEnderman(event.getWorld());
                             break;
                         }
@@ -77,8 +76,7 @@ public class LabEvent {
 
                 }
             }
-        }else
-            event.getEntityLiving().setDead();
+        }
     }
     @SubscribeEvent
     public void livingAttackEvent(LivingHurtEvent event) {

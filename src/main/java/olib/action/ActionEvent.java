@@ -3,15 +3,6 @@ package olib.action;
 import cmplus.CMPlus;
 import cmplus.deb.DebAPI;
 import cmplus.test.CMPacketCommand;
-import map.lopre2.LoPre2;
-import minigameLib.ClientProxy;
-import minigameLib.minigame.minerun.EntityMineRunner;
-import minigameLib.minigame.minerun.MineRun;
-import net.minecraft.init.Blocks;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import olib.api.BlockAPI;
-import olib.api.LoginEvent;
-import olib.api.WorldAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockLiquid;
@@ -20,6 +11,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -27,8 +19,13 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import olib.ClientProxy;
+import olib.api.BlockAPI;
+import olib.api.LoginEvent;
+import olib.api.WorldAPI;
 import org.lwjgl.input.Keyboard;
 
 public class ActionEvent {
@@ -46,7 +43,7 @@ public class ActionEvent {
 
     @SubscribeEvent
     public void rotate(LivingFallEvent e) {
-        if (DoubleJump.canMapDoubleJump() && (e.getEntityLiving() instanceof EntityPlayer || e.getEntityLiving() instanceof EntityMineRunner)) {
+        if (DoubleJump.canMapDoubleJump() && (e.getEntityLiving() instanceof EntityPlayer)) {
             e.setDistance(e.getDistance() - 3);
         }
     }
@@ -56,7 +53,7 @@ public class ActionEvent {
      */
     @SubscribeEvent
     public void rotate(LivingEvent.LivingJumpEvent e) {
-        if (DoubleJump.canMapDoubleJump() && (e.getEntityLiving() instanceof EntityPlayer || e.getEntityLiving() instanceof EntityMineRunner)) {
+        if (DoubleJump.canMapDoubleJump() && (e.getEntityLiving() instanceof EntityPlayer)) {
             DoubleJump.setIsPlayerJump(true);
             DebAPI.msgText("MiniGame", "점프함" + e.getEntityLiving());
         }
@@ -74,25 +71,15 @@ public class ActionEvent {
                     DoubleJump.setOnDoubleJump(true);
                     DoubleJump.setIsPlayerJump(false);
                     System.out.println("더블점프함");
-                    if (MineRun.runner != null) {
-                        MineRun.runner.motionY = 0.57F;
-                        MineRun.runner.fallDistance = 0;
-                    } else {
                         event.player.motionY = 0.57F;
                         event.player.fallDistance = 0;
-                    }
                     DebAPI.msgText("MiniGame", "더블점프함");
-                    if (MineRun.runner != null && MineRun.runner.isSprinting()) {
-                        float f = MineRun.runner.rotationYaw * 0.017453292F;
-                        MineRun.runner.motionX -= (double) (MathHelper.sin(f) * 0.2F);
-                        MineRun.runner.motionZ += (double) (MathHelper.cos(f) * 0.2F);
-                    } else if (event.player.isSprinting()) {
+                  if (event.player.isSprinting()) {
                         float f = event.player.rotationYaw * 0.017453292F;
                         event.player.motionX -= (double) (MathHelper.sin(f) * 0.2F);
                         event.player.motionZ += (double) (MathHelper.cos(f) * 0.2F);
                     }
                     CMPlus.INSTANCE.sendToServer(new CMPacketCommand("더블점프:" + event.player.getName()));
-
                 }
             }
         }
@@ -160,18 +147,18 @@ public class ActionEvent {
     }
 
     @SubscribeEvent
-    public void client(TickEvent.ClientTickEvent event){
-        if(LoPre2.checkWorld() && Minecraft.getMinecraft().currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_R) && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getBedLocation() != null){
+    public void client(TickEvent.ClientTickEvent event) {
+        if (Minecraft.getMinecraft().currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_R) && WorldAPI.getPlayer() != null && WorldAPI.getPlayer().getBedLocation() != null) {
             BlockPos bedLocation = WorldAPI.getPlayerMP().getBedLocation();
-            WorldAPI.teleport(bedLocation.getX()+0.5, bedLocation.getY(), bedLocation.getZ()+0.5);
+            WorldAPI.teleport(bedLocation.getX() + 0.5, bedLocation.getY(), bedLocation.getZ() + 0.5);
             WorldAPI.getPlayerMP().heal(20);
             WorldAPI.getPlayer().fallDistance = 0;
             WorldAPI.getPlayer().getFoodStats().setFoodLevel(20);
-            if(WorldAPI.getBlock(bedLocation.add(0,-1,0)) == Blocks.AIR){
+            if (WorldAPI.getBlock(bedLocation.add(0, -1, 0)) == Blocks.AIR) {
                 BlockAPI blockAPI = WorldAPI.getBlock(WorldAPI.getWorld(), bedLocation, 5);
-                for(BlockPos pos : blockAPI.getPosList()){
-                    if(WorldAPI.getBlock(pos) instanceof BlockBasePressurePlate){
-                        WorldAPI.teleport(pos.add(0,1,0));
+                for (BlockPos pos : blockAPI.getPosList()) {
+                    if (WorldAPI.getBlock(pos) instanceof BlockBasePressurePlate) {
+                        WorldAPI.teleport(pos.add(0, 1, 0));
                         break;
                     }
                 }

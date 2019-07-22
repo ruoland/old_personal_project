@@ -1,7 +1,6 @@
 package ruo.yout.command;
 
 import cmplus.util.CommandPlusBase;
-import map.lopre2.EntityPreBlock;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -17,9 +16,8 @@ public abstract class CommandBaseEntity extends CommandPlusBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         for(Entity entity : sender.getEntityWorld().loadedEntityList){
             if(!(entity instanceof EntityPlayer)){
-                boolean isJumpBlock = entity instanceof EntityPreBlock && ((EntityPreBlock) entity).getJumpName().equalsIgnoreCase(args[0]);
                 if(args[0].equalsIgnoreCase("all") || EntityList.getEntityString(entity).equalsIgnoreCase(args[0])
-                        || entity.getCustomNameTag().equalsIgnoreCase(args[0]) || isJumpBlock){
+                        || entity.getCustomNameTag().equalsIgnoreCase(args[0])){
                     runCommand(entity, args);
                 }
             }

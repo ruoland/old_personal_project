@@ -11,6 +11,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import olib.effect.AbstractTick;
 
 //일정 시간마다 용암 속에 가라앉는 블럭
 
@@ -42,7 +43,7 @@ public class EntityLavaInvisible extends EntityPreBlock {
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-        if (isServerWorld()) {
+        if (isServerWorld() && hand == EnumHand.MAIN_HAND) {
             int lava = dataManager.get(LAVA_NUMBER);
             dataManager.set(LAVA_NUMBER, lava + 10);
             System.out.println(dataManager.get(LAVA_NUMBER) + " - " + lava);
@@ -64,7 +65,7 @@ public class EntityLavaInvisible extends EntityPreBlock {
                 if (getTraY() < 1) {
                     float a = (float) (((getSpawnY() - 1) - posY) / 20);
                     this.setTra(0, getTraY() - a, 0);
-                    System.out.println(getTraY()+"내려가는 중" + a);
+                    //System.out.println(getTraY()+"내려가는 중" + a);
                 } else
                     setTra(0, 1, 0);
                 if(CommandJB.lavaTick > lavaNumber() + 10 ){
@@ -75,7 +76,7 @@ public class EntityLavaInvisible extends EntityPreBlock {
                 if (getTraY() > 0) {
                     float a = (float) ((getSpawnY() + 0.3) - posY) / 10;
                     setTra(0, getTraY() + -a, 0);
-                    System.out.println(getTraY()+"올라가는 중" + -a);
+                    //System.out.println(getTraY()+"올라가는 중" + -a);
 
                 } else
                     setTra(0, 0, 0);

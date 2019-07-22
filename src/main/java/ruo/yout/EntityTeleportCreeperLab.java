@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import olib.api.Direction;
 import olib.api.PosHelper;
 import olib.api.WorldAPI;
-import ruo.asdfwild.ai.EntityAIBlockPlace;
 
 import javax.annotation.Nullable;
 
@@ -37,7 +36,6 @@ public class EntityTeleportCreeperLab extends EntityCreeper {
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(2, new EntityAIBlockPlace(this));
     }
 
     private int teleportDelay, explosionDelay;

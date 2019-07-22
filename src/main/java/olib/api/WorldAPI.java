@@ -2,14 +2,9 @@ package olib.api;
 
 import cmplus.CMPlus;
 import cmplus.test.CMPacketCommand;
-import minigameLib.MiniGame;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockLiquid;
-import olib.action.ActionEffect;
-import olib.effect.AbstractTick;
-import olib.effect.AbstractTick.BlockXYZ;
-import olib.effect.TickRegister;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
@@ -41,6 +36,10 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import olib.action.ActionEffect;
+import olib.effect.AbstractTick;
+import olib.effect.AbstractTick.BlockXYZ;
+import olib.effect.TickRegister;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -123,8 +122,6 @@ public class WorldAPI {
     }
 
     public static boolean equalsWorldName(String worldName) {
-        if(getCurrentWorldName().equalsIgnoreCase("noworld"))
-            MiniGame.LOG.warning("현재 월드의 이름과 "+worldName+"을 비교 하려 했지만 현재 월드 이름이 noworld임!!!!");
         return getCurrentWorldName().equalsIgnoreCase(worldName);
     }
 
@@ -233,7 +230,6 @@ public class WorldAPI {
      */
     public static String getStackName(ItemStack itemstack) {
         if(itemstack == null) {
-            MiniGame.LOG.warning("아이템의 이름을 반환하려 했지만 아이템 객체가 null입니다.");
             return "없음";
         }
         return itemstack.getDisplayName();
@@ -241,7 +237,6 @@ public class WorldAPI {
 
     public static String getEntityName(Entity itemstack) {
         if(itemstack == null) {
-            MiniGame.LOG.warning("엔티티의 이름을 반환하려 했지만 엔티티 객체가 null입니다.");
             return "없음";
         }
         return itemstack.getCustomNameTag();

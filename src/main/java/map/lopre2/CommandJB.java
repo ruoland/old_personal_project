@@ -4,6 +4,9 @@ import cmplus.CMPlus;
 import cmplus.test.CMPacketCommand;
 import cmplus.util.CommandPlusBase;
 import minigameLib.MiniGame;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import olib.action.ActionEffect;
 import olib.action.DoubleJump;
 import olib.api.WorldAPI;
@@ -26,6 +29,8 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import net.minecraftforge.fml.relauncher.Side;
+import olib.map.RenderDefaultNPC;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityMoveBlock;
 import map.lopre2.jump1.EntityWaterBlockCreator;
@@ -118,7 +123,8 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("inv"))
                 WorldAPI.setBlock(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], MiniGame.blockInvisible);
             if (args[0].equalsIgnoreCase("block")) {
-                System.out.println(Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]));
+                System.out.println(Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]).blockList.size());
+                System.out.println(pos1.length+ " - "+pos2.length);
 
             }
             if (args[0].equalsIgnoreCase("save"))
