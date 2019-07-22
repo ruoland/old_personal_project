@@ -48,6 +48,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     public EntityPreBlock(World worldObj) {
         super(worldObj);
+        setBlockMode(Blocks.STONE);
+        setCollision(true);
         //this.setCustomNameTag(this.getClass().getSimpleName().replace("Entity", ""));
         this.setDeathTimer(-1);
     }
