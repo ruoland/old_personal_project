@@ -1,5 +1,6 @@
 package olib.map;
 
+import net.minecraft.entity.Entity;
 import olib.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.*;
@@ -33,7 +34,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         //this.addLayer(new LayerDefaultNPCEye(this));
         DEFAULT_RES_LOC = r;
     }
-
     /*
      */
     @Override

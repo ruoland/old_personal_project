@@ -50,11 +50,5 @@ public class BlockBarrier extends Block {
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
-        if(entityIn instanceof EntityPreBlock){
-            ((EntityPreBlock) entityIn).setTeleport(false);
-            ((EntityPreBlock) entityIn).teleportSpawnPos();
-            ((EntityPreBlock) entityIn).teleportEnd();
-
-        }
     }
 }
