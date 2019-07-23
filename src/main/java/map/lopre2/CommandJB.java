@@ -3,35 +3,21 @@ package map.lopre2;
 import cmplus.CMPlus;
 import cmplus.test.CMPacketCommand;
 import cmplus.util.CommandPlusBase;
+import map.lopre2.jump3.EntityBoatBuildBlock;
 import minigameLib.MiniGame;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import olib.action.ActionEffect;
 import olib.action.DoubleJump;
 import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import net.minecraftforge.fml.relauncher.Side;
-import olib.map.RenderDefaultNPC;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityMoveBlock;
 import map.lopre2.jump1.EntityWaterBlockCreator;
 import map.lopre2.jump2.EntityBigInvisibleBlock;
@@ -103,7 +89,7 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("tpy")) {
                 ActionEffect.setYTP(Double.valueOf(args[1]), ActionEffect.getPitch(), ActionEffect.getYaw());
-                sender.addChatMessage(new TextComponentString("스폰포인트로 TPY 자동 갱신되게 했음 /spawnpoint 로 내려갈 것"));
+                sender.addChatMessage(new TextComponentString("스폰포인트로 TPY 자동 갱신되게 했음kmk /spawnpoint 로 내려갈 것"));
 
             }
             if (args[0].equalsIgnoreCase("yp")) {
@@ -120,12 +106,20 @@ public class CommandJB extends CommandPlusBase {
             if (args[0].equalsIgnoreCase("pos2")) {
                 pos2 = WorldAPI.changePosArrayInt((EntityLivingBase) sender);
             }
+            if (args[0].equalsIgnoreCase("movepos")) {
+                EntityBoatBuildBlock.moX = sender.getPosition().getX();
+                EntityBoatBuildBlock.moZ = sender.getPosition().getZ();
+
+            }
             if (args[0].equalsIgnoreCase("inv"))
                 WorldAPI.setBlock(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], MiniGame.blockInvisible);
             if (args[0].equalsIgnoreCase("block")) {
                 System.out.println(Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]).blockList.size());
                 System.out.println(pos1.length+ " - "+pos2.length);
-
+            }
+            if (args[0].equalsIgnoreCase("moveblock")) {
+                Loop.moveBlockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
+                System.out.println(pos1.length+ " - "+pos2.length);
             }
             if (args[0].equalsIgnoreCase("save"))
                 Loop.save(sender.getEntityWorld(), args[1], pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);

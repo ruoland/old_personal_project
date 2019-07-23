@@ -25,6 +25,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     private static final DataParameter<Float> WIDTH = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> HEIGHT = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> DEB_MOVE = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_BOAT = EntityDataManager.createKey(EntityLavaBlock.class, DataSerializers.BOOLEAN);
 
     protected double downSpeed = 0.001;
     public EntityLavaBlock(World worldIn) {
@@ -47,6 +48,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         dataManager.register(WIDTH, 0F);
         dataManager.register(HEIGHT, 0F);
         dataManager.register(DEB_MOVE, false);
+        dataManager.register(IS_BOAT, false);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class EntityLavaBlock extends EntityPreBlock {
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
-        if (!canTeleportLock()) {
+        if (!canTeleportLock() && !dataManager.get(IS_BOAT)) {
             boolean isFly = true;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
@@ -175,6 +177,7 @@ public class EntityLavaBlock extends EntityPreBlock {
 
         compound.setFloat("heightl", getHeight());
         compound.setBoolean("deb", dataManager.get(DEB_MOVE));
+        compound.setBoolean("is boat",dataManager.get(IS_BOAT));
     }
 
     @Override
@@ -185,6 +188,13 @@ public class EntityLavaBlock extends EntityPreBlock {
         updateSize();
         downSpeed = 0.005;
         dataManager.set(DEB_MOVE, compound.getBoolean("deb"));
+        dataManager.set(IS_BOAT, compound.getBoolean("is boat"));
     }
 
+    public void setBoatBlock(){
+        dataManager.set(IS_BOAT, true);
+    }
+    public boolean isBoatBlock(){
+        return dataManager.get(IS_BOAT);
+    }
 }

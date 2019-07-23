@@ -32,8 +32,6 @@ public class EntityBuildBlock extends EntityPreBlock {
 
     public ArrayList<BlockPos> blockPosList = new ArrayList<BlockPos>();
     public ArrayList<ItemStack> blockList = new ArrayList<ItemStack>();
-    private static final DataParameter<String> CUSTOM_NAME = EntityDataManager.<String>createKey(EntityBuildBlock.class,
-            DataSerializers.STRING);
     private static final DataParameter<BlockPos> BLOCK_POS1 = EntityDataManager.<BlockPos>createKey(EntityBuildBlock.class,
             DataSerializers.BLOCK_POS);
     private static final DataParameter<BlockPos> BLOCK_POS2 = EntityDataManager.<BlockPos>createKey(EntityBuildBlock.class,
@@ -76,14 +74,6 @@ public class EntityBuildBlock extends EntityPreBlock {
         return super.getRenderBoundingBox().expandXyz(10);
     }
 
-    public void setCustomName(String name) {
-        dataManager.set(CUSTOM_NAME, name);
-    }
-
-    public String getCustomName() {
-        return dataManager.get(CUSTOM_NAME);
-    }
-
     @Override
     public String getCustomNameTag() {
         return  getJumpName() + " RoX:" + getRotateX() + " RoY:" + getRotateY() + " RoZ:" + getRotateZ();
@@ -94,7 +84,6 @@ public class EntityBuildBlock extends EntityPreBlock {
         super.entityInit();
         dataManager.register(BLOCK_POS1, BlockPos.ORIGIN);
         dataManager.register(BLOCK_POS2, BlockPos.ORIGIN);
-        dataManager.register(CUSTOM_NAME, "빌드 블럭");
     }
 
     public void setBlock(int xx, int yy, int zz, int x2, int y2, int z2) {
@@ -139,7 +128,6 @@ public class EntityBuildBlock extends EntityPreBlock {
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        compound.setString("customName", dataManager.get(CUSTOM_NAME));
         compound.setInteger("BUILDSIZE", blockList.size());
         for (int i = 0; i < blockList.size(); i++) {
             ItemStack stack = blockList.get(i);
@@ -154,7 +142,6 @@ public class EntityBuildBlock extends EntityPreBlock {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        dataManager.set(CUSTOM_NAME, compound.getString("customName"));
         blockRead(compound);
 
     }
