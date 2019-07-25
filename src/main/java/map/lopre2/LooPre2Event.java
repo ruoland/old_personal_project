@@ -2,6 +2,9 @@ package map.lopre2;
 
 import cmplus.deb.DebAPI;
 import map.lopre2.jump3.EntityBoatBuildBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import olib.api.LoginEvent;
 import net.minecraft.client.Minecraft;
@@ -16,6 +19,19 @@ import map.lopre2.jump1.EntityLavaBlock;
 
 
 public class LooPre2Event {
+
+    @SubscribeEvent
+    public void lavaEvent(LivingHurtEvent e) {
+        if(e.getEntityLiving() instanceof EntityPlayer){
+            System.out.println(e.getSource().getDamageType());
+            if(e.getSource().isFireDamage() || e.getSource() == DamageSource.onFire || e.getSource() == DamageSource.inFire) {
+                e.setCanceled(true);
+                e.getEntityLiving().setFire(0);
+            }
+        }
+
+    }
+
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent e) {
         if (!CommandJB.isDebMode && e.side == Side.SERVER && e.phase == TickEvent.Phase.END) {
