@@ -20,7 +20,7 @@ public class EntityLavaInvisible extends EntityPreBlock {
 
     public EntityLavaInvisible(World worldObj) {
         super(worldObj);
-        setBlockMode(Blocks.STONE);
+        setBlockMode(Blocks.GRAVEL);
         setCollision(true);
         isFly = true;
     }

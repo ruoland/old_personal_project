@@ -1,30 +1,21 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import map.lopre2.jump3.EntityBoatBuildBlock;
 import net.minecraftforge.event.world.WorldEvent;
 import olib.api.LoginEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommand;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityLavaBlock;
 
 
 public class LooPre2Event {
-
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent e) {
         if (!CommandJB.isDebMode && e.side == Side.SERVER && e.phase == TickEvent.Phase.END) {
@@ -51,6 +42,14 @@ public class LooPre2Event {
             if (dis.startsWith("inte:")) {
                 CommandJB.isDebMode = true;
                 ItemCopy.setInterval(Double.valueOf(dis.replace("inte:", "")));
+            }
+            if (dis.startsWith("mox:")) {
+                CommandJB.isDebMode = true;
+                EntityBoatBuildBlock.moX = (Float.valueOf(dis.replace("mox:", "")));
+            }
+            if (dis.startsWith("moz:")) {
+                CommandJB.isDebMode = true;
+                EntityBoatBuildBlock.moZ = (Float.valueOf(dis.replace("moz:", "")));
             }
         }
     }

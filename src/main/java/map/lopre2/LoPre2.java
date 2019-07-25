@@ -1,10 +1,9 @@
 package map.lopre2;
 
 import cmplus.deb.DebAPI;
+import map.lopre2.jump3.EntityBoatBuildBlock;
 import map.lopre2.jump3.EntityFlowBlock;
 import map.lopre2.jump3.EntityLavaInvisible;
-import map.lopre2.nouse.EntityMagmaBlock;
-import map.lopre2.nouse.EntitySmallBlock;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.*;
@@ -12,12 +11,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import olib.api.NBTAPI;
 import olib.api.WorldAPI;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
-import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +22,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.*;
-import map.lopre2.jump3.EntityLavaSpawnBlock;
 import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
 import org.lwjgl.input.Keyboard;
@@ -93,7 +86,7 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);
         DebAPI.registerEntity(this, "LavaInvisible", EntityLavaInvisible.class);
         DebAPI.registerEntity(this, "FlowBlock", EntityFlowBlock.class);
-
+        DebAPI.registerEntity(this, "BoatBlock", EntityBoatBuildBlock.class);
         proxy.init();
         //DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
         //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);

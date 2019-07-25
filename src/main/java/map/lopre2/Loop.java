@@ -1,6 +1,7 @@
 package map.lopre2;
 
 import cmplus.util.Sky;
+import map.lopre2.jump3.EntityBoatBuildBlock;
 import olib.api.NBTAPI;
 import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
@@ -44,6 +45,16 @@ public class Loop {
         EntityBuildBlock buildBlock = new EntityBuildBlock(worldObj);
         buildBlock.setPosition(xx, yy, zz);
         buildBlock.setTeleportLock(true);
+        buildBlock.setBlock(Blocks.STONE);
+        buildBlock.setTeleport(false);
+        worldObj.spawnEntityInWorld(buildBlock);
+        buildBlock.setBlock(xx,yy,zz,x2,y2,z2);
+        return buildBlock;
+    }
+    public static EntityBoatBuildBlock moveBlockSet(World worldObj, int xx, int yy, int zz, int x2, int y2, int z2) {
+        EntityBoatBuildBlock buildBlock = new EntityBoatBuildBlock(worldObj);
+        buildBlock.setPosition(xx, yy, zz);
+        buildBlock.setTeleportLock(false);
         buildBlock.setBlock(Blocks.STONE);
         buildBlock.setTeleport(false);
         worldObj.spawnEntityInWorld(buildBlock);
