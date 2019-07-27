@@ -16,10 +16,7 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import olib.api.EntityAPI;
 import olib.api.WorldAPI;
@@ -29,19 +26,19 @@ import ruo.yout.EntityMojaeArrow;
 import ruo.yout.Mojae;
 
 public class LabEvent {
-    @SubscribeEvent
-    public void event(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equalsIgnoreCase("outOfWorld")) {
-            event.setCanceled(true);
-            event.getEntityLiving().motionY -= 1000;
-        }
-    }
+
 
     @SubscribeEvent
+    public void event(LivingDropsEvent event) {
+        if(Mojae.morespawn && Mojae.dog_pan)
+        event.setCanceled(true);
+
+    }
+    @SubscribeEvent
     public void event(LivingSpawnEvent event) {
-        if(!(event.getEntityLiving() instanceof EntityAnimal)) {
+        if (!(event.getEntityLiving() instanceof EntityAnimal)) {
             if (event.getEntityLiving() instanceof EntityMob && Mojae.morespawn && !event.getEntityLiving().getEntityData().hasKey("mojae")) {
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 7; i++) {
                     double x = event.getX() + WorldAPI.rand(30);
                     double z = event.getZ() + WorldAPI.rand(30);
                     EntityLiving creeper = null;
@@ -69,6 +66,7 @@ public class LabEvent {
                     }
                     if (creeper != null) {
                         creeper.setPosition(x, event.getY(), z);
+
                         event.getWorld().spawnEntityInWorld(creeper);
                         creeper.onInitialSpawn(event.getWorld().getDifficultyForLocation(creeper.getPosition()), null);
                         creeper.getEntityData().setBoolean("mojae", true);
@@ -78,9 +76,9 @@ public class LabEvent {
             }
         }
     }
+
     @SubscribeEvent
     public void livingAttackEvent(LivingHurtEvent event) {
-
         if (Mojae.skelreeper && event.getEntityLiving() instanceof EntitySkeleton) {
             if (event.getSource().getEntity() instanceof EntityMoJaeCreeper) {
                 event.setCanceled(true);
@@ -116,13 +114,13 @@ public class LabEvent {
                 System.out.println("엔티티 " + sourceIndirect.getEntity());
                 System.out.println("엔티티2 " + event.getEntityLiving());
             }
-            if(Mojae.wither && event.getEntityLiving() instanceof EntityWither){
+            if (Mojae.wither && event.getEntityLiving() instanceof EntityWither) {
                 EntityWither wither = (EntityWither) event.getEntityLiving();
                 System.out.println("  타입 " + sourceIndirect.damageType);
                 System.out.println("  소스오브 " + sourceIndirect.getSourceOfDamage());
                 System.out.println("  엔티티 " + sourceIndirect.getEntity());
                 System.out.println("  엔티티2 " + event.getEntityLiving());
-                System.out.println("  데미지"+event.getAmount());
+                System.out.println("  데미지" + event.getAmount());
             }
             //System.out.println("  2222타입 " + sourceIndirect.damageType);//2222타입 arrow
             //System.out.println("  2222소스오브 " + sourceIndirect.getSourceOfDamage());//2222소스오브 EntityTippedArrow['화살'/54558, l='test', x=415.04, y=5.64, z=-33.54]
@@ -139,17 +137,17 @@ public class LabEvent {
     public void joinWorld(EntityJoinWorldEvent event) {
 
         if (event.getEntity() instanceof EntityArrow) {
-            if(checkArrow((EntityArrow) event.getEntity()))
+            if (checkArrow((EntityArrow) event.getEntity()))
                 return;
             EntityArrow arrow = (EntityArrow) event.getEntity();
             if (arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED)
                 arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-            if(Mojae.wither && !(arrow instanceof EntityMojaeArrow) && !event.getWorld().isRemote) {
+            if (Mojae.wither && !(arrow instanceof EntityMojaeArrow) && !event.getWorld().isRemote) {
                 EntityMojaeArrow arrow1 = new EntityMojaeArrow(event.getWorld());
                 arrow1.readFromNBT(EntityAPI.getNBT(arrow));
                 arrow.setDead();
                 event.getWorld().spawnEntityInWorld(arrow1);
-                arrow1.setPosition(arrow1.posX, arrow1.posY+1, arrow1.posZ);
+                arrow1.setPosition(arrow1.posX, arrow1.posY + 1, arrow1.posZ);
             }
         }
 
@@ -193,7 +191,7 @@ public class LabEvent {
         if (Mojae.arrowRiding && arrow.shootingEntity instanceof EntityPlayer) {
             arrowRiding(arrow);
             return true;
-        }else
+        } else
             return false;
     }
 
@@ -213,13 +211,13 @@ public class LabEvent {
 
     @SubscribeEvent
     public void event(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof EntitySkeleton) {
-            EntitySkeleton skeleton = (EntitySkeleton) event.getEntityLiving();
-            NBTTagCompound tagCompound = skeleton.getEntityData();
-            if (tagCompound.hasKey("AttackDelay") && tagCompound.getInteger("AttackDelay") > 0) {
-                tagCompound.setInteger("AttackDelay", tagCompound.getInteger("AttackDelay") - 1);
-            }
-            if (Mojae.skelDelay != -1) {
+        if (Mojae.skelDelay != -1) {
+            if (event.getEntityLiving() instanceof EntitySkeleton) {
+                EntitySkeleton skeleton = (EntitySkeleton) event.getEntityLiving();
+                NBTTagCompound tagCompound = skeleton.getEntityData();
+                if (tagCompound.hasKey("AttackDelay") && tagCompound.getInteger("AttackDelay") > 0) {
+                    tagCompound.setInteger("AttackDelay", tagCompound.getInteger("AttackDelay") - 1);
+                }
                 for (EntityAITasks.EntityAITaskEntry aiBase : skeleton.tasks.taskEntries) {
                     if (aiBase.action instanceof EntityAIAttackRangedBow) {
                         if (!(aiBase.action instanceof EntityAIMojaeAttackRangedBow)) {
@@ -233,11 +231,15 @@ public class LabEvent {
         }
         if (event.getEntityLiving() instanceof EntityCreature) {
             EntityCreature living = (EntityCreature) event.getEntityLiving();
-            if (living.getAttackTarget() != null) {
-                for (EntityAITasks.EntityAITaskEntry aiBase : living.tasks.taskEntries) {
-                    if (aiBase.action instanceof EntityAIAttackMelee && !(aiBase.action instanceof EntityAIMojaeAttackMelee)) {//어택 밀리 클래스를 새로 생성해서 공격 딜레이를 0으로 만드려고 하는 중이었음
-                        living.tasks.removeTask(aiBase.action);
-                        living.tasks.addTask(0, new EntityAIMojaeAttackMelee(living, 1, false));
+            NBTTagCompound tagCompound = living.getEntityData();
+            if (!tagCompound.hasKey("isDelay0")) {
+                if (living.getAttackTarget() != null) {
+                    for (EntityAITasks.EntityAITaskEntry aiBase : living.tasks.taskEntries) {
+                        if (aiBase.action instanceof EntityAIAttackMelee && !(aiBase.action instanceof EntityAIMojaeAttackMelee)) {//어택 밀리 클래스를 새로 생성해서 공격 딜레이를 0으로 만드려고 하는 중이었음
+                            living.tasks.removeTask(aiBase.action);
+                            living.tasks.addTask(0, new EntityAIMojaeAttackMelee(living, 1, false));
+                            tagCompound.setBoolean("isDelay0", true);
+                        }
                         break;
                     }
                 }
@@ -253,9 +255,6 @@ public class LabEvent {
             if (Mojae.dog_pan) {
                 if (living instanceof EntityMob) {
                     EntityMob mob = (EntityMob) living;
-                    mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[]{EntityPigZombie.class}));
-                    mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityDragon.class, false));
-                    mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityWither.class, false));
                     mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityLiving.class, false));
                 }
             }
@@ -265,9 +264,6 @@ public class LabEvent {
 
                 if (living instanceof EntityMob) {
                     EntityMob mob = (EntityMob) living;
-                    mob.targetTasks.addTask(1, new EntityAIHurtByTarget(mob, true, new Class[]{EntityPigZombie.class}));
-                    mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, entityClass, false));
-                    mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, entityClass, false));
                     mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, entityClass, false));
                 }
             }

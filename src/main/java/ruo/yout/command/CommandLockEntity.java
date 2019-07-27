@@ -14,11 +14,7 @@ public class CommandLockEntity extends CommandBaseEntity {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         super.execute(server, sender, args);
-        if (args.length > 1) {
-            if (args[1].equalsIgnoreCase("event")) {
-                MoJaeEvent.lockList.add(args[1]);
-            }
-        }
+        MoJaeEvent.lockList.add(args[0]);
     }
 
     @Override

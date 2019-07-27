@@ -24,7 +24,6 @@ public class OLib {
         config = new Configuration(e.getSuggestedConfigurationFile());
         config.load();
         config.save();
-
     }
 
     @Mod.EventHandler

@@ -1,6 +1,5 @@
 package ruo.what;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -11,8 +10,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import olib.api.WorldAPI;
-import ruo.asdfwild.ai.EntityAIBlockPlace;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +22,7 @@ public class EntityTeleportCreeper extends EntityCreeper {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if(getCreeperState() == -1) {//크리퍼가 폭발하기 전 상태에서만 텔레포트함
             for (int i = 0; i < 16; i++)
-                if (this.attemptTeleport(posX + WorldAPI.rand(5), posY + WorldAPI.rand(5), posZ + WorldAPI.rand(5))) {
+                if (this.attemptTeleport(posX + CreeperWorld.rand(5), posY + CreeperWorld.rand(5), posZ + CreeperWorld.rand(5))) {
                     this.setCreeperState(-1);
                     return super.attackEntityFrom(source, amount);
                 }
@@ -36,14 +33,12 @@ public class EntityTeleportCreeper extends EntityCreeper {
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(2, new EntityAIBlockPlace(this));
     }
 
     private int teleportDelay;
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
-        startRiding(player, true);
         return super.processInteract(player, hand, stack);
     }
 
@@ -71,7 +66,7 @@ public class EntityTeleportCreeper extends EntityCreeper {
             EntityLivingBase target = getAttackTarget();
             if(getDistanceToEntity(target) > 7 && teleportDelay == 0 && getCreeperState() == -1){
                 for (int i = 0; i < 16; i++)
-                    if (this.attemptTeleport(target.posX + WorldAPI.rand(5), target.posY + WorldAPI.rand(5), target.posZ + WorldAPI.rand(5))) {
+                    if (this.attemptTeleport(target.posX + CreeperWorld.rand(5), target.posY + CreeperWorld.rand(5), target.posZ + CreeperWorld.rand(5))) {
                         this.setCreeperState(-1);
                         teleportDelay = 500;
                     }

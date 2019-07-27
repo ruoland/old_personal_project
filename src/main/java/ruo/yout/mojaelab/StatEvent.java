@@ -13,10 +13,12 @@ public class StatEvent {
     public void livingDeath(LivingDeathEvent event) {
         if(event.getSource().getEntity() != null) {
             String n = event.getSource().getEntity().getName();
-            if (Mojae.killMap.containsKey(n))
-                Mojae.killMap.put(n, Mojae.killMap.get(n) + 1);
-            else
-                Mojae.killMap.put(n, 0F);
+            if(Mojae.statStart) {
+                if (Mojae.killMap.containsKey(n))
+                    Mojae.killMap.put(n, Mojae.killMap.get(n) + 1);
+                else
+                    Mojae.killMap.put(n, 0F);
+            }
         }
     }
 
@@ -25,10 +27,12 @@ public class StatEvent {
     public void livingAttackEvent(LivingHurtEvent event) {
         if(event.getSource().getEntity() != null) {
             String n = event.getSource().getEntity().getName();
-            if (Mojae.damageMap.containsKey(n))
-                Mojae.damageMap.put(n, Mojae.damageMap.get(n) + event.getAmount());
-            else
-                Mojae.damageMap.put(n, 0F);
+            if(Mojae.statStart) {
+                if (Mojae.damageMap.containsKey(n))
+                    Mojae.damageMap.put(n, Mojae.damageMap.get(n) + event.getAmount());
+                else
+                    Mojae.damageMap.put(n, 0F);
+            }
         }
 
     }

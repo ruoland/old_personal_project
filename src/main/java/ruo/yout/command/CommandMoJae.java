@@ -43,6 +43,12 @@ public class CommandMoJae extends CommandPlusBase {
         if(args[0].equalsIgnoreCase("morespawn")){
             Mojae.morespawn = Boolean.valueOf(args[1]);
         }
+        if(args[0].equalsIgnoreCase("m")){
+            WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 100");
+            WorldAPI.command("/for /summon Spider ~ ~ ~ 1 100");
+            WorldAPI.command("/for /summon Skeleton ~ ~ ~ 1 100");
+            WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 100");
+        }
         if(args[0].equalsIgnoreCase("stat")){
             if(args[1].equalsIgnoreCase("start")){
                 Mojae.statStart = true;
@@ -50,12 +56,15 @@ public class CommandMoJae extends CommandPlusBase {
                 Mojae.killMap.clear();
             }
             else if(args[1].equalsIgnoreCase("stop")){
+                sender.addChatMessage(new TextComponentString("--------------------------------------------"));
+
                 for (String str : Mojae.killMap.keySet()) {
-                    sender.addChatMessage(new TextComponentString(str + "들이 준 데미지와 죽인 수 " + Mojae.killMap.get(str)));
+                    sender.addChatMessage(new TextComponentString(str + "들이 죽인 몬스터 수 " + Mojae.killMap.get(str)));
                 }
                 for (String str : Mojae.damageMap.keySet()) {
                     sender.addChatMessage(new TextComponentString(str + "들이 준 데미지 " + Mojae.damageMap.get(str)));
                 }
+                sender.addChatMessage(new TextComponentString("--------------------------------------------"));
             }
         }
         if(args[0].equalsIgnoreCase("block")){//블럭 강도 조절하기

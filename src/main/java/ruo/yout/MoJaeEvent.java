@@ -56,10 +56,7 @@ public class MoJaeEvent {
             livingBase.removePotionEffect(Mojae.lockPotion);
             livingBase.setCustomNameTag("");
         }
-        for (String str : lockList) {
-            if (EntityList.isStringEntityName(event.getEntityLiving(), str))
-                event.getEntityLiving().setCustomNameTag("잠금");
-        }
+
         if (name.startsWith("잠금")) {
             livingBase.setVelocity(0, 0, 0);
             NBTTagCompound tag = livingBase.getEntityData();
