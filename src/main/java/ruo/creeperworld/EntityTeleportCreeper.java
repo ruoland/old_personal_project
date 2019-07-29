@@ -1,4 +1,4 @@
-package ruo.what;
+package ruo.creeperworld;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -65,10 +65,11 @@ public class EntityTeleportCreeper extends EntityCreeper {
             }
             EntityLivingBase target = getAttackTarget();
             if(getDistanceToEntity(target) > 7 && teleportDelay == 0 && getCreeperState() == -1){
+                int diffculty = worldObj.getDifficulty().getDifficultyId();
                 for (int i = 0; i < 16; i++)
-                    if (this.attemptTeleport(target.posX + CreeperWorld.rand(5), target.posY + CreeperWorld.rand(5), target.posZ + CreeperWorld.rand(5))) {
+                    if (this.attemptTeleport(target.posX + CreeperWorld.rand(5-diffculty), target.posY + CreeperWorld.rand(5-diffculty), target.posZ + CreeperWorld.rand(5-diffculty))) {
                         this.setCreeperState(-1);
-                        teleportDelay = 500;
+                        teleportDelay = 600 - (diffculty * 100);
                     }
             }
 
@@ -80,8 +81,6 @@ public class EntityTeleportCreeper extends EntityCreeper {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        System.out.println("스폰됨"+posX+" - "+posY+ " - "+posZ);
-
         return super.onInitialSpawn(difficulty, livingdata);
     }
 

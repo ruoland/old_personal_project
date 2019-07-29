@@ -1,4 +1,4 @@
-package ruo.what;
+package ruo.creeperworld;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

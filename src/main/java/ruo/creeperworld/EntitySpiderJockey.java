@@ -1,4 +1,4 @@
-package ruo.what;
+package ruo.creeperworld;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,10 +22,11 @@ public class EntitySpiderJockey extends EntitySpider {
 
         if (getAttackTarget() != null) {
             EntityLivingBase target = getAttackTarget();
-            if (getPassengers().size() > 0 && getDistanceToEntity(target) < 10) {
+            int diffculty = worldObj.getDifficulty().getDifficultyId();
+            if (getPassengers().size() > 0 && getDistanceToEntity(target) < 10 +  (diffculty * 2)) {
                 Entity entity = getPassengers().get(0);
                 entity.dismountRidingEntity();
-                entity.setVelocity(getLookVec().xCoord * 1.5, (target.posY - entity.posY) * 1.5, getLookVec().zCoord * 1.5);
+                entity.setVelocity((target.posX + CreeperWorld.rand( 7 - diffculty) - posX) / getDistanceToEntity(target), 0.3, (target.posZ + CreeperWorld.rand( 7 - diffculty) - posZ) / getDistanceToEntity(target));
             }
         }
     }
@@ -36,7 +37,9 @@ public class EntitySpiderJockey extends EntitySpider {
         int randomSpawn = rand.nextInt(4);
         EntityCreeper creeper = new EntityCreeper(worldObj);
         creeper.setPosition(posX, posY, posZ);
+        creeper.getEntityData().setBoolean("CW", true);
         worldObj.spawnEntityInWorld(creeper);
+
         creeper.startRiding(getLastPassenger(), true);
         System.out.println("스폰됨" + randomSpawn + " - " + posX + " - " + posY + " - " + posZ);
 

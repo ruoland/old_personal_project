@@ -1,15 +1,16 @@
-package ruo.what;
+package ruo.creeperworld;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
@@ -48,21 +49,25 @@ public class WhatEvent {
     public void event(EntityJoinWorldEvent e) {
         if(e.getEntity() instanceof EntityLiving) {
             if(!e.getWorld().isRemote){
-                if (e.getEntity() instanceof EntitySpider && !(e.getEntity() instanceof EntitySpiderJockey) && e.getWorld().rand.nextInt(4) == 0) {
+                if (EntityList.isStringEntityName(e.getEntity(), "Spider") && e.getWorld().rand.nextInt(4) == 0) {
                     EntitySpider spider = (EntitySpider) e.getEntity();
                     EntitySpiderJockey spiderJockey = new EntitySpiderJockey(e.getWorld());
                     spiderJockey.setPosition(spider.posX, spider.posY, spider.posZ);
                     e.getWorld().spawnEntityInWorld(spiderJockey);
                     spiderJockey.onInitialSpawn(e.getWorld().getDifficultyForLocation(spider.getPosition()),null);
-                }
-                if (e.getEntity() instanceof EntityCreeper && !(e.getEntity() instanceof EntityTeleportCreeper)) {
-                    EntityCreeper creeper = (EntityCreeper) e.getEntity();
-                    EntityTeleportCreeper teleportCreeper = new EntityTeleportCreeper(e.getWorld());
-                    teleportCreeper.setPosition(creeper.posX, creeper.posY, creeper.posZ);
-                    e.getWorld().spawnEntityInWorld(teleportCreeper);
-                    System.out.println("소환됨"+teleportCreeper.posX+ " "+teleportCreeper.posY+ " "+teleportCreeper.posZ);
-                }
+                    spider.setDead();
 
+                }
+                if (EntityList.isStringEntityName(e.getEntity(), "Creeper")) {
+                    EntityCreeper creeper = (EntityCreeper) e.getEntity();
+                    if(!creeper.getEntityData().hasKey("CW")) {
+                        EntityTeleportCreeper teleportCreeper = new EntityTeleportCreeper(e.getWorld());
+                        teleportCreeper.setPosition(creeper.posX, creeper.posY, creeper.posZ);
+                        e.getWorld().spawnEntityInWorld(teleportCreeper);
+                        creeper.setDead();
+                        System.out.println("소환됨" + teleportCreeper.posX + " " + teleportCreeper.posY + " " + teleportCreeper.posZ);
+                    }
+                }
             }
         }
         if (e.getEntity() instanceof EntityArrow) {
@@ -73,19 +78,11 @@ public class WhatEvent {
                     creeper.setPosition(e.getEntity().posX, e.getEntity().posY, e.getEntity().posZ);
                     creeper.setVelocity(e.getEntity().motionX, e.getEntity().motionY, e.getEntity().motionZ);
                     e.getEntity().setDead();
+                    creeper.getEntityData().setBoolean("CW", true);
                     e.getWorld().spawnEntityInWorld(creeper);
                     creeper.ignite();
                 }
             }
-        }
-
-    }
-
-
-    @SubscribeEvent
-    public void skeletonTeamKill(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof EntitySkeleton && event.getSource().getEntity() instanceof EntitySkeleton) {
-            event.setCanceled(true);
         }
     }
 
