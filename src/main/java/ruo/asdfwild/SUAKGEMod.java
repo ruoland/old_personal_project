@@ -39,12 +39,15 @@ public class SUAKGEMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         DebAPI.registerEntity(this, "TPCreeper", EntityTeleportCreeper.class);
+
+
         DebAPI.registerEntity(this, "SpiderCreeper", EntitySpiderJockey.class);
-        DebAPI.registerEntity(this, "MissileCreeper", EntityMissileCreeper.class);
         DebAPI.registerEntity(this, "Skelereeper", EntitySkelereeper.class);
         DebAPI.registerEntity(this, "FlyingSkeleton", EntityFlyingZombie.class);
-        DebAPI.registerEntity(this, "FlyingCreeper", EntityFlyingCreeper.class);
         DebAPI.registerEntity(this, "WildZombie", EntityWildZombie.class);
+        EntityRegistry.registerModEntity(EntityFlyingCreeper.class, "FlyingCreeper", 163, this, 80, 3, false,120930, 1203909);
+        EntityRegistry.registerModEntity(EntityMissileCreeper.class, "MissileCreeper", 164, this, 80, 3,false, 12345, 25409834);
+
         proxy.init();
         ForgeRegistries.ENCHANTMENTS.register(levitationEnchant);
         ForgeRegistries.ENCHANTMENTS.register(explosionEnchant);

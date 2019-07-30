@@ -1,5 +1,6 @@
 package minigameLib.minigame.scroll;
 
+import net.minecraft.entity.Entity;
 import olib.api.EntityAPI;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
@@ -14,7 +15,7 @@ import map.lopre2.CommandJB;
 import java.util.List;
 
 public class EntityJumpSpider extends EntitySpider {
-    private static final DataParameter<Boolean> ISJUMP = EntityDataManager.createKey(EntityJumpSpider.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_JUMP = EntityDataManager.createKey(EntityJumpSpider.class, DataSerializers.BOOLEAN);
     public EntityJumpSpider(World world)
     {
         super(world);
@@ -23,7 +24,7 @@ public class EntityJumpSpider extends EntitySpider {
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(ISJUMP, false);
+        dataManager.register(IS_JUMP, false);
     }
 
     @Override
@@ -39,16 +40,20 @@ public class EntityJumpSpider extends EntitySpider {
         List<EntityPlayer> list = EntityAPI.getEntity(worldObj, this.getEntityBoundingBox().expand(0,0.5,0), EntityPlayer.class);
         for(EntityPlayer player : list) {
             if (getEntityBoundingBox().intersectsWith(player.getEntityBoundingBox())) {
-                player.setHealth(0);
                 if (entityIn.posY > posY + 0.5) {
                     attackEntityFrom(new DamageSource("밟혀서 뎀지 받음"), 1.5F);
                     entityIn.setVelocity(0, 0.5, 0);
-                    dataManager.set(ISJUMP, true);
+                    dataManager.set(IS_JUMP, true);
                     entityIn.fallDistance = 0;
                     entityIn.onGround = true;
                 }
             }
         }
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        return false;
     }
 
     @Override
@@ -65,7 +70,7 @@ public class EntityJumpSpider extends EntitySpider {
     }
 
     public boolean isJump(){
-        return dataManager.get(ISJUMP);
+        return dataManager.get(IS_JUMP);
     }
 
     @Override

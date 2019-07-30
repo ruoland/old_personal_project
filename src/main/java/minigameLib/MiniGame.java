@@ -116,7 +116,7 @@ public class MiniGame {
         DebAPI.createJson(new ItemBlock(blockInvisible), "blockInvisible");
         //스크롤 용
         DebAPI.registerEntity(this, "NO-EGG-ScrollCreeper", EntityJumpCreeper.class);
-        DebAPI.registerEntity(this, "NO-EGG-ScrollSpider", EntityJumpSpider.class);
+        DebAPI.registerEntity(this, "ScrollSpider", EntityJumpSpider.class);
         DebAPI.registerEntity(this, "NO-EGG-ScrollBoss", EntityScrollBoss.class);
         DebAPI.registerEntity(this, "NO-EGG-ScrollFallingBlock", EntityScrollBossFallingBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-ScrollWarning", EntityScrollBossWarning.class);

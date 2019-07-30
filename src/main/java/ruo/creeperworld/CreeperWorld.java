@@ -1,12 +1,8 @@
 package ruo.creeperworld;
 
-import cmplus.deb.DebAPI;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
-import net.minecraft.world.biome.BiomeSwamp;
-import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +10,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import ruo.asdfwild.EntityFlyingCreeper;
+import ruo.asdfwild.EntityMissileCreeper;
 
 import java.util.Random;
 
@@ -28,12 +26,11 @@ public class CreeperWorld {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         Biome[] biomes = BiomeProvider.allowedBiomes.toArray(new Biome[BiomeProvider.allowedBiomes.size()]);
-
         EntityRegistry.registerModEntity(EntityTeleportCreeper.class, "TeleportCreeper", 160, this, 80, 3, false, 1211231,130139);
         EntityRegistry.registerModEntity(EntitySpiderJockey.class, "SpiderJockey", 161, this, 80, 3, false, 24424242,424224);
         EntityRegistry.registerModEntity(EntityMiniCreeper.class, "MiniCreeper", 162, this, 80, 3, false, 102012,244224);
         EntityRegistry.addSpawn(EntityMiniCreeper.class, 100, 2,4, EnumCreatureType.MONSTER, biomes);
-        proxy.init();
+          proxy.init();
         MinecraftForge.EVENT_BUS.register(new WhatEvent());
     }
 
