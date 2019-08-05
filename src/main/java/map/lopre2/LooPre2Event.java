@@ -3,7 +3,10 @@ package map.lopre2;
 import cmplus.deb.DebAPI;
 import map.lopre2.jump3.EntityBoatBuildBlock;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import olib.api.LoginEvent;
@@ -17,19 +20,38 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import map.lopre2.jump1.EntityLavaBlock;
 
+import java.lang.reflect.Field;
+
 
 public class LooPre2Event {
 
+
+    @SubscribeEvent
+    public void lavaEvent(TickEvent.PlayerTickEvent e) {
+        e.player.extinguish();
+
+        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(e.player.getEntityBoundingBox())) {
+            e.player.attackEntityFrom(DamageSource.fall, 4);
+        }
+    }
+
     @SubscribeEvent
     public void lavaEvent(LivingHurtEvent e) {
-        if(e.getEntityLiving() instanceof EntityPlayer){
-            System.out.println(e.getSource().getDamageType());
-            if(e.getSource().isFireDamage() || e.getSource() == DamageSource.onFire || e.getSource() == DamageSource.inFire) {
+        if (e.getEntityLiving() instanceof EntityPlayer) {
+            System.out.println(e.getEntityLiving().isInLava());
+            if (e.getSource() == DamageSource.inFire && !e.getEntityLiving().isImmuneToFire()) {
                 e.setCanceled(true);
-                e.getEntityLiving().setFire(0);
+                e.getEntityLiving().extinguish();
+                Class cla = EntityPlayer.class.getSuperclass().getSuperclass();
+                try {
+                    Field field = cla.getDeclaredField("isImmuneToFire");
+                    field.setAccessible(true);
+                    field.set(e.getEntityLiving(), true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         }
-
     }
 
     @SubscribeEvent
@@ -82,7 +104,8 @@ public class LooPre2Event {
 
     @SubscribeEvent
     public void event(WorldEvent.Unload event) {
-        LoPre2.worldUnload();;
+        LoPre2.worldUnload();
+        ;
 
 
     }

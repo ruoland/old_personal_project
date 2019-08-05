@@ -72,6 +72,7 @@ public class CommandMineRun extends CommandBase {
                 return;
             }
             if (args[0].equals("spawnpoint")) {
+                if(MiniGame.minerun.isStart())
                 MineRun.spawnPoint = MineRun.runner.getPositionVector();
 
                 return;

@@ -1,9 +1,9 @@
 package map.lopre2;
 
+import api.player.client.ClientPlayerAPI;
+import api.player.server.ServerPlayerAPI;
 import cmplus.deb.DebAPI;
-import map.lopre2.jump3.EntityBoatBuildBlock;
-import map.lopre2.jump3.EntityFlowBlock;
-import map.lopre2.jump3.EntityLavaInvisible;
+import map.lopre2.jump3.*;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.*;
@@ -49,6 +49,9 @@ public class LoPre2 {
     @SidedProxy(serverSide = "map.lopre2.JumpCommonProxy", clientSide = "map.lopre2.JumpClientProxy")
     public static JumpCommonProxy proxy;
 
+    public LoPre2(){
+      ClientPlayerAPI.register("LoopPre2", ClientPlayer.class);
+    }
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
         GameRegistry.register(itemSpanner.setUnlocalizedName("spanner").setRegistryName("looppre2:spanner"));
@@ -87,6 +90,8 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "LavaInvisible", EntityLavaInvisible.class);
         DebAPI.registerEntity(this, "FlowBlock", EntityFlowBlock.class);
         DebAPI.registerEntity(this, "BoatBlock", EntityBoatBuildBlock.class);
+        DebAPI.registerEntity(this, "MoSkeleton", EntityMoSkeleton.class);
+        DebAPI.registerEntity(this, "MoCreeper", EntityMoCreeper.class);
         proxy.init();
         //DebAPI.registerEntity(this, "LavaUpDownBlock", EntityMagmaBlock.class);
         //DebAPI.registerEntity(this, "LoopMoveBlockTest", EntityMoveBlockTest.class);
