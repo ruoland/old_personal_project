@@ -65,8 +65,9 @@ public class Mojae {
         DebAPI.registerEntity(this, "MissileCree", EntityMissileCreeperLab.class);
         DebAPI.registerEntity(this, "FlyingCree", EntityFlyingCreeperLab.class);
         DebAPI.registerEntity(this, "VELOCITY-MojaeArrow", EntityMojaeArrow.class);
-             RenderAPI.registerRender(EntityFlyingCreeperLab.class);
+        RenderAPI.registerRender(EntityFlyingCreeperLab.class);
         RenderAPI.registerRender(EntityMissileCreeperLab.class);
+        Blocks.STONE.setResistance(100000);
         proxy.init();;
     }
     @Mod.EventHandler

@@ -15,7 +15,7 @@ import ruo.asdfwild.EntityMissileCreeper;
 
 import java.util.Random;
 
-@Mod(modid = "CreeperWorld", name = "Creeper World", version = "1.0")
+//@Mod(modid = "CreeperWorld", name = "Creeper World", version = "1.0")
 public class CreeperWorld {
     private static Random rand = new Random();
     public static Configuration config;

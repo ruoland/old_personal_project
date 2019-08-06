@@ -24,7 +24,7 @@ public class EntityMoCreeper extends EntityCreeper {
         super.onLivingUpdate();
         onGround = true;
         motionY = 0;
-        if(isServerWorld() && getAttackTarget() != null)
+        if(!worldObj.isRemote && getAttackTarget() != null)
             dataManager.set(START_CHASE, dataManager.get(START_CHASE) + 1);
         if(getAttackTarget() != null && dataManager.get(START_CHASE) > 200){
             moveEntity((getAttackTarget().posX - posX) / 50, 0, (getAttackTarget().posZ - posZ) / 50);
@@ -44,6 +44,7 @@ public class EntityMoCreeper extends EntityCreeper {
     public void respawn(){
         EntityMoCreeper moCreeper = new EntityMoCreeper(worldObj);
         moCreeper.setPosition(-248.6, 103.0, 263.3);
+        if(!worldObj.isRemote)
         worldObj.spawnEntityInWorld(moCreeper);
     }
 

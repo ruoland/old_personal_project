@@ -43,12 +43,18 @@ public class CommandMoJae extends CommandPlusBase {
         if(args[0].equalsIgnoreCase("morespawn")){
             Mojae.morespawn = Boolean.valueOf(args[1]);
         }
-        if(args[0].equalsIgnoreCase("m")){
-            WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 100");
-            WorldAPI.command("/for /summon Spider ~ ~ ~ 1 100");
-            WorldAPI.command("/for /summon Skeleton ~ ~ ~ 1 100");
-            WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 100");
+        if(args[0].equalsIgnoreCase("dog_yo")){
+            WorldAPI.command("/mojae morespawn true");
+            WorldAPI.command("/mojae dog true");
+            WorldAPI.command("/mojae stat start");
+            WorldAPI.command("/mojae night");
         }
+        if(args[0].equalsIgnoreCase("m")){
+            WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 50");
+            WorldAPI.command("/for /summon Spider ~ ~ ~ 1 50");
+            WorldAPI.command("/for /summon Skeleton ~ ~ ~ 1 50");
+        }
+
         if(args[0].equalsIgnoreCase("stat")){
             if(args[1].equalsIgnoreCase("start")){
                 Mojae.statStart = true;
@@ -59,10 +65,10 @@ public class CommandMoJae extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("--------------------------------------------"));
 
                 for (String str : Mojae.killMap.keySet()) {
-                    sender.addChatMessage(new TextComponentString(str + "들이 죽인 몬스터 수 " + Mojae.killMap.get(str)));
+                    sender.addChatMessage(new TextComponentString(str + "이 죽인 몬스터 수 " + Mojae.killMap.get(str)));
                 }
                 for (String str : Mojae.damageMap.keySet()) {
-                    sender.addChatMessage(new TextComponentString(str + "들이 준 데미지 " + Mojae.damageMap.get(str)));
+                    sender.addChatMessage(new TextComponentString(str + "이 준 데미지 " + Mojae.damageMap.get(str)));
                 }
                 sender.addChatMessage(new TextComponentString("--------------------------------------------"));
             }

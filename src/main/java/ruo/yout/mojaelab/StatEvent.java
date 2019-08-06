@@ -17,7 +17,7 @@ public class StatEvent {
                 if (Mojae.killMap.containsKey(n))
                     Mojae.killMap.put(n, Mojae.killMap.get(n) + 1);
                 else
-                    Mojae.killMap.put(n, 0F);
+                    Mojae.killMap.put(n, 1F);
             }
         }
     }
@@ -31,7 +31,7 @@ public class StatEvent {
                 if (Mojae.damageMap.containsKey(n))
                     Mojae.damageMap.put(n, Mojae.damageMap.get(n) + event.getAmount());
                 else
-                    Mojae.damageMap.put(n, 0F);
+                    Mojae.damageMap.put(n, event.getAmount());
             }
         }
 

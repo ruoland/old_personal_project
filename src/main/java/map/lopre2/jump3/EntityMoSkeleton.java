@@ -69,7 +69,6 @@ public class EntityMoSkeleton extends EntitySkeleton {
         setPositionAndRotation(posX, posY, posZ, dataManager.get(FACING) * 90, rotationPitch);
         renderYawOffset = dataManager.get(FACING) * 90;
         rotationYawHead = dataManager.get(FACING) * 90;
-        ;
         setPositionAndUpdate(posX, posY, posZ);
 
         setRotation(dataManager.get(FACING) * 90, 0);

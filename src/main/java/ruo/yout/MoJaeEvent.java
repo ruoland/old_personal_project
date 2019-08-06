@@ -5,14 +5,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.boss.dragon.phase.PhaseList;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import olib.api.WorldAPI;
 
@@ -23,8 +24,35 @@ import java.util.ArrayList;
 public class MoJaeEvent {
     public static double attackDelay = -1;
     public static ArrayList<String> lockList = new ArrayList<>();
+    @SubscribeEvent
+    public void event(EntityJoinWorldEvent event) {
+        if(event.getEntity() instanceof EntityArrow){
+            EntityArrow arrow = (EntityArrow) event.getEntity();
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            arrow.writeEntityToNBT(tagCompound);
+            tagCompound.setShort("life", (short) 1000);
+            arrow.readEntityFromNBT(tagCompound);
+        }
+        if(event.getEntity() instanceof EntityItem){
+            EntityItem item = (EntityItem) event.getEntity();
+            if(item.getThrower() != null && !(item.getThrower().startsWith("Player") || item.getThrower().equalsIgnoreCase("oprond"))){
+                item.setDead();
+            }
+        }
+    }
 
+    @SubscribeEvent
+    public void event(LivingExperienceDropEvent event) {
+        if(Mojae.morespawn && Mojae.dog_pan)
+            event.setCanceled(true);
 
+    }
+
+    @SubscribeEvent
+    public void event(LivingDropsEvent event) {
+        if(Mojae.morespawn && Mojae.dog_pan)
+            event.setCanceled(true);
+    }
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
         String name = event.getEntityLiving().getCustomNameTag();

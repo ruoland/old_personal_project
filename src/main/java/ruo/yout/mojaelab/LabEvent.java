@@ -1,10 +1,7 @@
 package ruo.yout.mojaelab;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -27,24 +24,24 @@ import ruo.yout.Mojae;
 
 public class LabEvent {
 
-
-    @SubscribeEvent
-    public void event(LivingDropsEvent event) {
-        if(Mojae.morespawn && Mojae.dog_pan)
-        event.setCanceled(true);
-
-    }
     @SubscribeEvent
     public void event(LivingSpawnEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityAnimal)) {
+            if (!(event.getEntityLiving() instanceof EntityAnimal)) {
             if (event.getEntityLiving() instanceof EntityMob && Mojae.morespawn && !event.getEntityLiving().getEntityData().hasKey("mojae")) {
+                if(event.getEntityLiving() instanceof EntityCreeper){
+                    event.getEntityLiving().setDead();
+                }
+                if(event.getEntityLiving() instanceof EntityEnderman){
+                    event.getEntityLiving().setHealth(20);
+                    event.getEntityLiving().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+                }
                 for (int i = 0; i < 7; i++) {
                     double x = event.getX() + WorldAPI.rand(30);
                     double z = event.getZ() + WorldAPI.rand(30);
                     EntityLiving creeper = null;
                     switch (event.getWorld().rand.nextInt(5)) {
                         case 0: {
-                            creeper = new EntityCreeper(event.getWorld());
+                            //creeper = new EntityCreeper(event.getWorld());
                             break;
                         }
                         case 1: {
@@ -66,7 +63,6 @@ public class LabEvent {
                     }
                     if (creeper != null) {
                         creeper.setPosition(x, event.getY(), z);
-
                         event.getWorld().spawnEntityInWorld(creeper);
                         creeper.onInitialSpawn(event.getWorld().getDifficultyForLocation(creeper.getPosition()), null);
                         creeper.getEntityData().setBoolean("mojae", true);
