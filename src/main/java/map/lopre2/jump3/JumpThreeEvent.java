@@ -1,4 +1,4 @@
-package map.lopre2;
+package map.lopre2.jump3;
 
 import minigameLib.MiniGame;
 import olib.api.WorldAPI;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 
-public class LooPreThreeEvent {
+public class JumpThreeEvent {
     private static String pressUsername;
     private static int inputDelay;
     @SubscribeEvent

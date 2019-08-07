@@ -1,6 +1,7 @@
 package map.lopre2;
 
 import map.escaperoom.EntityRoomRedBlue;
+import map.lopre2.nouse.Loop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import map.lopre2.jump1.*;
 import map.lopre2.jump2.EntityBigBlock;
-import map.lopre2.jump2.EntityKnockbackBlock;
 
 public class ItemSpanner extends Item {
 

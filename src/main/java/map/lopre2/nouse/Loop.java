@@ -1,4 +1,4 @@
-package map.lopre2;
+package map.lopre2.nouse;
 
 import cmplus.util.Sky;
 import map.lopre2.jump3.EntityBoatBuildBlock;

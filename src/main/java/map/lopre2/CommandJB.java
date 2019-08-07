@@ -4,6 +4,7 @@ import cmplus.CMPlus;
 import cmplus.test.CMPacketCommand;
 import cmplus.util.CommandPlusBase;
 import map.lopre2.jump3.EntityBoatBuildBlock;
+import map.lopre2.nouse.Loop;
 import minigameLib.MiniGame;
 import olib.action.ActionEffect;
 import olib.action.DoubleJump;

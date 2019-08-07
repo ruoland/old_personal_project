@@ -1,8 +1,9 @@
 package map.lopre2;
 
 import api.player.client.ClientPlayerAPI;
-import api.player.server.ServerPlayerAPI;
 import cmplus.deb.DebAPI;
+import map.lopre2.dev.DevClientEvent;
+import map.lopre2.dev.IngameEvent;
 import map.lopre2.jump3.*;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -68,10 +69,10 @@ public class LoPre2 {
 
         //점프맵 2 코드
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
-        MinecraftForge.EVENT_BUS.register(new LooPre2Event());
-        MinecraftForge.EVENT_BUS.register(new LooPreThreeEvent());
+        MinecraftForge.EVENT_BUS.register(new IngameEvent());
+        MinecraftForge.EVENT_BUS.register(new JumpThreeEvent());
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-            MinecraftForge.EVENT_BUS.register(new LooPreClientEvent());
+            MinecraftForge.EVENT_BUS.register(new DevClientEvent());
 
 
         DebAPI.registerEntity(this, "TeleportBlock", EntityTeleportBlock.class);

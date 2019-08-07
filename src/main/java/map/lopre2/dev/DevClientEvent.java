@@ -1,5 +1,8 @@
-package map.lopre2;
+package map.lopre2.dev;
 
+import map.lopre2.EntityPreBlock;
+import map.lopre2.ItemCopy;
+import map.lopre2.LoPre2;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import olib.api.BlockAPI;
@@ -16,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 import java.security.Key;
 
 
-public class LooPreClientEvent {
+public class DevClientEvent {
 
     @SubscribeEvent
     public void client(TickEvent.ClientTickEvent event) {

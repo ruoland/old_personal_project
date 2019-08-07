@@ -1,6 +1,7 @@
 package map.lopre2;
 
 import cmplus.util.CommandPlusBase;
+import map.lopre2.nouse.Loop;
 import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
 import olib.effect.Move;
