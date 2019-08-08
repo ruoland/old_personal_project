@@ -21,7 +21,6 @@ public class CommandChat extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		
 		return "chat";
 	}
 
@@ -32,12 +31,13 @@ public class CommandChat extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender p_71518_1_) {
-		
 		return "commandPlus.chat.help";
 	}
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+
+		//채팅 메세지를 지우거나 변경하거나 단어를 추가하는 명령어
 		CommandTool t = new CommandTool(getCommandName());
 		EntityPlayerMP p = WorldAPI.getPlayerMP();
 		if (t.length(args)) {
