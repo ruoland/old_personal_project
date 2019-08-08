@@ -122,6 +122,7 @@ public class EntityMoSkeleton extends EntitySkeleton {
         compound.setInteger("arrowTick", getArrowTick());
         compound.setInteger("defaultArrowTick", dataManager.get(DEFAULT_ARROW_TICK));
         compound.setInteger("shotArrowCount", dataManager.get(SHOT_ARROW_COUNT));
+        compound.setInteger("facing", dataManager.get(FACING));
     }
 
     @Override
@@ -135,5 +136,6 @@ public class EntityMoSkeleton extends EntitySkeleton {
 
         if(dataManager.get(DEFAULT_ARROW_TICK) == 0)
             dataManager.set(DEFAULT_ARROW_TICK, 40);
+        dataManager.set(FACING, compound.getInteger("facing"));
     }
 }

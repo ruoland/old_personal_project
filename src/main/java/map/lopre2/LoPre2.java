@@ -3,6 +3,7 @@ package map.lopre2;
 import api.player.client.ClientPlayerAPI;
 import cmplus.deb.DebAPI;
 import map.lopre2.dev.DevClientEvent;
+import map.lopre2.dev.DevEvent;
 import map.lopre2.dev.IngameEvent;
 import map.lopre2.jump3.*;
 import net.minecraft.client.settings.KeyBinding;
@@ -70,6 +71,8 @@ public class LoPre2 {
         //점프맵 2 코드
         MinecraftForge.EVENT_BUS.register(new JumpEvent2());
         MinecraftForge.EVENT_BUS.register(new IngameEvent());
+        MinecraftForge.EVENT_BUS.register(new DevEvent());
+        MinecraftForge.EVENT_BUS.register(new DevClientEvent());
         MinecraftForge.EVENT_BUS.register(new JumpThreeEvent());
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
             MinecraftForge.EVENT_BUS.register(new DevClientEvent());

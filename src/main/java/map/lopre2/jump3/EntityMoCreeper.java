@@ -38,7 +38,6 @@ public class EntityMoCreeper extends EntityCreeper {
     @Override
     public void setDead() {
         super.setDead();
-        respawn();
     }
 
     public void respawn(){

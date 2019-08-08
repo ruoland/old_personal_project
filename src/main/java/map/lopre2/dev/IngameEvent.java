@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -32,7 +33,11 @@ public class IngameEvent {
     @SubscribeEvent
     public void lavaEvent(TickEvent.PlayerTickEvent e) {
         e.player.extinguish();
-        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(e.player.getEntityBoundingBox())) {
+        float m = 0.3F;
+        AxisAlignedBB aabbPlayer = e.player.getEntityBoundingBox();
+
+        AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + m, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ -m);
+        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb)) {
             e.player.attackEntityFrom(DamageSource.fall, 4);
         }
     }
