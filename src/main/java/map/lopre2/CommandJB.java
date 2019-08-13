@@ -32,6 +32,11 @@ public class CommandJB extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 0) {
+            if(args[0].equalsIgnoreCase("m")){
+                WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 50");
+                WorldAPI.command("/for /summon Spider ~ ~ ~ 1 50");
+                WorldAPI.command("/for /summon Skeleton ~ ~ ~ 1 50");
+            }
             if (args[0].equalsIgnoreCase("lava")) {
                 if (args[1].equalsIgnoreCase("stop"))
                     TickRegister.getAbsTick("ln").pause(true);

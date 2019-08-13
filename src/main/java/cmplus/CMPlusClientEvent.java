@@ -55,7 +55,7 @@ public class CMPlusClientEvent {
         }
     }
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public void event(WorldEvent.Load e) {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT && e.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && !(e.getWorld().provider instanceof WorldProvider10)) {
             try {

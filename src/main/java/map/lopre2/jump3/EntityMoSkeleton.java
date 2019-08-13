@@ -1,5 +1,6 @@
 package map.lopre2.jump3;
 
+import map.lopre2.EntityPreBlock;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -109,7 +110,10 @@ public class EntityMoSkeleton extends EntitySkeleton {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        return false;
+        if (source.getEntity() != null && (source.getEntity().isSneaking())) {
+            setDead();
+        }
+            return false;
     }
 
     public void arrowShot(int i) {

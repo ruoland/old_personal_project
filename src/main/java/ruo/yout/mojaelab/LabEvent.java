@@ -12,6 +12,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -243,8 +244,10 @@ public class LabEvent {
         }
     }
 
+
     @SubscribeEvent
     public void event(EntityJoinWorldEvent event) {
+
         if (event.getEntity() instanceof EntityLiving) {
             EntityLiving living = (EntityLiving) event.getEntity();
             String monsterName = EntityList.getEntityString(living);
