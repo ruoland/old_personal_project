@@ -1,5 +1,6 @@
 package map.lopre2.jump3;
 
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -32,6 +34,8 @@ public class EntityMoSkeleton extends EntitySkeleton {
     private static final DataParameter<Integer> ARROW_TICK = EntityDataManager.createKey(EntityMoSkeleton.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> FACING = EntityDataManager.createKey(EntityMoSkeleton.class, DataSerializers.VARINT);
 
+    private static final DataParameter<Boolean> SHOT_CREEPER = EntityDataManager.createKey(EntityMoSkeleton.class, DataSerializers.BOOLEAN);
+
     public EntityMoSkeleton(World worldIn) {
         super(worldIn);
         setNoAI(true);
@@ -45,20 +49,21 @@ public class EntityMoSkeleton extends EntitySkeleton {
         dataManager.register(DEFAULT_ARROW_TICK, 40);
         dataManager.register(ARROW_TICK, 40);
         dataManager.register(FACING, 0);
-    }
-
-    @Override
-    public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, @Nullable ItemStack stack, EnumHand hand) {
-        return super.applyPlayerInteraction(player, vec, stack, hand);
+        dataManager.register(SHOT_CREEPER, false);
     }
 
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
         System.out.println(dataManager.get(FACING));
         if (hand == EnumHand.MAIN_HAND) {
-            if(WorldAPI.equalsItem(stack, Items.ARROW)){
-                setShotArrowCount(dataManager.get(SHOT_ARROW_COUNT)+1);
-            }else {
+            if (WorldAPI.equalsHeldItem(player, Items.GUNPOWDER)) {
+                dataManager.set(SHOT_CREEPER, !dataManager.get(SHOT_CREEPER));
+                return super.processInteract(player, hand, stack);
+
+            }
+            if (WorldAPI.equalsItem(stack, Items.ARROW)) {
+                setShotArrowCount(dataManager.get(SHOT_ARROW_COUNT) + 1);
+            } else {
                 dataManager.set(FACING, dataManager.get(FACING) < 4 ? dataManager.get(FACING) + 1 : 0);
                 System.out.println(dataManager.get(FACING));
             }
@@ -77,9 +82,11 @@ public class EntityMoSkeleton extends EntitySkeleton {
     public void setDefaultArrowTick(int arrowTick) {
         dataManager.set(DEFAULT_ARROW_TICK, arrowTick);
     }
+
     public void setShotArrowCount(int arrowTick) {
         dataManager.set(SHOT_ARROW_COUNT, arrowTick);
     }
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
@@ -100,11 +107,16 @@ public class EntityMoSkeleton extends EntitySkeleton {
         }
     }
 
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        return false;
+    }
+
     public void arrowShot(int i) {
         setSwingingArms(true);
         EntityArrow arrow = new EntityTippedArrow(worldObj);
-        arrow.setPosition(posHelper.getX(Direction.FORWARD, i+1, true), posY + 1.2, posHelper.getZ(Direction.FORWARD, i+1, true));
-        arrow.setAim(this, rotationPitch, rotationYaw, 0, 1, 1);
+        arrow.setPosition(posHelper.getX(Direction.FORWARD, i + 1, true), posY + 1.2, posHelper.getZ(Direction.FORWARD, i + 1, true));
+        arrow.setAim(this, rotationPitch, rotationYaw, 0, 2, 1);
         arrow.setNoGravity(true);
         arrow.setDamage(arrow.getDamage());
         worldObj.spawnEntityInWorld(arrow);
@@ -114,6 +126,14 @@ public class EntityMoSkeleton extends EntitySkeleton {
         arrow.readEntityFromNBT(tagCompound);
         arrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
 
+        if (dataManager.get(SHOT_CREEPER)) {
+            EntityMoCreeper creeper = new EntityMoCreeper(worldObj);
+            creeper.setPosition(arrow.posX, arrow.posY, arrow.posZ);
+            creeper.setVelocity(arrow.motionX, arrow.motionY, arrow.motionZ);
+            creeper.ignite();
+            arrow.setDead();
+            worldObj.spawnEntityInWorld(creeper);
+        }
     }
 
     @Override
@@ -123,6 +143,7 @@ public class EntityMoSkeleton extends EntitySkeleton {
         compound.setInteger("defaultArrowTick", dataManager.get(DEFAULT_ARROW_TICK));
         compound.setInteger("shotArrowCount", dataManager.get(SHOT_ARROW_COUNT));
         compound.setInteger("facing", dataManager.get(FACING));
+        compound.setBoolean("shotCreeper", dataManager.get(SHOT_CREEPER));
     }
 
     @Override
@@ -131,11 +152,12 @@ public class EntityMoSkeleton extends EntitySkeleton {
         setArrowTick(compound.getInteger("arrowTick"));
         dataManager.set(DEFAULT_ARROW_TICK, compound.getInteger("defaultArrowTick"));
         dataManager.set(SHOT_ARROW_COUNT, compound.getInteger("shotArrowCount"));
-        if(dataManager.get(SHOT_ARROW_COUNT) == 0)
+        if (dataManager.get(SHOT_ARROW_COUNT) == 0)
             dataManager.set(SHOT_ARROW_COUNT, 1);
 
-        if(dataManager.get(DEFAULT_ARROW_TICK) == 0)
+        if (dataManager.get(DEFAULT_ARROW_TICK) == 0)
             dataManager.set(DEFAULT_ARROW_TICK, 40);
         dataManager.set(FACING, compound.getInteger("facing"));
+        dataManager.set(SHOT_CREEPER, compound.getBoolean("shotCreeper"));
     }
 }

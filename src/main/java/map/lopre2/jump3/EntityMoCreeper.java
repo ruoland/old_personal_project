@@ -1,6 +1,7 @@
 package map.lopre2.jump3;
 
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -20,10 +21,22 @@ public class EntityMoCreeper extends EntityCreeper {
     }
 
     @Override
+    public void onCollideWithPlayer(EntityPlayer entityIn) {
+        super.onCollideWithPlayer(entityIn);
+        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2, true);
+        setDead();
+    }
+
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         onGround = true;
         motionY = 0;
+        if(isServerWorld() && motionX == 0 && motionZ == 0) {
+            this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2, true);
+            setDead();
+        }
+
         if(!worldObj.isRemote && getAttackTarget() != null)
             dataManager.set(START_CHASE, dataManager.get(START_CHASE) + 1);
         if(getAttackTarget() != null && dataManager.get(START_CHASE) > 200){

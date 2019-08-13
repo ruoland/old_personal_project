@@ -1,6 +1,7 @@
 package map.lopre2.jump3;
 
 import minigameLib.MiniGame;
+import net.minecraftforge.event.world.ExplosionEvent;
 import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
@@ -12,6 +13,10 @@ import net.minecraftforge.fml.relauncher.Side;
 public class JumpThreeEvent {
     private static String pressUsername;
     private static int inputDelay;
+    @SubscribeEvent
+    public  void minecart(ExplosionEvent event) {
+        event.getExplosion().clearAffectedBlockPositions();
+    }
     @SubscribeEvent
     public  void minecart(PlayerTickEvent event) {
         if (WorldAPI.getCurrentWorldName().equalsIgnoreCase("JumpThree") && event.player.getLowestRidingEntity() instanceof EntityMinecart) {
