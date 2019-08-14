@@ -35,28 +35,19 @@ public class IngameEvent {
         e.player.extinguish();
         float m = 0.3F;
         AxisAlignedBB aabbPlayer = e.player.getEntityBoundingBox();
+        AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + 0.2, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ - m);
 
-        AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + m, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ -m);
-        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb)) {
-            e.player.attackEntityFrom(DamageSource.fall, 4);
+        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb) && !e.player.isCollided && !e.player.isCollidedVertically && !e.player.onGround) {
+            e.player.attackEntityFrom(DamageSource.lava, 4);
         }
-    }
-
-    @SubscribeEvent
-    public void lavaEvent(LivingHurtEvent e) {
-        if (e.getEntityLiving() instanceof EntityPlayer) {
-            System.out.println(e.getEntityLiving().isInLava());
-            if (e.getSource() == DamageSource.inFire && !e.getEntityLiving().isImmuneToFire()) {
-                e.setCanceled(true);
-                e.getEntityLiving().extinguish();
-                Class cla = EntityPlayer.class.getSuperclass().getSuperclass();
-                try {
-                    Field field = cla.getDeclaredField("isImmuneToFire");
-                    field.setAccessible(true);
-                    field.set(e.getEntityLiving(), true);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+        if (!e.player.isImmuneToFire()) {
+            Class cla = EntityPlayer.class.getSuperclass().getSuperclass();
+            try {
+                Field field = cla.getDeclaredField("isImmuneToFire");
+                field.setAccessible(true);
+                field.set(e.player, true);
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
         }
     }

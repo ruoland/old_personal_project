@@ -93,8 +93,21 @@ public class CommandJB extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("팁1 R키를 누르면 스폰포인트로 바로 이동합니다"));
                 sender.addChatMessage(new TextComponentString("팁2 죽었을 때 스페이스바를 누르면 바로 부활할 수 있습니다"));
             }
+            if (args[0].equalsIgnoreCase("start")) {
+                endTime = System.currentTimeMillis();
+                sender.addChatMessage(new TextComponentString("팁1 R키를 누르면 스폰포인트로 바로 이동합니다"));
+                sender.addChatMessage(new TextComponentString("팁2 죽었을 때 스페이스바를 누르면 바로 부활할 수 있습니다"));
+            }
             if (args[0].equalsIgnoreCase("tpy")) {
                 ActionEffect.setYTP(Double.valueOf(args[1]), ActionEffect.getPitch(), ActionEffect.getYaw());
+                long se = endTime - startTime;
+                long sec = se / (1000);
+                long minute = sec / 60;
+                long second = sec - sec / 60 * 60;
+                sender.addChatMessage(new TextComponentString("                           "));
+                sender.addChatMessage(new TextComponentString("                           "));
+                sender.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
+                sender.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
                 sender.addChatMessage(new TextComponentString("스폰포인트로 TPY 자동 갱신되게 했음kmk /spawnpoint 로 내려갈 것"));
 
             }

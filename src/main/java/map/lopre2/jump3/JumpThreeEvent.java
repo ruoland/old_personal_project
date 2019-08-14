@@ -19,9 +19,8 @@ public class JumpThreeEvent {
 
     @SubscribeEvent
     public void minecart(PlaySoundAtEntityEvent event) {
-        System.out.println(event.getSound() + " - "+event.getVolume());
         if(event.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE){
-            event.setVolume(event.getDefaultVolume() / 3F);
+            event.setVolume(event.getDefaultVolume() / 5F);
         }
     }
 
