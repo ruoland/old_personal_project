@@ -35,9 +35,10 @@ public class IngameEvent {
         e.player.extinguish();
         float m = 0.3F;
         AxisAlignedBB aabbPlayer = e.player.getEntityBoundingBox();
-        AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + 0.2, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ - m);
-
-        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb) && !e.player.isCollided && !e.player.isCollidedVertically && !e.player.onGround) {
+        AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + m, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ - m);
+        System.out.println("-------------------"+aabbPlayer.minY+" - "+ aabbPlayer.maxY +" - "+aabb.minY + " - "+aabb.maxY);
+        System.out.println(e.player.isImmuneToFire()+ " - "+e.player.worldObj.isFlammableWithin(aabb) + " - "+ e.player.isCollided + " - "+ e.player.isCollidedVertically + " - " + e.player.onGround);
+        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb) && !e.player.onGround) {
             e.player.attackEntityFrom(DamageSource.lava, 4);
         }
         if (!e.player.isImmuneToFire()) {
