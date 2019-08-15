@@ -84,7 +84,7 @@ public class EntityFlowBlock extends EntityPreBlock {
         if (!isTeleport()) {
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
                     this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
-            if (!list.isEmpty()) {
+            if (false) {
                 for (Entity entity : list) {
                     if (Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed()) {
                         entity.motionY = Minecraft.getMinecraft().thePlayer.jumpMovementFactor;

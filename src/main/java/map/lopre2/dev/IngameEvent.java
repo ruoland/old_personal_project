@@ -33,13 +33,14 @@ public class IngameEvent {
     @SubscribeEvent
     public void lavaEvent(TickEvent.PlayerTickEvent e) {
         e.player.extinguish();
-        float m = 0.3F;
-        AxisAlignedBB aabbPlayer = e.player.getEntityBoundingBox();
-        AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + m, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ - m);
-        System.out.println("-------------------"+aabbPlayer.minY+" - "+ aabbPlayer.maxY +" - "+aabb.minY + " - "+aabb.maxY);
-        System.out.println(e.player.isImmuneToFire()+ " - "+e.player.worldObj.isFlammableWithin(aabb) + " - "+ e.player.isCollided + " - "+ e.player.isCollidedVertically + " - " + e.player.onGround);
-        if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb) && !e.player.onGround) {
-            e.player.attackEntityFrom(DamageSource.lava, 4);
+        e.player.getFoodStats().setFoodLevel(20);
+        float m = 0.2F;
+        if (e.phase == TickEvent.Phase.START) {
+            AxisAlignedBB aabbPlayer = e.player.getEntityBoundingBox();
+            AxisAlignedBB aabb = new AxisAlignedBB(aabbPlayer.minX - m, aabbPlayer.minY + 0.3F, aabbPlayer.minZ - m, aabbPlayer.maxX - m, aabbPlayer.maxY, aabbPlayer.maxZ - m);
+            if (e.player.isImmuneToFire() && e.player.worldObj.isFlammableWithin(aabb) && !e.player.onGround) {
+                e.player.attackEntityFrom(DamageSource.lava, 4);
+            }
         }
         if (!e.player.isImmuneToFire()) {
             Class cla = EntityPlayer.class.getSuperclass().getSuperclass();
