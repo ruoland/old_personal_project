@@ -6,6 +6,13 @@ import cmplus.util.CommandPlusBase;
 import map.lopre2.jump3.EntityBoatBuildBlock;
 import map.lopre2.nouse.Loop;
 import minigameLib.MiniGame;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import olib.action.ActionEffect;
 import olib.action.DoubleJump;
 import olib.api.WorldAPI;
@@ -32,7 +39,7 @@ public class CommandJB extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 0) {
-            if(args[0].equalsIgnoreCase("m")){
+            if (args[0].equalsIgnoreCase("m")) {
                 WorldAPI.command("/for /summon Zombie ~ ~ ~ 1 50");
                 WorldAPI.command("/for /summon Spider ~ ~ ~ 1 50");
                 WorldAPI.command("/for /summon Skeleton ~ ~ ~ 1 50");
@@ -93,10 +100,20 @@ public class CommandJB extends CommandPlusBase {
                 sender.addChatMessage(new TextComponentString("팁1 R키를 누르면 스폰포인트로 바로 이동합니다"));
                 sender.addChatMessage(new TextComponentString("팁2 죽었을 때 스페이스바를 누르면 바로 부활할 수 있습니다"));
             }
-            if (args[0].equalsIgnoreCase("start")) {
+            if (args[0].equalsIgnoreCase("end")) {
                 endTime = System.currentTimeMillis();
-                sender.addChatMessage(new TextComponentString("팁1 R키를 누르면 스폰포인트로 바로 이동합니다"));
-                sender.addChatMessage(new TextComponentString("팁2 죽었을 때 스페이스바를 누르면 바로 부활할 수 있습니다"));
+                long se = endTime - startTime;
+                long sec = se / (1000);
+                long minute = sec / 60;
+                long second = sec - sec / 60 * 60;
+                System.out.println((endTime - startTime) / 1000 + "초.");
+                for (EntityPlayerMP playerMP : server.getPlayerList().getPlayerList()) {
+                    playerMP.addChatMessage(new TextComponentString("                           "));
+                    playerMP.addChatMessage(new TextComponentString("                           "));
+                    playerMP.addChatMessage(new TextComponentString("                           "));
+                    playerMP.addChatMessage(new TextComponentString("걸린 시간:" + minute + "분 " + second + "초"));
+                    playerMP.addChatMessage(new TextComponentString("플레이 해주셔서 감사합니다!"));
+                }
             }
             if (args[0].equalsIgnoreCase("tpy")) {
                 ActionEffect.setYTP(Double.valueOf(args[1]), ActionEffect.getPitch(), ActionEffect.getYaw());
@@ -134,11 +151,11 @@ public class CommandJB extends CommandPlusBase {
                 WorldAPI.setBlock(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], MiniGame.blockInvisible);
             if (args[0].equalsIgnoreCase("block")) {
                 System.out.println(Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]).blockList.size());
-                System.out.println(pos1.length+ " - "+pos2.length);
+                System.out.println(pos1.length + " - " + pos2.length);
             }
             if (args[0].equalsIgnoreCase("moveblock")) {
                 Loop.moveBlockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
-                System.out.println(pos1.length+ " - "+pos2.length);
+                System.out.println(pos1.length + " - " + pos2.length);
             }
             if (args[0].equalsIgnoreCase("save"))
                 Loop.save(sender.getEntityWorld(), args[1], pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
