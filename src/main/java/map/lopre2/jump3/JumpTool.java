@@ -1,8 +1,8 @@
 package map.lopre2.jump3;
 
-import net.minecraft.entity.player.EntityPlayer;
-import map.lopre2.nouse.Loop;
+import map.Loop;
 import map.lopre2.jump1.EntityLavaBlock;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class JumpTool {
 

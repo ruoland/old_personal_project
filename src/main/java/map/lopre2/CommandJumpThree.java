@@ -1,12 +1,9 @@
 package map.lopre2;
 
 import cmplus.util.CommandPlusBase;
-import map.lopre2.nouse.Loop;
-import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
-import olib.effect.Move;
-import olib.effect.TickRegister;
-import olib.map.EntityDefaultNPC;
+import map.Loop;
+import map.lopre2.jump1.EntityBuildBlock;
+import map.lopre2.jump3.JumpTool;
 import minigameLib.minigame.scroll.EntityJumpCreeper;
 import minigameLib.minigame.scroll.EntityJumpFlyingCreeper;
 import net.minecraft.command.CommandException;
@@ -17,8 +14,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import map.lopre2.jump1.EntityBuildBlock;
-import map.lopre2.jump3.JumpTool;
+import olib.api.WorldAPI;
+import olib.effect.AbstractTick;
+import olib.effect.Move;
+import olib.effect.TickRegister;
+import olib.map.EntityDefaultNPC;
 
 public class CommandJumpThree extends CommandPlusBase {
 

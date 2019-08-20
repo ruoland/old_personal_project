@@ -3,9 +3,6 @@ package ruo.yout;
 import cmplus.deb.DebAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.*;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -18,13 +15,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import olib.api.RenderAPI;
 import ruo.yout.command.*;
 import ruo.yout.item.*;
 import ruo.yout.mojaelab.LabEvent;
 import ruo.yout.mojaelab.StatEvent;
+import ruo.yout.y.CommandY;
+import ruo.yout.y.YEvent;
 
 import java.util.HashMap;
 
@@ -53,6 +51,8 @@ public class Mojae {
     public static final Item itemExplosion = new ItemExplosion();
     @Mod.EventHandler
     public  void init(FMLInitializationEvent e){
+        MinecraftForge.EVENT_BUS.register(new YEvent());
+
         MinecraftForge.EVENT_BUS.register(new MoJaeEvent());
         MinecraftForge.EVENT_BUS.register(new LabEvent());
         MinecraftForge.EVENT_BUS.register(new StatEvent());
@@ -88,6 +88,8 @@ public class Mojae {
     }
     @Mod.EventHandler
     public  void init(FMLServerStartingEvent e){
+        e.registerServerCommand(new CommandY());
+
         e.registerServerCommand(new CommandAttackDelay());
         e.registerServerCommand(new CommandMoJae());
         e.registerServerCommand(new CommandWorldTeleport());

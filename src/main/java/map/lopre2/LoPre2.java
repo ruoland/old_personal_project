@@ -1,29 +1,31 @@
 package map.lopre2;
 
-import api.player.client.ClientPlayerAPI;
 import cmplus.deb.DebAPI;
 import map.lopre2.dev.DevClientEvent;
 import map.lopre2.dev.DevEvent;
 import map.lopre2.dev.IngameEvent;
+import map.lopre2.jump1.*;
+import map.lopre2.jump2.*;
 import map.lopre2.jump3.*;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import olib.api.NBTAPI;
-import olib.api.WorldAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import map.lopre2.jump1.*;
-import map.lopre2.jump2.*;
+import olib.api.NBTAPI;
+import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
 import olib.effect.TickRegister;
 import org.lwjgl.input.Keyboard;
@@ -52,7 +54,7 @@ public class LoPre2 {
     public static JumpCommonProxy proxy;
 
     public LoPre2(){
-      ClientPlayerAPI.register("LoopPre2", ClientPlayer.class);
+
     }
     @EventHandler
     public void init(FMLPreInitializationEvent e) {
