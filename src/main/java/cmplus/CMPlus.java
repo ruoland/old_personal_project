@@ -58,9 +58,7 @@ public class CMPlus {
 
     public CMPlus() {
         if (Loader.isModLoaded("PlayerAPI")) {
-            ServerPlayerAPI.register("CommandPlus", CMServerPlayer.class);
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-                ClientPlayerAPI.register("CommandPlus", CMClientPlayer.class);
                 RenderPlayerAPI.register("CommandPlus", CMRenderPlayer.class);
                 ModelPlayerAPI.register("CommandPlus", CMModelPlayer.class);
             }

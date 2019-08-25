@@ -3,7 +3,6 @@ package map.escaperoom;
 import cmplus.deb.DebAPI;
 import map.escaperoom.block.BlockBarrier;
 import map.escaperoom.nouse.EntityRoomDoor;
-import map.escaperoom.nouse.EntityRoomEnderman;
 import map.escaperoom.nouse.EntityRoomPathCreeper;
 import map.escaperoom.nouse.EntityRoomWindEntity;
 import map.escaperoom.nouse.dungeon.EntityRespawnZombie;
@@ -39,7 +38,6 @@ public class EscapeRoom {
         DebAPI.registerEntity(this, "PuzzleMoveZombie", EntityRoomMoveZombie.class);
         DebAPI.registerEntity(this, "RespawnZombie", EntityRespawnZombie.class);
         DebAPI.registerEntity(this, "PuzzleFallingBlock", EntityRoomFallingBlock.class);
-        DebAPI.registerEntity(this, "PuzzleEnderman", EntityRoomEnderman.class);
         DebAPI.registerEntity(this, "PuzzleBlockShooter", EntityRoomBlockShooter.class);
 
         DebAPI.registerEntity(this, "PuzzleMonsterTower", EntityRoomMonsterTower.class);

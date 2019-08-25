@@ -4,8 +4,6 @@ import cmplus.util.CommandPlusBase;
 import map.Loop;
 import map.lopre2.jump1.EntityBuildBlock;
 import map.lopre2.jump3.JumpTool;
-import minigameLib.minigame.scroll.EntityJumpCreeper;
-import minigameLib.minigame.scroll.EntityJumpFlyingCreeper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -13,11 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
-import olib.effect.Move;
-import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 
 public class CommandJumpThree extends CommandPlusBase {
@@ -36,61 +30,11 @@ public class CommandJumpThree extends CommandPlusBase {
         if (args[0].equalsIgnoreCase("rotatespawn")) {
             JumpTool.rotateBlockSpawn((EntityPlayer) sender, args[1]);
         }
-        if (args[0].equalsIgnoreCase("creeper1")) {
-            creeper(157.2, 63, -379.5);
-        }
-        if (args[0].equalsIgnoreCase("creeper2")) {
-            creeper(157.2, 62.0, -367.6);
-        }
-        if (args[0].equalsIgnoreCase("creeper3")) {
-            creeper(157.1, 63.0, -356.9);
-        }
-        if (args[0].equalsIgnoreCase("lavacreeper")) {
-            lavacreeper(156, 63.7, -343.0);
-        }
         if (args[0].equalsIgnoreCase("rotate")) {
             rotate(sender, args);
         }
     }
 
-
-    public void lavacreeper(double x, double y, double z) {
-        TickRegister.register(new AbstractTick(60, true) {
-            @Override
-            public void run(TickEvent.Type type) {
-                EntityJumpFlyingCreeper creeper = new EntityJumpFlyingCreeper(WorldAPI.getWorld());
-                creeper.setPosition(x, y, z);
-                WorldAPI.getWorld().spawnEntityInWorld(creeper);
-                creeper.setTarget(x - 20, y, z, 1);
-                if (absRunCount == 15)
-                    absLoop = false;
-            }
-        });
-
-
-    }
-
-    public void creeper(double x, double y, double z) {
-        TickRegister.register(new AbstractTick(60, true) {
-            @Override
-            public void run(TickEvent.Type type) {
-                EntityJumpCreeper creeper = new EntityJumpCreeper(WorldAPI.getWorld());
-                creeper.setPosition(x, y, z);
-                WorldAPI.getWorld().spawnEntityInWorld(creeper);
-
-                creeper.move(new Move(creeper, x - 16, y, z, false) {
-                                 @Override
-                                 public void complete() {
-                                     creeper.setDead();
-                                 }
-                             }
-                );
-                if (absRunCount == 15)
-                    absLoop = false;
-            }
-        });
-
-    }
 
     public void rotate(ICommandSender sender, String[] args) {
         EntityBuildBlock buildBlock = (EntityBuildBlock) EntityDefaultNPC.getNPC("rotate");

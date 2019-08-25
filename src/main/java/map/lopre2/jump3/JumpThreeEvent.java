@@ -1,16 +1,14 @@
 package map.lopre2.jump3;
 
-import minigameLib.MiniGame;
-import net.minecraft.init.SoundEvents;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
-import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.init.SoundEvents;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import olib.api.WorldAPI;
 
 
 public class JumpThreeEvent {
@@ -50,8 +48,6 @@ public class JumpThreeEvent {
             } else {
                 if (pressUsername != null && inputDelay > 0 && entityMinecart.canUseRail()) {
                     entityMinecart.setCanUseRail(false);
-                    System.out.println(MiniGame.scroll.getForwardXZ());
-                    entityMinecart.moveEntity(0, 2.3, MiniGame.scroll.getForwardXZ() * 5);
                     System.out.println(Minecraft.getMinecraft().thePlayer.rotationYaw);
                     inputDelay = 0;
                 }

@@ -2,8 +2,6 @@ package map.lopre2.jump1;
 
 import map.lopre2.EntityPreBlock;
 import map.lopre2.LoPre2;
-import minigameLib.MiniGame;
-import minigameLib.minigame.minerun.EntityMineRunner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -125,18 +123,7 @@ public class EntityLavaBlock extends EntityPreBlock {
                 motionX = 0;
             }
         }
-        if(MiniGame.minerun.isStart()){
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(
-                    this.posX - 0.5D, this.posY, this.posZ - 0.5D, this.posX + 0.5D, this.posY + 2, this.posZ + 0.5D));
-            if (!list.isEmpty()) {
-                for (Entity entity : list) {
-                    if ((entity instanceof EntityMineRunner) && !entity.noClip) {
-                        entity.moveEntity(0,0.2,0);
-                        entity.fallDistance = 0;
-                    }
-                }
-            }
-        }
+
 
         if(getWidth() != 0 && getHeight() != 0 && (width != getWidth() || height != getHeight())){
             updateSize();

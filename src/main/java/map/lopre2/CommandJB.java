@@ -8,7 +8,6 @@ import map.lopre2.jump1.EntityMoveBlock;
 import map.lopre2.jump1.EntityWaterBlockCreator;
 import map.lopre2.jump2.EntityBigInvisibleBlock;
 import map.lopre2.jump3.EntityBoatBuildBlock;
-import minigameLib.MiniGame;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
@@ -141,8 +140,6 @@ public class CommandJB extends CommandPlusBase {
                 EntityBoatBuildBlock.moZ = sender.getPosition().getZ();
 
             }
-            if (args[0].equalsIgnoreCase("inv"))
-                WorldAPI.setBlock(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], MiniGame.blockInvisible);
             if (args[0].equalsIgnoreCase("block")) {
                 System.out.println(Loop.blockSet(sender.getEntityWorld(), pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]).blockList.size());
                 System.out.println(pos1.length + " - " + pos2.length);
