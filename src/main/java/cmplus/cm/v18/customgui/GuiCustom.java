@@ -1,6 +1,7 @@
 package cmplus.cm.v18.customgui;
 
 import cmplus.cm.v18.function.Function;
+import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -263,8 +264,9 @@ public class GuiCustom extends GuiScreen {
 						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 155, b0 + 0, 0, 45, 155, 44);
 					}
 				} else if (!buttonTextures.toString().equals("minecraft:textures/gui/widgets.png")) {
-					RenderAPI.drawTexture(buttonTextures, 1.0F, this.xPosition, this.yPosition, this.width,
-							this.height);
+					RenderAPI.drawTexture(new DrawTexture.Builder().setTexture(buttonTextures).setXY( this.xPosition, this.yPosition).setSize(this.width,
+							this.height).build());
+
 				} else {
 					this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2,
 							this.height);

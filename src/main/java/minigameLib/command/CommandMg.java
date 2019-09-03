@@ -1,6 +1,7 @@
 package minigameLib.command;
 
 import cmplus.util.CommandPlusBase;
+import minigameLib.minigame.GuiUnder;
 import olib.api.WorldAPI;
 import olib.map.EntityDefaultNPC;
 import olib.map.TypeModel;
@@ -23,6 +24,7 @@ public class CommandMg extends CommandPlusBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
         Entity entity = Minecraft.getMinecraft().objectMouseOver.entityHit;
+
         if(entity == null) {
             IBlockState block = sender.getEntityWorld().getBlockState(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
             BlockPos pos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();

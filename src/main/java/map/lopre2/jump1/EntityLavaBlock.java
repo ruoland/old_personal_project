@@ -161,10 +161,10 @@ public class EntityLavaBlock extends EntityPreBlock {
         super.writeEntityToNBT(compound);
         compound.setDouble("downSpeed",downSpeed);
         compound.setFloat("widthl", getWidth());
-
         compound.setFloat("heightl", getHeight());
         compound.setBoolean("deb", dataManager.get(DEB_MOVE));
         compound.setBoolean("is boat",dataManager.get(IS_BOAT));
+        System.out.println(isFly);
     }
 
     @Override

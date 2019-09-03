@@ -1,6 +1,7 @@
 package cmplus.cm.v18.customgui;
 
 import cmplus.cm.v18.function.VAR;
+import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,7 +30,7 @@ public class GuiTexture {
 	public void renderTexture(){
 		if(visible){
 			GlStateManager.pushMatrix();
-			RenderAPI.drawTexture(resourceLocation, 1.0F, VAR.getDouble(x), VAR.getDouble(y), VAR.getDouble(width), VAR.getDouble(height));
+			RenderAPI.drawTexture(new DrawTexture.Builder().setTexture(resourceLocation).setXYAndSize( VAR.getDouble(x), VAR.getDouble(y), VAR.getDouble(width), VAR.getDouble(height)).build());
 			GlStateManager.popMatrix();
 		}
 	}

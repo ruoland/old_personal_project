@@ -1,5 +1,6 @@
 package olib.text;
 
+import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -27,9 +28,9 @@ public class GuiMonologue extends GuiScreen {
 		if (!mono.isLastPage()) {
 			if (!mono.getMonoText().isEmpty()) {
 				if (dark) {
-					RenderAPI.drawTexture("loop:textures/text.png", (float) 1.0, -5, 0, width, height);
+					RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("loop:textures/text.png").setXY( -5,0).setSize(width, height).build());
 				} else
-					RenderAPI.drawTexture("loop:textures/text.png", (float) 0.4, 0, 0, width, height);
+					RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("loop:textures/text.png").setAlpha(0.4F).setXY( -5,0).setSize(width, height).build());
 				GlStateManager.pushMatrix();
 				GlStateManager.scale(1.4, 1.4, 1.4);
 				mono.monologueChange(mono.getMonoText().line.get(mono.page).toString(), width, height);

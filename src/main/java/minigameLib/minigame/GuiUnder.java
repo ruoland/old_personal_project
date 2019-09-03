@@ -1,5 +1,7 @@
 package minigameLib.minigame;
 
+import net.minecraft.client.Minecraft;
+import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,7 +16,9 @@ import org.lwjgl.input.Keyboard;
 import java.io.IOException;
 
 public class GuiUnder extends GuiScreen {
-
+    public GuiUnder(){
+        this.mc = Minecraft.getMinecraft();
+    }
     private int playerX = 10, playerY = 220;
     private int textBoxX = 10, textBoxY = 120, textBoxWidth = 406, textBoxHeight = 88;
     private boolean attackMode;
@@ -34,7 +38,7 @@ public class GuiUnder extends GuiScreen {
     }
 
     private static final ResourceLocation location = new ResourceLocation("scroll:textures/darkscreen.png");
-    private StringBuffer currentText = new StringBuffer(), monsterName;
+    private StringBuffer currentText = new StringBuffer(), monsterName = new StringBuffer("");
     private StringBuffer renderText = new StringBuffer("");
     private int messageTick = 10;
     private boolean updateMessage;
@@ -145,7 +149,8 @@ public class GuiUnder extends GuiScreen {
             }
         }
         if (attackMode) {
-            RenderAPI.drawTexture("scroll:textures/stick.png", 1.0F, stickX, stickY, 10, 30, true);
+
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/stick.png").setAlpha(1.0F).setXY(stickX, stickY).setSize(10, 30).build());
             stickY -= 3;
             if (stickX > 187 && stickX < 230 && stickY < 120) {
                 System.out.println("attack");
@@ -159,26 +164,30 @@ public class GuiUnder extends GuiScreen {
 
         if (isDead && (renderTick == 10 || renderTick == 0 || renderTick == 20) && mobTextureAlpha > 0.0F)
             mobTextureAlpha -= 0.1F;
-        RenderAPI.drawTexture("scroll:textures/textBox.png", 1.0F, textBoxX, textBoxY, textBoxWidth,
-                textBoxHeight, true);
-        RenderAPI.drawTexture("scroll:textures/creeper.png", mobTextureAlpha, 202, 20, 30, 100, true);
-        RenderAPI.drawTexture("scroll:textures/asdf.png", 1.0F, playerX, playerY, 30, 20, true);
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/textBox.png").setAlpha(1.0F).setXY(textBoxX, textBoxY).setSize(textBoxWidth, textBoxHeight).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/creeper.png").setAlpha(mobTextureAlpha).setXY(202, 20).setSize(30, 100).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/asdf.png").setAlpha(1).setXY(playerX, playerY).setSize(30, 20).build());
         RenderAPI.drawString(mc.thePlayer.getName(), 40, 210, 0xFFFFFF);
         RenderAPI.drawString("LV " + mc.thePlayer.experienceLevel, 80, 210, 0xFFFFFF);
         RenderAPI.drawString("HP" + mc.thePlayer.getHealth(), 200, 210, 0xFFFFFF);
         RenderAPI.drawString(" / " + mc.thePlayer.getMaxHealth(), 220, 210, 0xFFFFFF);
-        RenderAPI.drawTexture("scroll:textures/attack.png", 1.0F, 21 - 3, 215, 50, 30, true);
-        RenderAPI.drawTexture("scroll:textures/attack.png", 1.0F, 131 - 3, 215, 50, 30, true);
-        RenderAPI.drawTexture("scroll:textures/attack.png", 1.0F, 241 - 3, 215, 50, 30, true);
-        RenderAPI.drawTexture("scroll:textures/attack.png", 1.0F, 351 - 3, 215, 50, 30, true);
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY(21 - 3, 215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY(131 - 3, 215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY(241 - 3, 215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY( 351 - 3,215).setSize(50, 30).build());
+
         if (select != 0)
-            RenderAPI.drawTexture("scroll:textures/diamond_sword.png", 1.0F, 24 - 3, 222, 16, 16, true);
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 24 - 3,222).setSize(16, 16).build());
+
         if (select != 1)
-            RenderAPI.drawTexture("scroll:textures/diamond_sword.png", 1.0F, 134 - 3, 222, 16, 16, true);
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 134 - 3,222).setSize(16, 16).build());
+
         if (select != 2)
-            RenderAPI.drawTexture("scroll:textures/diamond_sword.png", 1.0F, 244 - 3, 222, 16, 16, true);
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 244 - 3,222).setSize(16, 16).build());
+
         if (select != 3)
-            RenderAPI.drawTexture("scroll:textures/diamond_sword.png", 1.0F, 354 - 3, 222, 16, 16, true);
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 354 - 3,222).setSize(16, 16).build());
+
         if (mobTextureAlpha <= 0)
             this.mc.displayGuiScreen((GuiScreen) null);
 

@@ -1,6 +1,7 @@
 package olib.text;
 
 import cmplus.cm.CommandChat;
+import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import olib.api.WorldAPI;
 import olib.effect.AbstractTick;
@@ -90,8 +91,8 @@ public class TextEvent {
 
 		if (event.getType() == ElementType.ALL && event.getPhase() == EventPriority.NORMAL && textList.size() != 0) {
 			double s = (double) width / (double) height;
-			RenderAPI.drawTexture("loop:textures/text.png", (float) 0.4, 90, 140, 245, 80);
-			
+			RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("loop:textures/text.png").setAlpha(0.4F).setXYAndSize(  90, 140, 245, 80).build());
+
 			if (textList.size() > 0)
 				nextText = true;
 			else if (textList.size() == 1){
@@ -193,7 +194,8 @@ public class TextEvent {
        		{
        			String texture = ste.substring(ste.indexOf("/drawtexture:"), ste.indexOf(".png/"));
        			String[] s = texture.split(",");
-       			RenderAPI.drawTexture(s[5]+".png", Float.parseFloat(s[0].replace("/drawtexture:", "")), Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[4]));
+				RenderAPI.drawTexture(new DrawTexture.Builder().setTexture(s[5]+".png").setAlpha(Float.parseFloat(s[0].replace("/drawtexture:", "")))
+						.setXYAndSize(  Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[4])).build());
        			ste = ste.replace(texture+".png/", "").replace(".png", "");
        		}
        		if(ste.indexOf("/rotate:") != -1)

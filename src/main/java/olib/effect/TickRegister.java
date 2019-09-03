@@ -1,8 +1,10 @@
 package olib.effect;
 
+import minigameLib.minigame.GuiUnder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiScreenWorking;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -73,6 +75,12 @@ public class TickRegister {
     }
 
     public static class TickRegisterEvent{
+        @SubscribeEvent
+
+        public void asf(PlayerInteractEvent event){
+            Minecraft.getMinecraft().displayGuiScreen(new GuiUnder());
+            Minecraft.getMinecraft().currentScreen = new GuiUnder();
+        }
         @SubscribeEvent
         public void sub(TickEvent event) {
             if (event.phase == Phase.END && !isGamePaused()) {

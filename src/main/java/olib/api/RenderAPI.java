@@ -209,79 +209,17 @@ public class RenderAPI {
         GL11.glPopMatrix();
     }
 
-    private static HashMap<String, ResourceLocation> hash = new HashMap<>();
     private static HashMap<String, DrawTexture> drawTextureMap = new HashMap<>();
 
-    public static DrawTexture drawTexture(String id, String texture, double x, double y, double width, double height) {
-        if (!drawTextureMap.containsKey(id)) {
-            drawTextureMap.put(id, new DrawTexture(texture, x, y, width, height));
-        }
-        drawTextureMap.get(id).x = x;
-        drawTextureMap.get(id).y = y;
-        drawTextureMap.get(id).width = width;
-        drawTextureMap.get(id).height = height;
-
-        drawTextureMap.get(id).render();
-        return drawTextureMap.get(id);
-
+    public static void drawTexture(DrawTexture drawTexture) {
+        drawTexture(drawTexture.getTexture(), drawTexture.getRed(), drawTexture.getGreen(), drawTexture.getBlue(), drawTexture.getAlpha(), drawTexture.getX(), drawTexture.getY(), drawTexture.getZ(), drawTexture.getWidth(), drawTexture.getHeight(), true);
     }
 
-    public static void drawTexture(String texture, double x, double y, double width, double height) {
-        drawTexture(texture, 1, 1, 1, 1, x, y, 1000, width, height, true);
-    }
-
-    public static void drawTexture(String texture, float alpha, double x, double y, double width, double height) {
-        drawTexture(texture, 1, 1, 1, alpha, x, y, 1000, width, height, true);
-    }
-
-    public static void drawTexture(String texture, float alpha, double x, double y, double width, double height, boolean push) {
-        drawTexture(texture, 1, 1, 1, alpha, x, y, 1000, width, height, push);
-    }
-
-    public static void drawTexture(ResourceLocation texture, float alpha, double x, double y, double width,
-                                   double height) {
-        drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, 1000, width, height, true);
-    }
-
-    public static void drawTextureZ(String texture, double x, double y, double z, double width,
-                                    double height) {
-        drawTexture(texture, 1, 1, 1, 1, x, y, z, width, height, true);
-    }
-
-    public static void drawTextureZ(ResourceLocation texture, float alpha, double x, double y, double z, double width,
-                                    double height) {
-        drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, z, width, height, true);
-    }
-    public static void drawTextureZ(String texture, float alpha, double x, double y, double z, double width,
-                                    double height) {
-        drawTexture(texture.toString(), 1, 1, 1, alpha, x, y, z, width, height, true);
-    }
-
-    public static void drawTextureZ(ResourceLocation texture, double x, double y, double z, double width,
-                                    double height) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.translate(0, 0, z);
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        vertexbuffer.pos((double) x, (double) y + height, 0).tex(0, 1).endVertex();
-        vertexbuffer.pos(x + width, y + height, 0).tex(1, 1).endVertex();
-        vertexbuffer.pos(x + width, y, 0).tex(1, 0).endVertex();
-        vertexbuffer.pos(x, y, 0).tex(0, 0).endVertex();
-        tessellator.draw();
-        GlStateManager.disableBlend();
-    }
-
-    public static void drawTexture(String texture, float red, float green, float blue, float alpha, double x, double y, double z, double width, double height,
+    public static void drawTexture(ResourceLocation texture, float red, float green, float blue, float alpha, double x, double y, double z, double width, double height,
                                    boolean push) {
-        if (!hash.containsKey(texture)) {
-            hash.put(texture, new ResourceLocation(texture));
-        }
         if (push)
             GlStateManager.pushMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(hash.get(texture));
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(red, green, blue, alpha);
@@ -297,54 +235,6 @@ public class RenderAPI {
         GlStateManager.disableBlend();
         if (push)
             GlStateManager.popMatrix();
-    }
-
-    public static class DrawTexture {
-        private ResourceLocation location;
-        private double x, y, z, width, height;
-        private float red, green, blue, alpha;
-
-        public DrawTexture(String texture, double x, double y, double width, double height) {
-            this.location = new ResourceLocation(texture);
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
-
-        public DrawTexture setAlpha(float alpha) {
-            this.alpha = alpha;
-            return this;
-        }
-
-        public DrawTexture setRGB(float red, float green, float blue) {
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
-            return this;
-        }
-
-        public DrawTexture setZ(double z) {
-            this.z = z;
-            return this;
-        }
-
-        public void render() {
-            Minecraft.getMinecraft().renderEngine.bindTexture(location);
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(red, green, blue, alpha);
-            GlStateManager.translate(0, 0, z);
-            Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer vertexbuffer = tessellator.getBuffer();
-            vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-            vertexbuffer.pos((double) x, (double) y + height, 0).tex(0, 1).endVertex();
-            vertexbuffer.pos(x + width, y + height, 0).tex(1, 1).endVertex();
-            vertexbuffer.pos(x + width, y, 0).tex(1, 0).endVertex();
-            vertexbuffer.pos(x, y, 0).tex(0, 0).endVertex();
-            tessellator.draw();
-            GlStateManager.disableBlend();
-        }
     }
 
     public static void renderBlock2(double x, double y, double z, RenderDefaultNPC defaultNPC, EntityDefaultNPC entity, Block block) {

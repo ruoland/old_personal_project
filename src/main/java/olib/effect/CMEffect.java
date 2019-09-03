@@ -3,6 +3,7 @@ package olib.effect;
 import cmplus.CMManager;
 import cmplus.camera.Camera;
 import cmplus.util.Sky;
+import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import olib.api.WorldAPI;
 import net.minecraft.client.Minecraft;
@@ -82,19 +83,20 @@ public class CMEffect {
         });
     }
 
-    public void drawImage(final String texture, final int x, final int y, final int width, final int height,
-                          int tick) {
+    public void drawImage(final String texture, final int x, final int y, final int width, final int height, int tick) {
         TickRegister.register(new AbstractTick(null, 1, true) {
             float alpha = 1.0F;
 
             @Override
             public void run(Type type) {
-                alpha--;
-                if (alpha <= 0) {
-                    absLoop = false;
+                if(absRunCount > tick) {
+                    alpha--;
+                    if (alpha <= 0) {
+                        absLoop = false;
+                    }
                 }
                 if (tickEvent.side == Side.CLIENT) {
-                    RenderAPI.drawTexture(texture, alpha, x, y, width, height);
+                    RenderAPI.drawTexture(new DrawTexture.Builder().setTexture(texture).setAlpha(alpha).setXY(x,y).setSize(width,height).build());
                 }
             }
         });
@@ -112,22 +114,22 @@ public class CMEffect {
                         abs.run();
                     }
                 }
-                RenderAPI.drawTexture(texture, alpha, 0, 0, Minecraft.getMinecraft().displayWidth,
-                        Minecraft.getMinecraft().displayHeight);
+
+                RenderAPI.drawTexture(new DrawTexture.Builder().setTexture(texture).setAlpha(alpha).setXY(0,0).setSize(Minecraft.getMinecraft().displayWidth,
+                        Minecraft.getMinecraft().displayHeight).build());
             }
         });
 
     }
 
-    boolean darkCancel;
 
     public void darkCancel() {
-        darkCancel = true;
+        TickRegister.remove("DARKSCREEN");
     }
 
     /**
      * 화면을 천천히 어둡게 만듦
-     * 화면을 완전히 어둡게 하면 바로 어두운 화면이 사라지니 조심
+     * 화면을 완전히 어둡게 하면 바로 어두운 화면이 사라짐
      */
     public void darkScreen2(final AbstractTick absTic) {
         TickRegister.register(new AbstractTick("DARKSCREEN", Type.RENDER, 1, true) {
@@ -135,19 +137,16 @@ public class CMEffect {
 
             @Override
             public void run(Type type) {
-                if (alpha >= 1 || darkCancel) {
+                if (alpha >= 1) {
                     absLoop = false;
                     if (absTic != null) {
                         absTic.run();
                     }
-                    darkCancel = false;
                 }
-                RenderAPI.drawTexture("commandplus:textures/gui/darkscreen.png", alpha, 0, 0,
-                        Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+                RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("commandplus:textures/gui/darkscreen.png").setAlpha(alpha).setXY(0,0).setSize(Minecraft.getMinecraft().displayWidth,
+                        Minecraft.getMinecraft().displayHeight).build());
             }
         });
-
-
     }
 
     /**
@@ -184,11 +183,11 @@ public class CMEffect {
                         currentAlpha -= 0.005F;
                 }
                 if (type == Type.RENDER)
-                    RenderAPI.drawTexture("commandplus:textures/gui/darkscreen.png", currentAlpha, 0, 0,
-                            Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-                if ((isPlus && currentAlpha >= maxAlpha) || (!isPlus && currentAlpha <= 0) || darkCancel) {
+                    RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("commandplus:textures/gui/darkscreen.png").setAlpha(currentAlpha).setXY(0,0).setSize(Minecraft.getMinecraft().displayWidth,
+                            Minecraft.getMinecraft().displayHeight).build());
+
+                if ((isPlus && currentAlpha >= maxAlpha) || (!isPlus && currentAlpha <= 0)) {
                     absLoop = !(isPlus ? playerTick >= argTick : currentAlpha <= 0);
-                    darkCancel = false;
                     if (abs != null && !absLoop)
                         abs.run();
                 }
@@ -196,27 +195,16 @@ public class CMEffect {
         });
     }
 
-    public void setFlowMode(boolean mode) {
-        if (mode)
-            Sky.enableBlockLayer();
-        else
-            Sky.disableBlockLayer();
-    }
-
-    static AbstractTick tick;
 
     public static void setCameraEarthquake(final int randomi) {
         final Random random = new Random();
-
-        if (tick != null && randomi == 0) {
-            tick.stopTick();
-            TickRegister.remove(tick);
+        boolean isTickRun = TickRegister.isAbsTickRun("Earth");
+        if (isTickRun && randomi == 0) {
+            TickRegister.remove("Earth");
             Camera.getCamera().reset();
             return;
         }
-        if (tick != null)
-            TickRegister.remove(tick);
-        tick = new AbstractTick(Type.CLIENT, 1, true) {
+        TickRegister.register(new AbstractTick("Earth",Type.CLIENT, 1, true) {
             @Override
             public void run(Type type) {
                 if (absRunCount < 500) {
@@ -242,8 +230,7 @@ public class CMEffect {
                     Camera.getCamera().reset();
                 }
             }
-        };
-        TickRegister.register(tick);
+        });
     }
 
     /**
