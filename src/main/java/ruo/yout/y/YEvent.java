@@ -21,13 +21,13 @@ public class YEvent
     }
     @SubscribeEvent
     public void playerTick(PlayerInteractEvent.EntityInteract event){
-        if(event.getItemStack().getDisplayName().equalsIgnoreCase("모리 라이딩")){
+        if(WorldAPI.equalsItemName(event.getItemStack(), "모리 라이딩")){
             event.getTarget().startRiding(event.getEntityPlayer());
         }
     }
     @SubscribeEvent
     public void playerTick(PlayerInteractEvent.RightClickItem event){
-        if(event.getItemStack().getDisplayName().equalsIgnoreCase("내려가기")){
+        if(WorldAPI.equalsItemName(event.getItemStack(), "내려가기")){
             event.getEntityPlayer().motionY -= speed;
         }
     }

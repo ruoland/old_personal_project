@@ -2,6 +2,7 @@ package map.lopre2.jump2;
 
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import map.lopre2.jump1.EntityMoveBlock;
@@ -49,6 +50,12 @@ public class EntityBigBlockMove extends EntityMoveBlock {
         worldObj.spawnEntityInWorld(lavaBlock);
         this.copyModel(lavaBlock);
         return lavaBlock;
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        System.out.println(compound.getString("id"));
     }
 
     @Override

@@ -337,7 +337,12 @@ public class WorldAPI {
                                  BlockXYZ xyz) {
         blockTick(world, round(x), round(x2), round(y), round(y2), round(z), round(z2), xyz);
     }
-
+    public static void blockTick(World world, BlockPos pos1, BlockPos pos2,
+                                 BlockXYZ xyz) {
+        System.out.println(pos1.getX()+ " - "+ pos1.getY()+ " - "+pos1.getZ());
+        System.out.println("asdf "+pos2.getX()+ " - "+ pos2.getY()+ " - "+pos2.getZ());
+        blockTick(world, pos1.getX(), pos2.getX(), pos1.getY(), pos2.getY(), pos1.getZ(), pos2.getZ(), xyz);
+    }
     public static BlockAPI getBlock(World world, double x, double x2, double y, double y2, double z,
                                     double z2) {
         return getBlock(world, round(x), round(x2), round(y), round(y2), round(z), round(z2));
@@ -395,6 +400,9 @@ public class WorldAPI {
         int maxY = Math.max(y, y2);
         int minZ = Math.min(z, z2);
         int maxZ = Math.max(z, z2);
+        System.out.println(x+ " - "+y+" - "+z);
+        System.out.println(minX+ " - "+minY+" - "+minZ);
+        System.out.println(maxX+ " - "+maxY+" - "+maxZ);
 
         for (x = minX; x <= maxX; x++) {
             for (y = minY; y <= maxY; y++) {
@@ -724,7 +732,12 @@ public class WorldAPI {
         } else
             return false;
     }
-
+    public static boolean equalsItemName(ItemStack item, String name) {
+        if (item != null) {
+            return item.getDisplayName().equalsIgnoreCase(name);
+        } else
+            return false;
+    }
     public static boolean equalsHeldItem(Item item2) {
         if (WorldAPI.getPlayer() == null)
             return false;
