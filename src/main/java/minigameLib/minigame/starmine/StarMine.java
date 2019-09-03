@@ -33,7 +33,7 @@ public class StarMine extends AbstractMiniGame {
     }
     @Override
     public boolean end(Object... obj) {
-        Camera.getCamera().reset();
+        Camera.reset();
         StarMineEvent eve = MiniGame.starMineEvent;
         eve.spawnY = 0;
         WorldAPI.command("/ui reset");

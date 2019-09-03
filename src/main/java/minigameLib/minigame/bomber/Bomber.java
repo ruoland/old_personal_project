@@ -21,23 +21,23 @@ public class Bomber extends AbstractMiniGame {
 		ItemStack item = new ItemStack(bombItem);
 		EntityPlayer player = WorldAPI.getPlayer();
 		player.inventory.setInventorySlotContents(1, item);
-		Camera.getCamera().reset();
-		Camera.getCamera().playerCamera(true);
-		Camera.getCamera().setYP(true);
-		Camera.getCamera().moveCamera(0, -7, 0);
+		Camera.reset();
+		Camera.playerCamera(true);
+		Camera.setYP(true);
+		Camera.moveCamera(0, -7, 0);
 
 		if(type.equals("z+")){
-			Camera.getCamera().rotateCamera(90, 180, 0);
-			Camera.getCamera().lockCamera(true, 0, 0);
+			Camera.rotateCamera(90, 180, 0);
+			Camera.lockCamera(true, 0, 0);
 		}
 		if(type.equals("z-")){
-			Camera.getCamera().rotateCamera(90, 0, 0);
-			Camera.getCamera().lockCamera(true, 179, 0);
+			Camera.rotateCamera(90, 0, 0);
+			Camera.lockCamera(true, 179, 0);
 		}
 		if(type.equals("z++")){
-			Camera.getCamera().rotateCamera(60, 180, 0);
-			Camera.getCamera().lockCamera(true, 0, 0);
-			Camera.getCamera().moveCamera(0, -6, 2.5);
+			Camera.rotateCamera(60, 180, 0);
+			Camera.lockCamera(true, 0, 0);
+			Camera.moveCamera(0, -6, 2.5);
 		}
 		Minecraft.getMinecraft().gameSettings.setSoundLevel(SoundCategory.BLOCKS, 0.02F);
 		return super.start();
@@ -45,7 +45,7 @@ public class Bomber extends AbstractMiniGame {
 	
 	@Override
 	public boolean end(Object... obj) {
-		Camera.getCamera().reset();
+		Camera.reset();
 		
 		return super.end();
 	}

@@ -24,12 +24,12 @@ public class CMEffect {
         return new CMEffect();
     }
 
-    public void setZoom(double argZoom, double tick) {
+    public void setZoom(double zoom, double tick) {
         TickRegister.register(new AbstractTick("zoom", Type.SERVER, 1, true) {
             @Override
             public void run(Type type) {
-                Camera.getCamera().zoom = Camera.getCamera().plusminus(argZoom, Camera.getCamera().zoom, tick);
-                absLoop = Camera.getCamera().equalsCut(argZoom, Camera.getCamera().zoom);
+                Camera.zoom = Camera.plusminus(zoom, Camera.zoom, tick);
+                absLoop = Camera.equalsCut(zoom, Camera.zoom);
             }
         });
     }
@@ -38,8 +38,8 @@ public class CMEffect {
         TickRegister.register(new AbstractTick("zoom", Type.SERVER, 1, true) {
             @Override
             public void run(Type type) {
-                Camera.getCamera().zoom = Camera.getCamera().plusminus(argZoom, Camera.getCamera().zoom, tick);
-                absLoop = Camera.getCamera().equalsCut(argZoom, Camera.getCamera().zoom);
+                Camera.zoom = Camera.plusminus(argZoom, Camera.zoom, tick);
+                absLoop = Camera.equalsCut(argZoom, Camera.zoom);
                 if (!absLoop)
                     abs.run(type);
             }
@@ -201,7 +201,7 @@ public class CMEffect {
         boolean isTickRun = TickRegister.isAbsTickRun("Earth");
         if (isTickRun && randomi == 0) {
             TickRegister.remove("Earth");
-            Camera.getCamera().reset();
+            Camera.reset();
             return;
         }
         TickRegister.register(new AbstractTick("Earth",Type.CLIENT, 1, true) {
@@ -223,11 +223,11 @@ public class CMEffect {
                         z = Float.valueOf("0.00" + random.nextInt(randomi + 1));
                     else
                         z = Float.valueOf("-0.00" + random.nextInt(randomi + 1));
-                    Camera.getCamera().moveCamera(x, y, z);
-                    Camera.getCamera().moveCamera(x, y, z);
+                    Camera.moveCamera(x, y, z);
+                    Camera.moveCamera(x, y, z);
                 } else {
                     this.absLoop = false;
-                    Camera.getCamera().reset();
+                    Camera.reset();
                 }
             }
         });
@@ -239,7 +239,7 @@ public class CMEffect {
     public static void setCameraEarthquake2(final int randomi, int maxcount) {
         if (TickRegister.isAbsTickRun("EarthQuake") && randomi == 0) {
             TickRegister.remove(TickRegister.getAbsTick("EarthQuake"));
-            Camera.getCamera().reset();
+            Camera.reset();
             return;
         }
         TickRegister.register(new AbstractTick("EarthQuake",Type.CLIENT, 1, true) {
@@ -249,20 +249,20 @@ public class CMEffect {
                     float x = (WorldAPI.rand(randomi + 1) / 100) - (absRunCount / 1000);
                     float y = (WorldAPI.rand(randomi + 1) / 1000) - (absRunCount / 10000);
                     float z = (WorldAPI.rand(randomi + 1) / 100) - (absRunCount / 1000);
-                    Camera.getCamera().moveCamera(x, y, z);
+                    Camera.moveCamera(x, y, z);
                     System.out.println("카메라 흔드는 중");
                 } else {
                     this.absLoop = false;
-                    Camera.getCamera().reset();
+                    Camera.reset();
                 }
             }
         });
     }
 
     public static void setCameraFall() {
-        Camera.getCamera().lockCamera(true, 0, 0);
-        Camera.getCamera().rotateCamera(0, -20, 90);
-        Camera.getCamera().moveCamera(0, 1.4, 0);
+        Camera.lockCamera(true, 0, 0);
+        Camera.rotateCamera(0, -20, 90);
+        Camera.moveCamera(0, 1.4, 0);
         yro = -20;
         zro = 90;
         ymo = 1.4F;
@@ -284,10 +284,10 @@ public class CMEffect {
                 }
                 if (ymo <= 0 && zro <= 0 && yro >= 0) {
                     cancel();
-                    Camera.getCamera().reset();
+                    Camera.reset();
                 }
-                Camera.getCamera().moveCamera(0, ymo, 0);
-                Camera.getCamera().rotateCamera(0, yro, zro);
+                Camera.moveCamera(0, ymo, 0);
+                Camera.rotateCamera(0, yro, zro);
             }
         };
         timer.schedule(task, 100, 30);
@@ -299,11 +299,11 @@ public class CMEffect {
     public void sleepPlayer() {
         Minecraft.getMinecraft().gameSettings.thirdPersonView = 2;
         CMManager.setSleep(true, EnumFacing.SOUTH);
-        Camera.getCamera().lockCamera(true);
-        Camera.getCamera().setYP(true);
-        Camera.getCamera().playerCamera(true);
-        Camera.getCamera().rotateCamera(50, 160, 0);
-        Camera.getCamera().moveCamera(0, 0, 0);
+        Camera.lockCamera(true);
+        Camera.setYP(true);
+        Camera.playerCamera(true);
+        Camera.rotateCamera(50, 160, 0);
+        Camera.moveCamera(0, 0, 0);
         CMManager.setMoveLock(false);
     }
 }

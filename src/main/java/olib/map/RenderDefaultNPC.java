@@ -47,7 +47,7 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                 }
                 GlStateManager.pushMatrix();
                 modelRender(npc);
-                RenderAPI.renderBlock(block.blockPosList, block.blockList, npc);
+                RenderAPI.renderBlockArray(block.blockPosList, block.blockList, npc);
                 GlStateManager.popMatrix();
                 return;
             }

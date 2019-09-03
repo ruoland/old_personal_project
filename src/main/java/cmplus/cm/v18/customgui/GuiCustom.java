@@ -254,14 +254,14 @@ public class GuiCustom extends GuiScreen {
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 					if ((double) updateCounter < 1.0E-4D) {
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 0, b0 + 0, 0, 0, 99, 44);
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 99, b0 + 0, 129, 0, 27, 44);
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 99 + 26, b0 + 0, 126, 0, 3, 44);
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 99 + 26 + 3, b0 + 0, 99, 0, 26, 44);
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 155, b0 + 0, 0, 45, 155, 44);
+						drawTexturedModalRect(k1 + 0, b0 + 0, 0, 0, 99, 44);
+						drawTexturedModalRect(k1 + 99, b0 + 0, 129, 0, 27, 44);
+						drawTexturedModalRect( k1 + 99 + 26, b0 + 0, 126, 0, 3, 44);
+						drawTexturedModalRect( k1 + 99 + 26 + 3, b0 + 0, 99, 0, 26, 44);
+						drawTexturedModalRect(k1 + 155, b0 + 0, 0, 45, 155, 44);
 					} else {
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 0, b0 + 0, 0, 0, 155, 44);
-						RenderAPI.drawTexturedModalRect(1.0F, 1, k1 + 155, b0 + 0, 0, 45, 155, 44);
+						drawTexturedModalRect(k1 + 0, b0 + 0, 0, 0, 155, 44);
+						drawTexturedModalRect( k1 + 155, b0 + 0, 0, 45, 155, 44);
 					}
 				} else if (!buttonTextures.toString().equals("minecraft:textures/gui/widgets.png")) {
 					RenderAPI.drawTexture(new DrawTexture.Builder().setTexture(buttonTextures).setXY( this.xPosition, this.yPosition).setSize(this.width,

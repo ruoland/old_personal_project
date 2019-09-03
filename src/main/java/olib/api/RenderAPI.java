@@ -237,26 +237,11 @@ public class RenderAPI {
             GlStateManager.popMatrix();
     }
 
-    public static void renderBlock2(double x, double y, double z, RenderDefaultNPC defaultNPC, EntityDefaultNPC entity, Block block) {
-        World world = entity.worldObj;
-        defaultNPC.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        GlStateManager.pushMatrix();
-        GlStateManager.disableLighting();
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
-        IBlockState defaultState = block.getDefaultState();
-        BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-        GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
-        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(defaultState), defaultState, blockpos, vertexbuffer, false, 0);
-        tessellator.draw();
 
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
-    }
-
-    public static void renderBlock(ArrayList<BlockPos> blockPosList, ArrayList<ItemStack> itemStackList, EntityLivingBase entitylivingbaseIn) {
+    /**
+     * 대량의 블럭을 렌더링함
+     */
+    public static void renderBlockArray(ArrayList<BlockPos> blockPosList, ArrayList<ItemStack> itemStackList, EntityLivingBase entitylivingbaseIn) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
         GlStateManager.pushMatrix();
@@ -322,32 +307,6 @@ public class RenderAPI {
         return (new ResourceLocation("minecraft:textures/" + blockrendererdispatcher.getBlockModelShapes()
                 .getTexture(block.getDefaultState()).getIconName().replace("minecraft:", "") + ".png"));
     }
-
-    public static void drawTexturedModalRect(float alpha, float zLevel, int x, int y, int textureX, int textureY,
-                                             int width, int height) {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        vertexbuffer.pos((double) (x + 0), (double) (y + height), (double) 1)
-                .tex((double) ((float) (textureX + 0) * 0.00390625F),
-                        (double) ((float) (textureY + height) * 0.00390625F))
-                .endVertex();
-        vertexbuffer.pos((double) (x + width), (double) (y + height), (double) 1)
-                .tex((double) ((float) (textureX + width) * 0.00390625F),
-                        (double) ((float) (textureY + height) * 0.00390625F))
-                .endVertex();
-        vertexbuffer.pos((double) (x + width), (double) (y + 0), (double) 1)
-                .tex((double) ((float) (textureX + width) * 0.00390625F),
-                        (double) ((float) (textureY + 0) * 0.00390625F))
-                .endVertex();
-        vertexbuffer.pos((double) (x + 0), (double) (y + 0), (double) 1)
-                .tex((double) ((float) (textureX + 0) * 0.00390625F), (double) ((float) (textureY + 0) * 0.00390625F))
-                .endVertex();
-        tessellator.draw();
-    }
-
     private static void renderItem(ItemStack stack, IBakedModel model) {
         if (stack != null) {
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);

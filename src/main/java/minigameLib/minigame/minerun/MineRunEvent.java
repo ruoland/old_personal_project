@@ -186,7 +186,7 @@ public class MineRunEvent {
     //@SubscribeEvent
     public void cameraMove(EntityViewRenderEvent.CameraSetup event) {
         if (MiniGame.minerun.isStart() && MineRun.elytraMode() == EnumElytra.RUNNING && (WorldAPI.getPlayer().getRidingEntity() == null)) {
-            Camera.getCamera().moveCamera(EntityAPI.lookX(WorldAPI.getPlayer(), 3.5)
+            Camera.moveCamera(EntityAPI.lookX(WorldAPI.getPlayer(), 3.5)
                             + getX(lineLR < 0 ? Direction.RIGHT : Direction.LEFT),
                     -1.5, EntityAPI.lookZ(WorldAPI.getPlayer(), 3.5)
                             + getZ(lineLR < 0 ? Direction.RIGHT : Direction.LEFT));

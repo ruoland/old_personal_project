@@ -9,17 +9,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 
 public class Camera {
-	public double rotateX, rotateY, rotateZ, zoom = 70;
-	public double traX, traY, traZ;
-	public float lockPlayerYaw, lockPlayerPitch;//TODO 왜 있는지 모르겠음
-	public float lockCameraYaw, lockCameraPitch;//
-	public boolean lockCamera, lockPerson, yp;
+	public static double rotateX, rotateY, rotateZ, zoom = 70;
+	public static double traX, traY, traZ;
+	public static float lockPlayerYaw, lockPlayerPitch;//TODO 왜 있는지 모르겠음
+	public static float lockCameraYaw, lockCameraPitch;//
+	public static boolean lockCamera, lockPerson, yp;
 	public static boolean isDebug = false, freeCam = false;
-	private Minecraft mc = Minecraft.getMinecraft();
-	private EntityRenderer r = mc.entityRenderer;
-	private static Camera camera = new Camera();
+	private static Minecraft mc = Minecraft.getMinecraft();
+	private static EntityRenderer r = mc.entityRenderer;
 
-	public void reset() {
+	public static void reset() {
 		setZoom(70);
 		rotateCamera(0, 0, 0);
 		moveCamera(0, 0, 0);
@@ -32,58 +31,53 @@ public class Camera {
 		setYP(false);
 	}
 
-	public void setYP(boolean yp) {
+	public static void setYP(boolean yp) {
 		EntityPlayer player = WorldAPI.getPlayer();
-		this.yp = yp;
+		yp = yp;
 		lockPlayerPitch = 0;
 		lockPlayerYaw = 0;
 	}
 
-	public static Camera getCamera() {
-		return camera;
-	}
-
-	public void setZoom(double argZoom) {
+	public static void setZoom(double argZoom) {
 		zoom = argZoom;
 	}
 	
 
-	public float getZoom() {
+	public static float getZoom() {
 		return (float) zoom;
 	}
 
-	public void resetZoom() {
+	public static void resetZoom() {
 		setZoom(70);
 	}
 
-	public void lockPerson(boolean b) {
+	public static void lockPerson(boolean b) {
 		lockPerson = b;
 	}
 
-	public void bedCamera() {
-		EntityPlayer entity = WorldAPI.getPlayer();
+	public static void bedCamera() {
 		moveCamera(0, 1, 0);
 		rotateCamera(0, 0, 90);
 	}
 
-	public void lockCamera(boolean b) {
+	public static void lockCamera(boolean b) {
 		EntityPlayer player = WorldAPI.getPlayer();
 		lockCamera = b;
 		lockPlayerPitch = player.prevRotationPitch;
 		lockPlayerYaw = player.prevRotationYaw;
 	}
 
-	public void lockCamera(boolean lock, float yaw, float pitch) {
+	public static void lockCamera(boolean lock, float yaw, float pitch) {
 		lockCamera = lock;
-		this.lockPlayerPitch = pitch;
-		this.lockPlayerYaw = yaw;
+		lockPlayerPitch = pitch;
+		lockPlayerYaw = yaw;
 	}
 
-	public boolean isLock() {
+	public static boolean isLock() {
 		return lockCamera;
 	}
 
-	public void playerCamera(boolean b) {
+	public static void playerCamera(boolean b) {
 		if (b) {
 			mc.gameSettings.thirdPersonView = -1;
 			lockPerson(true);
@@ -93,22 +87,22 @@ public class Camera {
 	}
 
 
-	public void rotateCamera(double x, double y, double z) {
+	public static void rotateCamera(double x, double y, double z) {
 		rotateX = x;
 		rotateY = y;
 		rotateZ = z;
 	}
 
-	public void moveCamera(double x, double y, double z) {
+	public static void moveCamera(double x, double y, double z) {
 		move(x, y, z);
 	}
 
-	public void move(double x, double y, double z) {
+	public static void move(double x, double y, double z) {
 		traX = x;
 		traY = y; 
 		traZ = z;
 	}
-	public void moveAdd(double x, double y, double z) {
+	public static void moveAdd(double x, double y, double z) {
 		traX += x;
 		traY += y;
 		traZ += z;
@@ -118,20 +112,20 @@ public class Camera {
 	 * Tick 이벤트용.
 	 *20/@param x를 딱 한번 수행함
 	 */
-	public boolean cameraRotate(double x, double y, double z, double tick) {
+	public static boolean cameraRotate(double x, double y, double z, double tick) {
 		rotateX = plusminus(x, rotateX, tick);
 		rotateY = plusminus(y, rotateY, tick);
 		rotateZ = plusminus(z, rotateZ, tick);
 		return cmRotateEquals(x, y, z);
 	}
-	public boolean cameraMove(double x, double y, double z, double tick) {
+	public static boolean cameraMove(double x, double y, double z, double tick) {
 		traX = plusminus(x, traX, tick);
 		traY = plusminus(y, traY, tick);
 		traZ = plusminus(z, traZ, tick);
 		return cmTraEquals(x, y, z);
 	}
 	
-	public void cameraRotateTimer(double x, double y, double z) {
+	public static void cameraRotateTimer(double x, double y, double z) {
 		TickRegister.register(new AbstractTick("camera-rotate", Type.SERVER, 1, true) {
 			@Override
 			public void run(Type type) {
@@ -143,7 +137,7 @@ public class Camera {
 		});
 	}
 	
-	public void cameraMoveTimer(double x, double y, double z) {
+	public static void cameraMoveTimer(double x, double y, double z) {
 		TickRegister.register(new AbstractTick("camera-move", Type.SERVER, 1, true) {
 			@Override
 			public void run(Type type) {
@@ -155,13 +149,13 @@ public class Camera {
 		});
 	}
 	
-	public boolean cmTraEquals(double x, double y, double z) {
+	public static boolean cmTraEquals(double x, double y, double z) {
 		if (Double.compare(Math.round(x), Math.round(traX)) == 0)
 			if (Double.compare(Math.round(y), Math.round(traY)) == 0)
 				if (Double.compare(Math.round(z), Math.round(traZ)) == 0) return true;
 		return false;
 	}
-	public boolean cmRotateEquals(double x, double y, double z) {
+	public static boolean cmRotateEquals(double x, double y, double z) {
         return Double.compare(Math.round(x), Math.round(rotateX)) == 0 &&
                 Double.compare(Math.round(y), Math.round(rotateY)) == 0 &&
                 Double.compare(Math.round(z), Math.round(rotateZ)) == 0;
@@ -169,14 +163,14 @@ public class Camera {
 	/**
 	 * 특정 값이 될 때까지 1/20의 값으로 더하는 메서드
 	 */
-	public double plusminus(double fir, double sec) {
+	public static double plusminus(double fir, double sec) {
 		return plusminus(fir,sec,20);
 	}
 
 	/**
 	 * 특정 값이 될 때까지 1/n의 값으로 더하는 메서드입
 	 */
-	public double plusminus(double fir, double sec, double tick) {
+	public static double plusminus(double fir, double sec, double tick) {
 		if (Math.round(fir) == Math.round(sec))
 			return fir;
 		if (WorldAPI.cut(fir, 1) > WorldAPI.cut(sec, 1)) {
@@ -191,7 +185,7 @@ public class Camera {
 	/**
 	 * 둘의 값을 비교
 	 */
-	public boolean equalsCut(double fir, double sec) {
+	public static boolean equalsCut(double fir, double sec) {
 		return WorldAPI.cut(fir) != WorldAPI.cut(sec);
 	}
 

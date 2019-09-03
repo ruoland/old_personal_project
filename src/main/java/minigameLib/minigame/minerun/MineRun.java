@@ -61,7 +61,7 @@ public class MineRun extends AbstractMiniGame {
                 player.noClip = !player.noClip;
                 player.capabilities.isFlying = true;
                 player.sendPlayerAbilities();
-                Camera.getCamera().reset();
+                Camera.reset();
                 //플레이어를 러너뒤로 보냄
                 WorldAPI.teleport(runner.posX + EntityAPI.lookX(runner, -2), runner.posY + 1, runner.posZ + EntityAPI.lookZ(runner, -2), player.getHorizontalFacing().getHorizontalAngle(), 70);
             }
@@ -153,7 +153,7 @@ public class MineRun extends AbstractMiniGame {
         sender = player;
         worldObj = player.getEntityWorld();
         keySetting(true);
-        Camera.getCamera().lockCamera(true);
+        Camera.lockCamera(true);
         player.capabilities.setFlySpeed(0);
         player.sendPlayerAbilities();
         WorldAPI.teleport(player.posX, player.posY + 2, player.posZ, player.getHorizontalFacing().getHorizontalAngle(), 30);//플레이어 pitch를 70으로
@@ -181,23 +181,23 @@ public class MineRun extends AbstractMiniGame {
     }
 
     private void cameraSetting() {
-        Camera.getCamera().reset();
-        Camera.getCamera().lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
-        Camera.getCamera().rotateX = EntityAPI.lookZ(player, 1) * 30;
-        Camera.getCamera().rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
-        Camera.getCamera().rotateZ = EntityAPI.lookX(player, 1) * 30;
+        Camera.reset();
+        Camera.lockCamera(true, player.getHorizontalFacing().getHorizontalAngle(), 0);
+        Camera.rotateX = EntityAPI.lookZ(player, 1) * 30;
+        Camera.rotateY = (player.getHorizontalFacing().getIndex() - 1) * 90;
+        Camera.rotateZ = EntityAPI.lookX(player, 1) * 30;
         if (player.getHorizontalFacing() == EnumFacing.NORTH) {
-            Camera.getCamera().rotateX = 30;
-            Camera.getCamera().rotateY = 0;
-            Camera.getCamera().moveCamera(0, 0, -2);
+            Camera.rotateX = 30;
+            Camera.rotateY = 0;
+            Camera.moveCamera(0, 0, -2);
         }
         if (player.getHorizontalFacing() == EnumFacing.EAST) {
-            Camera.getCamera().rotateX = 30;
-            Camera.getCamera().rotateY = 90;
-            Camera.getCamera().rotateZ = 0;
+            Camera.rotateX = 30;
+            Camera.rotateY = 90;
+            Camera.rotateZ = 0;
         }
-        Camera.getCamera().moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
-        Camera.getCamera().playerCamera(true);
+        Camera.moveCamera(EntityAPI.lookX(player, 3.5), -1.5, EntityAPI.lookZ(player, 3.5));
+        Camera.playerCamera(true);
     }
 
     private void keySetting(boolean isStart) {
@@ -296,7 +296,7 @@ public class MineRun extends AbstractMiniGame {
         MiniGame.mineRunEvent.lineLR = 0;
         MiniGame.mineRunEvent.lineUD = 0;
         WorldAPI.command("/minerun lava");
-        Camera.getCamera().reset();
+        Camera.reset();
         player.setGameType(GameType.CREATIVE);
         player.capabilities.setFlySpeed(0.05F);
         player.sendPlayerAbilities();

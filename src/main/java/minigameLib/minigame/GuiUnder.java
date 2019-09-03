@@ -164,29 +164,29 @@ public class GuiUnder extends GuiScreen {
 
         if (isDead && (renderTick == 10 || renderTick == 0 || renderTick == 20) && mobTextureAlpha > 0.0F)
             mobTextureAlpha -= 0.1F;
-        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/textBox.png").setAlpha(1.0F).setXY(textBoxX, textBoxY).setSize(textBoxWidth, textBoxHeight).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/textBox.png").setXY(textBoxX, textBoxY).setZ(-10).setSize(textBoxWidth, textBoxHeight).build());
         RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/creeper.png").setAlpha(mobTextureAlpha).setXY(202, 20).setSize(30, 100).build());
         RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/asdf.png").setAlpha(1).setXY(playerX, playerY).setSize(30, 20).build());
         RenderAPI.drawString(mc.thePlayer.getName(), 40, 210, 0xFFFFFF);
         RenderAPI.drawString("LV " + mc.thePlayer.experienceLevel, 80, 210, 0xFFFFFF);
         RenderAPI.drawString("HP" + mc.thePlayer.getHealth(), 200, 210, 0xFFFFFF);
         RenderAPI.drawString(" / " + mc.thePlayer.getMaxHealth(), 220, 210, 0xFFFFFF);
-        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY(21 - 3, 215).setSize(50, 30).build());
-        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY(131 - 3, 215).setSize(50, 30).build());
-        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY(241 - 3, 215).setSize(50, 30).build());
-        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setAlpha(1).setXY( 351 - 3,215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setXY(21 - 3, 215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setXY(131 - 3, 215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setXY(241 - 3, 215).setSize(50, 30).build());
+        RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/attack.png").setXY( 351 - 3,215).setSize(50, 30).build());
 
         if (select != 0)
-            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 24 - 3,222).setSize(16, 16).build());
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setXY( 24 - 3,222).setSize(16, 16).build());
 
         if (select != 1)
-            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 134 - 3,222).setSize(16, 16).build());
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setXY( 134 - 3,222).setSize(16, 16).build());
 
         if (select != 2)
-            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 244 - 3,222).setSize(16, 16).build());
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setXY( 244 - 3,222).setSize(16, 16).build());
 
         if (select != 3)
-            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setAlpha(1).setXY( 354 - 3,222).setSize(16, 16).build());
+            RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("scroll:textures/diamond_sword.png").setXY( 354 - 3,222).setSize(16, 16).build());
 
         if (mobTextureAlpha <= 0)
             this.mc.displayGuiScreen((GuiScreen) null);

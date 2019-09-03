@@ -184,7 +184,7 @@ public class Elytra extends AbstractMiniGame {
     }
     @Override
     public boolean end(Object... obj) {
-        Camera.getCamera().reset();
+        Camera.reset();
         ElytraEvent eve = MiniGame.elytraEvent;
         WorldAPI.command("/display size 854 480");
         WorldAPI.command("/ui reset");
@@ -254,11 +254,11 @@ public class Elytra extends AbstractMiniGame {
         WorldAPI.command("/gamemode " + "1");//게임모드 설정
         WorldAPI.command("/ui hotbar false");//핫바 끔
         WorldAPI.command("/ui hand false");//핸드 끔
-        Camera.getCamera().reset();
-        Camera.getCamera().setYP(true);
-        Camera.getCamera().lockCamera(true, 0, 0);
-        Camera.getCamera().moveCamera(0, -10, -5);
-        Camera.getCamera().rotateCamera(90, 180, 0);
+        Camera.reset();
+        Camera.setYP(true);
+        Camera.lockCamera(true, 0, 0);
+        Camera.moveCamera(0, -10, -5);
+        Camera.rotateCamera(90, 180, 0);
 
     }
 

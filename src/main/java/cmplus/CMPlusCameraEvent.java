@@ -16,12 +16,11 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class CMPlusCameraEvent {
-    private Camera cm = Camera.getCamera();
     private Minecraft mc = Minecraft.getMinecraft();
     public static double x,y,z;
     @SubscribeEvent
     public void event2(EntityViewRenderEvent.FOVModifier e) {
-        e.setFOV(Camera.getCamera().getZoom());
+        e.setFOV(Camera.getZoom());
     }
     @SubscribeEvent
     public void event222(EntityViewRenderEvent.CameraSetup e) {
@@ -33,29 +32,29 @@ public class CMPlusCameraEvent {
     }
     @SubscribeEvent
     public void event2(EntityViewRenderEvent.CameraSetup e) {
-        GL11.glTranslated(cm.traX, 0, 0);
-        GL11.glTranslated(0, cm.traY, 0);
-        GL11.glTranslated(0, 0, cm.traZ);
+        GL11.glTranslated(Camera.traX, 0, 0);
+        GL11.glTranslated(0, Camera.traY, 0);
+        GL11.glTranslated(0, 0, Camera.traZ);
     }
 
     @SubscribeEvent
     public void event(EntityViewRenderEvent.CameraSetup e) {
-        GL11.glRotated(cm.rotateX, 1, 0, 0);
-        GL11.glRotated(cm.rotateY, 0, 1, 0);
-        GL11.glRotated(cm.rotateZ, 0, 0, 1);
+        GL11.glRotated(Camera.rotateX, 1, 0, 0);
+        GL11.glRotated(Camera.rotateY, 0, 1, 0);
+        GL11.glRotated(Camera.rotateZ, 0, 0, 1);
 
-        if (cm.lockCamera) {
-            if(cm.lockCameraPitch == 0 && cm.lockCameraYaw == 0){
-                cm.lockCameraPitch = e.getPitch();
-                cm.lockCameraYaw = e.getYaw();
+        if (Camera.lockCamera) {
+            if(Camera.lockCameraPitch == 0 && Camera.lockCameraYaw == 0){
+                Camera.lockCameraPitch = e.getPitch();
+                Camera.lockCameraYaw = e.getYaw();
             }
-            e.setPitch(cm.lockCameraPitch);
-            e.setYaw(cm.lockCameraYaw);
+            e.setPitch(Camera.lockCameraPitch);
+            e.setYaw(Camera.lockCameraYaw);
             EntityLivingBase entitylivingbase = Minecraft.getMinecraft().thePlayer;
-            entitylivingbase.rotationPitch = entitylivingbase.prevRotationPitch = cm.lockPlayerPitch;
-            entitylivingbase.rotationYaw = entitylivingbase.prevRotationYaw = entitylivingbase.rotationYawHead = entitylivingbase.renderYawOffset = cm.lockPlayerYaw;
+            entitylivingbase.rotationPitch = entitylivingbase.prevRotationPitch = Camera.lockPlayerPitch;
+            entitylivingbase.rotationYaw = entitylivingbase.prevRotationYaw = entitylivingbase.rotationYawHead = entitylivingbase.renderYawOffset = Camera.lockPlayerYaw;
         }
-        if (cm.yp) {
+        if (Camera.yp) {
             e.setRoll(0);
             e.setYaw(0);
             e.setPitch(0);
@@ -77,45 +76,45 @@ public class CMPlusCameraEvent {
             Minecraft mc = Minecraft.getMinecraft();
             GameSettings gameSettings = mc.gameSettings;
             if (gameSettings.keyBindJump.isKeyDown()) {
-                Camera.getCamera().moveAdd(0, 0.1, 0);
+                Camera.moveAdd(0, 0.1, 0);
             }
             if (gameSettings.keyBindSneak.isKeyDown()) {
-                Camera.getCamera().moveAdd(0, -0.1, 0);
+                Camera.moveAdd(0, -0.1, 0);
             }
             if (gameSettings.keyBindLeft.isKeyDown()) {
-                Camera.getCamera().moveAdd(0.1, 0, 0);
+                Camera.moveAdd(0.1, 0, 0);
             }
             if (gameSettings.keyBindRight.isKeyDown()) {
-                Camera.getCamera().moveAdd(-0.1, 0, 0);
+                Camera.moveAdd(-0.1, 0, 0);
             }
             if (gameSettings.keyBindForward.isKeyDown()) {
-                Camera.getCamera().moveAdd(0, 0, 0.1);
+                Camera.moveAdd(0, 0, 0.1);
             }
             if (gameSettings.keyBindBack.isKeyDown()) {
-                Camera.getCamera().moveAdd(0, 0, -0.1);
+                Camera.moveAdd(0, 0, -0.1);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && Keyboard.isKeyDown(Keyboard.KEY_J)) {
-                Camera.getCamera().rotateZ -= 1;
+                Camera.rotateZ -= 1;
                 return;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
-                Camera.getCamera().rotateZ += 1;
+                Camera.rotateZ += 1;
                 return;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && Keyboard.isKeyDown(Keyboard.KEY_K)) {
-                Camera.getCamera().rotateY -= 1;
+                Camera.rotateY -= 1;
                 return;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
-                Camera.getCamera().rotateY += 1;
+                Camera.rotateY += 1;
                 return;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && Keyboard.isKeyDown(Keyboard.KEY_L)) {
-                Camera.getCamera().rotateX -= 1;
+                Camera.rotateX -= 1;
                 return;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
-                Camera.getCamera().rotateX += 1;
+                Camera.rotateX += 1;
                 return;
             }
         }
@@ -125,21 +124,21 @@ public class CMPlusCameraEvent {
     @SubscribeEvent
     public void renderUI(RenderGameOverlayEvent.Post event) {
         if (event.getType() == ElementType.ALL && Camera.isDebug && !Minecraft.getMinecraft().gameSettings.showDebugInfo) {
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE X" + Camera.getCamera().rotateX, 0, 20,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE X" + Camera.rotateX, 0, 20,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Y" + Camera.getCamera().rotateY, 0, 30,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Y" + Camera.rotateY, 0, 30,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Z" + Camera.getCamera().rotateZ, 0, 40,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 ROTATE Z" + Camera.rotateZ, 0, 40,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA X" + Camera.getCamera().traX, 0, 50, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Y" + Camera.getCamera().traY, 0, 60, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Z" + Camera.getCamera().traZ, 0, 70, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YAW" + Camera.getCamera().lockPlayerYaw, 0, 80, 0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 PITCH" + Camera.getCamera().lockPlayerPitch, 0, 90,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA X" + Camera.traX, 0, 50, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Y" + Camera.traY, 0, 60, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 TRA Z" + Camera.traZ, 0, 70, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YAW" + Camera.lockPlayerYaw, 0, 80, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 PITCH" + Camera.lockPlayerPitch, 0, 90,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 락" + Camera.getCamera().lockCamera, 0, 100,
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 락" + Camera.lockCamera, 0, 100,
                     0xFFFFFF);
-            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YP" + Camera.getCamera().yp, 0, 110, 0xFFFFFF);
+            Minecraft.getMinecraft().fontRendererObj.drawString("카메라 YP" + Camera.yp, 0, 110, 0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("플레이어 YAW" + WorldAPI.getPlayer().rotationYaw, 0, 120,
                     0xFFFFFF);
             Minecraft.getMinecraft().fontRendererObj.drawString("플레이어 PITCH" + WorldAPI.getPlayer().rotationPitch, 0,

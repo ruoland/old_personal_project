@@ -34,14 +34,13 @@ public class CommandCamera extends CommandPlusBase {
 			t.addLoMessage("help.lock");
 			return;
 		}
-		Camera renderer = Camera.getCamera();
 		if(t.argCheck(args[0], "pos")){
 			CMPlusCameraEvent.x = sender.getPositionVector().xCoord;
 			CMPlusCameraEvent.y = sender.getPositionVector().yCoord;
 			CMPlusCameraEvent.z = sender.getPositionVector().zCoord;
 		}
 		if(t.argCheck(args[0], "reset", "리셋")){
-			Camera.getCamera().reset();
+			Camera.reset();
 			t.addLoMessage("reset");
 			return;
 		}
@@ -56,15 +55,15 @@ public class CommandCamera extends CommandPlusBase {
 			return;
 		}
 		if(t.argCheck(args[0], "yp")){
-			Camera.getCamera().setYP(t.parseBoolean(args[1]));
+			Camera.setYP(t.parseBoolean(args[1]));
 			t.addLoMessage("yp",t.parseBoolean(args[1]));
 			return;
 		}
 		if(t.argCheck(args[0], "yaw", "요")){
 			float yaw;
-			if(Camera.getCamera().isLock()){
-				yaw = (float) t.math(args[1], Camera.getCamera().lockPlayerYaw, args[2]);
-				renderer.lockPlayerYaw = yaw;
+			if(Camera.isLock()){
+				yaw = (float) t.math(args[1], Camera.lockPlayerYaw, args[2]);
+				Camera.lockPlayerYaw = yaw;
 			}
 			else{
 				yaw = (float)t.math(args[1], p.rotationYaw, args[2]);
@@ -75,9 +74,9 @@ public class CommandCamera extends CommandPlusBase {
 		}
 		if(t.argCheck(args[0], "pitch", "피치")){
 			float pitch;
-			if(Camera.getCamera().isLock()){
-				pitch = (float) t.math(args[1], renderer.lockPlayerPitch, args[2]);
-				renderer.lockPlayerPitch = pitch;
+			if(Camera.isLock()){
+				pitch = (float) t.math(args[1], Camera.lockPlayerPitch, args[2]);
+				Camera.lockPlayerPitch = pitch;
 			}
 			else{
 				 pitch = (float)t.math(args[1], p.rotationPitch, args[2]);
@@ -88,33 +87,33 @@ public class CommandCamera extends CommandPlusBase {
 
 		}
 		if(t.argCheck(args[0], "zoom", "줌")){
-			Camera.getCamera().setZoom(t.math(args[1],Camera.getCamera().getZoom(),(args[2])));
-			t.addLoMessage("zoom",t.math(args[1],Camera.getCamera().getZoom(),(args[2])));
+			Camera.setZoom(t.math(args[1],Camera.getZoom(),(args[2])));
+			t.addLoMessage("zoom",t.math(args[1],Camera.getZoom(),(args[2])));
 			return;
 		}
 		if(t.argCheck(args[0], "rotate", "회전")){
 			double x,y,z;
-			x = t.math(args[1], renderer.rotateX, args[2]);
-			y = t.math(args[1], renderer.rotateY, args[3]);
-			z = t.math(args[1], renderer.rotateZ, args[4]);
-			Camera.getCamera().rotateCamera(x,y,z);
+			x = t.math(args[1], Camera.rotateX, args[2]);
+			y = t.math(args[1], Camera.rotateY, args[3]);
+			z = t.math(args[1], Camera.rotateZ, args[4]);
+			Camera.rotateCamera(x,y,z);
 			return;
 		}
 		if(t.argCheck(args[0], "move", "이동")){
 			double x,y,z;
-			x = t.math(args[1], renderer.traX, args[2]);
-			y = t.math(args[1], renderer.traY, args[3]);
-			z = t.math(args[1], renderer.traZ, args[4]);
-			Camera.getCamera().moveCamera(x,y,z);
+			x = t.math(args[1], Camera.traX, args[2]);
+			y = t.math(args[1], Camera.traY, args[3]);
+			z = t.math(args[1], Camera.traZ, args[4]);
+			Camera.moveCamera(x,y,z);
 			return;
 
 		}
 		if(t.argCheck(args[0], "player", "플레이어")){
-			Camera.getCamera().playerCamera(t.parseBoolean(args[1]));
+			Camera.playerCamera(t.parseBoolean(args[1]));
 			return;
 		}
 		if(t.argCheck(args[0], "lock", "잠금")){
-			Camera.getCamera().lockCamera(t.parseBoolean(args[1]), p.prevRotationYaw, p.prevRotationPitch);
+			Camera.lockCamera(t.parseBoolean(args[1]), p.prevRotationYaw, p.prevRotationPitch);
 			return;
 		}
 	}

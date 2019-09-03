@@ -29,10 +29,10 @@ public class Scroll extends AbstractMiniGame {
         mc.thePlayer.motionX = 0;
         mc.thePlayer.motionY = 0;
         mc.thePlayer.motionZ = 0;
-        Camera.getCamera().reset();
-        Camera.getCamera().setYP(true);
-        Camera.getCamera().lockCamera(true, 90, 0);
-        Camera.getCamera().playerCamera(true);
+        Camera.reset();
+        Camera.setYP(true);
+        Camera.lockCamera(true, 90, 0);
+        Camera.playerCamera(true);
         s.setOptionKeyBinding(s.keyBindForward, Keyboard.KEY_D);
         pos(Keyboard.KEY_A);//카메라 초기화
         KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), false);
@@ -60,7 +60,7 @@ public class Scroll extends AbstractMiniGame {
         s.setOptionKeyBinding(s.keyBindLeft, Keyboard.KEY_A);
         KeyBinding.resetKeyBindingArrayAndHash();
         if (isCMReset)
-            Camera.getCamera().reset();
+            Camera.reset();
         x = false;
         xR = false;
         zR = false;
@@ -162,26 +162,26 @@ public class Scroll extends AbstractMiniGame {
             KeyBinding.setKeyBindState(s.keyBindForward.getKeyCode(), true);
             if (MiniGame.scroll.x) {
                 if (!MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 90 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
-                    Camera.getCamera().rotateCamera(0, 180, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 90 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);
+                    Camera.rotateCamera(0, 180, 0);
                 }
                 if (MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? -90 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
-                    Camera.getCamera().rotateCamera(0, 0, 0);
+                    Camera.lockCamera(true, yaw == -1 ? -90 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);
+                    Camera.rotateCamera(0, 0, 0);
                 }
             }
             if (MiniGame.scroll.z) {
                 if (!zR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 0 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);//원래 값은 x 6.7 y 0.199 z 0
-                    Camera.getCamera().rotateCamera(0, 90, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 0 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);//원래 값은 x 6.7 y 0.199 z 0
+                    Camera.rotateCamera(0, 90, 0);
                 }
                 if (zR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 180 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
-                    Camera.getCamera().rotateCamera(0, -90, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 180 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);
+                    Camera.rotateCamera(0, -90, 0);
                 }
             }
         }
@@ -198,26 +198,26 @@ public class Scroll extends AbstractMiniGame {
             KeyBinding.setKeyBindState(s.keyBindSprint.getKeyCode(), isSprintKeyDown);
             if (MiniGame.scroll.x) {
                 if (!MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 270 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199F, moveZ);
-                    Camera.getCamera().rotateCamera(0, 180, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 270 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199F, moveZ);
+                    Camera.rotateCamera(0, 180, 0);
                 }
                 if (MiniGame.scroll.xR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 90 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
-                    Camera.getCamera().rotateCamera(0, 0, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 90 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);
+                    Camera.rotateCamera(0, 0, 0);
                 }
             }
             if (MiniGame.scroll.z) {
                 if (!zR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 180 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
-                    Camera.getCamera().rotateCamera(0, 90, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 180 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);
+                    Camera.rotateCamera(0, 90, 0);
                 }
                 if (zR) {
-                    Camera.getCamera().lockCamera(true, yaw == -1 ? 0 : yaw, pitch == -1 ? 0 : pitch);
-                    Camera.getCamera().moveCamera(moveX, 0.199, moveZ);
-                    Camera.getCamera().rotateCamera(0, -90, 0);
+                    Camera.lockCamera(true, yaw == -1 ? 0 : yaw, pitch == -1 ? 0 : pitch);
+                    Camera.moveCamera(moveX, 0.199, moveZ);
+                    Camera.rotateCamera(0, -90, 0);
                 }
             }
         }
