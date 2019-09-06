@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import olib.action.ActionEffect;
 import olib.action.DoubleJump;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 
 public class CommandJB extends CommandPlusBase {
@@ -39,9 +39,9 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("lava")) {
                 if (args[1].equalsIgnoreCase("stop"))
-                    TickRegister.getAbsTick("ln").pause(true);
+                    TickRegister.getTickTask("ln").pause(true);
                 else if (args[1].equalsIgnoreCase("start"))
-                    TickRegister.getAbsTick("ln").pause(false);
+                    TickRegister.getTickTask("ln").pause(false);
             }
             if (args[0].equalsIgnoreCase("tutorial")) {
                 EntityPlayer player = getPlayer(server, sender, args[1]);
@@ -159,7 +159,7 @@ public class CommandJB extends CommandPlusBase {
             }
             if (args[0].equalsIgnoreCase("downReset")) {
                 EntityWaterBlockCreator.downReset = true;
-                TickRegister.register(new AbstractTick(20, false) {
+                TickRegister.register(new TickTask(20, false) {
 
                     @Override
                     public void run(Type type) {

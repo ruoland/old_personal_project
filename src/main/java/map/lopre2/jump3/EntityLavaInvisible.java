@@ -11,7 +11,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import olib.effect.AbstractTick;
 
 //일정 시간마다 용암 속에 가라앉는 블럭
 

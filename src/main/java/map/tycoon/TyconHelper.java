@@ -1,7 +1,7 @@
 package map.tycoon;
 
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick.BlockXYZ;
+import olib.effect.TickTask.BlockXYZ;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockFence;

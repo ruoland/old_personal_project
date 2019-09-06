@@ -2,7 +2,7 @@ package cmplus.cm.v17;
 
 import cmplus.util.CommandPlusBase;
 import olib.api.EntityAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,14 +22,14 @@ public class CommandPosition extends CommandPlusBase {
         double[] pos = getPos(sender, 0, args);
         if (args.length >= 4 && !args[3].startsWith("/")) {
             double[] pos2 = getPos(sender, 3, args);
-            EntityAPI.position(pos[0], pos[1], pos[2],  pos2[0], pos2[1], pos2[2], 1, new AbstractTick.Command(t.getCommand(args, 3, args.length)));
+            EntityAPI.position(pos[0], pos[1], pos[2],  pos2[0], pos2[1], pos2[2], 1, new TickTask.Command(t.getCommand(args, 3, args.length)));
             return;
         }
 
         if (args.length >= 4)
-            EntityAPI.position((EntityLivingBase) sender, pos[0], pos[1], pos[2], new AbstractTick.Command(t.getCommand(args, 3, args.length)));
+            EntityAPI.position((EntityLivingBase) sender, pos[0], pos[1], pos[2], new TickTask.Command(t.getCommand(args, 3, args.length)));
         else
-            EntityAPI.position((EntityLivingBase) sender, sender.getPosition(), new AbstractTick.Command(t.getCommand(args, 0, args.length)));
+            EntityAPI.position((EntityLivingBase) sender, sender.getPosition(), new TickTask.Command(t.getCommand(args, 0, args.length)));
     }
 
 }

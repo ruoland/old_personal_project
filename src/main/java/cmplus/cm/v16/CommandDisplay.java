@@ -1,7 +1,7 @@
 package cmplus.cm.v16;
 
 import cmplus.util.CommandPlusBase;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -20,12 +20,12 @@ public class CommandDisplay extends CommandPlusBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, final String[] args) throws CommandException {
 		
-		TickRegister.register(new AbstractTick(Type.CLIENT, 1, false) {
+		TickRegister.register(new TickTask(Type.CLIENT, 1, false) {
 			@Override
 			public void run(Type type) {
 				if(t.argCheck(args[0], "size", "사이즈"))
 				{
-					TickRegister.register(new AbstractTick(Type.RENDER, 1, false) {
+					TickRegister.register(new TickTask(Type.RENDER, 1, false) {
 						
 						@Override
 						public void run(Type type) {

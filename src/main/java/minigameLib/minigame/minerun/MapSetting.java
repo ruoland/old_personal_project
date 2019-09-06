@@ -5,7 +5,7 @@ import olib.api.Direction;
 import olib.api.EntityAPI;
 import olib.api.PosHelper;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +16,7 @@ public class MapSetting {
     public void firstSetting(){
         WorldAPI.getWorld().setBlockState(new BlockPos(-188,64,567), Blocks.STONE.getDefaultState());
         spawnCreeper(-187.5, 65.0, 567.5);
-        EntityAPI.position(-192.6, 58.0, 572.4,-187, 58, 572, 1, new AbstractTick.Position() {
+        EntityAPI.position(-192.6, 58.0, 572.4,-187, 58, 572, 1, new TickTask.Position() {
             @Override
             public void runPosition() {
                 WorldAPI.getWorld().setBlockToAir(new BlockPos(-188,64,567));

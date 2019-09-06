@@ -3,8 +3,8 @@ package map.tycoon.consumer;
 import cmplus.cm.CommandChat;
 import olib.api.EntityAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
-import olib.effect.AbstractTick.BlockXYZ;
+import olib.effect.TickTask;
+import olib.effect.TickTask.BlockXYZ;
 import olib.effect.Move;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
@@ -63,7 +63,7 @@ public class EntityConsumer extends EntityDefaultNPC {
 
     public void startShoping() {
         if (isServerWorld()) {
-            EntityAPI.move(new Move(this, TyconHelper.getTyconDoorPos(), false) {
+            EntityAPI.move(new Move(this, TyconHelper.getTyconDoorPos()) {
                 @Override
                 public void complete() {
                     if (movecount == 1) {
@@ -115,7 +115,7 @@ public class EntityConsumer extends EntityDefaultNPC {
             return;
         }
         TileBreadDisplay bread = (TileBreadDisplay) TyconHelper.getTileEntity(breadShow);
-        TickRegister.register(new AbstractTick(10, true) {
+        TickRegister.register(new TickTask(10, true) {
 
             @Override
             public void run(Type type) {
@@ -126,7 +126,7 @@ public class EntityConsumer extends EntityDefaultNPC {
                     absLoop = false;
                     bread.setConsumerUse(true);
                     System.out.println("빵을 확인하러 이동합니다.");
-                    EntityAPI.move(new Move(consumer, breadCon, false) {
+                    EntityAPI.move(new Move(consumer, breadCon) {
                         @Override
                         public void complete() {
                             checkBread(consumer);
@@ -145,7 +145,7 @@ public class EntityConsumer extends EntityDefaultNPC {
         EntityAPI.look(con, breadShow);// 빵의 위치
         System.out.println("빵을 확인하는 중 breadcount:" + breadIndex);
 
-        TickRegister.register(new AbstractTick(40, false) {
+        TickRegister.register(new TickTask(40,false) {
             @Override
             public void run(Type type) {
                 TileBreadDisplay bread = (TileBreadDisplay) TyconHelper
@@ -176,7 +176,7 @@ public class EntityConsumer extends EntityDefaultNPC {
         TyconHelper.setSellerPos(this);
         System.out.println("빵을 점원에게 갖고 가는 중 ");
         EntityAPI.move(new Move(consumer, TyconHelper.calcX,
-                TyconHelper.calcY, TyconHelper.calcZ - 2 - TyconHelper.waitConsumerIndexOf(consumer), false) {// 계산대로 이동함
+                TyconHelper.calcY, TyconHelper.calcZ - 2 - TyconHelper.waitConsumerIndexOf(consumer)) {// 계산대로 이동함
             @Override
             public void complete() {
                 System.out.println("빵을 사러 점원에게 왔음");
@@ -189,7 +189,7 @@ public class EntityConsumer extends EntityDefaultNPC {
 
     private void sellBread(EntityConsumer consumer) {
         EntityAPI.look(consumer, WorldAPI.getPlayer());
-        TickRegister.register(new AbstractTick(60, true) {
+        TickRegister.register(new TickTask(60, true) {
             int findPlayer = 0;
 
             public void run(Type type) {
@@ -274,10 +274,10 @@ public class EntityConsumer extends EntityDefaultNPC {
 
     private void moveTable() {
         currentTable = TyconHelper.findEmptyTable();
-        EntityAPI.move(new Move(this, currentTable, false) {
+        EntityAPI.move(new Move(this, currentTable) {
             @Override
             public void complete() {
-                TickRegister.register(new AbstractTick(200, false) {
+                TickRegister.register(new TickTask(200, false) {
                     @Override
                     public void run(Type type) {
                         outBreadTycon();
@@ -289,7 +289,7 @@ public class EntityConsumer extends EntityDefaultNPC {
 
     private void outBreadTycon() {
         EntityConsumer con = this;
-        EntityAPI.move(new Move(con, TyconHelper.getTyconDoorPos(), false) {
+        EntityAPI.move(new Move(con, TyconHelper.getTyconDoorPos()) {
             @Override
             public void complete() {
                 con.setDead();

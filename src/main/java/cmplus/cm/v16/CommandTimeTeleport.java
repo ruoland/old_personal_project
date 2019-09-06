@@ -2,7 +2,7 @@ package cmplus.cm.v16;
 
 import cmplus.util.CommandPlusBase;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -72,7 +72,7 @@ public class CommandTimeTeleport extends CommandPlusBase {
 	}
 	
 	public void teleport(EntityPlayerMP p, int tick, final double x, final double y, final double z, final float yaw, final float pit){
-		TickRegister.register(new AbstractTick(tick * 20, false) {
+		TickRegister.register(new TickTask(tick * 20, false) {
 			@Override
 			public void run(Type type) {
 				WorldAPI.teleport(x, y, z, yaw, pit);

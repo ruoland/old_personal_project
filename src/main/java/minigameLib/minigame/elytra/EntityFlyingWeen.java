@@ -4,7 +4,7 @@ import minigameLib.MiniGame;
 import olib.api.Direction;
 import olib.api.EntityAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.fakeplayer.EntityFakePlayer;
 import olib.fakeplayer.FakePlayerHelper;
@@ -143,7 +143,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
     public void secondPattern() {
         firstPatternEnd = true;
         System.out.println("[두번째 패턴] 시작됨");
-        TickRegister.register(new AbstractTick(40, true) {
+        TickRegister.register(new TickTask(40, true) {
             @Override
             public boolean stopCondition() {
                 return !isEntityAlive() || !MiniGame.elytra.isStart() || deadFalling;
@@ -175,7 +175,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
     }
 
     public void thirdPattern() {
-        TickRegister.register(new AbstractTick(60, true) {
+        TickRegister.register(new TickTask(60, true) {
             @Override
             public boolean stopCondition() {
                 return !isEntityAlive() || !MiniGame.elytra.isStart() || deadFalling;
@@ -238,7 +238,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
 
     public void fourPattern() {
         thirdPatternEnd = true;
-        TickRegister.register(new AbstractTick(80, true) {
+        TickRegister.register(new TickTask(80, true) {
             @Override
             public boolean stopCondition() {
                 return !isEntityAlive() || !MiniGame.elytra.isStart() || deadFalling;
@@ -277,7 +277,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
         fourPatternEnd = true;
         System.out.println("[다섯번째 패턴] 시작됨");
 
-        TickRegister.register(new AbstractTick(5, true) {
+        TickRegister.register(new TickTask(5, true) {
             @Override
             public boolean stopCondition() {
                 return !isEntityAlive() || !MiniGame.elytra.isStart() || deadFalling;
@@ -315,7 +315,7 @@ public class EntityFlyingWeen extends EntityDefaultNPC {
         fivePatternEnd = true;
         System.out.println("[여섯번째 패턴] 시작됨");
 
-        TickRegister.register(new AbstractTick(80, true) {
+        TickRegister.register(new TickTask(80, true) {
             @Override
             public boolean stopCondition() {
                 return !isEntityAlive() || !MiniGame.elytra.isStart() || deadFalling;

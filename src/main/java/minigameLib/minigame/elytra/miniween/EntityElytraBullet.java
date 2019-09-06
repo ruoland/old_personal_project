@@ -1,7 +1,7 @@
 package minigameLib.minigame.elytra.miniween;
 
 import minigameLib.MiniGame;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.fakeplayer.EntityFakePlayer;
 import net.minecraft.block.Block;
@@ -63,7 +63,7 @@ public class EntityElytraBullet extends EntityElytraPumpkinAttack {
             BlockPos waterPosition = getPosition().add(0,-1,0);
             this.worldObj.setBlockState(waterPosition, Blocks.WATER.getDefaultState());
             worldObj.getBlockState(waterPosition.offset(EnumFacing.SOUTH));
-            TickRegister.register(new AbstractTick(5, true) {
+            TickRegister.register(new TickTask(5, true) {
 
                 @Override
                 public void run(TickEvent.Type type) {

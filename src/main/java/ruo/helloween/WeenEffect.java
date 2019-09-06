@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import ruo.helloween.miniween.EntityBlockWeen;
@@ -33,7 +33,7 @@ public class WeenEffect {
 	public static void spawnBlockWeen(World worldObj, double posX, double posY, double posZ, double distanceXZ, double distanceY){
 		Random rand = worldObj.rand;
 		WorldAPI.blockTick(worldObj, posX - distanceXZ, posX + distanceXZ, posY - distanceY, posY + distanceY, posZ - distanceXZ, posZ + distanceXZ,
-				new AbstractTick.BlockXYZ() {
+				new TickTask.BlockXYZ() {
 					@Override
 					public void run(Type type) {
 						if (rand.nextInt(3) == 0) {
@@ -90,8 +90,8 @@ public class WeenEffect {
 			WorldAPI.getWorld().spawnEntityInWorld(miniween);
 		}
 	}
-	public static void entityRotateX(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityRotateX(EntityDefaultNPC entity, double x, TickTask tick2) {
+		TickRegister.register(new TickTask(1, true) {
 			
 			@Override
 			public boolean stopCondition() {
@@ -109,8 +109,8 @@ public class WeenEffect {
 		});
 	}
 
-	public static void entityRotateY(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityRotateY(EntityDefaultNPC entity, double x, TickTask tick2) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public boolean stopCondition() {
 				
@@ -128,8 +128,8 @@ public class WeenEffect {
 		});
 	}
 
-	public static void entityRotateZ(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityRotateZ(EntityDefaultNPC entity, double x, TickTask tick2) {
+		TickRegister.register(new TickTask(1, true) {
 			
 			@Override
 			public boolean stopCondition() {
@@ -152,7 +152,7 @@ public class WeenEffect {
 	/**
 	 * 엔티티를 현재 posY + maxY 좌표까지 올라가게 함
 	 */
-	public static void entityJump(EntityLivingBase base, double maxY, AbstractTick abs) {
+	public static void entityJump(EntityLivingBase base, double maxY, TickTask abs) {
 		if(!base.isServerWorld()) {
 			System.out.println("서버 월드가 아니므로 캔슬됨");
 			return;
@@ -160,7 +160,7 @@ public class WeenEffect {
 		double startPosY = base.posY;
 		boolean completeY = false;//목표 좌표에 도달하면 true로 설정 됨
 
-		TickRegister.register(new AbstractTick(Type.SERVER, 2, true) {
+		TickRegister.register(new TickTask(Type.SERVER, 2, true) {
 			@Override
 			public boolean stopCondition() {
 				
@@ -233,8 +233,8 @@ public class WeenEffect {
 	/**
 	 * speed가 낮으면 속도는 빨라짐
 	 */
-	public static void entityMoveFly(EntityLivingBase base, double x, double y, double z, float speed, AbstractTick abs) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityMoveFly(EntityLivingBase base, double x, double y, double z, float speed, TickTask abs) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public boolean stopCondition() {
 				
@@ -255,7 +255,7 @@ public class WeenEffect {
 	 * 해당 좌표에 도달시 폭발함
 	 */
 	public static void entityMoveFlyExplosion(EntityLivingBase base, double x, double y, double z, float speed, float strength) {
-		TickRegister.register(new AbstractTick(1, true) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public boolean stopCondition() {
 				
@@ -306,10 +306,10 @@ public class WeenEffect {
 	/**
 	 * 화면의 밝기를 천천히 낮춤
 	 */
-	public static void gammaDown(AbstractTick run) {
+	public static void gammaDown(TickTask run) {
 		float gamma = Minecraft.getMinecraft().gameSettings.gammaSetting;
 		
-		TickRegister.register(new AbstractTick(5, true) {
+		TickRegister.register(new TickTask(5, true) {
 			
 			@Override
 			public void run(Type type) {
@@ -326,10 +326,10 @@ public class WeenEffect {
 	/**
 	 * 안개를 천천히 가깝게 만들음
 	 */
-	public static void fog(double maxDistance, AbstractTick run) {
+	public static void fog(double maxDistance, TickTask run) {
 		Sky.fogDistance(-1);
 
-		TickRegister.register(new AbstractTick(1, true) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public void run(Type type) {
 				Sky.fogDistance(Sky.getFogDistance()-0.5F);

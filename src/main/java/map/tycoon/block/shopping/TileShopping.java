@@ -1,6 +1,6 @@
 package map.tycoon.block.shopping;
 
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -53,7 +53,7 @@ public class TileShopping extends TileEntity {
 	
 	public void setSecondActive() {
 		isSecond = true;
-		TickRegister.register(new AbstractTick(20, false) {
+		TickRegister.register(new TickTask(20, false) {
 			@Override
 			public void run(Type type) {
 				isSecond = false;

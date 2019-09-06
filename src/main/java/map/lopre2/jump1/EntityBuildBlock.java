@@ -2,24 +2,19 @@ package map.lopre2.jump1;
 
 import cmplus.deb.DebAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
 
 import java.util.ArrayList;
@@ -89,7 +84,7 @@ public class EntityBuildBlock extends EntityPreBlock {
     public void setBlock(int xx, int yy, int zz, int x2, int y2, int z2) {
         dataManager.set(BLOCK_POS1, new BlockPos(xx, yy, zz));
         dataManager.set(BLOCK_POS2, new BlockPos(x2, y2, z2));
-        WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new AbstractTick.BlockXYZ() {
+        WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new TickTask.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
                 IBlockState state = worldObj.getBlockState(getPos());

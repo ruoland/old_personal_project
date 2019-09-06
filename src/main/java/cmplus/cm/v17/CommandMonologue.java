@@ -1,7 +1,7 @@
 package cmplus.cm.v17;
 
 import cmplus.util.CommandPlusBase;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TextEffect;
 import olib.effect.TickRegister;
 import net.minecraft.command.CommandException;
@@ -18,7 +18,7 @@ public class CommandMonologue extends CommandPlusBase {
 			return;
 		}
 		String text = args[0].replace("/n/", " ");
-		TickRegister.register(new AbstractTick(Type.CLIENT, 1, false) {
+		TickRegister.register(new TickTask(Type.CLIENT, 1, false) {
 			@Override
 			public void run(Type type) {
 				boolean dark = t.findBoolean(args, 1, false);

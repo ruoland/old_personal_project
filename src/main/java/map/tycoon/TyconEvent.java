@@ -4,7 +4,7 @@ import cmplus.WorldConfig;
 import com.google.common.io.Files;
 import olib.api.LoginEvent;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockRedstoneLight;
@@ -106,7 +106,7 @@ public class TyconEvent {
     public void thunderEvent(EntityJoinWorldEvent event2) {
         if (event2.getEntity() instanceof EntityLightningBolt) {
             if (event2.getWorld().rand.nextInt(100) == 0) {
-                WorldAPI.blockTick(event2.getWorld(), 0, 0, 0, 0, 0, 0, new AbstractTick.BlockXYZ() {
+                WorldAPI.blockTick(event2.getWorld(), 0, 0, 0, 0, 0, 0, new TickTask.BlockXYZ() {
                     @Override
                     public void run(TickEvent.Type type) {
                         Block block = event2.getWorld().getBlockState(getPos()).getBlock();

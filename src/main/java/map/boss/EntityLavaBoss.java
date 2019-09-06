@@ -8,15 +8,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import olib.api.BlockAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EntityLavaBoss extends EntityDefaultNPC {
     private BlockPos pos1 = new BlockPos(1240, 7, 291);
@@ -74,13 +71,13 @@ public class EntityLavaBoss extends EntityDefaultNPC {
     }
 
     public void blockToMagmaBlock() {
-        WorldAPI.blockTick(worldObj, pos1, pos2, new AbstractTick.BlockXYZ() {
+        WorldAPI.blockTick(worldObj, pos1, pos2, new TickTask.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
                 if (worldObj.rand.nextInt(10) == 0) {
                     worldObj.setBlockState(getPos(), Blocks.REDSTONE_BLOCK.getDefaultState());
                     BlockPos pos = getPos();
-                    TickRegister.register(new AbstractTick(60, true) {
+                    TickRegister.register(new TickTask(60, true) {
 
                         @Override
                         public boolean isPause() {

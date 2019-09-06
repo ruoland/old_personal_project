@@ -19,7 +19,7 @@ public class DebEvent {
 				System.out.println("산타 이벤트 공격받음");
 				if (WorldAPI.equalsHeldItem(Items.APPLE)) {
 					System.out.println("플레이어를 따라감");
-					EntityAPI.move(new Move((EntityLiving) event.getEntityLiving(), player.posX, player.posY, player.posZ, false) {
+					EntityAPI.move(new Move((EntityLiving) event.getEntityLiving(), player.posX, player.posY, player.posZ) {
 						@Override
 						public void complete() {
 							if (movecount == 0) {
@@ -30,7 +30,7 @@ public class DebEvent {
 				}
 				if (WorldAPI.equalsHeldItem(Items.ARROW)) {
 					System.out.println("플레이어의 좌표로 이동함");
-					EntityAPI.move(new Move((EntityLiving) event.getEntityLiving(), player.posX, player.posY, player.posZ, false) {
+					EntityAPI.move(new Move((EntityLiving) event.getEntityLiving(), player.posX, player.posY, player.posZ) {
 						@Override
 						public void complete() {
 							if (movecount == 0) {
@@ -41,7 +41,7 @@ public class DebEvent {
 				}
 				if (WorldAPI.equalsHeldItem(Items.IRON_AXE)) {
 					System.out.println("네비게이션을 이동해 플레이어 좌표로 이동함");
-					EntityAPI.move(new Move((EntityLiving) event.getEntityLiving(), player.posX, player.posY, player.posZ, false) {
+					EntityAPI.move(new Move((EntityLiving) event.getEntityLiving(), player.posX, player.posY, player.posZ) {
 						@Override
 						public void complete() {
 							if (movecount == 0) {

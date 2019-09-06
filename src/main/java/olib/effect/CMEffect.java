@@ -25,7 +25,7 @@ public class CMEffect {
     }
 
     public void setZoom(double zoom, double tick) {
-        TickRegister.register(new AbstractTick("zoom", Type.SERVER, 1, true) {
+        TickRegister.register(new TickTask("zoom", Type.SERVER, 1, true) {
             @Override
             public void run(Type type) {
                 Camera.zoom = Camera.plusminus(zoom, Camera.zoom, tick);
@@ -34,8 +34,8 @@ public class CMEffect {
         });
     }
 
-    public void setZoom(double argZoom, double tick, AbstractTick abs) {
-        TickRegister.register(new AbstractTick("zoom", Type.SERVER, 1, true) {
+    public void setZoom(double argZoom, double tick, TickTask abs) {
+        TickRegister.register(new TickTask("zoom", Type.SERVER, 1, true) {
             @Override
             public void run(Type type) {
                 Camera.zoom = Camera.plusminus(argZoom, Camera.zoom, tick);
@@ -49,9 +49,9 @@ public class CMEffect {
     /**
      * 화면의 밝기를 천천히 낮춤
      */
-    public void gammaDown(AbstractTick run) {
+    public void gammaDown(TickTask run) {
         float gamma = Minecraft.getMinecraft().gameSettings.gammaSetting;
-        TickRegister.register(new AbstractTick(5, true) {
+        TickRegister.register(new TickTask(5, true) {
 
             @Override
             public void run(Type type) {
@@ -68,10 +68,10 @@ public class CMEffect {
     /**
      * 안개를 천천히 가깝게 만들음
      */
-    public void fog(double maxDistance, AbstractTick run) {
+    public void fog(double maxDistance, TickTask run) {
         Sky.fogDistance(-1);
 
-        TickRegister.register(new AbstractTick(1, true) {
+        TickRegister.register(new TickTask(1, true) {
             @Override
             public void run(Type type) {
                 Sky.fogDistance(Sky.getFogDistance() - 0.5F);
@@ -84,7 +84,7 @@ public class CMEffect {
     }
 
     public void drawImage(final String texture, final int x, final int y, final int width, final int height, int tick) {
-        TickRegister.register(new AbstractTick(null, 1, true) {
+        TickRegister.register(new TickTask(null, 1, true) {
             float alpha = 1.0F;
 
             @Override
@@ -102,8 +102,8 @@ public class CMEffect {
         });
     }
 
-    public void drawImage(final String texture, int tick, final AbstractTick abs) {
-        TickRegister.register(new AbstractTick(null, 1, true) {
+    public void drawImage(final String texture, int tick, final TickTask abs) {
+        TickRegister.register(new TickTask(null, 1, true) {
             float alpha = 1.0F;
 
             @Override
@@ -131,8 +131,8 @@ public class CMEffect {
      * 화면을 천천히 어둡게 만듦
      * 화면을 완전히 어둡게 하면 바로 어두운 화면이 사라짐
      */
-    public void darkScreen2(final AbstractTick absTic) {
-        TickRegister.register(new AbstractTick("DARKSCREEN", Type.RENDER, 1, true) {
+    public void darkScreen2(final TickTask absTic) {
+        TickRegister.register(new TickTask("DARKSCREEN", Type.RENDER, 1, true) {
             float alpha = 0.0F;
 
             @Override
@@ -152,14 +152,14 @@ public class CMEffect {
     /**
      * 검은 텍스쳐의 알파값이 maxAlpha가 될 때까지 더함
      */
-    public void darkScreen2(int tick, final float maxAlpha, final AbstractTick absTick) {
+    public void darkScreen2(int tick, final float maxAlpha, final TickTask absTick) {
         darkScreen(tick, absTick, false, maxAlpha);
     }
 
     /**
      * 검은 텍스쳐의 알파값이 0이 될 때까지 뻄
      */
-    public void darkScreen(int tick, final AbstractTick absTick) {
+    public void darkScreen(int tick, final TickTask absTick) {
         darkScreen(tick, absTick, true, 1);
     }
 
@@ -167,8 +167,8 @@ public class CMEffect {
      * isPlus를 true로 설정하면 화면이 천천히 어두워지고(alpha가 maxAlpha가 될 때까지 더함)
      * false로 하면 완전히 까맣게 변하고 천천히 화면이 밝아짐
      */
-    private void darkScreen(int argTick, final AbstractTick abs, boolean isPlus, float maxAlpha) {
-        TickRegister.register(new AbstractTick("DARKSCREEN", null, 1, true) {
+    private void darkScreen(int argTick, final TickTask abs, boolean isPlus, float maxAlpha) {
+        TickRegister.register(new TickTask("DARKSCREEN", null, 1, true) {
             float currentAlpha = isPlus ? 0F : 1F;
             float playerTick = 0;
 
@@ -198,13 +198,13 @@ public class CMEffect {
 
     public static void setCameraEarthquake(final int randomi) {
         final Random random = new Random();
-        boolean isTickRun = TickRegister.isAbsTickRun("Earth");
+        boolean isTickRun = TickRegister.isTickTaskRun("Earth");
         if (isTickRun && randomi == 0) {
             TickRegister.remove("Earth");
             Camera.reset();
             return;
         }
-        TickRegister.register(new AbstractTick("Earth",Type.CLIENT, 1, true) {
+        TickRegister.register(new TickTask("Earth",Type.CLIENT, 1, true) {
             @Override
             public void run(Type type) {
                 if (absRunCount < 500) {
@@ -237,12 +237,12 @@ public class CMEffect {
      * 점점 낮아짐
      */
     public static void setCameraEarthquake2(final int randomi, int maxcount) {
-        if (TickRegister.isAbsTickRun("EarthQuake") && randomi == 0) {
-            TickRegister.remove(TickRegister.getAbsTick("EarthQuake"));
+        if (TickRegister.isTickTaskRun("EarthQuake") && randomi == 0) {
+            TickRegister.remove(TickRegister.getTickTask("EarthQuake"));
             Camera.reset();
             return;
         }
-        TickRegister.register(new AbstractTick("EarthQuake",Type.CLIENT, 1, true) {
+        TickRegister.register(new TickTask("EarthQuake",Type.CLIENT, 1, true) {
             @Override
             public void run(Type type) {
                 if (absRunCount < maxcount) {

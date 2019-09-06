@@ -29,7 +29,6 @@ import java.lang.reflect.Field;
 public class CMPlusClientEvent {
     private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
             .split(",");
-    private Camera cm = Camera.getCamera();
     private Minecraft mc = Minecraft.getMinecraft();
     private double prevDistance;
 

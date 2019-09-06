@@ -10,7 +10,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import ruo.helloween.EntityWeen;
 
@@ -113,7 +113,7 @@ public class EntityAttackMiniWeen extends EntityMiniWeen {
         setDeathTimer(300);
         setDistance(1);
         setPattern(2);
-        TickRegister.register(new AbstractTick(40, false) {
+        TickRegister.register(new TickTask(40, false) {
             @Override
             public void run(TickEvent.Type type) {
                 setTarget(WorldAPI.x() + WorldAPI.rand(3), WorldAPI.y() + WorldAPI.getPlayer().eyeHeight + 3,

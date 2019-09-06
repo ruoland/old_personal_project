@@ -13,14 +13,14 @@ public abstract class Move {
 	public EntityLiving mob;
 	private boolean isFly = false;
 	protected EntityLivingBase target;
-	protected double targetX, targetY, targetZ, speed = 1D, xyzDistance = 0;
+	protected double targetX, targetY, targetZ, speed, xyzDistance = 0;
 	protected int entitydistance = 3, movecount;
 	private final Move instance;
 	public boolean moveLoop;
 	private String customName;
 	protected double prevTargetX, prevTargetY, prevTargetZ;
 
-	public Move(EntityLiving mob, double targetX, double targetY, double targetZ, boolean loop, double speed) {
+	public Move(EntityLiving mob, double targetX, double targetY, double targetZ, double speed) {
 		this.mob = mob;
 		this.setPosition(targetX, targetY, targetZ);
 		this.instance = this;
@@ -31,17 +31,16 @@ public abstract class Move {
         mob.tasks.addTask(4, new EntityAIOpenDoor(mob, true));
 	}
 
-	public Move(EntityLiving mob, double targetX, double targetY, double targetZ, boolean loop) {
-		this(mob,targetX,targetY,targetZ,loop,1);
+	public Move(EntityLiving mob, double targetX, double targetY, double targetZ) {
+		this(mob,targetX,targetY,targetZ,1);
 	}
-	public Move(EntityLiving mob, BlockPos pos, boolean loop) {
-		this(mob,pos.getX(), pos.getY(), pos.getZ(),loop,1);
+	public Move(EntityLiving mob, BlockPos pos) {
+		this(mob,pos.getX(), pos.getY(), pos.getZ(),1);
 	}
-	public Move(EntityLiving mob, EntityLivingBase mob2, boolean loop, int distance) {
-		this(mob, mob2.posX, mob2.posY, mob2.posZ, loop, 1);
+	public Move(EntityLiving mob, EntityLivingBase mob2,  int distance) {
+		this(mob, mob2.posX, mob2.posY, mob2.posZ,  1);
 		this.entitydistance = distance;
 		this.target = mob2;
-		this.moveLoop = loop;
 	}
 
 	private void move(int tickCount, EntityLiving mob, double x, double y, double z) {
@@ -89,7 +88,7 @@ public abstract class Move {
 			return false;
 		}
 		distanceCheck();
-		TickRegister.register(new AbstractTick(getCustomName(), Type.SERVER, 1, true) {
+		TickRegister.register(new TickTask(getCustomName(), Type.SERVER, 1, true) {
 			@Override
 			public boolean stopCondition() {
 				if (mob == null || mob.isDead) {
@@ -145,7 +144,7 @@ public abstract class Move {
 
 	public void moveStart() {
 		if (target != null) {
-			TickRegister.register(new AbstractTick(mob.getUniqueID().toString(), Type.SERVER,1, true) {
+			TickRegister.register(new TickTask(mob.getUniqueID().toString(), Type.SERVER,1, true) {
 				@Override
 				public void run(Type type) {
 					if(movecount % 3 == 0)

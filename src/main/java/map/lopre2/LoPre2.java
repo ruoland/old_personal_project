@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import olib.api.NBTAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import org.lwjgl.input.Keyboard;
 
@@ -109,7 +109,7 @@ public class LoPre2 {
 
     public static void worldload() {
         LoPre2.nbtapi.readNBT();
-        TickRegister.register(new AbstractTick("ln", TickEvent.Type.SERVER, 1, true) {
+        TickRegister.register(new TickTask("ln", TickEvent.Type.SERVER, 1, true) {
             @Override
             public void run(TickEvent.Type type) {
                 CommandJB.lavaTick = absRunCount == 200 ? absRunCount = 0 : absRunCount;
@@ -120,7 +120,7 @@ public class LoPre2 {
 
     public static void worldUnload() {
         LoPre2.nbtapi.saveNBT();
-        if (TickRegister.isAbsTickRun("ln"))
+        if (TickRegister.isTickTaskRun("ln"))
             TickRegister.remove("ln");
         CommandJB.lavaTick = LoPre2.nbtapi.getNBT().getInteger("lavaNumber");
 

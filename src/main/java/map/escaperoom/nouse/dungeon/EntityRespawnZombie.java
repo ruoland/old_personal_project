@@ -1,6 +1,6 @@
 package map.escaperoom.nouse.dungeon;
 
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import olib.map.EnumModel;
@@ -48,7 +48,7 @@ public class EntityRespawnZombie extends EntityDefaultNPC {
     public void onSturn() {
         super.onSturn();
         if (!isSturn() && isServerWorld()) {
-            TickRegister.register(new AbstractTick(TickEvent.Type.SERVER, 1, true) {
+            TickRegister.register(new TickTask(TickEvent.Type.SERVER, 1, true) {
                 @Override
                 public boolean stopCondition() {
                     return isDead;
@@ -64,7 +64,7 @@ public class EntityRespawnZombie extends EntityDefaultNPC {
                     }
                 }
             });
-            TickRegister.register(new AbstractTick(TickEvent.Type.SERVER, 1, true) {
+            TickRegister.register(new TickTask(TickEvent.Type.SERVER, 1, true) {
                 float a = 0;
 
                 @Override

@@ -11,7 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 
@@ -35,7 +35,7 @@ public class CommandRoom extends CommandPlusBase {
         if (args[0].equalsIgnoreCase("rb")) {
             if (args.length > 1) {
                 if (args[1].equalsIgnoreCase("timer")) {
-                    TickRegister.register(new AbstractTick("rb", TickEvent.Type.SERVER, 30, true) {
+                    TickRegister.register(new TickTask("rb", TickEvent.Type.SERVER, 30, true) {
                         @Override
                         public void run(TickEvent.Type type) {
                             WorldAPI.command("room rb");
@@ -43,7 +43,7 @@ public class CommandRoom extends CommandPlusBase {
                     });
                 }
                 if (args[1].equalsIgnoreCase("cancel")) {
-                    if(TickRegister.isAbsTickRun("rb"))
+                    if(TickRegister.isTickTaskRun("rb"))
                     TickRegister.remove("rb");
                 }
             } else {

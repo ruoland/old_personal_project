@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import olib.api.NBTAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 
 import java.awt.*;
 import java.io.File;
@@ -68,7 +68,7 @@ public class Loop {
         NBTTagCompound compound = nbtapi.getNBT();
         ArrayList<BlockPos> blockPosList = new ArrayList();
         ArrayList<ItemStack> blockList = new ArrayList();
-        WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new AbstractTick.BlockXYZ() {
+        WorldAPI.blockTick(worldObj, xx, x2, yy, y2, zz, z2, new TickTask.BlockXYZ() {
             @Override
             public void run(TickEvent.Type type) {
                 worldObj.getBlockState(getPos()).getBlock();

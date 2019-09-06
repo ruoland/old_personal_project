@@ -3,7 +3,7 @@ package cmplus.cm.v16;
 import cmplus.util.CommandPlusBase;
 import cmplus.util.Sky;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -21,7 +21,7 @@ public class CommandSky extends CommandPlusBase {
         if (t.length(args)) {
             return;
         }
-        TickRegister.register(new AbstractTick(Type.RENDER, 1, false) {
+        TickRegister.register(new TickTask(Type.RENDER, 1, false) {
             @Override
             public void run(Type type) {
                 try {

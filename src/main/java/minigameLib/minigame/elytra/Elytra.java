@@ -6,7 +6,7 @@ import minigameLib.MiniGame;
 import olib.api.Direction;
 import olib.api.PosHelper;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.fakeplayer.EntityFakePlayer;
 import olib.fakeplayer.FakePlayerHelper;
@@ -52,7 +52,7 @@ public class Elytra extends AbstractMiniGame {
         WorldAPI.teleport(WorldAPI.x(), WorldAPI.y() + 5, WorldAPI.z());
         cameraSetting();
 
-        TickRegister.register(new AbstractTick(100  , true) {
+        TickRegister.register(new TickTask(100  , true) {
             @Override
             public boolean stopCondition() {
                 return !isStart();

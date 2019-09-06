@@ -16,7 +16,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -26,58 +25,18 @@ import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 
-import java.util.HashMap;
-
 /**
  * @author oprond
  * 엔티티 관련 연출이나 기능을 정리해놓은 코드
  */
 public class ENEffect {
-	private static HashMap<EntityLiving, AbstractTick> look = new HashMap<EntityLiving, AbstractTick>();
-	public static void rotateYawRotate(EntityLivingBase base, EnumFacing facing) {
-		TickRegister.register(new AbstractTick(1, true) {
-			@Override
-			public void run(Type type) {
-				EnumFacing lookfacing = base.getHorizontalFacing();
-				if(lookfacing != facing) {
-					if(base instanceof EntityPlayer) {
-						EntityPlayerMP p = WorldAPI.getPlayerMP();
-						p.connection.setPlayerLocation(p.posX, p.posY, p.posZ, (float) p.rotationYaw+1, p.rotationPitch);
-					}
-					base.rotationYaw+=1;
-					base.rotationYawHead+=1;
-				} else {
-					absLoop = false;
-				} 
 
-			}
-		});
-	}
-	public static void rotateYawRotate(EntityLivingBase base, float yaw) {
-		TickRegister.register(new AbstractTick(1, true) {
-			@Override
-			public void run(Type type) {
-				if(base.rotationYaw == yaw) {
-					if(base instanceof EntityPlayer) {
-						EntityPlayerMP p = WorldAPI.getPlayerMP();
-						p.connection.setPlayerLocation(p.posX, p.posY, p.posZ, (float) p.rotationYaw+1, p.rotationPitch);
-					}
-					base.rotationYaw+=1;
-					base.rotationYawHead+=1;
-				} else {
-					absLoop = false;
-				} 
-
-			}
-		});
-	}
 	/**
 	 * 플레이어가 자고 있으면 일어나게 함 문제가 은근 많은 것 같음
 	 */
@@ -171,7 +130,7 @@ public class ENEffect {
 	 * 0초 뒤에 아이템을 들고 1초가 지나면 아이템을 던집니다.
 	 */
 	public static void throwItemTime(final EntityLiving living, final EntityLivingBase target, final ItemStack item) {
-		TickRegister.register(new AbstractTick(20, true) {
+		TickRegister.register(new TickTask(20, true) {
 			@Override
 			public void run(Type type) {
 				if (absRunCount == 0) {
@@ -190,7 +149,7 @@ public class ENEffect {
 	 */
 	public static void throwItemTime(final EntityLiving living, final double x, final double y, final double z,
 			final ItemStack item) {
-		TickRegister.register(new AbstractTick(20, true) {
+		TickRegister.register(new TickTask(20, true) {
 			@Override
 			public void run(Type type) {
 				if (absRunCount == 0) {
@@ -250,7 +209,7 @@ public class ENEffect {
 	 */
 	public static void enderTick(int tick, final int count2, final EntityLivingBase entity, final float pitch,
 			final float yaw) {
-		TickRegister.register(new AbstractTick(tick, true) {
+		TickRegister.register(new TickTask(tick, true) {
 			@Override
 			public void run(Type type) {
 				if (count2 == this.absRunCount) {
@@ -267,7 +226,7 @@ public class ENEffect {
 	 */
 	public static void enderTick(int tick, final int count2, final EntityLivingBase entity, double x, double y,
 			double z, final float pitch, final float yaw) {
-		TickRegister.register(new AbstractTick(tick, true) {
+		TickRegister.register(new TickTask(tick, true) {
 			@Override
 			public void run(Type type) {
 				if (count2 == this.absRunCount) {
@@ -282,7 +241,7 @@ public class ENEffect {
 	/**
 	 * 엔티티를 현재 posY + maxY 좌표까지 올라가게 함
 	 */
-	public static void entityJump(EntityLivingBase base, double maxY, AbstractTick abs) {
+	public static void entityJump(EntityLivingBase base, double maxY, TickTask abs) {
 		if (!base.isServerWorld()) {
 			System.out.println("서버 월드가 아니므로 캔슬됨");
 			return;
@@ -290,7 +249,7 @@ public class ENEffect {
 		double startPosY = base.posY;
 		boolean completeY = false;// 목표 좌표에 도달하면 true로 설정 됨
 
-		TickRegister.register(new AbstractTick(Type.SERVER, 2, true) {
+		TickRegister.register(new TickTask(Type.SERVER, 2, true) {
 			@Override
 			public boolean stopCondition() {
 
@@ -355,8 +314,8 @@ public class ENEffect {
 	 * speed가 낮으면 속도는 빨라짐
 	 */
 	public static void entityMoveFly(EntityLivingBase base, double x, double y, double z, float speed,
-			AbstractTick abs) {
-		TickRegister.register(new AbstractTick(1, true) {
+			TickTask abs) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public boolean stopCondition() {
 				return base.isDead;
@@ -378,7 +337,7 @@ public class ENEffect {
 	 */
 	public static void entityMoveFlyExplosion(EntityLivingBase base, double x, double y, double z, float speed,
 			float strength) {
-		TickRegister.register(new AbstractTick(1, true) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public boolean stopCondition() {
 
@@ -396,8 +355,8 @@ public class ENEffect {
 		});
 	}
 
-	public static void entityRotateX(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityRotateX(EntityDefaultNPC entity, double x, TickTask tick2) {
+		TickRegister.register(new TickTask(1, true) {
 
 			@Override
 			public boolean stopCondition() {
@@ -416,8 +375,8 @@ public class ENEffect {
 		});
 	}
 
-	public static void entityRotateY(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityRotateY(EntityDefaultNPC entity, double x, TickTask tick2) {
+		TickRegister.register(new TickTask(1, true) {
 			@Override
 			public boolean stopCondition() {
 				return entity.isDead;
@@ -434,8 +393,8 @@ public class ENEffect {
 		});
 	}
 
-	public static void entityRotateZ(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-		TickRegister.register(new AbstractTick(1, true) {
+	public static void entityRotateZ(EntityDefaultNPC entity, double x, TickTask tick2) {
+		TickRegister.register(new TickTask(1, true) {
 
 			@Override
 			public boolean stopCondition() {
@@ -463,7 +422,7 @@ public class ENEffect {
 		final PositionedSoundRecord posound = new PositionedSoundRecord(soundtype.getHitSound(),
 				SoundCategory.NEUTRAL, (soundtype.getVolume() + 1.0F) / 8.0F, soundtype.getPitch() * 0.5F, pos);
 		EntityAPI.look((EntityMob) base, x,y,z);
-		TickRegister.register(new AbstractTick(10, true) {
+		TickRegister.register(new TickTask(10, true) {
 			@Override
 			public void run(Type type) {
 				base.swingArm(EnumHand.MAIN_HAND);

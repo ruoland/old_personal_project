@@ -24,7 +24,7 @@ import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import olib.api.*;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.CMEffect;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
@@ -80,7 +80,7 @@ public class EntityWeen extends EntityDefaultNPC {
             System.out.println("빅윈에게 공격받음");
             EntityBigWeen ween = (EntityBigWeen) source.getEntity();
             if (ween.isFivePattern) {
-                TickRegister.register(new AbstractTick(100, false) {
+                TickRegister.register(new TickTask(100, false) {
                     public void run(Type type) {
                         jumpStartSixWeen();
                     }
@@ -144,13 +144,13 @@ public class EntityWeen extends EntityDefaultNPC {
         System.out.println("[첫패턴]점프를 위해 스턴을 해제함");
         setSturn(false);
         getDataManager().set(IS_JUMP, true);
-        WeenEffect.entityRotateX(this, -90, new AbstractTick() {
+        WeenEffect.entityRotateX(this, -90, new TickTask() {
             @Override
             public void run(Type type) {
                 System.out.println("[첫패턴]회전을 끝냄");
 
                 dataManager.set(IS_ROTATE, true);
-                WeenEffect.entityJump(ween, 60, new AbstractTick() {
+                WeenEffect.entityJump(ween, 60, new TickTask() {
                     @Override
                     public void run(Type type) {
                         System.out.println("[첫패턴]목적 Y에 도달함. 이제 추락함");
@@ -176,7 +176,7 @@ public class EntityWeen extends EntityDefaultNPC {
             base.attackEntityFrom(DamageSource.inWall, 10000);
         }
 
-        TickRegister.register(new AbstractTick(Type.SERVER, 3, true) {//미니윈을 땅에서 소환하는 메서드
+        TickRegister.register(new TickTask(Type.SERVER, 3, true) {//미니윈을 땅에서 소환하는 메서드
             @Override
             public boolean stopCondition() {
                 return isDead;
@@ -220,7 +220,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
 
     public void twoPattern() {
-        TickRegister.register(new AbstractTick(130, false) {
+        TickRegister.register(new TickTask(130, false) {
             @Override
             public boolean stopCondition() {
                 return isDead;
@@ -230,7 +230,7 @@ public class EntityWeen extends EntityDefaultNPC {
             public void run(Type type) {
                 setRotate(0, 0, 180);
                 System.out.println(absDefTick + "틱" + absRunCount + " - " + blockList.size());
-                TickRegister.register(new AbstractTick(15, true) {
+                TickRegister.register(new TickTask(15, true) {
                     @Override
                     public void run(Type type) {
                         if (absRunCount >= blockList.size() - 1) {//블럭을 모두 던지면 다음 패턴으로
@@ -255,7 +255,7 @@ public class EntityWeen extends EntityDefaultNPC {
         setPattern(2.5F);
         System.out.println("2.5패턴 돌입");
         PosHelper posHelper = new PosHelper(this);
-        TickRegister.register(new AbstractTick(250, false) {
+        TickRegister.register(new TickTask(250, false) {
 
             @Override
             public boolean stopCondition() {
@@ -264,7 +264,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
             @Override
             public void run(Type type) {
-                TickRegister.register(new AbstractTick(30, true) {
+                TickRegister.register(new TickTask(30, true) {
 
                     @Override
                     public boolean stopCondition() {
@@ -294,7 +294,7 @@ public class EntityWeen extends EntityDefaultNPC {
 
     public void threePattern() {
         System.out.println("[두번째 패턴]체력이 " + secondEndHP + " 넘어 다음 패턴으로 넘어감");
-        TickRegister.register(new AbstractTick(200, false) {
+        TickRegister.register(new TickTask(200, false) {
 
             @Override
             public boolean stopCondition() {
@@ -318,7 +318,7 @@ public class EntityWeen extends EntityDefaultNPC {
         bigween.setPosition(posX, posY + 20, posZ);
         bigween.isFivePattern = false;
         worldObj.spawnEntityInWorld(bigween);
-        TickRegister.register(new AbstractTick(40, true) {
+        TickRegister.register(new TickTask(40, true) {
             @Override
             public boolean stopCondition() {
                 return isDead || bigween.isDead;
@@ -336,7 +336,7 @@ public class EntityWeen extends EntityDefaultNPC {
                         worldObj.spawnEntityInWorld(miniween);
                         miniween.setPattern(3);
                         miniween.setTarget(WorldAPI.x() + v.xCoord * 1.5, WorldAPI.y() + player.eyeHeight + v.yCoord * 1.5, WorldAPI.z() + v.zCoord * 1.5);
-                        TickRegister.register(new AbstractTick(300, false) {
+                        TickRegister.register(new TickTask(300, false) {
                             @Override
                             public void run(Type type) {
                                 miniween.setTarget(bigween.posX, bigween.posY, bigween.posZ);
@@ -354,10 +354,10 @@ public class EntityWeen extends EntityDefaultNPC {
         EntityWeen ween = this;
         setPattern(4);
         worldObj.setWorldTime(13600);
-        WeenEffect.fog(7, new AbstractTick() {
+        WeenEffect.fog(7, new TickTask() {
             @Override
             public void run(Type type) {
-                TickRegister.register(new AbstractTick(Type.SERVER, 40, true) {
+                TickRegister.register(new TickTask(Type.SERVER, 40, true) {
                     @Override
                     public boolean stopCondition() {
                         return isDead;
@@ -395,7 +395,7 @@ public class EntityWeen extends EntityDefaultNPC {
                         }
                     }
                 });
-                TickRegister.register(new AbstractTick(Type.RENDER, 1, false) {
+                TickRegister.register(new TickTask(Type.RENDER, 1, false) {
                     @Override
                     public void run(Type type) {
                         // Sky.starGenerate(10000);
@@ -409,7 +409,7 @@ public class EntityWeen extends EntityDefaultNPC {
     public void fivePattern() {
         float f1 = 5.0F + ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16) - 5.0F)
                 * (1.0F - (float) 0 / 20.0F);
-        TickRegister.register(new AbstractTick(Type.RENDER, 1, true) {
+        TickRegister.register(new TickTask(Type.RENDER, 1, true) {
             @Override
             public boolean stopCondition() {
                 return isDead;
@@ -420,7 +420,7 @@ public class EntityWeen extends EntityDefaultNPC {
                 Sky.fogDistance(absRunCount);
                 if (absRunCount == f1) {
                     absLoop = false;
-                    TickRegister.register(new AbstractTick(Type.SERVER, 20, true) {
+                    TickRegister.register(new TickTask(Type.SERVER, 20, true) {
                         @Override
                         public boolean stopCondition() {
                             return isDead;
@@ -448,7 +448,7 @@ public class EntityWeen extends EntityDefaultNPC {
         bigween.setPosition(posX, posY + 20, posZ);
         bigween.isFivePattern = true;
         worldObj.spawnEntityInWorld(bigween);
-        TickRegister.register(new AbstractTick(40, true) {
+        TickRegister.register(new TickTask(40, true) {
             @Override
             public boolean stopCondition() {
                 return isDead || bigween.isDead;
@@ -496,11 +496,11 @@ public class EntityWeen extends EntityDefaultNPC {
             return;
         }
         EntityWeen ween = this;
-        WeenEffect.entityRotateX(this, -90, new AbstractTick() {
+        WeenEffect.entityRotateX(this, -90, new TickTask() {
             @Override
             public void run(Type type) {
                 dataManager.set(IS_ROTATE, true);
-                WeenEffect.entityJump(ween, 60, new AbstractTick() {
+                WeenEffect.entityJump(ween, 60, new TickTask() {
                     @Override
                     public void run(Type type) {
                         System.out.println("도달함");
@@ -545,7 +545,7 @@ public class EntityWeen extends EntityDefaultNPC {
     public void sevenPattern() {
         EntityWeen ween = this;
 
-        TickRegister.register(new AbstractTick(4, true) {
+        TickRegister.register(new TickTask(4, true) {
             @Override
             public void run(Type type) {
                 ween.setScale(ween.getScaleX() - 1, 0, 0);
@@ -589,7 +589,7 @@ public class EntityWeen extends EntityDefaultNPC {
         EntityItem item = new EntityItem(worldObj, posX + WorldAPI.rand(10), posY + 30, posZ + WorldAPI.rand(10),
                 new ItemStack(Items.PUMPKIN_SEEDS));
         worldObj.spawnEntityInWorld(item);
-        TickRegister.register(new AbstractTick(20, true) {
+        TickRegister.register(new TickTask(20, true) {
             @Override
             public void run(Type type) {
                 if (item.motionY == 0) {

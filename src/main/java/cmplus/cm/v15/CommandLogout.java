@@ -1,7 +1,7 @@
 package cmplus.cm.v15;
 
 import cmplus.util.CommandTool;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDisconnected;
@@ -41,7 +41,7 @@ public class CommandLogout extends CommandBase{
 		if(t.length(args)){
 			return;
 		}
-		TickRegister.register(new AbstractTick(Type.CLIENT, 1, false) {
+		TickRegister.register(new TickTask(Type.CLIENT, 1, false) {
 			
 			@Override
 			public void run(Type type) {

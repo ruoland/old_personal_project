@@ -5,7 +5,7 @@ import minigameLib.MiniGame;
 import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
 import net.minecraft.tileentity.TileEntity;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import minigameLib.minigame.minerun.MineRun;
 import minigameLib.minigame.minerun.MineRunEvent;
@@ -38,7 +38,7 @@ public class CommandMineRun extends CommandBase {
         if (args.length > 0) {
             if (args[0].equals("fog") && args.length > 1) {
                 Sky.fogDistance(-1);
-                TickRegister.register(new AbstractTick(1, true) {
+                TickRegister.register(new TickTask(1, true) {
                     @Override
                     public void run(TickEvent.Type type) {
                         Sky.fogDistance(Sky.getFogDistance() - 0.5F);

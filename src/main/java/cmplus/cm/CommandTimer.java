@@ -3,7 +3,7 @@ package cmplus.cm;
 import cmplus.util.CommandPlusBase;
 import cmplus.util.CommandTool;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -19,7 +19,7 @@ public class CommandTimer extends CommandPlusBase {
 		}		
 		int tick = Integer.parseInt(args[args.length-1]);
 		final String command = t.getCommand(args, 0, args.length-1);
-		TickRegister.register(new AbstractTick(tick * 20, false) {
+		TickRegister.register(new TickTask(tick * 20, false) {
 			@Override
 			public void run(Type type) {
 				WorldAPI.command(sender, command);

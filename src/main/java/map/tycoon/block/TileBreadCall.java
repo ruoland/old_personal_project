@@ -1,7 +1,7 @@
 package map.tycoon.block;
 
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.ENEffect;
 import olib.effect.TickRegister;
 import net.minecraft.block.state.IBlockState;
@@ -49,7 +49,7 @@ public class TileBreadCall extends TileEntity {
 			WorldAPI.addMessage("빵 재료가 이미 오고 있습니다.");
 			return;
 		}
-		TickRegister.register(new AbstractTick(Type.SERVER, 1, true) {
+		TickRegister.register(new TickTask(Type.SERVER, 1, true) {
 			@Override
 			public void run(Type type) {
 				isStart = true;

@@ -4,7 +4,7 @@ import cmplus.util.Sky;
 import minigameLib.MiniGame;
 import olib.api.Direction;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -62,7 +62,7 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
 
     public void first() {
         MiniGame.elytra.spawnPumpkinAttack(Direction.FORWARD, 5, 0);
-        TickRegister.register(new AbstractTick(20, true) {
+        TickRegister.register(new TickTask(20, true) {
             @Override
             public void run(TickEvent.Type type) {
                 boolean isSkip = false;
@@ -85,7 +85,7 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
 
     public void second() {
         setTarget(posX, posY - 10, posZ, 1);
-        entityRotateX(this, -90, new AbstractTick() {
+        entityRotateX(this, -90, new TickTask() {
             @Override
             public void run(TickEvent.Type type) {
                 second2();
@@ -94,7 +94,7 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
     }
 
     public void second2() {
-        TickRegister.register(new AbstractTick(20, true) {
+        TickRegister.register(new TickTask(20, true) {
             @Override
             public void run(TickEvent.Type type) {
                 EntityElytraBossMini entityElytraPumpkin = new EntityElytraBossMini(worldObj);
@@ -115,7 +115,7 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
     }
 
     public void three() {
-        TickRegister.register(new AbstractTick(20, true) {
+        TickRegister.register(new TickTask(20, true) {
             @Override
             public void run(TickEvent.Type type) {
                 EntityElytraBossMini entityElytraPumpkin = new EntityElytraBossMini(worldObj);
@@ -141,7 +141,7 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
      */
     public void four() {
         MiniGame.elytra.spawnPumpkinAttack(Direction.FORWARD, 5, 0);
-        TickRegister.register(new AbstractTick(10, true) {
+        TickRegister.register(new TickTask(10, true) {
             boolean isSkip = false;
 
             @Override
@@ -162,10 +162,10 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
     //안개 스테이지
     public void five() {
         setTarget(getSpawnX(), getSpawnY(), getSpawnZ(), 1);
-        entityRotateX(this, 0, new AbstractTick() {
+        entityRotateX(this, 0, new TickTask() {
             @Override
             public void run(TickEvent.Type type) {
-                fog(7, new AbstractTick() {
+                fog(7, new TickTask() {
                     @Override
                     public void run(TickEvent.Type type) {
                         five2();
@@ -182,10 +182,10 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
         pumpkin.setPosition(WorldAPI.x() + WorldAPI.minRand(5, 10), WorldAPI.y(), WorldAPI.z()+ WorldAPI.minRand(5, 10));
         pumpkin.setDeathTimer(200);
     }
-    public static void fog(double maxDistance, AbstractTick run) {
+    public static void fog(double maxDistance, TickTask run) {
         Sky.fogDistance(-1);
 
-        TickRegister.register(new AbstractTick(1, true) {
+        TickRegister.register(new TickTask(1, true) {
             @Override
             public void run(TickEvent.Type type) {
                 Sky.fogDistance(Sky.getFogDistance()-0.5F);
@@ -196,8 +196,8 @@ public class EntityElytraBossWeen extends EntityElytraPumpkin {
             }
         });
     }
-    public static void entityRotateX(EntityDefaultNPC entity, double x, AbstractTick tick2) {
-        TickRegister.register(new AbstractTick(1, true) {
+    public static void entityRotateX(EntityDefaultNPC entity, double x, TickTask tick2) {
+        TickRegister.register(new TickTask(1, true) {
 
             @Override
             public boolean stopCondition() {

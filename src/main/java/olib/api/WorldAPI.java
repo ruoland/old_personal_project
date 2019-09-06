@@ -37,8 +37,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import olib.action.ActionEffect;
-import olib.effect.AbstractTick;
-import olib.effect.AbstractTick.BlockXYZ;
+import olib.effect.TickTask;
+import olib.effect.TickTask.BlockXYZ;
 import olib.effect.TickRegister;
 
 import java.io.File;
@@ -51,7 +51,7 @@ public class WorldAPI {
 
     public static void worldLoad(String worldName) {
         Minecraft mc = Minecraft.getMinecraft();
-        TickRegister.register(new AbstractTick(TickEvent.Type.CLIENT, 1, false) {
+        TickRegister.register(new TickTask(TickEvent.Type.CLIENT, 1, false) {
             @Override
             public void run(TickEvent.Type type) {
 
@@ -393,7 +393,7 @@ public class WorldAPI {
         return api;
     }
 
-    public static void blockTick(World world, int x, int x2, int y, int y2, int z, int z2, AbstractTick.BlockXYZ tick) {
+    public static void blockTick(World world, int x, int x2, int y, int y2, int z, int z2, TickTask.BlockXYZ tick) {
         int minX = Math.min(x, x2);
         int maxX = Math.max(x, x2);
         int minY = Math.min(y, y2);

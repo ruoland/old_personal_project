@@ -9,7 +9,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import ruo.helloween.miniween.EntityMiniWeen;
@@ -40,7 +40,7 @@ public class EntityBigWeen extends EntityDefaultNPC {
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		if(isFivePattern)
-			TickRegister.register(new AbstractTick(20, true) {
+			TickRegister.register(new TickTask(20, true) {
 				@Override
 				public void run(Type type) {
 					setPosition(ween.posX + WorldAPI.minRand(5, 20), posY,
@@ -90,7 +90,7 @@ public class EntityBigWeen extends EntityDefaultNPC {
 			this.worldObj.createExplosion(this, posX, posY, posZ, 20F, false);
 			this.setDead();
 			ween.setSturn(100);
-			TickRegister.register(new AbstractTick(230, false) {
+			TickRegister.register(new TickTask(230, false) {
 
 				@Override
 				public void run(Type type) {
@@ -113,7 +113,7 @@ public class EntityBigWeen extends EntityDefaultNPC {
 			return;
 		this.worldObj.createExplosion(this, ween.posX, ween.posY+5, ween.posZ, 5F, false);
 		if (isServerWorld())
-			TickRegister.register(new AbstractTick(230, false) {
+			TickRegister.register(new TickTask(230, false) {
 				@Override
 				public void run(Type type) {
 					if (!isFivePattern) {
@@ -123,7 +123,7 @@ public class EntityBigWeen extends EntityDefaultNPC {
 					} else {
 						ween.jumpStartSixWeen();
                         EntityPlayerWeen.thisKill = true;
-                        TickRegister.register(new AbstractTick(40, false) {
+                        TickRegister.register(new TickTask(40, false) {
                                     @Override
                                     public void run(Type type) {
                                         EntityPlayerWeen.thisKill =false;

@@ -1,7 +1,7 @@
 package cmplus.cm.v18.function;
 
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 
@@ -27,7 +27,7 @@ public class FunctionFor {
 		if(isStart)
 			return;
 		isStart = true;
-		TickRegister.register(new AbstractTick(tick, true) {
+		TickRegister.register(new TickTask(tick, true) {
 			@Override
 			public void run(Type type) {
 				absLoop = !isStop;

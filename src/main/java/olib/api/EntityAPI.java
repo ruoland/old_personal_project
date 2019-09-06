@@ -1,7 +1,7 @@
 package olib.api;
 
 import cmplus.deb.DebAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.Move;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
@@ -265,8 +265,8 @@ public class EntityAPI {
     }
 
     @Nullable
-    public static void moveFly(EntityLivingBase base, double targetX, double targetY, double targetZ, double distance, AbstractTick abs) {
-        TickRegister.register(new AbstractTick(20, true) {
+    public static void moveFly(EntityLivingBase base, double targetX, double targetY, double targetZ, double distance, TickTask abs) {
+        TickRegister.register(new TickTask(20, true) {
             @Override
             public void run(Type type) {
                 if (base.getDistance(targetX, targetY, targetZ) < distance) {
@@ -281,7 +281,7 @@ public class EntityAPI {
     }
 
     public static void move(double speed, EntityLiving mob, double x, double y, double z, final double... xyz) {
-        move(new Move(mob, x, y, z, false) {
+        move(new Move(mob, x, y, z) {
             @Override
             public void complete() {
                 if (xyz.length > movecount + 2) {
@@ -301,13 +301,13 @@ public class EntityAPI {
     시간이 지나면 반대 방향으로 다시 이동함
      */
     public static void moveAndReturn(int tick, EntityLivingBase base, EnumFacing facing) {
-        TickRegister.register(new AbstractTick(Type.SERVER, 1, true) {
+        TickRegister.register(new TickTask(Type.SERVER, 1, true) {
             @Override
             public void run(Type type) {
                 if (absRunCount == tick) {
                     absLoop = false;
                     System.out.println("뒤로 감");
-                    TickRegister.register(new AbstractTick(1, true) {
+                    TickRegister.register(new TickTask(1, true) {
                         @Override
                         public void run(Type type) {
                             if (absRunCount == tick) {
@@ -325,12 +325,12 @@ public class EntityAPI {
     }
 
     public static boolean isMove(EntityLivingBase base) {
-        boolean abs = TickRegister.isAbsTickRun(base.getUniqueID().toString() + "-MOVE");
+        boolean abs = TickRegister.isTickTaskRun(base.getUniqueID().toString() + "-MOVE");
         return abs;
     }
 
     public static void move(final Move move) {
-        boolean abs = TickRegister.isAbsTickRun(move.mob.getUniqueID().toString());
+        boolean abs = TickRegister.isTickTaskRun(move.mob.getUniqueID().toString());
         if (abs) {
             removeMove(move.mob);
             System.out.println("이동 코드가 이미 실행 중이어서 기존 코드는 삭제됐습니다");
@@ -339,24 +339,24 @@ public class EntityAPI {
     }
 
     public static void removeMove(Entity entity) {
-        AbstractTick abs = TickRegister.getAbsTick(entity.getName() + "-MOVE");
+        TickTask abs = TickRegister.getTickTask(entity.getName() + "-MOVE");
         abs.stopTick();
         TickRegister.remove(abs);
     }
 
     public static void removeMove(String name) {
-        AbstractTick abs = TickRegister.getAbsTick(name + "-MOVE");
+        TickTask abs = TickRegister.getTickTask(name + "-MOVE");
         TickRegister.remove(abs);
     }
 
     public static void pauseMove(String name, boolean pause) {
-        AbstractTick abs = TickRegister.getAbsTick(name + "-MOVE");
+        TickTask abs = TickRegister.getTickTask(name + "-MOVE");
         abs.pause(pause);
     }
 
     public static void pauseMove(EntityLivingBase livingbase, boolean pause, int tick) {
         pauseMove(livingbase.getName(), pause);
-        TickRegister.register(new AbstractTick(tick, false) {
+        TickRegister.register(new TickTask(tick, false) {
             @Override
             public void run(Type type) {
                 if (isMove(livingbase))
@@ -372,7 +372,7 @@ public class EntityAPI {
     }
 
     public static void moveTimer(final int time, final Move move) {
-        TickRegister.register(new AbstractTick(Type.SERVER, time, false) {
+        TickRegister.register(new TickTask(Type.SERVER, time, false) {
             @Override
             public void run(Type type) {
                 move(move);
@@ -407,8 +407,8 @@ public class EntityAPI {
     /**
      * 플레이어와 mob의 거리가 distance 안에 있는 경우 실행함(반복됨)
      */
-    public static void distanceTick(int distance, EntityLiving mob, AbstractTick tick2) {
-        TickRegister.register(new AbstractTick(10, true) {
+    public static void distanceTick(int distance, EntityLiving mob, TickTask tick2) {
+        TickRegister.register(new TickTask(10, true) {
             @Override
             public void run(Type type) {
                 if (WorldAPI.getPlayer().getDistanceToEntity(mob) < distance) {
@@ -422,8 +422,8 @@ public class EntityAPI {
     /**
      * 플레이어와 XYZ 거리가 distance 안에 있는 경우
      */
-    public static void distanceTick(int distance, double x, double y, double z, AbstractTick tick2) {
-        TickRegister.register(new AbstractTick(10, true) {
+    public static void distanceTick(int distance, double x, double y, double z, TickTask tick2) {
+        TickRegister.register(new TickTask(10, true) {
             @Override
             public void run(Type type) {
                 if (WorldAPI.getPlayer().getDistance(x, y, z) < distance) {
@@ -439,7 +439,7 @@ public class EntityAPI {
     }
 
     public static void position(EntityLivingBase base, double x, double y, double z, double distance,
-                                AbstractTick.Position abs) {
+                                TickTask.Position abs) {
         abs.mob = base;
         abs.posX = x;
         abs.posY = y;
@@ -449,7 +449,7 @@ public class EntityAPI {
     }
 
     public static void position(EntityLivingBase base, double x, double y, double z, double x2, double y2, double z2, double distance,
-                                AbstractTick.Position abs) {
+                                TickTask.Position abs) {
         abs.mob = base;
         abs.posX = x;
         abs.posY = y;
@@ -460,47 +460,47 @@ public class EntityAPI {
     }
 
     public static void position(EntityLivingBase base, BlockPos pos, BlockPos pos2, double distance,
-                                AbstractTick.Position abs) {
+                                TickTask.Position abs) {
         position(base, pos.getX(), pos.getY(), pos.getZ(), pos2.getX(), pos2.getY(), pos2.getZ(), distance, abs);
     }
 
     public static void position(BlockPos pos, BlockPos pos2, double distance,
-                                AbstractTick.Position abs) {
+                                TickTask.Position abs) {
         position(WorldAPI.getPlayer(), pos.getX(), pos.getY(), pos.getZ(), pos2.getX(), pos2.getY(), pos2.getZ(), distance, abs);
     }
 
     public static void position(double x, double y, double z, double x2, double y2, double z2, double distance,
-                                AbstractTick.Position abs) {
+                                TickTask.Position abs) {
         position(WorldAPI.getPlayer(), x, y, z, x2, y2, z2, distance, abs);
 
     }
 
-    public static void position(double x, double y, double z, double distance, AbstractTick.Position abs) {
+    public static void position(double x, double y, double z, double distance, TickTask.Position abs) {
         position(WorldAPI.getPlayer(), x, y, z, distance, abs);
 
     }
 
-    public static void position(EntityLivingBase mob, BlockPos pos, double distance, AbstractTick.Position abs) {
+    public static void position(EntityLivingBase mob, BlockPos pos, double distance, TickTask.Position abs) {
         position(mob, pos.getX(), pos.getY(), pos.getZ(), distance, abs);
     }
 
-    public static void position(EntityLivingBase mob, BlockPos pos, AbstractTick.Position abs) {
+    public static void position(EntityLivingBase mob, BlockPos pos, TickTask.Position abs) {
         position(mob, pos.getX(), pos.getY(), pos.getZ(), 0, abs);
     }
 
-    public static void position(EntityLivingBase mob, double x, double y, double z, AbstractTick.Position abs) {
+    public static void position(EntityLivingBase mob, double x, double y, double z, TickTask.Position abs) {
         position(mob, x, y, z, 0, abs);
     }
 
-    public static void position(BlockPos pos, AbstractTick.Position abs) {
+    public static void position(BlockPos pos, TickTask.Position abs) {
         position(WorldAPI.getPlayer(), pos.getX(), pos.getY(), pos.getZ(), 0, abs);
     }
 
-    public static void position(double x, double y, double z, AbstractTick.Position abs) {
+    public static void position(double x, double y, double z, TickTask.Position abs) {
         position(WorldAPI.getPlayer(), x, y, z, 0, abs);
     }
 
-    public static void position(BlockPos pos, double distance, AbstractTick.Position abs) {
+    public static void position(BlockPos pos, double distance, TickTask.Position abs) {
         position(WorldAPI.getPlayer(), pos.getX(), pos.getY(), pos.getZ(), distance, abs);
     }
 
@@ -510,7 +510,7 @@ public class EntityAPI {
     }
 
     public static boolean isLook(EntityLiving mob) {
-        return TickRegister.isAbsTickRun(mob.getName() + "-LOOK");
+        return TickRegister.isTickTaskRun(mob.getName() + "-LOOK");
     }
 
     public static void look(final EntityLiving mob, final BlockPos pos) {
@@ -521,7 +521,7 @@ public class EntityAPI {
         if (isLook(mob)) {
             removeLook(mob);
         }
-        AbstractTick tick = new AbstractTick(mob.getName() + "-LOOK", Type.SERVER, 1, true) {
+        TickTask tick = new TickTask(mob.getName() + "-LOOK", Type.SERVER, 1, true) {
             @Override
             public void run(Type type) {
                 mob.getLookHelper().setLookPosition(x, y, z, mob.getHorizontalFaceSpeed(), mob.getVerticalFaceSpeed());
@@ -534,7 +534,7 @@ public class EntityAPI {
         if (isLook(mob)) {
             removeLook(mob);
         }
-        AbstractTick tick = new AbstractTick(mob.getName() + "-LOOK", Type.SERVER, 1, true) {
+        TickTask tick = new TickTask(mob.getName() + "-LOOK", Type.SERVER, 1, true) {
             @Override
             public boolean stopCondition() {
                 if (mob == null || mob2 == null || (mob.isDead || mob2.isDead)) {

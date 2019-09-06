@@ -4,7 +4,7 @@ import cmplus.cm.CommandChat;
 import olib.api.DrawTexture;
 import olib.api.RenderAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.monster.EntityMob;
@@ -111,7 +111,7 @@ public class TextEvent {
 		if(e.getButton() == 0 && e.isButtonstate() && mouseCount == 0 && !end){
 			TextEvent.getTextEvent().addNext();
 			mouseCount = 10;
-			TickRegister.register(new AbstractTick(10, false) {
+			TickRegister.register(new TickTask(10, false) {
 				@Override
 				public void run(Type type) {
 					mouseCount = 0;

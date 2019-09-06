@@ -1,7 +1,7 @@
 package cmplus.deb;
 
 import cmplus.util.CommandPlusBase;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -24,7 +24,7 @@ public class CommandDeb extends CommandPlusBase {
 			try {
 				if (args.length == 0) {
 					sender.getEntityWorld().getWorldInfo().setDifficulty(EnumDifficulty.PEACEFUL);
-					TickRegister.register(new AbstractTick(20, false) {
+					TickRegister.register(new TickTask(20, false) {
 
 						@Override
 						public void run(Type type) {

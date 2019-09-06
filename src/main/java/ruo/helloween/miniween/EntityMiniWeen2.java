@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import ruo.helloween.EntityBigWeen;
@@ -36,7 +36,7 @@ public class EntityMiniWeen2 extends EntityDefaultNPC {
 		this.ween = ween;
 		this.isAttackMode = isAttack;
 		this.isDefenceMode = isDefence;
-		TickRegister.register(new AbstractTick(400, false) {
+		TickRegister.register(new TickTask(400, false) {
 			@Override
 			public void run(Type type) {
 				setDead();

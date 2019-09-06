@@ -1,7 +1,7 @@
 package cmplus.camera;
 
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -126,7 +126,7 @@ public class Camera {
 	}
 	
 	public static void cameraRotateTimer(double x, double y, double z) {
-		TickRegister.register(new AbstractTick("camera-rotate", Type.SERVER, 1, true) {
+		TickRegister.register(new TickTask("camera-rotate", Type.SERVER, 1, true) {
 			@Override
 			public void run(Type type) {
 				rotateX = plusminus(x, rotateX);
@@ -138,7 +138,7 @@ public class Camera {
 	}
 	
 	public static void cameraMoveTimer(double x, double y, double z) {
-		TickRegister.register(new AbstractTick("camera-move", Type.SERVER, 1, true) {
+		TickRegister.register(new TickTask("camera-move", Type.SERVER, 1, true) {
 			@Override
 			public void run(Type type) {
 				traX = plusminus(x, traX);

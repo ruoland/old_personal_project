@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 
-public abstract class AbstractTick {
+public abstract class TickTask {
 	protected String absName;
 	protected int absDefTick;// 초기값
 	protected int absTick;
@@ -20,7 +20,7 @@ public abstract class AbstractTick {
 	public transient Type tickType;
 	public transient TickEvent tickEvent;
 
-	public AbstractTick(String name, Type type, int tick, boolean loop) {
+	public TickTask(String name, Type type, int tick, boolean loop) {
 		this.absName = name;
 		this.tickType = type;
 		this.absDefTick = tick;
@@ -28,15 +28,15 @@ public abstract class AbstractTick {
 		this.absLoop = loop;
 	}
 
-	public AbstractTick(Type type, int tick, boolean loop) {
+	public TickTask(Type type, int tick, boolean loop) {
 		this(null, type, tick,loop);
 	}
 
-	public AbstractTick(int tick, boolean loop) {
+	public TickTask(int tick, boolean loop) {
 		this(null, Type.SERVER, tick,loop);
 	}
 
-	public AbstractTick() {
+	public TickTask() {
 	}
 
 	/**
@@ -98,7 +98,7 @@ public abstract class AbstractTick {
 		run(null);
 	}
 
-	public static abstract class Position extends AbstractTick {
+	public static abstract class Position extends TickTask {
 		public double posX, posY, posZ, distance;
 		public EntityLivingBase mob;
 		private double[] xArray = new double[0], yArray = new double[0], zArray = new double[0];//인식하는 XYZ를 추가할 수 있음
@@ -197,7 +197,7 @@ public abstract class AbstractTick {
 		}
 	}
 
-	public static class Command extends AbstractTick.Position {
+	public static class Command extends TickTask.Position {
 		String com;
 		MinecraftServer server;
 
@@ -217,7 +217,7 @@ public abstract class AbstractTick {
 		}
 	}
 
-	public static abstract class BlockXYZ extends AbstractTick {
+	public static abstract class BlockXYZ extends TickTask {
 		public int x, y, z;
 
 		public BlockXYZ() {

@@ -3,7 +3,7 @@ package cmplus;
 import cmplus.cm.v15.GuiCGameOver;
 import cmplus.util.Sky;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -144,7 +144,7 @@ public class CMManager implements Serializable {
     }
 
     public static void shader(final int shader) {
-        TickRegister.register(new AbstractTick(Type.RENDER, 1, false) {
+        TickRegister.register(new TickTask(Type.RENDER, 1, false) {
             @Override
             public void run(Type type) {
                 Minecraft mc = Minecraft.getMinecraft();

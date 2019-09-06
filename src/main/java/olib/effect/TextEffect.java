@@ -33,14 +33,14 @@ public class TextEffect {
 	public void addChat(int time, String text){
 		addChat(time, text, null);
 	}
-	public void addChat(int time, String text, AbstractTick absTick){
+	public void addChat(int time, String text, TickTask absTick){
  		addChat(base, time, text, absTick);
 	}
 	public void addChat(EntityLivingBase mob, int time, String text){
 		addChat(mob, time, text, null);
 	}
 	Timer timer;
-	public void addChat(EntityLivingBase mob, int time, String text, AbstractTick absTick){
+	public void addChat(EntityLivingBase mob, int time, String text, TickTask absTick){
  		TimerTask t = timerChat(mob, text, absTick);
  		timer = new Timer();
 		timer.schedule(t, time);
@@ -51,7 +51,7 @@ public class TextEffect {
 		timer.cancel();
 		timer = new Timer();
 	}
-	private TimerTask timerChat(final EntityLivingBase mob, final String message, final AbstractTick absTick){
+	private TimerTask timerChat(final EntityLivingBase mob, final String message, final TickTask absTick){
 		return new TimerTask() {
 			@Override
 			public void run() {

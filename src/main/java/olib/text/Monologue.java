@@ -3,7 +3,7 @@ package olib.text;
 
 import olib.api.RenderAPI;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
@@ -72,7 +72,7 @@ public class Monologue {
 	}
 	
 	protected void tick(){
-		TickRegister.register(new AbstractTick(Type.RENDER, 10, true) {
+		TickRegister.register(new TickTask(Type.RENDER, 10, true) {
 			private int monoLine;
 			@Override
 			public boolean stopCondition() {

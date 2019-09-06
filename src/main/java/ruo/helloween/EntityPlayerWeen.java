@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import olib.api.WorldAPI;
-import olib.effect.AbstractTick;
+import olib.effect.TickTask;
 import olib.effect.TickRegister;
 import olib.map.EntityDefaultNPC;
 import olib.map.TypeModel;
@@ -29,7 +29,7 @@ public class EntityPlayerWeen extends EntityDefaultNPC {
         super(worldIn);
         this.setBlockMode(Blocks.PUMPKIN);
         this.setElytra(true);
-        TickRegister.register(new AbstractTick(1300, false) {
+        TickRegister.register(new TickTask(1300, false) {
             @Override
             public boolean stopCondition() {
                 return isDead() || noDeath;
