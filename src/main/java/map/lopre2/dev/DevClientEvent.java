@@ -49,11 +49,9 @@ public class DevClientEvent {
         if (mc.thePlayer != null && mc.objectMouseOver != null && mc.currentScreen == null) {
             if (mc.objectMouseOver.entityHit instanceof EntityPreBlock && (WorldAPI.equalsHeldItem(mc.thePlayer, LoPre2.itemSpanner) || WorldAPI.equalsHeldItem(mc.thePlayer, LoPre2.itemCopy))) {
                 EntityPreBlock preBlock = (EntityPreBlock) mc.objectMouseOver.entityHit;
-                RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("looppre2:textures/text.png").setAlpha(0.5F).setXYAndSize(  80, 0, mc.displayWidth / 2 - 300, mc.displayHeight / 2 - 180).build());
+                RenderAPI.drawTexture(new DrawTexture.Builder().setTexture("looppre2:textures/text.png").setAlpha(0.5F).setXYAndSize(  0, 80, mc.displayWidth / 2 - 300, mc.displayHeight / 2 - 180).build());
 
                 GlStateManager.pushMatrix();
-                ;
-
                 GlStateManager.translate(0, 0, 10);
                 if (WorldAPI.equalsHeldItem(mc.thePlayer, LoPre2.itemSpanner)) {
                     mc.fontRendererObj.drawSplitString(preBlock.getJumpName(), 0, 80, mc.displayWidth / 2 - 300, 0xFFFFFF);

@@ -4,6 +4,7 @@ import cmplus.deb.DebAPI;
 import map.lopre2.CommandJB;
 import map.lopre2.ItemSpanner;
 import map.lopre2.LoPre2;
+import map.lopre2.jump1.EntityLoopFallingBlock;
 import map.lopre2.jump3.EntityBoatBuildBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -31,7 +32,7 @@ public class IngameEvent {
 
 
     @SubscribeEvent
-    public void lavaEvent(TickEvent.PlayerTickEvent e) {
+    public void inLavaEvent(TickEvent.PlayerTickEvent e) {
         e.player.extinguish();
         e.player.getFoodStats().setFoodLevel(20);
         float m = 0.2F;

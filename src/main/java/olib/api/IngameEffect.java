@@ -26,7 +26,6 @@ public class IngameEffect {
 	public static void addChestItem(int index, BlockPos pos, ItemStack stack) {
 		ILockableContainer ilock = Blocks.CHEST.getLockableContainer(WorldAPI.getWorld(), pos);
 		ilock.setInventorySlotContents(index, stack);
-
 	}
 
 	public static void lever(BlockPos pos, boolean onoff) {

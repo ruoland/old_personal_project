@@ -117,7 +117,6 @@ public class EntityBuildBlock extends EntityPreBlock {
     @Override
     public void targetArrive() {
         super.targetArrive();
-
     }
 
     @Override

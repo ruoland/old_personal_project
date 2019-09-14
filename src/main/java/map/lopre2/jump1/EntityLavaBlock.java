@@ -76,7 +76,7 @@ public class EntityLavaBlock extends EntityPreBlock {
 
     @Override
     public String getText() {
-        return "평범한 블럭입니다. 스패너를 들고 우클릭 하면 블럭을 밟았을 때 블럭이 천천히 내려가게 할 수 있습니다.";
+        return "일반 블럭입니다. 스패너를 들고 우클릭 하면 블럭을 밟았을 때 블럭이 천천히 내려가게 할 수 있습니다.";
     }
 
     @Override
@@ -164,7 +164,6 @@ public class EntityLavaBlock extends EntityPreBlock {
         compound.setFloat("heightl", getHeight());
         compound.setBoolean("deb", dataManager.get(DEB_MOVE));
         compound.setBoolean("is boat",dataManager.get(IS_BOAT));
-        System.out.println(isFly);
     }
 
     @Override

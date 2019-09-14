@@ -144,7 +144,6 @@ public class EntityLoopFallingBlock extends EntityPreBlock {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         setLavaY(compound.getFloat("lavaY"));
-        System.out.println(getLavaY());
     }
 
 }

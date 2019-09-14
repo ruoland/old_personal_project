@@ -76,12 +76,6 @@ public class TickRegister {
 
     public static class TickRegisterEvent{
         @SubscribeEvent
-
-        public void asf(PlayerInteractEvent event){
-            Minecraft.getMinecraft().displayGuiScreen(new GuiUnder());
-            Minecraft.getMinecraft().currentScreen = new GuiUnder();
-        }
-        @SubscribeEvent
         public void sub(TickEvent event) {
             if (event.phase == Phase.END && !isGamePaused()) {
                 for (int i = 0;i < tickTasks.size();i++) {

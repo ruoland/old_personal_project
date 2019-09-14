@@ -31,10 +31,11 @@ import java.util.UUID;
 
 public class EntityDefaultNPC extends EntityModelNPC {
 
-    //스턴 관련 코드. 스턴 상태로 설정하면  얼굴회전 그리고 이동을 멈춤
+    //스턴 상태인가. 스턴 상태로 설정하면  얼굴회전 그리고 이동을 멈춤
     private static final DataParameter<Boolean> IS_STURN = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);
 
+    //스턴 풀릴 때까지 남은 틱
     private static final DataParameter<Integer> STURN_TICK = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.VARINT);
 
@@ -53,6 +54,7 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     private static final DataParameter<Boolean> COLLISION = EntityDataManager
             .createKey(EntityDefaultNPC.class, DataSerializers.BOOLEAN);
+
     private static final DataParameter<Boolean> IS_TELEPORT = EntityDataManager.createKey(EntityDefaultNPC.class,
             DataSerializers.BOOLEAN);//라바 블럭에 쓰이던 텔레포트 기능임
 
@@ -120,9 +122,6 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return super.getDistance(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
     }
 
-    public void teleportEnd() {
-
-    }
 
 
     public EntityDefaultNPC setTargetSpeed(double speed) {
@@ -197,6 +196,10 @@ public class EntityDefaultNPC extends EntityModelNPC {
 
     public boolean isTeleport() {
         return dataManager.get(IS_TELEPORT);
+    }
+
+    public void teleportEnd() {
+
     }
 
     public boolean isLookPlayer(){
