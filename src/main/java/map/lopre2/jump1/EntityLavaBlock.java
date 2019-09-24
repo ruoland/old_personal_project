@@ -31,6 +31,7 @@ public class EntityLavaBlock extends EntityPreBlock {
         setBlockMode(Blocks.STONE);
         this.setCollision(true);
         isFly = true;
+        noClip = !noClip;
         setTeleportLock(true);
         setJumpName("일반 블럭");
     }
@@ -119,7 +120,6 @@ public class EntityLavaBlock extends EntityPreBlock {
             if (!isFly) {
                 motionZ= 0;
                 motionY = -downSpeed;
-                System.out.println("내려가는 중");
                 motionX = 0;
             }
         }
@@ -127,7 +127,6 @@ public class EntityLavaBlock extends EntityPreBlock {
 
         if(getWidth() != 0 && getHeight() != 0 && (width != getWidth() || height != getHeight())){
             updateSize();
-            System.out.println("사이즈가 다름");
         }
 
 
@@ -152,7 +151,6 @@ public class EntityLavaBlock extends EntityPreBlock {
     public void updateSize(){
         if(getWidth() != 0 && getHeight() != 0 && (width != getWidth() || height != getHeight())){
             this.setSize(getWidth(), getHeight());
-            System.out.println("사이즈 업데이트 됨"+getWidth() + " - "+getHeight());
         }
     }
 

@@ -5,7 +5,7 @@ import cmplus.test.CMPacketCommand;
 import cmplus.util.CommandPlusBase;
 import map.Loop;
 import map.lopre2.jump1.EntityMoveBlock;
-import map.lopre2.jump1.EntityWaterBlockCreator;
+import map.lopre2.jump1.EntityDownBlockCreator;
 import map.lopre2.jump2.EntityBigInvisibleBlock;
 import map.lopre2.jump3.EntityBoatBuildBlock;
 import net.minecraft.command.CommandException;
@@ -154,19 +154,19 @@ public class CommandJB extends CommandPlusBase {
                 Loop.read(sender.getEntityWorld(), args[1], parseDouble(args[2]), parseDouble(args[3]), parseDouble(args[4]));
 
             if (args[0].equalsIgnoreCase("downlock")) {
-                EntityWaterBlockCreator.downLock = !EntityWaterBlockCreator.downLock;
-                System.out.println("DOWNLOCK " + EntityWaterBlockCreator.downLock);
+                EntityDownBlockCreator.downLock = !EntityDownBlockCreator.downLock;
+                System.out.println("DOWNLOCK " + EntityDownBlockCreator.downLock);
             }
             if (args[0].equalsIgnoreCase("downReset")) {
-                EntityWaterBlockCreator.downReset = true;
+                EntityDownBlockCreator.downReset = true;
                 TickRegister.register(new TickTask(20, false) {
 
                     @Override
                     public void run(Type type) {
-                        EntityWaterBlockCreator.downReset = false;
+                        EntityDownBlockCreator.downReset = false;
                     }
                 });
-                System.out.println("DOWNRESET " + EntityWaterBlockCreator.downReset);
+                System.out.println("DOWNRESET " + EntityDownBlockCreator.downReset);
             }
             if (args[0].equalsIgnoreCase("moveStop")) {
                 EntityMoveBlock.allBlockMoveStop = Boolean.valueOf(args[1]);
@@ -176,7 +176,7 @@ public class CommandJB extends CommandPlusBase {
                 EntityBigInvisibleBlock.isInvisibleLock = !EntityBigInvisibleBlock.isInvisibleLock;
             }
             if (args[0].equalsIgnoreCase("downlong")) {
-                EntityWaterBlockCreator.downLock = !EntityWaterBlockCreator.downLock;
+                EntityDownBlockCreator.downLock = !EntityDownBlockCreator.downLock;
             }
             if (args[0].equalsIgnoreCase("up")) {
                 Vec3d vec = sender.getPositionVector();

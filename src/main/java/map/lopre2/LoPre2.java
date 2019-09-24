@@ -89,7 +89,7 @@ public class LoPre2 {
         DebAPI.registerEntity(this, "VELOCITY-loopFallingBlock", EntityLoopFallingBlock.class);
         DebAPI.registerEntity(this, "VELOCITY-LoopMoveBlock", EntityMoveBlock.class);
         DebAPI.registerEntity(this, "NO-EGG-VELOCITY-LoopWaterBlock", EntityWaterFlowBlock.class);
-        DebAPI.registerEntity(this, "VELOCITY-loopdownblock", EntityWaterBlockCreator.class);
+        DebAPI.registerEntity(this, "VELOCITY-loopdownblock", EntityDownBlockCreator.class);
         DebAPI.registerEntity(this, "VELOCITY-NO-EGG-PreBlock", EntityPreBlock.class);
         DebAPI.registerEntity(this, "BuildBlock", EntityBuildBlock.class);
         DebAPI.registerEntity(this, "InvisibleBlock", EntityInvisibleBlock.class);

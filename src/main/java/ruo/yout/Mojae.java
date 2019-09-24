@@ -26,7 +26,7 @@ import ruo.yout.y.YEvent;
 
 import java.util.HashMap;
 
-@Mod(modid =  "Mojae")
+//@Mod(modid =  "Mojae")
 public class Mojae {
     public static HashMap<String, Float> damageMap = new HashMap<>();
     public static HashMap<String, Float> killMap = new HashMap<>();

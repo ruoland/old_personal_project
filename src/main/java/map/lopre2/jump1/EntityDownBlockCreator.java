@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 import map.lopre2.CommandJB;
 import map.lopre2.EntityPreBlock;
 
-public class EntityWaterBlockCreator extends EntityPreBlock {
+public class EntityDownBlockCreator extends EntityPreBlock {
 	public static boolean downLock, downReset;
 	private static final DataParameter<Boolean> IS_WATER_BLOCK = EntityDataManager
-			.<Boolean>createKey(EntityWaterBlockCreator.class, DataSerializers.BOOLEAN);
+			.<Boolean>createKey(EntityDownBlockCreator.class, DataSerializers.BOOLEAN);
 
-	public EntityWaterBlockCreator(World worldObj) {
+	public EntityDownBlockCreator(World worldObj) {
 		super(worldObj);
 		this.setBlockMode(Blocks.DISPENSER);
 		this.setCollision(true);
@@ -37,8 +37,8 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 	}
 
 	@Override
-	public EntityWaterBlockCreator spawn(double x, double y, double z) {
-		EntityWaterBlockCreator lavaBlock = new EntityWaterBlockCreator(worldObj);
+	public EntityDownBlockCreator spawn(double x, double y, double z) {
+		EntityDownBlockCreator lavaBlock = new EntityDownBlockCreator(worldObj);
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY(), lavaBlock.getSpawnZ());
@@ -58,7 +58,7 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 	}
 
 	public void spawn2(double x, double y, double z) {
-		EntityWaterBlockCreator lavaBlock = new EntityWaterBlockCreator(worldObj);
+		EntityDownBlockCreator lavaBlock = new EntityDownBlockCreator(worldObj);
 		lavaBlock.setSpawnXYZ(x, y, z);
 		lavaBlock.setTeleport(false);
 		lavaBlock.setPosition(lavaBlock.getSpawnX(), lavaBlock.getSpawnY() + 0.3, lavaBlock.getSpawnZ());
@@ -173,4 +173,9 @@ public class EntityWaterBlockCreator extends EntityPreBlock {
 		if(defaultDelay == 0)
 			defaultDelay = 70;
 	};
+
+	@Override
+	public void setDead() {
+		super.setDead();
+	}
 }

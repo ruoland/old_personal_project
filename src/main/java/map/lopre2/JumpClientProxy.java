@@ -23,7 +23,7 @@ public class JumpClientProxy extends JumpCommonProxy {
         RenderAPI.registerRender(EntityLoopFallingBlock.class);
         RenderAPI.registerRender(EntityMoveBlock.class);
         RenderAPI.registerRender(EntityWaterFlowBlock.class);
-        RenderAPI.registerRender(EntityWaterBlockCreator.class);
+        RenderAPI.registerRender(EntityDownBlockCreator.class);
         RenderAPI.registerRender(EntityPreBlock.class);
         RenderAPI.registerRender(EntityBuildBlock.class);
         RenderAPI.registerRender(EntityInvisibleBlock.class);

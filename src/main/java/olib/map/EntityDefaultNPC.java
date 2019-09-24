@@ -374,6 +374,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
+    @Override
+    public void setDead() {
+        super.setDead();
+    }
+
     public void setDeathTimer(int deathTimer) {
             dataManager.set(DEATH_TIMER, deathTimer);
             dataManager.set(ON_DEATH_TIMER, true);
@@ -575,6 +580,11 @@ public class EntityDefaultNPC extends EntityModelNPC {
     }
 
     public void printData(){
+        System.out.println("-------------------------\n" +
+                "이름:"+getName()+"\n" +
+                "위치:"+posX + " - "+posY+ " - "+posZ+"\n" +
+                "Yaw Pitch"+rotationYaw + " - "+rotationPitch+"\n" +
+                "체력:"+getHealth()+ "\n");
 
     }
 }

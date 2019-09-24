@@ -404,7 +404,8 @@ public abstract class EntityPreBlock extends EntityDefaultNPC {
 
     @Override
     public void setDead() {
-        if (this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL) {
+        if (this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL)
+        {
             super.setDead();
         }
     }

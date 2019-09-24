@@ -28,8 +28,8 @@ public class ItemSpanner extends Item {
                     EntityBuildBlock buildBlock = (EntityBuildBlock) target;//빌드 블럭 저장
                     Loop.saveBuildBlock(buildBlock);
                 }
-                if (target instanceof EntityWaterBlockCreator) {
-                    EntityWaterBlockCreator lavaBlock = (EntityWaterBlockCreator) target;
+                if (target instanceof EntityDownBlockCreator) {
+                    EntityDownBlockCreator lavaBlock = (EntityDownBlockCreator) target;
                     lavaBlock.setDefaultDelay(lavaBlock.getDefaultDelay() + 1);
                 }
                 if (target instanceof EntityLavaBlock) {
