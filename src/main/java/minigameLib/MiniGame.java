@@ -1,19 +1,9 @@
 package minigameLib;
 
-import api.player.client.ClientPlayerAPI;
-import api.player.render.RenderPlayerAPI;
-import api.player.server.ServerPlayerAPI;
 import cmplus.deb.CommandClassLoader;
 import cmplus.deb.DebAPI;
+import map.lopre2.CommandJumpThree;
 import minigameLib.command.*;
-import minigameLib.minigame.minerun.monster.*;
-import net.minecraft.item.ItemMonsterPlacer;
-import olib.action.ActionEffect;
-import olib.android.CommandCall;
-import olib.android.CommandNotification;
-import olib.fakeplayer.EntityFakePlayer;
-import olib.map.EntityDefaultBlock;
-import olib.map.EntityDefaultNPC;
 import minigameLib.minigame.bomber.Bomber;
 import minigameLib.minigame.bomber.BomberEvent;
 import minigameLib.minigame.bomber.EntityBomb;
@@ -21,9 +11,13 @@ import minigameLib.minigame.elytra.*;
 import minigameLib.minigame.elytra.miniween.*;
 import minigameLib.minigame.elytra.playerarrow.EntityHomingTNT;
 import minigameLib.minigame.elytra.playerarrow.EntityTNTArrow;
-import minigameLib.minigame.minerun.*;
+import minigameLib.minigame.minerun.EntityMineRunner;
+import minigameLib.minigame.minerun.EntityWarningBlock;
+import minigameLib.minigame.minerun.MineRun;
+import minigameLib.minigame.minerun.MineRunEvent;
 import minigameLib.minigame.minerun.invisibleblock.BlockInvisible;
 import minigameLib.minigame.minerun.invisibleblock.TileInvisible;
+import minigameLib.minigame.minerun.monster.*;
 import minigameLib.minigame.scroll.*;
 import minigameLib.minigame.starmine.CommandStarMine;
 import minigameLib.minigame.starmine.StarMine;
@@ -46,7 +40,12 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import map.lopre2.CommandJumpThree;
+import olib.action.ActionEffect;
+import olib.android.CommandCall;
+import olib.android.CommandNotification;
+import olib.fakeplayer.EntityFakePlayer;
+import olib.map.EntityDefaultBlock;
+import olib.map.EntityDefaultNPC;
 
 import java.util.logging.Logger;
 
@@ -79,20 +78,6 @@ public class MiniGame {
 
     public static StarMine starMine;
     public static StarMineEvent starMineEvent;
-
-    public MiniGame() {
-        try {
-            Class.forName("api.player.server.ServerPlayerAPI");
-            ServerPlayerAPI.register("MiniGame", MiniGameServerPlayer.class);
-            if (FMLCommonHandler.instance().getSide() == CLIENT) {
-                ClientPlayerAPI.register("MiniGame", MiniGameClientPlayer.class);
-                RenderPlayerAPI.register("MiniGame", MiniGameRenderPlayer.class);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @EventHandler
     public void init(FMLPreInitializationEvent e) {

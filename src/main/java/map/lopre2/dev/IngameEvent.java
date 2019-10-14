@@ -99,9 +99,6 @@ public class IngameEvent {
     public void event(LoginEvent event) {
         if (LoPre2.checkWorld()) {
             LoPre2.worldload();
-            if (Minecraft.getMinecraft().gameSettings.limitFramerate > 60) {
-                Minecraft.getMinecraft().gameSettings.limitFramerate = 60;
-            }
         }
     }
 

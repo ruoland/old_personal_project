@@ -1,17 +1,10 @@
 package cmplus;
 
-import api.player.client.ClientPlayerAPI;
-import api.player.model.ModelPlayerAPI;
-import api.player.render.RenderPlayerAPI;
-import api.player.server.ServerPlayerAPI;
 import cmplus.cm.CommandMultiCommand;
 import cmplus.cm.CommandTimer;
 import cmplus.cm.beta.CommandItem;
 import cmplus.cm.beta.CommandPlayer;
 import cmplus.cm.beta.custommodelentity.CommandCustomEntity;
-import cmplus.cm.beta.model.CMModelPlayer;
-import cmplus.cm.beta.model.CMRenderPlayer;
-import cmplus.cm.beta.model.CommandModel;
 import cmplus.cm.shortco.CommandCm;
 import cmplus.cm.shortco.CommandFunc;
 import cmplus.cm.v17.CommandPosCommand;
@@ -31,7 +24,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -40,13 +32,11 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import ruo.yout.MoJaeEvent;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -57,13 +47,6 @@ public class CMPlus {
     public static CommonProxy proxy;
 
     public CMPlus() {
-        if (Loader.isModLoaded("PlayerAPI")) {
-            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-                RenderPlayerAPI.register("CommandPlus", CMRenderPlayer.class);
-                ModelPlayerAPI.register("CommandPlus", CMModelPlayer.class);
-            }
-            System.out.println("플레이어 API 찾음");
-        }
 
     }
 
@@ -132,7 +115,6 @@ public class CMPlus {
         event.registerServerCommand(new CommandCm());
         event.registerServerCommand(new CommandRender());
         event.registerServerCommand(new CommandPlayer());
-        event.registerServerCommand(new CommandModel());
         event.registerServerCommand(new CommandCustomEntity());
         event.registerServerCommand(new CommandOpenFolder());
         event.registerServerCommand(new CommandEvent());

@@ -107,6 +107,9 @@ public class LoPre2 {
 
     }
 
+    /**
+     * 용암이.가라앉고 떠오르는 시간을 계산하게 함
+     */
     public static void worldload() {
         LoPre2.nbtapi.readNBT();
         TickRegister.register(new TickTask("ln", TickEvent.Type.SERVER, 1, true) {
@@ -115,7 +118,6 @@ public class LoPre2 {
                 CommandJB.lavaTick = absRunCount == 200 ? absRunCount = 0 : absRunCount;
             }
         });
-
     }
 
     public static void worldUnload() {

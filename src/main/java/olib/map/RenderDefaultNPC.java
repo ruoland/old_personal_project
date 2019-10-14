@@ -41,14 +41,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
                                float netHeadYaw, float headPitch, float scaleFactor) {
         if (!npc.isInvisible()) {
             if (npc instanceof EntityBuildBlock) {
-                EntityBuildBlock block = (EntityBuildBlock) npc;
-                if (block.blockList.size() == 0) {
-                    return;
-                }
-                GlStateManager.pushMatrix();
-                modelRender(npc);
-                RenderAPI.renderBlockArray(block.blockPosList, block.blockList, npc);
-                GlStateManager.popMatrix();
                 return;
             }
 
@@ -136,6 +128,17 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     }
     @Override
     public void doRender(EntityDefaultNPC entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        if (entity instanceof EntityBuildBlock) {
+            EntityBuildBlock block = (EntityBuildBlock) entity;
+            if (block.blockList.size() == 0) {
+                return;
+            }
+            GlStateManager.pushMatrix();
+            modelRender(entity);
+            RenderAPI.renderBlockArray(block.blockPosList, block.blockList, entity);
+            GlStateManager.popMatrix();
+            return;
+        }
         this.mainModel.isChild = entity.isChild();
         if (entity instanceof EntityDefaultBlock && entity.getModel() == BLOCK && !(mainModel instanceof olib.map.ModelDefaultBlock)) {
             mainModel = new ModelDefaultBlock();
