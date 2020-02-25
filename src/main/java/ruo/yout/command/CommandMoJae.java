@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import olib.api.NBTAPI;
 import olib.api.WorldAPI;
 import ruo.yout.Mojae;
+import ruo.yout.SwingEntity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +34,13 @@ import java.util.List;
 public class CommandMoJae extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if(args[0].equalsIgnoreCase("gui")){
+            SwingEntity w = new SwingEntity();
+        }
+        if (args[0].equalsIgnoreCase("name")) {
+            EntityPlayer player = (EntityPlayer) sender;
+            player.getHeldItemMainhand().setStackDisplayName(WorldAPI.str(1,args, true));
+        }
         if(args[0].equalsIgnoreCase("night")){
             EntityPlayer player = (EntityPlayer) sender;
             player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1000000));
@@ -99,7 +107,7 @@ public class CommandMoJae extends CommandPlusBase {
         }
         if(args[0].equalsIgnoreCase("lock")){
             Mojae.spawnLockMode = parseBoolean(args[1]);
-        }
+    }
         if(args[0].equalsIgnoreCase("unlock")){
             for(Entity entity : sender.getEntityWorld().loadedEntityList){
                 if(entity instanceof EntityLivingBase){
@@ -131,8 +139,8 @@ public class CommandMoJae extends CommandPlusBase {
         }
 
         if(args[0].equalsIgnoreCase("reset")){
-            WorldAPI.setBlock(sender.getEntityWorld(), 471, 5, 526,489, 4, 526, Blocks.GRASS);
-            WorldAPI.command("func ui2");
+            WorldAPI.setBlock(WorldAPI.getWorld(), 491, 5, 516, 469, 4, 516, Blocks.GRASS);
+            WorldAPI.setBlock(WorldAPI.getWorld(), 491, 5, 526, 469, 4, 526, Blocks.GRASS);
         }
 
         if(args[0].equalsIgnoreCase("spawn")){

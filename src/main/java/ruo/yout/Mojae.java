@@ -19,14 +19,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import olib.api.RenderAPI;
 import ruo.yout.command.*;
 import ruo.yout.item.*;
-import ruo.yout.mojaelab.LabEvent;
-import ruo.yout.mojaelab.StatEvent;
-import ruo.yout.y.CommandY;
-import ruo.yout.y.YEvent;
+import ruo.yout.mojaelab.*;
 
 import java.util.HashMap;
 
-//@Mod(modid =  "Mojae")
+@Mod(modid =  "Mojae")
 public class Mojae {
     public static HashMap<String, Float> damageMap = new HashMap<>();
     public static HashMap<String, Float> killMap = new HashMap<>();
@@ -35,7 +32,7 @@ public class Mojae {
     public static HashMap<String, String> monterAttackRemove = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static boolean spawnLockMode;//소환되는 몬스터를 전부 잠금
 
-    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, canTeamKill = false, wither;
+    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, noTeamKill = false, wither;
     public static boolean morespawn;
     public static boolean statStart;
     public static int arrow_count= 1, skelDelay = -1;
@@ -46,15 +43,14 @@ public class Mojae {
     public static final Item itemLock = new ItemLock();
     public static final Item itemRiding = new ItemRiding();
     public static final Item itemGod = new ItemGod();
-    public static final Item itemUp = new ItemUp();
     public static final Item itemOneShot = new ItemOneShot();
     public static final Item itemExplosion = new ItemExplosion();
     @Mod.EventHandler
     public  void init(FMLInitializationEvent e){
         MinecraftForge.EVENT_BUS.register(new YEvent());
-
         MinecraftForge.EVENT_BUS.register(new MoJaeEvent());
         MinecraftForge.EVENT_BUS.register(new LabEvent());
+        MinecraftForge.EVENT_BUS.register(new DogPanEvent());
         MinecraftForge.EVENT_BUS.register(new StatEvent());
         Blocks.GLASS.setResistance(1000000);
         Blocks.GLOWSTONE.setResistance(1000000);
@@ -78,7 +74,6 @@ public class Mojae {
         GameRegistry.register(itemGod.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("god").setUnlocalizedName("god"));
         GameRegistry.register(itemOneShot.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("oneshot").setUnlocalizedName("oneshot"));
         GameRegistry.register(itemExplosion.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("explosion").setUnlocalizedName("explosion"));
-        GameRegistry.register(itemUp.setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setRegistryName("up").setUnlocalizedName("up"));
 
         proxy.preinit();
     }
@@ -88,7 +83,6 @@ public class Mojae {
     }
     @Mod.EventHandler
     public  void init(FMLServerStartingEvent e){
-        e.registerServerCommand(new CommandY());
 
         e.registerServerCommand(new CommandAttackDelay());
         e.registerServerCommand(new CommandMoJae());

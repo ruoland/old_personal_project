@@ -16,8 +16,6 @@ public class MapActionData {
     private boolean canRestart;
     public MapActionData(String mapName) {
         this.mapName = mapName;
-        if(mapName != null || mapName.equalsIgnoreCase("널"))
-        System.out.println("주의 맵 이름이 널");
         load();
     }
 

@@ -1,6 +1,5 @@
 package olib.effect;
 
-import minigameLib.minigame.GuiUnder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiScreenWorking;

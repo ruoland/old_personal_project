@@ -15,7 +15,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import map.lopre2.jump1.EntityBuildBlock;
 
 import static olib.map.TypeModel.*;
 
@@ -34,43 +33,10 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
         //this.addLayer(new LayerDefaultNPCEye(this));
         DEFAULT_RES_LOC = r;
     }
-    /*
-     */
     @Override
     protected void renderModel(EntityDefaultNPC npc, float limbSwing, float limbSwingAmount, float ageInTicks,
                                float netHeadYaw, float headPitch, float scaleFactor) {
         if (!npc.isInvisible()) {
-            if (npc instanceof EntityBuildBlock) {
-                return;
-            }
-
-            if (npc.getModel() == BLOCK) {
-                boolean flag = !npc.isInvisible() || this.renderOutlines;
-                boolean flag1 = !flag && !npc.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
-
-                if (flag || flag1) {
-                    this.setRenderOutlines(false);
-                    GlStateManager.pushMatrix();
-                    if (!this.bindEntityTexture(npc)) {
-                        GlStateManager.popMatrix();
-                        return;
-                    }
-
-                    if (flag1) {
-                        GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-                    }
-                    GlStateManager.translate(0,1,0);
-
-                    modelRender(npc);
-                    RenderAPI.renderBlock(npc.getCurrentStack(), npc);
-
-                    if (flag1) {
-                        GlStateManager.disableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-                    }
-                    GlStateManager.popMatrix();
-                }
-                return;
-            }
 
             if (npc.getModel() == SHAPE_BLOCK) {
                 GlStateManager.pushMatrix();
@@ -128,17 +94,6 @@ public class RenderDefaultNPC<T extends EntityDefaultNPC> extends RenderLiving<E
     }
     @Override
     public void doRender(EntityDefaultNPC entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        if (entity instanceof EntityBuildBlock) {
-            EntityBuildBlock block = (EntityBuildBlock) entity;
-            if (block.blockList.size() == 0) {
-                return;
-            }
-            GlStateManager.pushMatrix();
-            modelRender(entity);
-            RenderAPI.renderBlockArray(block.blockPosList, block.blockList, entity);
-            GlStateManager.popMatrix();
-            return;
-        }
         this.mainModel.isChild = entity.isChild();
         if (entity instanceof EntityDefaultBlock && entity.getModel() == BLOCK && !(mainModel instanceof olib.map.ModelDefaultBlock)) {
             mainModel = new ModelDefaultBlock();

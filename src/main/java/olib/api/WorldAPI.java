@@ -164,7 +164,16 @@ public class WorldAPI {
         }
         return b.toString();
     }
+    public static String str(int start, String[] str, boolean space) {
+        StringBuffer b = new StringBuffer();
+        for (int i = start;i < str.length;i++) {
 
+            b.append(str[i]);
+            if(space)
+                b.append(" ");
+        }
+        return b.toString();
+    }
     /**
      * String 인자를 하나로 묶어주는 메서드 묶을 때 점프로 구분할 수 있게 해줌
      */
@@ -544,30 +553,12 @@ public class WorldAPI {
         return getServer().getEntityWorld();
     }
 
-    private static List<WorldSummary> saveList;;
 
     public static String getCurrentWorldName() {
         if(getServer() == null || getServer().worldServers.length == 0 || getPlayerMP() == null || getPlayerMP().worldObj.getWorldInfo().getWorldName().equalsIgnoreCase("mpserver")) {
             return "noworld";
         }
-
-        for(WorldSummary summary :saveList){
-            if(summary.getDisplayName().equalsIgnoreCase(getServer().getEntityWorld().getWorldInfo().getWorldName())){
-                return summary.getFileName();
-            }
-        }
         return getServer().getEntityWorld().getWorldInfo().getWorldName();
-    }
-
-    public static void reloadWorldName(){
-        ISaveFormat isaveformat = Minecraft.getMinecraft().getSaveLoader();
-        if(saveList == null) {
-            try {
-                saveList = isaveformat.getSaveList();
-            } catch (AnvilConverterException anvilconverterexception) {
-                anvilconverterexception.printStackTrace();
-            }
-        }
     }
     public static File getCurrentWorldFile() {
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT)

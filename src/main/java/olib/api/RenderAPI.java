@@ -1,8 +1,12 @@
 package olib.api;
 
+import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.client.renderer.entity.RenderFallingBlock;
+import net.minecraft.client.renderer.entity.layers.LayerHeldBlock;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
+import net.minecraft.init.Blocks;
 import olib.map.EntityDefaultNPC;
 import olib.map.ModelDefaultNPC;
 import olib.map.RenderDefaultNPC;
@@ -215,35 +219,35 @@ public class RenderAPI {
             GlStateManager.popMatrix();
     }
 
-
-    public static void renderBlock(ArrayList<BlockPos> blockPosList, ArrayList<ItemStack> itemStackList, EntityLivingBase entitylivingbaseIn, float partialTicks) {
+    public static void renderBlockA(ArrayList<BlockPos> blockPosList, ArrayList<IBlockState> blockList, EntityLivingBase entitylivingbaseIn) {
         for (int i = 0; i < blockPosList.size(); i++) {
             BlockPos pos = blockPosList.get(i);
-            if (itemStackList.get(i) == null) {
-                continue;
-            }
+
             GlStateManager.pushMatrix();
-            GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
+
+            GlStateManager.rotate(180, 0, 0, 1);
+            GlStateManager.translate(pos.getX(), -pos.getY(), pos.getZ());
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
             GlStateManager.enableRescaleNormal();
-            GlStateManager.pushMatrix();
-            int i2 = entitylivingbaseIn.getBrightnessForRender(partialTicks);
+            int i2 = entitylivingbaseIn.getBrightnessForRender(0);
             int j = i2 % 65536;
             int k = i2 / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);;
-            blockrendererdispatcher.renderBlockBrightness(entitylivingbaseIn.worldObj.getBlockState(pos), 1.0F);
-            GlStateManager.popMatrix();
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+            if (blockList.get(i).getBlock() instanceof BlockGlass || blockList.get(i).getBlock() instanceof BlockStainedGlass) {
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5F);
+            } else
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            blockrendererdispatcher.renderBlockBrightness(blockList.get(i), 1.0F);
             GlStateManager.disableRescaleNormal();
             GlStateManager.popMatrix();
         }
-
     }
+
     /**
      * 대량의 블럭을 렌더링함
      */
-    public static void renderBlockArray(ArrayList<BlockPos> blockPosList, ArrayList<ItemStack> itemStackList, EntityLivingBase entitylivingbaseIn) {
+    public static void renderBlock(ArrayList<BlockPos> blockPosList, ArrayList<IBlockState> itemStackList, EntityLivingBase entitylivingbaseIn) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
         GlStateManager.pushMatrix();
@@ -252,9 +256,10 @@ public class RenderAPI {
             if (itemStackList.get(i) == null) {
                 continue;
             }
+            ItemStack itemStack = new ItemStack(itemStackList.get(i).getBlock());
             GlStateManager.pushMatrix();
             GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
-            renderItem(itemStackList.get(i), Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemStackList.get(i), entitylivingbaseIn.worldObj, entitylivingbaseIn));
+            renderItem(itemStack, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemStack, entitylivingbaseIn.worldObj, entitylivingbaseIn));
             //RenderAPI.renderBlock2(x, y, z, this, npc, npc.getCurrentBlock());
             GlStateManager.popMatrix();
         }
@@ -262,7 +267,6 @@ public class RenderAPI {
         GlStateManager.popMatrix();
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
-
     }
 
     public static void renderBlock(ItemStack itemstack, EntityLivingBase entitylivingbaseIn) {
@@ -310,6 +314,7 @@ public class RenderAPI {
         return (new ResourceLocation("minecraft:textures/" + blockrendererdispatcher.getBlockModelShapes()
                 .getTexture(block.getDefaultState()).getIconName().replace("minecraft:", "") + ".png"));
     }
+
     private static void renderItem(ItemStack stack, IBakedModel model) {
         if (stack != null) {
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);

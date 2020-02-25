@@ -7,6 +7,7 @@ import cmplus.cm.beta.CommandPlayer;
 import cmplus.cm.beta.custommodelentity.CommandCustomEntity;
 import cmplus.cm.shortco.CommandCm;
 import cmplus.cm.shortco.CommandFunc;
+import cmplus.cm.v16.CommandTimeSpeed;
 import cmplus.cm.v17.CommandPosCommand;
 import cmplus.cm.v17.CommandPosition;
 import cmplus.cm.v17.key.KeyEvent;
@@ -100,6 +101,7 @@ public class CMPlus {
     @EventHandler
     public void startServer(FMLServerStartingEvent event) {
         readCustomCommand();
+        event.registerServerCommand(new CommandTimeSpeed());
         event.registerServerCommand(new CommandCustom());
         event.registerServerCommand(new CommandSpeed());
         event.registerServerCommand(new CommandFlySpeed());

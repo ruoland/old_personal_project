@@ -1,5 +1,7 @@
 package cmplus.cm.v17;
 
+import cmplus.cm.CommandTimer;
+import cmplus.cm.v16.CommandTimeSpeed;
 import cmplus.util.CommandPlusBase;
 import olib.api.WorldAPI;
 import net.minecraft.command.CommandException;
@@ -32,7 +34,7 @@ public class CommandClip extends CommandPlusBase {
         double posX = WorldAPI.cut(sender.getCommandSenderEntity().posX);
         double posY = WorldAPI.cut(sender.getCommandSenderEntity().posY);
         double posZ = WorldAPI.cut(sender.getCommandSenderEntity().posZ);
-
+        System.out.println(sender.getPositionVector().yCoord + " - "+WorldAPI.getPlayer().posY + " - "+WorldAPI.getPlayerMP().posY);
         String playerPosDeb = start+posX + ", " + posY + ", " + posZ+end;
         String playerPos = start+posX + " " + posY + " " + posZ+end;
         String yawpitchDeb = start+sender.getCommandSenderEntity().rotationYaw + "," + sender.getCommandSenderEntity().rotationPitch+end;
@@ -44,7 +46,8 @@ public class CommandClip extends CommandPlusBase {
             e.printStackTrace();
             currentClip = "";
         }
-
+        System.out.println((long)WorldAPI.getPlayer().posY);
+        System.out.println(Long.valueOf(String.valueOf(WorldAPI.getPlayer().posY)));
         if (args.length == 0) {
             sender.addChatMessage(new TextComponentString("클립보드에 있는 내용:" +currentClip));
             board.setContents(new StringSelection(debMode ? playerPosDeb : playerPos), null);

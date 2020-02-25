@@ -9,6 +9,6 @@ import ruo.yout.Mojae;
 public class CommandTeamKill extends CommandPlusBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        Mojae.canTeamKill = parseBoolean(args[0]);
+        Mojae.noTeamKill = parseBoolean(args[0]);
     }
 }

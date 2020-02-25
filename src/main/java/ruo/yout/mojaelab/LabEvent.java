@@ -1,20 +1,19 @@
 package ruo.yout.mojaelab;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.item.ItemBow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import olib.api.EntityAPI;
 import olib.api.WorldAPI;
@@ -25,54 +24,6 @@ import ruo.yout.Mojae;
 
 public class LabEvent {
 
-    @SubscribeEvent
-    public void event(LivingSpawnEvent event) {
-            if (!(event.getEntityLiving() instanceof EntityAnimal)) {
-            if (event.getEntityLiving() instanceof EntityMob && Mojae.morespawn && !event.getEntityLiving().getEntityData().hasKey("mojae")) {
-                if(event.getEntityLiving() instanceof EntityCreeper){
-                    event.getEntityLiving().setDead();
-                }
-                if(event.getEntityLiving() instanceof EntityEnderman){
-                    event.getEntityLiving().setHealth(20);
-                    event.getEntityLiving().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-                }
-                for (int i = 0; i < 7; i++) {
-                    double x = event.getX() + WorldAPI.rand(30);
-                    double z = event.getZ() + WorldAPI.rand(30);
-                    EntityLiving creeper = null;
-                    switch (event.getWorld().rand.nextInt(5)) {
-                        case 0: {
-                            //creeper = new EntityCreeper(event.getWorld());
-                            break;
-                        }
-                        case 1: {
-                            creeper = new EntityZombie(event.getWorld());
-                            break;
-                        }
-                        case 2: {
-                            creeper = new EntitySkeleton(event.getWorld());
-                            break;
-                        }
-                        case 3: {
-                            creeper = new EntitySpider(event.getWorld());
-                            break;
-                        }
-                        case 4: {
-                            creeper = new EntityEnderman(event.getWorld());
-                            break;
-                        }
-                    }
-                    if (creeper != null) {
-                        creeper.setPosition(x, event.getY(), z);
-                        event.getWorld().spawnEntityInWorld(creeper);
-                        creeper.onInitialSpawn(event.getWorld().getDifficultyForLocation(creeper.getPosition()), null);
-                        creeper.getEntityData().setBoolean("mojae", true);
-                    }
-
-                }
-            }
-        }
-    }
 
     @SubscribeEvent
     public void livingAttackEvent(LivingHurtEvent event) {
@@ -124,12 +75,13 @@ public class LabEvent {
             //System.out.println("  2222엔티티 " + sourceIndirect.getEntity());//  2222엔티티 EntitySkeleton['스켈레톤'/49328, l='test', x=414.96, y=4.00, z=-33.65]
             //System.out.println("  2222엔티티2 " + event.getEntityLiving());// 2222엔티티2 EntitySkeleton['스켈레톤'/20671, l='test', x=413.61, y=4.00, z=-35.18]
             //System.out.println("  2222데미지"+event.getAmount());// 2222데미지4.0
-            if ((!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.canTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
+
+            //팀킬 불가능 이벤트
+            if ((!(event.getEntityLiving() instanceof EntityPlayer) && event.getSource().getEntity() != null && Mojae.noTeamKill && EntityList.getEntityString(event.getEntityLiving()).equalsIgnoreCase(EntityList.getEntityString(event.getSource().getEntity())))) {
                 event.setCanceled(true);
             }
         }
     }
-
     @SubscribeEvent
     public void joinWorld(EntityJoinWorldEvent event) {
 
@@ -144,7 +96,7 @@ public class LabEvent {
                 arrow1.readFromNBT(EntityAPI.getNBT(arrow));
                 arrow.setDead();
                 event.getWorld().spawnEntityInWorld(arrow1);
-                arrow1.setPosition(arrow1.posX, arrow1.posY + 1, arrow1.posZ);
+                arrow1.setPosition(arrow1.posX + arrow.motionX, arrow1.posY, arrow1.posZ + arrow.motionZ);
             }
         }
 
@@ -245,27 +197,4 @@ public class LabEvent {
     }
 
 
-    @SubscribeEvent
-    public void event(EntityJoinWorldEvent event) {
-
-        if (event.getEntity() instanceof EntityLiving) {
-            EntityLiving living = (EntityLiving) event.getEntity();
-            String monsterName = EntityList.getEntityString(living);
-            if (Mojae.dog_pan) {
-                if (living instanceof EntityMob) {
-                    EntityMob mob = (EntityMob) living;
-                    mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityLiving.class, false));
-                }
-            }
-            if (Mojae.monterAttack.containsKey(monsterName)) {
-                String attackKey = Mojae.monterAttack.get(monsterName);
-                Class entityClass = EntityList.NAME_TO_CLASS.get(attackKey);
-
-                if (living instanceof EntityMob) {
-                    EntityMob mob = (EntityMob) living;
-                    mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, entityClass, false));
-                }
-            }
-        }
-    }
 }

@@ -1,7 +1,9 @@
 package ruo.yout;
 
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.boss.dragon.phase.PhaseList;
@@ -25,7 +27,19 @@ public class MoJaeEvent {
     public static double attackDelay = -1;
     public static ArrayList<String> lockList = new ArrayList<>();
     @SubscribeEvent
-    public void event(EntityJoinWorldEvent event) {
+    public void event(EntityJoinWorldEvent event) {//화살 수명을 짧게 함
+        if (event.getEntity() instanceof EntityLiving) {
+            EntityLiving living = (EntityLiving) event.getEntity();
+            String monsterName = EntityList.getEntityString(living);
+            if (Mojae.monterAttack.containsKey(monsterName)) {
+                String attackKey = Mojae.monterAttack.get(monsterName);
+                Class entityClass = EntityList.NAME_TO_CLASS.get(attackKey);
+                if (living instanceof EntityMob) {
+                    EntityMob mob = (EntityMob) living;
+                    mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, entityClass, false));
+                }
+            }
+        }
         if(event.getEntity() instanceof EntityArrow){
             EntityArrow arrow = (EntityArrow) event.getEntity();
             NBTTagCompound tagCompound = new NBTTagCompound();
@@ -39,19 +53,6 @@ public class MoJaeEvent {
                 item.setDead();
             }
         }
-    }
-
-    @SubscribeEvent
-    public void event(LivingExperienceDropEvent event) {
-        if(Mojae.morespawn && Mojae.dog_pan)
-            event.setCanceled(true);
-
-    }
-
-    @SubscribeEvent
-    public void event(LivingDropsEvent event) {
-        if(Mojae.morespawn && Mojae.dog_pan)
-            event.setCanceled(true);
     }
     @SubscribeEvent
     public void event(LivingAttackEvent event) {
