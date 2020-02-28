@@ -70,6 +70,9 @@ public abstract class TickTask {
 		return isAbsDead;
 	}
 
+	/**
+	 * 끝나면 true를 반환
+	 */
 	public boolean subtraction(Type argType) {
 		if ((tickType != null && argType != this.tickType) || isPause()) {
 			return false;

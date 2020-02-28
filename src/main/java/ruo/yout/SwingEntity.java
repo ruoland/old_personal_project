@@ -3,6 +3,8 @@ package ruo.yout;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.math.BlockPos;
 import olib.api.WorldAPI;
 
 import javax.swing.*;
@@ -23,12 +25,16 @@ public class SwingEntity extends JFrame implements ActionListener {
     JButton removeBlockButton = new JButton("블럭 제거");
     JButton setBlockButton = new JButton("블럭 설치");
 
+    static JCheckBox skelDelay0Box = new JCheckBox("스켈레톤 딜레이");
+    static JCheckBox uiOffBox = new JCheckBox("UI 끄기");
+    static JCheckBox healthBox = new JCheckBox("체력 표시하기");
+
     JComboBox<String> entityComboBox = new JComboBox<String>();
     JComboBox<String> entitySecondComboBox = new JComboBox<String>();
 
     public SwingEntity() {
         setTitle("모제");
-        setSize(400, 200);
+        setSize(450, 300);
         setLocation(0, 0);
         setLayout(new FlowLayout(FlowLayout.LEADING));
         setEntityComboBox(entityComboBox);
@@ -43,7 +49,9 @@ public class SwingEntity extends JFrame implements ActionListener {
         entityUnAttackButton.addActionListener(this);
         removeBlockButton.addActionListener(this);
         setBlockButton.addActionListener(this);
-
+        skelDelay0Box.addActionListener(new SwingSkelDelay0());
+        uiOffBox.addActionListener(new SwingSkelDelay0());
+        healthBox.addActionListener(new SwingSkelDelay0());
 
         add(entityComboBox);
         add(entitySecondComboBox);
@@ -59,6 +67,9 @@ public class SwingEntity extends JFrame implements ActionListener {
         blockPanel.add(setBlockButton);
         blockPanel.add(removeBlockButton);
         add(blockPanel);
+        add(skelDelay0Box);
+        add(uiOffBox);
+        add(healthBox);
         setVisible(true);
     }
 
@@ -84,7 +95,7 @@ public class SwingEntity extends JFrame implements ActionListener {
                     MojaeTest.attack(selectBox1, selectBox2);
                 }
             }
-            if(!Mojae.noTeamKill) {
+            if (!Mojae.noTeamKill) {
                 int teamKill = JOptionPane.showConfirmDialog(this, "팀킬 방지 기능을 킬까요?", "AI", JOptionPane.YES_NO_OPTION);
                 if (teamKill == JOptionPane.YES_OPTION) {
                     MojaeTest.teamKill(true);
@@ -95,31 +106,34 @@ public class SwingEntity extends JFrame implements ActionListener {
                 lockEntity = false;
             }
             int block = JOptionPane.showConfirmDialog(this, "블럭 없앨까요?", "AI", JOptionPane.YES_NO_OPTION);
-            if (block == JOptionPane.YES_OPTION) {
-                MojaeTest.removeWall();
+            if (!WorldAPI.getWorld().isAirBlock(new BlockPos(491, 5, 516))) {
+                if (block == JOptionPane.YES_OPTION) {
+                    MojaeTest.removeWall();
+                }
             }
-            if(MoJaeEvent.attackDelay == -1) {
+            if (MoJaeEvent.attackDelay == -1) {
                 int attacDelay = JOptionPane.showConfirmDialog(this, "무적 시간 없앨까요?", "AI", JOptionPane.YES_NO_OPTION);
                 if (attacDelay == JOptionPane.YES_OPTION) {
                     MojaeTest.attackDelay(true);
                 }
             }
 
-            if(selectBox1.equalsIgnoreCase("zombie") || selectBox2.equalsIgnoreCase("zombie")
-            || selectBox1.equalsIgnoreCase("skeleton") || selectBox2.equalsIgnoreCase("skeleton")){
-                int time = JOptionPane.showConfirmDialog(this, "밤으로 바꿀까요?", "AI", JOptionPane.YES_NO_OPTION);
-                if (time == JOptionPane.YES_OPTION) {
-                    WorldAPI.command("time set night");
+            if (selectBox1.equalsIgnoreCase("zombie") || selectBox2.equalsIgnoreCase("zombie")
+                    || selectBox1.equalsIgnoreCase("skeleton") || selectBox2.equalsIgnoreCase("skeleton")) {
+                if (!WorldAPI.getWorld().isDaytime()) {
+                    int time = JOptionPane.showConfirmDialog(this, "밤으로 바꿀까요?", "AI", JOptionPane.YES_NO_OPTION);
+                    if (time == JOptionPane.YES_OPTION) {
+                        WorldAPI.command("time set night");
+                    }
                 }
             }
-            if(!Mojae.wither && selectBox1.equalsIgnoreCase("WitherBoss") || selectBox2.equalsIgnoreCase("WitherBoss")){
+            if (!Mojae.wither && selectBox1.equalsIgnoreCase("WitherBoss") || selectBox2.equalsIgnoreCase("WitherBoss")) {
                 int time = JOptionPane.showConfirmDialog(this, "스켈레톤이 위더를 잡을 수 있게 할까요?", "AI", JOptionPane.YES_NO_OPTION);
                 if (time == JOptionPane.YES_OPTION) {
                     Mojae.wither = true;
                 }
             }
             MojaeTest.monsterSpawn(selectBox1, selectBox2, Integer.valueOf(spawnCount1.getText()), Integer.valueOf(spawnCount2.getText()), lockEntity);
-
         }
 
         if (e.getSource() == entityLockButton) {
@@ -130,8 +144,8 @@ public class SwingEntity extends JFrame implements ActionListener {
             WorldAPI.command("unlockentity " + entitySecondComboBox.getSelectedItem());
             int result = JOptionPane.showConfirmDialog(this, "블럭도 없앨까요?.", "AI", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
-                WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 15, 2, 4,15, Blocks.AIR);
-                WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 5, 2, 4,5, Blocks.AIR);
+                WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 15, 2, 4, 15, Blocks.AIR);
+                WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 5, 2, 4, 5, Blocks.AIR);
             }
         }
         if (e.getSource() == entityAttackButton) {
@@ -149,12 +163,12 @@ public class SwingEntity extends JFrame implements ActionListener {
             Mojae.monterAttack.remove((String) entitySecondComboBox.getSelectedItem());
         }
         if (e.getSource() == setBlockButton) {
-            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 15, 2, 4,15, Blocks.PURPUR_BLOCK);
-            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 5, 2, 4,5, Blocks.PURPUR_BLOCK);
+            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 15, 2, 4, 15, Blocks.PURPUR_BLOCK);
+            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 5, 2, 4, 5, Blocks.PURPUR_BLOCK);
         }
         if (e.getSource() == removeBlockButton) {
-            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 15, 2, 4,15, Blocks.AIR);
-            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 5, 2, 4,5, Blocks.AIR);
+            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 15, 2, 4, 15, Blocks.AIR);
+            WorldAPI.setBlock(WorldAPI.getWorld(), 18, 5, 5, 2, 4, 5, Blocks.AIR);
         }
         if (e.getSource() == entityUnAttackButton) {
             Mojae.monterAttack.remove((String) entityComboBox.getSelectedItem());

@@ -31,16 +31,16 @@ public class CommandUI extends CommandPlusBase {
         }
         if (args[0].equalsIgnoreCase("reset")) {
             for (ElementType elementType : RenderGameOverlayEvent.ElementType.values())
-                CMManager.setUI(elementType.name(), true);
-            CMManager.setUI("HAND", true);
-            CMManager.setUI("blocklayer", true);
+                CMManager.setUI(elementType, true);
+            CMManager.setHand(true);
+            CMManager.setRenderBlockLayer(true);
             t.addLoMessage("reset");
             return;
         }
         if (ui.equalsIgnoreCase("exp")) {
             ui = "EXPERIENCE";
         }
-        CMManager.setUI(ui, Boolean.valueOf(args[1]));
+        CMManager.setUI(ElementType.valueOf(ui), Boolean.valueOf(args[1]));
         t.addSettingMessage(args[0], Boolean.valueOf(args[1]));
     }
 

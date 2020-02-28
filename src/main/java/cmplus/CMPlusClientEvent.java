@@ -27,8 +27,6 @@ import org.lwjgl.input.Keyboard;
 import java.lang.reflect.Field;
 
 public class CMPlusClientEvent {
-    private static final String[] uiList = "ALL,HELMET,PORTAL,CROSSHAIRS,BOSSHEALTH,ARMOR,HEALTH,FOOD,AIR,HOTBAR,EXPERIENCE,HEALTHMOUNT,JUMPBAR,CHAT,PLAYER_LIST,DEBUG"
-            .split(",");
     private Minecraft mc = Minecraft.getMinecraft();
     private double prevDistance;
 
@@ -93,7 +91,7 @@ public class CMPlusClientEvent {
 
     @SubscribeEvent
     public void login(RenderHandEvent event) {
-        event.setCanceled(!CMManager.isActiveUI("HAND"));
+        event.setCanceled(!CMManager.isRenderHand());
     }
 
     @SubscribeEvent
@@ -129,12 +127,8 @@ public class CMPlusClientEvent {
 
     @SubscribeEvent
     public void renderUI(RenderGameOverlayEvent.Pre event) {
-        for (String s : uiList) {
-            if (event.getType() == ElementType.valueOf(s)) {
-                if (!CMManager.isActiveUI(s)) {
-                    event.setCanceled(true);
-                }
-            }
+        if (!CMManager.isActiveUI(event.getType())) {
+            event.setCanceled(true);
         }
     }
 

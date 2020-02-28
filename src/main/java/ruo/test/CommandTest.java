@@ -26,7 +26,6 @@ public class CommandTest extends CommandBase {
                 server.commandManager.executeCommand(sender, " /summon Spider ~ ~ ~");
             }
             for(int i = 0; i < 50;i++){
-
                 server.commandManager.executeCommand(sender, " /summon Skeleton ~ ~ ~");
             }
         }
