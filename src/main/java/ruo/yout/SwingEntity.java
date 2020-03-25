@@ -1,9 +1,6 @@
 package ruo.yout;
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.math.BlockPos;
 import olib.api.WorldAPI;
 
@@ -49,9 +46,9 @@ public class SwingEntity extends JFrame implements ActionListener {
         entityUnAttackButton.addActionListener(this);
         removeBlockButton.addActionListener(this);
         setBlockButton.addActionListener(this);
-        skelDelay0Box.addActionListener(new SwingSkelDelay0());
-        uiOffBox.addActionListener(new SwingSkelDelay0());
-        healthBox.addActionListener(new SwingSkelDelay0());
+        skelDelay0Box.addActionListener(new SwingSkelDelay0Listener());
+        uiOffBox.addActionListener(new SwingSkelDelay0Listener());
+        healthBox.addActionListener(new SwingSkelDelay0Listener());
 
         add(entityComboBox);
         add(entitySecondComboBox);

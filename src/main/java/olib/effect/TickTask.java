@@ -49,6 +49,9 @@ public abstract class TickTask {
 	public void stopTick() {
 		isAbsDead = true;
 	}
+	public void endTick() {
+
+	}
 
 	public void pause(boolean pause) {
 		this.absPause = pause;
@@ -77,8 +80,10 @@ public abstract class TickTask {
 		if ((tickType != null && argType != this.tickType) || isPause()) {
 			return false;
 		}
-		if (stopCondition())
+		if (stopCondition()) {
+			endTick();
 			return true;
+		}
 		if (absTick > 0) {
 			absTick--;
 			if (absTick <= 0) {
@@ -89,6 +94,7 @@ public abstract class TickTask {
 					absTick = absDefTick;
 					return false;
 				}
+				endTick();
 				return true;
 			}
 		}

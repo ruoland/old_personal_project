@@ -27,6 +27,13 @@ public class MoJaeEvent {
     public static double attackDelay = -1;
     public static ArrayList<String> lockList = new ArrayList<>();
     @SubscribeEvent
+    public void event(EnderTeleportEvent event) {
+        event.setCanceled(true);
+        if(Mojae.endermanArrowAvoid){
+
+        }
+    }
+    @SubscribeEvent
     public void event(EntityJoinWorldEvent event) {//화살 수명을 짧게 함
         if (event.getEntity() instanceof EntityLiving) {
             EntityLiving living = (EntityLiving) event.getEntity();

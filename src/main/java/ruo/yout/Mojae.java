@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import olib.api.RenderAPI;
+import ruo.yout.android.CommandAnd2;
 import ruo.yout.command.*;
 import ruo.yout.item.*;
 import ruo.yout.mojaelab.*;
@@ -32,7 +33,7 @@ public class Mojae {
     public static HashMap<String, String> monterAttackRemove = new HashMap<>();//왼쪽에 있는 몬스터는 오른쪽에 몬스터를 공격함
     public static boolean spawnLockMode;//소환되는 몬스터를 전부 잠금
 
-    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, noTeamKill = false, wither;
+    public static boolean dog_pan, skelreeper, arrowReeper, arrowRiding, noTeamKill = false, wither, endermanArrowAvoid = true;
     public static boolean morespawn;
     public static boolean statStart;
     public static int arrow_count= 1, skelDelay = -1;
@@ -83,7 +84,7 @@ public class Mojae {
     }
     @Mod.EventHandler
     public  void init(FMLServerStartingEvent e){
-
+        e.registerServerCommand(new CommandAnd2());
         e.registerServerCommand(new CommandAttackDelay());
         e.registerServerCommand(new CommandMoJae());
         e.registerServerCommand(new CommandWorldTeleport());
